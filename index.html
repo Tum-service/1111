@@ -3,64 +3,171 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🌈 คลังคำศัพท์อังกฤษ · มีรูปทุกคำ</title>
+  <title>🌈 คลังคำศัพท์อังกฤษ · มีอีโมจิทุกคำ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800;900&family=Itim&display=swap" rel="stylesheet">
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: 'Itim', 'Segoe UI', sans-serif;
+      font-family: 'Kanit', 'Itim', 'Segoe UI', sans-serif;
+      font-weight: 500;
       background: #f9f3e8;
-      background-image: radial-gradient(circle at 10% 20%, rgba(255, 235, 200, 0.4) 0%, transparent 50%),
-                        radial-gradient(circle at 90% 80%, rgba(200, 230, 255, 0.5) 0%, transparent 50%);
       min-height: 100vh;
       padding: 16px;
       color: #1e293b;
+      position: relative;
+      overflow-x: hidden;
     }
-    .app { max-width: 1200px; margin: 0 auto; }
+
+    /* ============================================================
+       ANIMATED COLORFUL BACKGROUND
+       ============================================================ */
+    .bg-animated {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background: linear-gradient(120deg, #fde68a, #fbcfe8, #bfdbfe, #bbf7d0, #fed7aa, #fde68a);
+      background-size: 400% 400%;
+      animation: gradientFlow 16s ease infinite;
+    }
+    @keyframes gradientFlow {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .bg-blobs {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .bg-blobs .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(50px);
+      opacity: 0.45;
+      will-change: transform;
+    }
+    .bg-blobs .blob:nth-child(1) { width: 320px; height: 320px; background: #f9a8d4; top: -80px; left: -60px; animation: blobFloat1 14s ease-in-out infinite; }
+    .bg-blobs .blob:nth-child(2) { width: 260px; height: 260px; background: #93c5fd; top: 40%; right: -80px; animation: blobFloat2 18s ease-in-out infinite; }
+    .bg-blobs .blob:nth-child(3) { width: 300px; height: 300px; background: #fcd34d; bottom: -100px; left: 20%; animation: blobFloat3 16s ease-in-out infinite; }
+    .bg-blobs .blob:nth-child(4) { width: 220px; height: 220px; background: #86efac; top: 10%; right: 20%; animation: blobFloat1 20s ease-in-out infinite reverse; }
+    .bg-blobs .blob:nth-child(5) { width: 260px; height: 260px; background: #c4b5fd; bottom: 10%; right: 10%; animation: blobFloat2 15s ease-in-out infinite reverse; }
+    @keyframes blobFloat1 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(60px,80px) scale(1.15); }
+    }
+    @keyframes blobFloat2 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(-70px,50px) scale(1.1); }
+    }
+    @keyframes blobFloat3 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(50px,-60px) scale(1.2); }
+    }
+    .bg-floaters {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .bg-floaters span {
+      position: absolute;
+      bottom: -60px;
+      font-size: 22px;
+      opacity: 0;
+      animation-name: floatUp;
+      animation-timing-function: ease-in;
+      animation-iteration-count: infinite;
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.08));
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.8; }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(-115vh) rotate(360deg); opacity: 0; }
+    }
+
+    .app { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
 
     .header {
       text-align: center;
-      padding: 24px 20px 28px;
+      padding: 26px 24px 30px;
       background: linear-gradient(135deg, #f97316, #f59e0b, #fcd34d);
+      background-size: 200% 200%;
+      animation: headerGlow 10s ease infinite;
       border-radius: 40px 40px 40px 12px;
-      box-shadow: 0 12px 30px rgba(245, 158, 11, 0.3);
+      box-shadow: 0 12px 30px rgba(245, 158, 11, 0.35);
       color: #1e293b;
       margin-bottom: 28px;
       position: relative;
       overflow: hidden;
     }
+    @keyframes headerGlow {
+      0%,100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
     .header::after {
       content: "⭐";
       position: absolute;
-      right: 20px;
+      left: 18px;
       top: 10px;
-      font-size: 48px;
-      opacity: 0.2;
+      font-size: 40px;
+      opacity: 0.25;
+      transform: rotate(-15deg);
+    }
+    .header::before {
+      content: "🎨";
+      position: absolute;
+      right: 18px;
+      top: 10px;
+      font-size: 40px;
+      opacity: 0.25;
       transform: rotate(15deg);
     }
+    .header-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+    .header-text { text-align: center; }
     .header h1 {
-      font-size: 32px;
-      letter-spacing: 1px;
-      text-shadow: 2px 2px 0 rgba(255,255,255,0.3);
+      font-size: 46px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-shadow: 3px 3px 0 rgba(255,255,255,0.35);
     }
     .header p {
-      font-size: 18px;
+      font-size: 21px;
+      font-weight: 600;
       color: #3b2e1e;
       margin-top: 4px;
     }
+    .header p.school-line {
+      font-size: 19px;
+      font-weight: 700;
+      color: #7c2d12;
+      margin-top: 2px;
+    }
     .header .badge {
       display: inline-block;
-      background: rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.55);
       backdrop-filter: blur(4px);
-      padding: 6px 20px;
+      padding: 8px 22px;
       border-radius: 50px;
-      font-size: 14px;
-      margin-top: 12px;
-      font-weight: 600;
+      font-size: 15px;
+      margin-top: 14px;
+      font-weight: 700;
       color: #3b2e1e;
-      border: 1px solid rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.4);
     }
 
     .controls {
@@ -190,33 +297,63 @@
     }
     .card:active { transform: scale(0.96); }
 
-    .card .card-img {
+    /* ====== การ์ดคำศัพท์: วงกลมอีโมจิ ====== */
+    .card .img-frame {
+      position: relative;
       width: 100%;
       aspect-ratio: 1/1;
-      object-fit: cover;
-      border-radius: 20px;
-      background: #fef3c7;
+      padding: 4px;
+      border-radius: 22px;
+      overflow: hidden;
       margin-bottom: 10px;
-      border: 2px solid #fef3c7;
-      transition: 0.3s;
+      background: linear-gradient(135deg, #fef3c7, #fde68a, #fbcfe8, #bfdbfe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .card:hover .card-img {
-      border-color: #f59e0b;
+    .card .img-frame::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 220%;
+      height: 220%;
+      background: conic-gradient(from 0deg, #f97316, #fbbf24, #a3e635, #34d399, #22d3ee, #818cf8, #f472b6, #f97316);
+      animation: spinBorder 5s linear infinite;
+      transform: translate(-50%,-50%) rotate(0deg);
+    }
+    @keyframes spinBorder {
+      to { transform: translate(-50%,-50%) rotate(360deg); }
+    }
+    .card .card-emoji {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      background: #fffbeb;
+      font-size: 62px;
+      line-height: 1;
+      user-select: none;
     }
     .card .en {
-      font-size: 22px;
-      font-weight: 700;
+      font-size: 27px;
+      font-weight: 800;
       color: #0f172a;
       line-height: 1.3;
     }
     .card .th {
-      font-size: 15px;
+      font-size: 17px;
+      font-weight: 600;
       color: #475569;
       margin-top: 2px;
     }
     .card .pos {
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       color: #94a3b8;
       background: #f1f5f9;
       padding: 2px 14px;
@@ -231,6 +368,7 @@
       font-size: 18px;
       opacity: 0.3;
       transition: 0.2s;
+      z-index: 2;
     }
     .card:hover .speak-icon { opacity: 0.8; }
     .card.speaking {
@@ -244,6 +382,88 @@
     @keyframes pulse {
       0%,100%{transform:scale(1)}
       50%{transform:scale(1.25)}
+    }
+
+    .card .mic-icon {
+      position: absolute;
+      top: 12px;
+      left: 14px;
+      font-size: 17px;
+      z-index: 2;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.55;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      transition: 0.2s;
+      cursor: pointer;
+    }
+    .card:hover .mic-icon { opacity: 1; }
+    .card .mic-icon:active { transform: scale(0.9); }
+    .card.mic-listening .mic-icon {
+      opacity: 1;
+      background: #fee2e2;
+      animation: micPulse 0.9s infinite;
+    }
+    @keyframes micPulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.5); }
+      50% { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+    }
+    .card.mic-success { animation: cardGoodFlash 1s ease; }
+    .card.mic-fail { animation: cardShake 0.45s ease; }
+    @keyframes cardGoodFlash {
+      0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
+      60% { box-shadow: 0 0 0 14px rgba(34,197,94,0); }
+      100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+    }
+    @keyframes cardShake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    .sticker-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 30;
+    }
+    .sticker-pop {
+      text-align: center;
+      animation: stickerPop 1.7s ease forwards;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.25));
+    }
+    .sticker-pop .sticker-emoji { font-size: 58px; display: block; }
+    .sticker-pop .sticker-text {
+      display: inline-block;
+      margin-top: 2px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #15803d;
+      background: white;
+      padding: 3px 14px;
+      border-radius: 20px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
+    .sticker-pop.big .sticker-emoji { font-size: 92px; }
+    .sticker-pop.big .sticker-text { font-size: 20px; padding: 5px 20px; }
+    @keyframes stickerPop {
+      0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+      15%  { transform: scale(1.35) rotate(10deg); opacity: 1; }
+      30%  { transform: scale(0.92) rotate(-6deg); }
+      45%  { transform: scale(1.08) rotate(3deg); }
+      60%  { transform: scale(1) rotate(0deg); }
+      82%  { opacity: 1; }
+      100% { opacity: 0; transform: scale(1) translateY(-14px); }
     }
 
     .modal-overlay {
@@ -299,18 +519,48 @@
       flex-wrap: wrap;
       margin-bottom: 16px;
     }
-    .modal .modal-image {
-      width: 130px;
-      height: 130px;
-      border-radius: 30px;
-      object-fit: cover;
-      background: #fef3c7;
-      border: 3px solid #fef3c7;
+    /* ====== Modal: อีโมจิวงกลม ====== */
+    .modal .modal-image-outer {
+      position: relative;
       flex-shrink: 0;
     }
+    .modal .modal-image-wrap {
+      position: relative;
+      width: 130px;
+      height: 130px;
+      padding: 5px;
+      border-radius: 32px;
+      overflow: hidden;
+      background: #fef3c7;
+    }
+    .modal .modal-image-wrap::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 220%;
+      height: 220%;
+      background: conic-gradient(from 0deg, #f97316, #fbbf24, #a3e635, #34d399, #22d3ee, #818cf8, #f472b6, #f97316);
+      animation: spinBorder 5s linear infinite;
+      transform: translate(-50%,-50%) rotate(0deg);
+    }
+    .modal .modal-emoji {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      border-radius: 26px;
+      background: #fffbeb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 78px;
+      line-height: 1;
+      user-select: none;
+    }
     .modal .modal-word {
-      font-size: 38px;
-      font-weight: 700;
+      font-size: 44px;
+      font-weight: 800;
       color: #0f172a;
       display: flex;
       align-items: center;
@@ -319,14 +569,15 @@
     }
     .modal .modal-word .modal-pos {
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
       color: #94a3b8;
       background: #f1f5f9;
       padding: 4px 18px;
       border-radius: 40px;
     }
     .modal .modal-th {
-      font-size: 22px;
+      font-size: 25px;
+      font-weight: 600;
       color: #475569;
       margin-top: 4px;
     }
@@ -379,18 +630,23 @@
       background: #fcd34d;
       transform: scale(1.05);
     }
+    .modal .modal-btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
     .modal .modal-speak-btn {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      margin-top: 18px;
       padding: 12px 30px;
       background: #f97316;
       color: white;
       border: none;
       border-radius: 60px;
       font-size: 18px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: 0.2s;
       font-family: inherit;
@@ -400,6 +656,45 @@
       background: #ea580c;
       transform: scale(1.03);
     }
+    .modal .modal-mic-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 30px;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 60px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+      box-shadow: 0 8px 18px rgba(239, 68, 68, 0.3);
+    }
+    .modal .modal-mic-btn:hover {
+      background: #dc2626;
+      transform: scale(1.03);
+    }
+    .modal .modal-mic-btn.listening {
+      animation: micPulse 0.9s infinite;
+      background: #b91c1c;
+    }
+    .modal .modal-mic-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .modal-mic-feedback {
+      margin-top: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      min-height: 24px;
+      color: #475569;
+    }
+    .modal-mic-feedback.good { color: #15803d; }
+    .modal-mic-feedback.bad { color: #b45309; }
+    .modal-mic-feedback.err { color: #b91c1c; }
 
     .empty-state {
       text-align: center;
@@ -418,13 +713,21 @@
 
     @media (max-width:640px) {
       body { padding: 10px; }
-      .header h1 { font-size: 26px; }
+      .header h1 { font-size: 30px; }
+      .header p { font-size: 17px; }
+      .header p.school-line { font-size: 16px; }
       .controls { flex-direction: column; align-items: stretch; }
       .controls .stats { margin-left: 0; text-align: center; }
       .vocab-grid { grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); gap: 14px; }
+      .card .en { font-size: 23px; }
+      .card .th { font-size: 15px; }
+      .card .card-emoji { font-size: 50px; }
       .modal .modal-top { gap: 16px; }
-      .modal .modal-image { width: 90px; height: 90px; }
+      .modal .modal-image-wrap { width: 90px; height: 90px; }
+      .modal .modal-emoji { font-size: 54px; }
       .modal .modal-word { font-size: 30px; }
+      .modal .modal-btn-row { flex-direction: column; }
+      .modal .modal-speak-btn, .modal .modal-mic-btn { width: 100%; justify-content: center; }
     }
     @media (prefers-color-scheme:dark) {
       body { background: #0f172a; color: #e2e8f0; }
@@ -436,7 +739,9 @@
       .card .th { color: #cbd5e1; }
       .card .pos { background: #334155; color: #94a3b8; }
       .card:hover { border-color: #f59e0b; }
+      .card .card-emoji { background: #0f172a; }
       .modal { background: #1e293b; color: #e2e8f0; }
+      .modal .modal-emoji { background: #0f172a; }
       .modal .modal-word { color: #f1f5f9; }
       .modal .modal-th { color: #cbd5e1; }
       .modal .modal-divider { background: #334155; }
@@ -452,11 +757,26 @@
   </style>
 </head>
 <body>
+<div class="bg-animated" aria-hidden="true"></div>
+<div class="bg-blobs" aria-hidden="true">
+  <span class="blob"></span>
+  <span class="blob"></span>
+  <span class="blob"></span>
+  <span class="blob"></span>
+  <span class="blob"></span>
+</div>
+<div class="bg-floaters" id="bgFloaters" aria-hidden="true"></div>
+
 <div class="app" id="app">
   <header class="header">
-    <h1>🌈 คลังคำศัพท์อังกฤษ</h1>
-    <p>ประถมศึกษาปีที่ 1 – 6 • มีรูปประกอบทุกคำ • ฟังเสียง</p>
-    <div class="badge">👆 คลิกที่คำ = ฟัง · คลิก 2 ครั้ง = ดูประโยค + รูปใหญ่</div>
+    <div class="header-inner">
+      <div class="header-text">
+        <h1>🌈 คลังคำศัพท์ภาษาอังกฤษ</h1>
+        <p>ประถมศึกษาปีที่ 1 – 6 • มีอีโมจิประกอบทุกคำ • ฟังเสียง</p>
+        <p class="school-line">🏫 โรงเรียนบ้านถิ่นสำราญ</p>
+        <div class="badge">👆 คลิกที่คำ = ฟัง · คลิก 2 ครั้ง = ดูประโยค + อีโมจิใหญ่ · 🎤 ลองพูดดูสิ!</div>
+      </div>
+    </div>
   </header>
 
   <div class="controls">
@@ -471,7 +791,7 @@
 
   <div class="grade-tabs" id="gradeTabs"></div>
   <div id="vocabGrid" class="vocab-grid"></div>
-  <div class="footer">🎧 เสียงผู้ชายอเมริกัน · รูปจาก Unsplash + Picsum (fallback)</div>
+  <div class="footer">🎧 เสียงผู้ชายอเมริกัน · 🎨 ภาพประกอบเป็นอีโมจิที่ตรงกับคำศัพท์</div>
 </div>
 
 <!-- Modal -->
@@ -479,7 +799,11 @@
   <div class="modal" id="modalContent">
     <button class="close-btn" id="modalCloseBtn">✕</button>
     <div class="modal-top">
-      <img class="modal-image" id="modalImage" src="" alt="รูปประกอบ">
+      <div class="modal-image-outer" id="modalImageOuter">
+        <div class="modal-image-wrap" id="modalImageWrap">
+          <div class="modal-emoji" id="modalEmoji">📖</div>
+        </div>
+      </div>
       <div>
         <div class="modal-word">
           <span id="modalEn"></span>
@@ -491,15 +815,21 @@
     <div class="modal-divider"></div>
     <div class="sentences-title"><span>📝</span> ตัวอย่างประโยค</div>
     <div id="modalSentences"></div>
-    <button class="modal-speak-btn" id="modalSpeakBtn">
-      <span>🔊</span> ฟังเสียงคำนี้
-    </button>
+    <div class="modal-btn-row">
+      <button class="modal-speak-btn" id="modalSpeakBtn">
+        <span>🔊</span> ฟังเสียงคำนี้
+      </button>
+      <button class="modal-mic-btn" id="modalMicBtn">
+        <span>🎤</span> ลองพูดคำนี้
+      </button>
+    </div>
+    <div class="modal-mic-feedback" id="modalMicFeedback"></div>
   </div>
 </div>
 
 <script>
 // ============================================================
-//  DATA — ข้อมูลคำศัพท์ทั้งหมด (ฝังไว้เหมือนเดิม)
+//  DATA — ข้อมูลคำศัพท์ทั้งหมด
 // ============================================================
 const VOCAB_DATA = `
 # คำแปลประโยคภาษาอังกฤษทุกประโยค
@@ -971,7 +1301,7 @@ const VOCAB_DATA = `
 155. zoo – We visited the zoo last weekend.
 **สวนสัตว์ – เราไปสวนสัตว์เมื่อสุดสัปดาห์ที่แล้ว**
 
-## 📗 ป.2 — (159 คำ)
+## 📗 ป.2 — คำศัพท์ภาษาอังกฤษ
 
 1. again – Can you say that again, please?
 **อีกครั้ง – คุณพูดอีกครั้งได้ไหม?**
@@ -1450,7 +1780,7 @@ const VOCAB_DATA = `
 159. yourself – Take care of yourself.
 **ตัวเอง – ดูแลตัวเองด้วยนะ**
 
-## 📙 ป.3 — (154 คำ)
+## 📙 ป.3 — คำศัพท์ภาษาอังกฤษ
 
 1. act – He acted like a hero in the play.
 **แสดง – เขาแสดงเหมือนพระเอกในละคร**
@@ -1914,7 +2244,7 @@ const VOCAB_DATA = `
 154. wrong – I think this answer is wrong.
 **ผิด – ฉันคิดว่าคำตอบนี้ผิด**
 
-## 📕 ป.4 — (255 คำ)
+## 📕 ป.4 — คำศัพท์ภาษาอังกฤษ
 
 1. ache – I have a stomach ache.
 **ปวด – ฉันปวดท้อง**
@@ -2681,7 +3011,7 @@ const VOCAB_DATA = `
 255. yummy – This cake looks yummy.
 **อร่อย – เค้กนี้ดูน่ากิน**
 
-## 📔 ป.5 — (254 คำ)
+## 📔 ป.5 — คำศัพท์ภาษาอังกฤษ
 
 1. accountant – My sister works as an accountant.
 **นักบัญชี – พี่สาวของฉันทำงานเป็นนักบัญชี**
@@ -3439,7 +3769,7 @@ const VOCAB_DATA = `
 252. youth – Many youth join the volunteer program.
 **เยาวชน – เยาวชนหลายคนเข้าร่วมโครงการอาสาสมัคร**
 
-## 📓 ป.6 — (250 คำ)
+## 📓 ป.6 — คำศัพท์ภาษาอังกฤษ
 
 1. advertisement – We saw an advertisement for a new phone on TV.
 **โฆษณา – เราเห็นโฆษณาโทรศัพท์ใหม่ทางทีวี**
@@ -4514,6 +4844,345 @@ const VOCAB_DATA = `
 `;
 
 // ============================================================
+//  EMOJI MAP — แมปคำศัพท์ → อีโมจิที่ตรงความหมาย
+// ============================================================
+const EMOJI_MAP = {
+  // ----- สัตว์ -----
+  'ant':'🐜','bat':'🦇','bear':'🐻','bee':'🐝','bird':'🐦','cat':'🐱','dog':'🐶',
+  'fish':'🐟','fox':'🦊','giraffe':'🦒','goat':'🐐','lion':'🦁','monkey':'🐵',
+  'owl':'🦉','panda':'🐼','rabbit':'🐰','rat':'🐭','sheep':'🐑','snake':'🐍',
+  'tiger':'🐯','zebra':'🦓','cow':'🐮','pig':'🐷','horse':'🐴','duck':'🦆',
+  'chicken':'🐔','hen':'🐔','elephant':'🐘','frog':'🐸','butterfly':'🦋',
+  'snail':'🐌','turtle':'🐢','tortoise':'🐢','dolphin':'🐬','whale':'🐳',
+  'shark':'🦈','octopus':'🐙','crocodile':'🐊','dinosaur':'🦕','koala':'🐨',
+  'kangaroo':'🦘','penguin':'🐧','parrot':'🦜','peacock':'🦚','ostrich':'🦤',
+  'rhino':'🦏','hippo':'🦛','camel':'🐪','donkey':'🫏','wolf':'🐺','mouse':'🐭',
+  'dove':'🕊️','sparrow':'🐦','dragonfly':'🦗','worm':'🪱','shrimp':'🦐',
+  'prawn':'🦐','crab':'🦀','seal':'🦭','goldfish':'🐠','goose':'🦢','ox':'🐂',
+  'buffalo':'🐃','insect':'🐛','bug':'🐛','monster':'👹','ghost':'👻',
+  'spider':'🕷️','kitten':'🐱','puppy':'🐶','turkey':'🦃','dragon':'🐲',
+  'animal':'🐾','pet':'🐾','skeleton':'💀','mosquito':'🦟',
+  // ----- อาหาร -----
+  'apple':'🍎','banana':'🍌','bread':'🍞','cake':'🎂','candy':'🍬','carrot':'🥕',
+  'cheese':'🧀','cherry':'🍒','chocolate':'🍫','coconut':'🥥','cookie':'🍪',
+  'corn':'🌽','cupcake':'🧁','doughnut':'🍩','egg':'🥚','fruit':'🍎','grape':'🍇',
+  'hamburger':'🍔','honey':'🍯','ice cream':'🍦','jackfruit':'🍈','jam':'🍯',
+  'juice':'🧃','kiwi':'🥝','lemon':'🍋','lemonade':'🍋','lettuce':'🥬',
+  'longan':'🫐','mango':'🥭','mangosteen':'🟣','meat':'🥩','melon':'🍈',
+  'milk':'🥛','noodle':'🍜','omelet':'🍳','onion':'🧅','orange':'🍊',
+  'papaya':'🍈','pea':'🫛','peach':'🍑','pear':'🍐','pepper':'🌶️','pie':'🥧',
+  'pineapple':'🍍','pizza':'🍕','plum':'🫐','pomelo':'🍊','pork':'🥓',
+  'porridge':'🥣','potato':'🥔','rice':'🍚','salad':'🥗','sandwich':'🥪',
+  'sauce':'🥫','sausage':'🌭','soda':'🥤','soup':'🍲','strawberry':'🍓',
+  'sugar':'🍬','sweet':'🍬','tea':'🍵','tofu':'🍲','tomato':'🍅',
+  'watermelon':'🍉','yogurt':'🥛','hot dog':'🌭','cereal':'🥣','cucumber':'🥒',
+  'cabbage':'🥬','garlic':'🧄','chilli':'🌶️','chili':'🌶️','curry':'🍛',
+  'dessert':'🍰','drink':'🥤','food':'🍽️','beverage':'🥤','pasta':'🍝',
+  'butter':'🧈','flour':'🌾','beef':'🥩','steak':'🥩','toast':'🍞',
+  'pancake':'🥞','popcorn':'🍿','snack':'🍿','spaghetti':'🍝','supper':'🍽️',
+  'lunch':'🍱','breakfast':'🍳','meal':'🍽️',
+  // ----- ของใช้ -----
+  'bag':'👜','ball':'⚽','basket':'🧺','bed':'🛏️','bell':'🔔','bin':'🗑️',
+  'book':'📖','bottle':'🍼','bowl':'🥣','box':'📦','broom':'🧹','brush':'🪥',
+  'bus':'🚌','calculator':'🧮','calendar':'📅','camera':'📷','candle':'🕯️',
+  'car':'🚗','card':'🃏','carpet':'🧶','chair':'🪑','chalk':'🖍️','clock':'🕐',
+  'clothes':'👕','coat':'🧥','coin':'🪙','comb':'💇','computer':'💻',
+  'crayon':'🖍️','crossword':'📝','cup':'🥤','curtain':'🪟','desk':'🪑',
+  'dice':'🎲','diary':'📔','dictionary':'📖','dish':'🍽️','door':'🚪','drum':'🥁',
+  'dustbin':'🗑️','earring':'💎','envelop':'✉️','envelope':'✉️','eraser':'🧽',
+  'fan':'🪭','fence':'🚧','file':'📁','flag':'🚩','flash':'⚡','flute':'🪈',
+  'fork':'🍴','garage':'🏠','gift':'🎁','glass':'🥛','glasses':'👓',
+  'gloves':'🧤','glue':'🧴','guitar':'🎸','gun':'🔫','hairdryer':'💇',
+  'handkerchief':'🧻','hat':'🎩','helmet':'⛑️','house':'🏠','iron':'🔨',
+  'jacket':'🧥','jar':'🫙','jeans':'👖','jewelry':'💍','jug':'🫗','key':'🔑',
+  'kite':'🪁','knife':'🔪','lamp':'💡','light':'💡','lock':'🔒','magazine':'📰',
+  'map':'🗺️','marker':'🖊️','mirror':'🪞','mop':'🧹','mug':'☕','napkin':'🧻',
+  'necklace':'📿','needle':'🪡','newspaper':'📰','notebook':'📓','oven':'🔥',
+  'pajamas':'🩱','pan':'🍳','pants':'👖','paper':'📄','paper clip':'📎',
+  'pen':'🖊️','pencil':'✏️','pencil case':'✏️','photo':'📷','piano':'🎹',
+  'picture':'🖼️','pillow':'🛏️','plate':'🍽️','plug':'🔌','pocket':'👝',
+  'poster':'🖼️','purse':'👛','radio':'📻','refrigerator':'🧊','ribbon':'🎀',
+  'ring':'💍','robot':'🤖','rocket':'🚀','rope':'🪢','rubber band':'🎗️',
+  'rug':'🧶','ruler':'📏','sandals':'🩴','scarf':'🧣','scooter':'🛴',
+  'shampoo':'🧴','sharpener':'✏️','shelf':'📚','shirt':'👕','shoes':'👟',
+  'shorts':'🩳','skirt':'👗','slippers':'🩴','sneakers':'👟','soap':'🧼',
+  'socks':'🧦','sofa':'🛋️','sponge':'🧽','spoon':'🥄','stapler':'📎',
+  'sticker':'⭐','stove':'🔥','straw':'🥤','string':'🧵','sweater':'🧥',
+  'table':'🪑','tape':'📼','teaspoon':'🥄','telephone':'☎️','television':'📺',
+  'tent':'⛺','ticket':'🎫','timetable':'📅','tissue':'🧻','toothbrush':'🪥',
+  'toothpaste':'🦷','towel':'🧻','trash':'🗑️','truck':'🚚','T-shirt':'👕',
+  'T.V.':'📺','umbrella':'☂️','uniform':'👔','van':'🚐','video':'📹',
+  'violin':'🎻','wallet':'👛','wand':'🪄','watch':'⌚','wheel':'🛞',
+  'window':'🪟','worksheet':'📝','backpack':'🎒','suitcase':'🧳',
+  'trolley':'🛒','tower':'🗼','vase':'🏺','wheelchair':'🦼','crown':'👑',
+  'bomb':'💣','boxing':'🥊','bracelet':'📿','button':'🔘','CD player':'📻',
+  // ----- ธรรมชาติ -----
+  'air':'💨','beach':'🏖️','branch':'🌿','cloudy':'☁️','coral reef':'🪸',
+  'desert':'🏜️','earth':'🌍','fire':'🔥','flower':'🌸','foggy':'🌫️',
+  'forest':'🌲','grass':'🌿','hill':'⛰️','jungle':'🌴','lake':'🏞️','leaf':'🍃',
+  'lotus':'🪷','moon':'🌙','mountain':'⛰️','ocean':'🌊','orchid':'🌺',
+  'plant':'🪴','rain':'🌧️','rainbow':'🌈','river':'🏞️','rock':'🪨',
+  'root':'🌱','rose':'🌹','sand':'🏖️','sea':'🌊','seed':'🌱','sky':'🌤️',
+  'snowy':'❄️','soil':'🌱','star':'⭐','stone':'🪨','storm':'⛈️','sun':'☀️',
+  'sunflower':'🌻','tree':'🌳','volcano':'🌋','water':'💧','weather':'🌤️',
+  'wind':'💨','windy':'💨','wood':'🪵','world':'🌍','island':'🏝️',
+  'stream':'🏞️','valley':'🏞️','waterfall':'🏞️','wave':'🌊','snow':'❄️',
+  'thunder':'⛈️','typhoon':'🌀','solar':'☀️','nature':'🌿','mud':'🟤',
+  // ----- คน / อาชีพ -----
+  'accountant':'🧮','actor':'🎭','actress':'🎭','architect':'📐','artist':'🎨',
+  'astronaut':'👨‍🚀','aunt':'👩','baby':'👶','boy':'👦','bride':'👰',
+  'brother':'👦','chemist':'🧪','children':'🧒','clown':'🤡','cousin':'👥',
+  'dad':'👨','dentist':'🦷','doctor':'👨‍⚕️','driver':'🚗','engineer':'👷',
+  'family':'👨‍👩‍👧‍👦','farmer':'👨‍🌾','father':'👨','fire fighter':'👨‍🚒',
+  'firefighter':'👨‍🚒','flight attendant':'✈️','florist':'💐','friend':'👫',
+  'gentleman':'🤵','girl':'👧','godmother':'👩','grandfather':'👴',
+  'grandma':'👵','grandmother':'👵','grandpa':'👴','groom':'🤵','guard':'💂',
+  'hero':'🦸','husband':'👨','king':'🤴','lady':'👩','mail carrier':'📮',
+  'man':'👨','model':'💃','mom':'👩','monk':'🧘','mother':'👩',
+  'musician':'🎵','nephew':'👦','niece':'👧','nun':'🙏','nurse':'👩‍⚕️',
+  'operator':'☎️','parents':'👨‍👩‍👧','people':'👥','person':'🧑',
+  'photographer':'📷','pilot':'👨‍✈️','plumber':'🔧','postman':'📮',
+  'president':'🎩','prince':'🤴','princess':'👸','queen':'👸','reporter':'📰',
+  'sailor':'⛵','secretary':'💼','sister':'👧','soldier':'💂','son':'👦',
+  'student':'🧑‍🎓','teacher':'👨‍🏫','thief':'🥷','tourist':'🧳','uncle':'👨',
+  'vet':'🐾','waiter':'🤵','waitress':'👩‍🍳','wife':'👩','woman':'👩',
+  'young':'🧒','buddy':'👫','classmate':'🧑‍🎓','scientist':'👨‍🔬',
+  'singer':'🎤','writer':'✍️','worker':'👷','teenager':'🧑','youth':'🧑',
+  'librarian':'📚','neighbor':'👥','passenger':'🧳','visitor':'🧳',
+  'winner':'🏆','godfather':'👨','grandparent':'👴','brother in law':'👨',
+  'sister in law':'👩','father in law':'👨','mother in law':'👩',
+  'stepfather':'👨','stepmother':'👩',
+  // ----- ร่างกาย -----
+  'arm':'💪','beak':'🐦','body':'🧍','bone':'🦴','brain':'🧠','chin':'😊',
+  'ear':'👂','eye':'👁️','face':'😊','feather':'🪶','fin':'🐟','finger':'👆',
+  'foot':'🦶','hair':'💇','hand':'✋','head':'🗣️','heart':'❤️','hip':'🕺',
+  'knee':'🦵','leg':'🦵','lips':'👄','mouth':'👄','nail':'💅','neck':'🧣',
+  'nose':'👃','shoulder':'💪','tail':'🐕','thumb':'👍','toe':'🦶',
+  'tongue':'👅','tooth':'🦷','wing':'🪽','fur':'🐾','horn':'🦏','skin':'🧴',
+  'stomach':'🫃','throat':'😷','wrist':'⌚','waist':'🕺',
+  // ----- การกระทำ -----
+  'act':'🎭','answer':'💬','arrive':'🛬','ask':'❓','blow':'💨','borrow':'📥',
+  'build':'🏗️','burn':'🔥','buy':'🛒','carry':'🎒','catch':'🤲','change':'🔄',
+  'chat':'💬','check':'✅','choose':'🤔','clap':'👏','clean':'🧹','climb':'🧗',
+  'close':'🔒','collect':'📦','cook':'👨‍🍳','count':'🔢','cry':'😢','cut':'✂️',
+  'dance':'💃','decide':'🤔','dive':'🤿','divide':'➗','donate':'💝','draw':'🎨',
+  'dream':'💭','dress up':'🎭','drink':'🥤','drive':'🚗','eat':'🍽️',
+  'enjoy':'😊','exercise':'🏃','explore':'🔍','fall':'🍂','feed':'🍽️',
+  'feel':'💭','fill':'🫗','find':'🔍','finish':'✅','float':'🛟','fly':'🕊️',
+  'follow':'👣','get up':'🌅','give':'🎁','go':'🚶','grow':'🌱','happen':'❓',
+  'hear':'👂','help':'🤝','hide':'🙈','hit':'👊','hold':'🤝','hop':'🐰',
+  'invite':'💌','join':'🤝','keep':'📦','kick':'⚽','knock':'🚪','know':'💡',
+  'laugh':'😂','learn':'📚','leave':'🚶','lend':'🤲','listen':'👂','look':'👀',
+  'love':'❤️','make':'🔨','marry':'💒','meet':'🤝','mix':'🥣','move':'🚶',
+  'open':'🔓','paint':'🎨','pay':'💵','pick':'🤏','play':'🎮','point':'👉',
+  'pour':'🫗','practice':'📝','pray':'🙏','predict':'🔮','print':'🖨️',
+  'pull':'⬅️','push':'➡️','put':'📥','reach':'🤲','read':'📖','relax':'😌',
+  'remember':'💭','repeat':'🔁','rescue':'🛟','rest':'😴','return':'↩️',
+  'ride':'🚴','roll':'🌀','run':'🏃','save':'💰','say':'💬','scare':'😱',
+  'scream':'😱','search':'🔍','see':'👀','sell':'💰','send':'📤','sew':'🧵',
+  'shake':'🤝','shout':'📢','show':'👀','sing':'🎤','sit':'🪑','sit down':'🪑',
+  'skate':'⛸️','ski':'⛷️','sleep':'😴','slide':'🛝','smell':'👃','smile':'😊',
+  'speak':'🗣️','spell':'🔤','spend':'💸','stand':'🧍','stand up':'🧍',
+  'start':'🚀','steal':'🥷','stir':'🥄','stop':'🛑','study':'📚','swim':'🏊',
+  'take':'🤲','talk':'💬','teach':'👨‍🏫','tell':'💬','think':'🤔','throw':'🤾',
+  'touch':'👆','turn off':'🔌','turn on':'💡','understand':'💡','use':'👆',
+  'wait':'⏳','walk':'🚶','want':'🤲','wash':'🧼','wear':'👕','win':'🏆',
+  'worry':'😟','write':'✍️','yawn':'🥱','try':'💪','vote':'🗳️','wake':'⏰',
+  'warn':'⚠️','wish':'⭐','wrap':'🎁',
+  // ----- สถานที่ -----
+  'airport':'✈️','aquarium':'🐠','bakery':'🥐','bank':'🏦','bathroom':'🚿',
+  'bedroom':'🛏️','cafeteria':'🍽️','camp':'⛺','castle':'🏰','church':'⛪',
+  'cinema':'🎬','classroom':'🏫','clinic':'🏥','dining room':'🍽️',
+  'down town':'🏙️','farm':'🚜','food court':'🍔','gallery':'🖼️','garden':'🌷',
+  'gym':'🏋️','hall':'🏛️','hospital':'🏥','hotel':'🏨','hut':'🛖',
+  'kitchen':'🍳','lab':'🔬','library':'📚','living-room':'🛋️','mall':'🏬',
+  'market':'🛒','museum':'🏛️','office':'🏢','palace':'🏰','park':'🌳',
+  'pharmacy':'💊','playground':'🛝','pool':'🏊','restaurant':'🍽️',
+  'salon':'💇','school':'🏫','shop':'🏪','shopping mall':'🏬','station':'🚉',
+  'store':'🏪','theater':'🎭','temple':'🛕','town':'🏘️','upstairs':'⬆️',
+  'downstairs':'⬇️','zoo':'🦁','country':'🌍','village':'🏘️','city':'🏙️',
+  'supermarket':'🏪','university':'🎓','stadium':'🏟️','subway':'🚇',
+  'kindergarten':'🏫','home':'🏠','prison':'🔒','jail':'🔒',
+  // ----- สี -----
+  'black':'⚫','blue':'🔵','brown':'🟤','dark grey':'⬛','green':'🟢',
+  'grey':'⚪','gray':'⚪','indigo':'🟣','navy-blue':'🔵','orange':'🟠',
+  'pink':'🌸','red':'🔴','sky blue':'🩵','violet':'🟣','white':'⚪',
+  'yellow':'🟡','gold':'🥇','silver':'🥈',
+  // ----- รูปร่าง -----
+  'circle':'⭕','cone':'🍦','crescent':'🌙','cube':'🧊','diamond':'💎',
+  'hexagon':'⬡','oval':'🥚','pentagon':'⬠','rectangle':'▭','square':'⬜',
+  'triangle':'🔺','pyramid':'🔺','shape':'🔷','star shape':'⭐',
+  // ----- วัน / เดือน -----
+  'Sunday':'☀️','Monday':'1️⃣','Tuesday':'2️⃣','Wednesday':'3️⃣',
+  'Thursday':'4️⃣','Friday':'5️⃣','Saturday':'6️⃣',
+  'January':'❄️','February':'💕','March':'🌷','April':'💦','May':'🌸',
+  'June':'☔','July':'🌧️','August':'👑','September':'🍂','October':'🎃',
+  'November':'🍁','December':'🎄',
+  // ----- ตัวเลข -----
+  'one':'1️⃣','two':'2️⃣','three':'3️⃣','four':'4️⃣','five':'5️⃣','six':'6️⃣',
+  'seven':'7️⃣','eight':'8️⃣','nine':'9️⃣','ten':'🔟','eleven':'1️⃣1️⃣',
+  'twelve':'1️⃣2️⃣','thirteen':'1️⃣3️⃣','fourteen':'1️⃣4️⃣','fifteen':'1️⃣5️⃣',
+  'sixteen':'1️⃣6️⃣','seventeen':'1️⃣7️⃣','eighteen':'1️⃣8️⃣','nineteen':'1️⃣9️⃣',
+  'twenty':'2️⃣0️⃣','thirty':'3️⃣0️⃣','forty':'4️⃣0️⃣','fifty':'5️⃣0️⃣',
+  'sixty':'6️⃣0️⃣','seventy':'7️⃣0️⃣','eighty':'8️⃣0️⃣','ninety':'9️⃣0️⃣',
+  'one hundred':'💯','one thousand':'🔢','zero':'0️⃣',
+  'first':'🥇','second':'🥈','third':'🥉','fourth':'4️⃣','fifth':'5️⃣',
+  'sixth':'6️⃣','seventh':'7️⃣','eighth':'8️⃣','ninth':'9️⃣','tenth':'🔟',
+  'eleventh':'1️⃣1️⃣','twelfth':'1️⃣2️⃣','thirteenth':'1️⃣3️⃣',
+  'fourteenth':'1️⃣4️⃣','fifteenth':'1️⃣5️⃣','sixteenth':'1️⃣6️⃣',
+  'seventeenth':'1️⃣7️⃣','eighteenth':'1️⃣8️⃣','nineteenth':'1️⃣9️⃣',
+  'twentieth':'2️⃣0️⃣','thirtieth':'3️⃣0️⃣','fortieth':'4️⃣0️⃣',
+  'fiftieth':'5️⃣0️⃣','sixtieth':'6️⃣0️⃣','seventieth':'7️⃣0️⃣',
+  'eightieth':'8️⃣0️⃣','ninetieth':'9️⃣0️⃣','one hundredth':'💯',
+  'one thousandth':'🔢',
+  // ----- คำคุณศัพท์ / อารมณ์ -----
+  'afraid':'😨','angry':'😠','awake':'👀','beautiful':'🌸','big':'🐘',
+  'blind':'🦯','bored':'😑','brave':'🦁','brilliant':'💡','busy':'😰',
+  'careful':'⚠️','careless':'😬','charming':'😊','cheap':'💰','clear':'✨',
+  'clever':'🧠','cold':'🥶','confident':'💪','cool':'😎','correct':'✅',
+  'cruel':'😈','curly':'🌀','cute':'🥰','dangerous':'⚠️','dark':'🌑',
+  'deep':'🌊','deaf':'🤟','delicious':'😋','different':'🔀',
+  'difficult':'😣','dirty':'🧦','dry':'🌵','easy':'😌','excellent':'🌟',
+  'exciting':'🎢','expensive':'💎','famous':'🌟','fantastic':'🎉','far':'🛣️',
+  'fat':'🐷','favorite':'❤️','fine':'👌','fluent':'🗣️','fresh':'🌿',
+  'frightening':'😱','fun':'🎉','funny':'😂','good':'👍','great':'👏',
+  'handsome':'🤵','happy':'😊','harmful':'⚠️','healthy':'💚','heavy':'🏋️',
+  'helpful':'🤝','hot':'🔥','hungry':'😋','important':'❗',
+  'intelligent':'🧠','kind':'💗','lazy':'😴','long':'📏','loud':'📢',
+  'lucky':'🍀','messy':'🌀','modern':'🏙️','narrow':'🛤️','neat':'✨',
+  'new':'🆕','nice':'😊','old':'👴','perfect':'💯','polite':'🙇',
+  'poor':'🥺','popular':'🔥','pretty':'🌺','quick':'⚡','quiet':'🤫',
+  'rich':'💰','safe':'🛡️','sad':'😢','shallow':'💧','sharp':'🔪',
+  'short':'🐜','sick':'🤒','silent':'🤫','silly':'🤪','single':'1️⃣',
+  'slow':'🐢','small':'🐜','smart':'🧠','smooth':'🧈','soft':'🧸',
+  'sore':'🤕','sour':'🍋','special':'✨','spicy':'🌶️','sporty':'⚽',
+  'strong':'💪','sunny':'☀️','sure':'👌','tall':'🦒','thick':'📚',
+  'thin':'🥢','thirsty':'🥤','tidy':'🧹','true':'✅','ugly':'👹',
+  'upset':'😢','useful':'🔧','valuable':'💎','warm':'🌡️','weak':'🥺',
+  'wet':'💦','wide':'🌊','wonderful':'🌟','wrong':'❌','yummy':'😋',
+  'terrible':'😱','tired':'😴','scared':'😨','thoughtful':'💭',
+  'wise':'🦉','foolish':'🤪','rude':'😠',
+  // ----- เวลา -----
+  'afternoon':'🌇','autumn':'🍂','century':'💯','day':'☀️','evening':'🌆',
+  'morning':'🌅','midnight':'🌃','minute':'⏱️','month':'📅','noon':'☀️',
+  'now':'⏰','past':'⏪','season':'🍂','spring':'🌸','summer':'☀️',
+  'time':'⏰','today':'📅','tomorrow':'🌅','tonight':'🌙','week':'📅',
+  'weekend':'🎉','winter':'❄️','year':'📅','yesterday':'⏪','holiday':'🏖️',
+  'vacation':'🏖️','birthday':'🎂','festival':'🎉','schedule':'📅',
+  'moment':'⏱️','hour':'⏰','period':'⏱️','future':'🔮',
+  // ----- เบ็ดเตล็ด -----
+  'adventure':'🗺️','advertisement':'📺','alphabet':'🔤','ancient':'🏛️',
+  'area':'🗺️','art':'🎨','attraction':'🎡','author':'✍️','autograph':'✍️',
+  'balloon':'🎈','barbecue':'🍖','basketball':'🏀','bicycle':'🚲','bike':'🚲',
+  'bill':'🧾','biography':'📖','boat':'⛵','boots':'👢','bridge':'🌉',
+  'business':'💼','canal':'🚣','capital':'🏛️','caramel':'🍮','career':'💼',
+  'cash':'💵','celebrate':'🎉','cell':'📱','cell phone':'📱','center':'🏛️',
+  'ceremony':'🎊','chance':'🎲','character':'🎭','charity':'💝','chip':'🍟',
+  'crisps':'🥔','class':'🏫','classify':'📊','coffee':'☕','column':'📊',
+  'community':'🏘️','company':'🏢','competition':'🏆','complain':'😤',
+  'concert':'🎤','consist of':'📦','contact':'📞','container':'📦',
+  'control':'🎮','conversation':'💬','copy':'📄','costume':'👗','cough':'😷',
+  'craft':'🎨','creative':'🎨','crosswalk':'🚶','crowd':'👥','culture':'🌍',
+  'currency':'💵','custom':'🎎','cycling':'🚴','damage':'💥','dare':'😏',
+  'darling':'💕','daughter':'👧','dear':'💕','death':'💀','debate':'🗣️',
+  'decorate':'🎨','democracy':'🗳️','depart':'🚂','describe':'💬',
+  'detective':'🕵️','diagram':'📊','diarrhea':'🤢','digital':'📱',
+  'direction':'🧭','discuss':'💬','distance':'📏','divorce':'💔',
+  'dollar':'💵','durian':'🍈','earache':'🤕','education':'🎓','effect':'✨',
+  'electricity':'⚡','energy':'⚡','engine':'⚙️','English':'🇬🇧',
+  'entertain':'🎭','entrance':'🚪','environment':'🌍','escape':'🏃',
+  'exact':'🎯','exam':'📝','example':'📋','exhibition':'🖼️','exit':'🚪',
+  'expect':'🤔','explode':'💥','fashion':'👗','female':'♀️','ferry':'⛴️',
+  'fever':'🤒','figure':'🧍','film':'🎬','fireworks':'🎆','first aid':'🚑',
+  'fish sauce':'🥫','fishing':'🎣','fitness':'💪','flood':'🌊',
+  'forecast':'🌤️','friendship':'🤝','galaxy':'🌌','game':'🎮','garbage':'🗑️',
+  'gender':'⚧️','geography':'🌍','golf':'⛳','grain':'🌾','gram':'⚖️',
+  'graph':'📈','gravity':'⬇️','grocery':'🛒','gymnastic':'🤸','habit':'🔄',
+  'haircut':'💇','half':'➗','halloween':'🎃','harmony':'🎵','health':'💚',
+  'helicopter':'🚁','highway':'🛣️','hiking':'🥾','history':'📜','hobby':'🎨',
+  'hole':'🕳️','homework':'📝','honor':'🏅','hope':'🌈','horoscope':'♈',
+  'ice':'🧊','idea':'💡','identity':'🪪','immediately':'⚡','improve':'📈',
+  'information':'ℹ️','ingredient':'🥘','ink':'🖋️','instruction':'📋',
+  'instrument':'🎵','insurance':'📄','internet':'🌐','interview':'💼',
+  'introduce':'🤝','invent':'💡','itch':'😣','jasmine':'🌼','journey':'🚗',
+  'kayak':'🛶','kilo':'⚖️','kingdom':'👑','knowledge':'🧠','label':'🏷️',
+  'labor':'👷','language':'🗣️','laundry':'👕','law':'⚖️','leather':'🐄',
+  'leisure':'🌴','length':'📏','lesson':'📚','letter':'✉️','life':'💫',
+  'lifestyle':'🌟','liquid':'💧','litter':'🗑️','location':'📍',
+  'lottery':'🎰','luck':'🍀','luggage':'🧳','magic':'✨','mail':'📧',
+  'male':'♂️','marble':'🔮','mark':'📝','match':'🔥','material':'🧵',
+  'math':'➗','meaning':'💬','measure':'📏','medicine':'💊','member':'👥',
+  'menu':'📋','message':'💬','metal':'🔩','meter':'📏','microwave':'🍲',
+  'military':'🎖️','mistake':'❌','money':'💰','monument':'🗿',
+  'movie':'🎬','music':'🎵','nationality':'🌍','news':'📰','noise':'📢',
+  'note':'📝','notice':'👀','novel':'📖','nut':'🥜','oil':'🛢️','online':'🌐',
+  'opinion':'💭','opposite':'↔️','order':'📋','organ':'🎹','origin':'🌍',
+  'ounce':'⚖️','package':'📦','painting':'🎨','parade':'🎊','paragraph':'📝',
+  'parking':'🅿️','part':'🧩','party':'🎉','pass':'✅','passport':'🛂',
+  'path':'🛤️','patient':'🛌','pattern':'🔷','peace':'☮️','percent':'％',
+  'personality':'💭','petrol':'⛽','phone':'📱','picnic':'🧺','place':'📍',
+  'plan':'📋','planet':'🪐','plastic':'♻️','pleasure':'😊','poem':'📜',
+  'point':'📌','poison':'☠️','pollution':'🏭','portfolio':'📁',
+  'position':'📍','post':'📮','powder':'🧂','power':'⚡',
+  'prescription':'💊','present':'🎁','price':'💵','prize':'🏆','problem':'❓',
+  'product':'📦','professional':'👔','program':'📺','promise':'🤝',
+  'pronounce':'🗣️','publish':'📚','pumpkin':'🎃','purpose':'🎯',
+  'puzzle':'🧩','quality':'⭐','quantity':'📊','quarter':'🪙','question':'❓',
+  'queue':'🚶','quiz':'📝','race':'🏁','railway':'🚂','raincoat':'🧥',
+  'reality':'🌍','reason':'💭','receipt':'🧾','recipe':'📖',
+  'recommend':'👍','recycle':'♻️','reduce':'⬇️','refuse':'🙅',
+  'region':'🗺️','regular':'🔄','relative':'👨‍👩‍👧','religion':'🕊️',
+  'rent':'🏠','research':'🔬','respect':'🙇','result':'📊','reuse':'♻️',
+  'review':'📝','reward':'🏆','role':'🎭','roof':'🏠','room':'🚪',
+  'route':'🗺️','routine':'📅','rubbish':'🗑️','rugby':'🏉','rule':'📏',
+  'rumor':'💬','sail':'⛵','salary':'💵','sale':'🏷️','science':'🔬',
+  'score':'📊','sculpture':'🗿','seat':'🪑','secret':'🤫','section':'📑',
+  'sentence':'📝','series':'📺','service':'🛎️','share':'🤝','shell':'🐚',
+  'shelter':'🏠','shore':'🏖️','shower':'🚿','sign':'🪧','signal':'🚦',
+  'similar':'🟰','sink':'🚰','site':'🌐','situation':'🎭','size':'📏',
+  'skill':'🎯','slice':'🍰','smoke':'💨','sneeze':'🤧','soccer':'⚽',
+  'social':'👥','society':'👥','software':'💻','solve':'🧩','song':'🎵',
+  'sound':'🔊','souvenir':'🎁','space':'🚀','spaceship':'🚀','speaker':'🔊',
+  'speech':'🗣️','speed':'⚡','spirit':'👻','sport':'⚽','spot':'🔴',
+  'stage':'🎭','stairs':'🪜','stamp':'📮','statue':'🗿','steam':'💨',
+  'step':'👣','stick':'🪵','story':'📖','straight':'📏','strange':'❓',
+  'stress':'😰','strike':'⚡','style':'🎨','subject':'📚','submarine':'🚢',
+  'suit':'👔','support':'🤝','surprise':'🎉','survey':'📊','sweep':'🧹',
+  'swimming':'🏊','swing':'🛝','symbol':'🔣','system':'⚙️','tablet':'💊',
+  'talent':'🌟','tank':'🛢️','target':'🎯','task':'📋','taste':'👅',
+  'taxi':'🚕','team':'👥','tear':'💧','technology':'💻','temperature':'🌡️',
+  'tennis':'🎾','term':'📅','test':'📝','text':'💬','thank you':'🙏',
+  'theme':'🎨','theory':'💡','thought':'💭','thread':'🧵','through':'➡️',
+  'tie':'👔','tight':'🤏','tin':'🥫','tiny':'🐜','tip':'💡','title':'📖',
+  'together':'👫','toilet':'🚽','tool':'🔧','top':'⬆️','topic':'💬',
+  'total':'📊','tour':'🧳','track':'🛤️','trade':'🤝','tradition':'🎎',
+  'traffic':'🚦','train':'🚂','training':'💪','transport':'🚌','travel':'✈️',
+  'treasure':'💰','treat':'🎁','trip':'🧳','trouble':'⚠️','trousers':'👖',
+  'trust':'🤝','truth':'💯','tunnel':'🚇','turn':'🔄','type':'⌨️',
+  'under':'⬇️','universe':'🌌','up':'⬆️','useless':'🚫','usual':'🔄',
+  'vehicle':'🚗','very':'❗','victory':'🏆','view':'👀','visa':'🛂',
+  'visit':'👋','vitamin':'💊','voice':'🗣️','volleyball':'🏐','vowel':'🔤',
+  'wall':'🧱','war':'⚔️','wardrobe':'🚪','waste':'🗑️','way':'🛤️',
+  'wealth':'💰','weapon':'⚔️','website':'🌐','wedding':'💒','weight':'⚖️',
+  'welcome':'🙏','well':'👍','west':'⬅️','wheat':'🌾','whistle':'📢',
+  'whole':'🔵','wild':'🌲','will':'📝','wine':'🍷','wire':'🔌',
+  'wonder':'🤔','wool':'🧶','word':'🔤','work':'💼','worth':'💎',
+  'wound':'🩹','yard':'🏡','yet':'⏳','zone':'📍',
+};
+
+function getEmoji(word) {
+  const w = (word || '').toLowerCase().trim();
+  if (!w) return '📖';
+  if (EMOJI_MAP[w]) return EMOJI_MAP[w];
+  const first = w.split(/\s+/)[0];
+  if (EMOJI_MAP[first]) return EMOJI_MAP[first];
+  for (const key of Object.keys(EMOJI_MAP)) {
+    if (w === key || w.includes(key)) return EMOJI_MAP[key];
+  }
+  return '📖';
+}
+
+// ============================================================
 //  PARSE DATA
 // ============================================================
 function parseVocabData(raw) {
@@ -4548,10 +5217,10 @@ function parseVocabData(raw) {
       let thMeaning = '';
       if (i + 1 < lines.length) {
         const nextLine = lines[i + 1].trim();
-        const thMatch = nextLine.match(/^\*\*\s*(.+?)\s*–\s*(.+)$/);
+        const thMatch = nextLine.match(/^\*\*\s*(.+?)\s*–\s*(.+?)\s*\*\*$/) || nextLine.match(/^\*\*\s*(.+?)\s*–\s*(.+)$/);
         if (thMatch) {
           thMeaning = thMatch[1].trim();
-          thSentence = thMatch[2].trim();
+          thSentence = thMatch[2].replace(/\*+$/, '').trim();
           i++;
         }
       }
@@ -4576,7 +5245,7 @@ function parseVocabData(raw) {
 }
 
 // ============================================================
-//  🔊 SPEECH SYNTHESIS — เลือกเสียงผู้ชายอเมริกัน ช้าลง
+//  SPEECH SYNTHESIS
 // ============================================================
 let bestVoice = null;
 
@@ -4585,12 +5254,11 @@ function loadBestEnglishVoice() {
   const voices = window.speechSynthesis.getVoices();
   if (!voices.length) return;
 
-  // ลำดับความชอบ: เสียงผู้ชายอเมริกัน
   const preferred = [
-    'Google US English',        // ผู้ชาย (Google)
-    'Microsoft David',          // ผู้ชาย (Windows)
-    'Alex',                     // ผู้ชาย (Mac)
-    'Samantha',                 // ผู้หญิง (Mac) fallback
+    'Google US English',
+    'Microsoft David',
+    'Alex',
+    'Samantha',
     'en-US', 'en-GB'
   ];
 
@@ -4625,7 +5293,7 @@ function speakEnglish(text) {
 
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'en-US';
-  utterance.rate = 0.8;   // ช้าลง
+  utterance.rate = 0.8;
   utterance.pitch = 1.0;
   if (bestVoice) utterance.voice = bestVoice;
 
@@ -4635,6 +5303,154 @@ function speakEnglish(text) {
     if (fallback) utterance.voice = fallback;
   }
   window.speechSynthesis.speak(utterance);
+}
+
+// ============================================================
+//  PRONUNCIATION PRACTICE
+// ============================================================
+const SpeechRecCtor = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+let activeRecognition = null;
+let isPracticing = false;
+
+function normalizeWord(s) {
+  return (s || '').toLowerCase().replace(/[^a-z]/g, '');
+}
+
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  const dp = new Array(n + 1);
+  for (let j = 0; j <= n; j++) dp[j] = j;
+  for (let i = 1; i <= m; i++) {
+    let prev = dp[0];
+    dp[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const temp = dp[j];
+      dp[j] = a[i - 1] === b[j - 1] ? prev : 1 + Math.min(prev, dp[j], dp[j - 1]);
+      prev = temp;
+    }
+  }
+  return dp[n];
+}
+
+function similarity(a, b) {
+  const longer = Math.max(a.length, b.length) || 1;
+  return 1 - levenshtein(a, b) / longer;
+}
+
+function isGoodMatch(target, transcripts) {
+  const t = normalizeWord(target);
+  if (!t) return false;
+  for (const alt of transcripts) {
+    const s = normalizeWord(alt);
+    if (!s) continue;
+    if (s === t) return true;
+    if (s.includes(t) || t.includes(s)) return true;
+    if (similarity(t, s) >= 0.72) return true;
+  }
+  return false;
+}
+
+function practicePronunciation(word, callbacks) {
+  callbacks = callbacks || {};
+  if (isPracticing) return;
+  if (!SpeechRecCtor) {
+    callbacks.onError && callbacks.onError('unsupported');
+    return;
+  }
+
+  let settled = false;
+  isPracticing = true;
+
+  const rec = new SpeechRecCtor();
+  activeRecognition = rec;
+  rec.lang = 'en-US';
+  rec.interimResults = false;
+  rec.maxAlternatives = 5;
+  rec.continuous = false;
+
+  rec.onstart = () => { callbacks.onListening && callbacks.onListening(); };
+
+  rec.onresult = (e) => {
+    settled = true;
+    const alts = [];
+    const results = e.results && e.results[0];
+    if (results) {
+      for (let i = 0; i < results.length; i++) alts.push(results[i].transcript);
+    }
+    const good = isGoodMatch(word, alts);
+    callbacks.onResult && callbacks.onResult(good, alts[0] || '');
+  };
+
+  rec.onerror = (e) => {
+    settled = true;
+    callbacks.onError && callbacks.onError(e.error || 'unknown');
+  };
+
+  rec.onend = () => {
+    isPracticing = false;
+    activeRecognition = null;
+    if (!settled) {
+      callbacks.onError && callbacks.onError('no-speech');
+    }
+    callbacks.onEnd && callbacks.onEnd();
+  };
+
+  try {
+    rec.start();
+  } catch (err) {
+    isPracticing = false;
+    activeRecognition = null;
+    callbacks.onError && callbacks.onError('start-failed');
+  }
+}
+
+function showStickerOverlay(container, big) {
+  if (!container) return;
+  const overlay = document.createElement('div');
+  overlay.className = 'sticker-overlay';
+  overlay.innerHTML = `
+    <div class="sticker-pop${big ? ' big' : ''}">
+      <span class="sticker-emoji">👍</span>
+      <span class="sticker-text">ถูกใจ!</span>
+    </div>
+  `;
+  container.appendChild(overlay);
+  setTimeout(() => overlay.remove(), 1700);
+}
+
+function startPracticeOnCard(card, micIcon, word) {
+  if (isPracticing) return;
+  if (!SpeechRecCtor) {
+    alert('ขออภัยครับ เบราว์เซอร์นี้ยังไม่รองรับการฟังเสียงพูด ลองเปิดด้วย Chrome บนคอมพิวเตอร์หรือมือถือดูนะครับ');
+    return;
+  }
+  card.classList.add('mic-listening');
+
+  practicePronunciation(word, {
+    onListening() {},
+    onResult(good) {
+      card.classList.remove('mic-listening');
+      if (good) {
+        card.classList.add('mic-success');
+        showStickerOverlay(card, false);
+        setTimeout(() => card.classList.remove('mic-success'), 1000);
+      } else {
+        card.classList.add('mic-fail');
+        setTimeout(() => card.classList.remove('mic-fail'), 500);
+      }
+    },
+    onError(errCode) {
+      card.classList.remove('mic-listening');
+      card.classList.add('mic-fail');
+      setTimeout(() => card.classList.remove('mic-fail'), 500);
+      if (errCode === 'not-allowed' || errCode === 'service-not-allowed') {
+        alert('กรุณาอนุญาตให้ใช้ไมโครโฟนก่อนนะครับ');
+      }
+    },
+    onEnd() {}
+  });
 }
 
 // ============================================================
@@ -4657,7 +5473,8 @@ const modalCloseBtn = document.getElementById('modalCloseBtn');
 const modalEn = document.getElementById('modalEn');
 const modalPos = document.getElementById('modalPos');
 const modalTh = document.getElementById('modalTh');
-const modalImage = document.getElementById('modalImage');
+const modalEmoji = document.getElementById('modalEmoji');
+const modalImageOuter = document.getElementById('modalImageOuter');
 const modalSentences = document.getElementById('modalSentences');
 const modalSpeakBtn = document.getElementById('modalSpeakBtn');
 let currentModalWord = null;
@@ -4697,14 +5514,14 @@ function render() {
   let html = '';
   for (const w of words) {
     const posDisplay = w.pos || '';
-    // รูปหลักจาก Unsplash ถ้าโหลดไม่ได้จะ fallback เป็น Picsum (ซึ่งให้รูปเสมอ)
-    const imgSrc = `https://source.unsplash.com/300x300/?${encodeURIComponent(w.en)}`;
-    const fallbackSrc = `https://picsum.photos/seed/${encodeURIComponent(w.en)}/300/300`;
+    const emoji = getEmoji(w.en);
     html += `
       <div class="card" data-en="${w.en}" data-th="${w.th}" data-pos="${w.pos}" data-grade="${w.grade}" data-index="${allWords.indexOf(w)}">
-        <img class="card-img" src="${imgSrc}" alt="${w.en}" loading="lazy" 
-             onerror="this.src='${fallbackSrc}'; this.onerror=null;">
+        <div class="img-frame">
+          <div class="card-emoji">${emoji}</div>
+        </div>
         <span class="speak-icon">🔊</span>
+        <span class="mic-icon" title="ลองพูดคำนี้">🎤</span>
         <div class="en">${w.en}</div>
         <div class="th">${w.th}</div>
         ${posDisplay ? `<span class="pos">${posDisplay}</span>` : ''}
@@ -4716,6 +5533,17 @@ function render() {
   document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', handleCardClick);
     card.addEventListener('dblclick', handleCardDoubleClick);
+
+    const micIcon = card.querySelector('.mic-icon');
+    if (micIcon) {
+      micIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const data = getWordData(card);
+        startPracticeOnCard(card, micIcon, data.en);
+      });
+      micIcon.addEventListener('dblclick', (e) => e.stopPropagation());
+      micIcon.addEventListener('touchstart', (e) => e.stopPropagation(), { passive: true });
+    }
 
     let lastTap = 0;
     card.addEventListener('touchstart', (e) => {
@@ -4766,20 +5594,12 @@ function handleCardDoubleClick(e) {
 // ============================================================
 function showModal(data) {
   currentModalWord = data;
+  resetModalMicUI();
 
   modalEn.textContent = data.en;
   modalPos.textContent = data.pos || '';
   modalTh.textContent = data.th;
-
-  // รูปใน modal ก็ใช้ fallback เช่นกัน
-  const img = `https://source.unsplash.com/400x400/?${encodeURIComponent(data.en)}`;
-  const fallback = `https://picsum.photos/seed/${encodeURIComponent(data.en)}/400/400`;
-  modalImage.src = img;
-  modalImage.onerror = function() {
-    this.src = fallback;
-    this.onerror = null;
-  };
-  modalImage.style.display = 'block';
+  modalEmoji.textContent = getEmoji(data.en);
 
   let html = '';
   if (data.sentenceEn) {
@@ -4823,6 +5643,69 @@ document.addEventListener('keydown', (e) => {
 
 modalSpeakBtn.addEventListener('click', () => {
   if (currentModalWord) speakEnglish(currentModalWord.en);
+});
+
+const modalMicBtn = document.getElementById('modalMicBtn');
+const modalMicFeedback = document.getElementById('modalMicFeedback');
+
+function resetModalMicButton() {
+  if (modalMicBtn) {
+    modalMicBtn.classList.remove('listening');
+    modalMicBtn.disabled = false;
+    modalMicBtn.innerHTML = '<span>🎤</span> ลองพูดคำนี้';
+  }
+}
+
+function resetModalMicUI() {
+  if (modalMicFeedback) {
+    modalMicFeedback.textContent = '';
+    modalMicFeedback.className = 'modal-mic-feedback';
+  }
+  resetModalMicButton();
+}
+
+modalMicBtn.addEventListener('click', () => {
+  if (!currentModalWord || isPracticing) return;
+  if (!SpeechRecCtor) {
+    modalMicFeedback.textContent = '😅 เบราว์เซอร์นี้ยังไม่รองรับการฟังเสียงพูด ลองใช้ Chrome ดูนะครับ';
+    modalMicFeedback.className = 'modal-mic-feedback err';
+    return;
+  }
+
+  const word = currentModalWord.en;
+  modalMicBtn.classList.add('listening');
+  modalMicBtn.disabled = true;
+  modalMicBtn.innerHTML = '<span>🎙️</span> กำลังฟัง...';
+  modalMicFeedback.textContent = `พูดคำว่า "${word}" ได้เลยครับ`;
+  modalMicFeedback.className = 'modal-mic-feedback';
+
+  practicePronunciation(word, {
+    onResult(good, heard) {
+      if (good) {
+        modalMicFeedback.textContent = '✅ เยี่ยมมาก! ออกเสียงถูกต้อง 🎉';
+        modalMicFeedback.className = 'modal-mic-feedback good';
+        showStickerOverlay(modalImageOuter, true);
+      } else {
+        modalMicFeedback.textContent = heard
+          ? `🤔 เกือบแล้ว! ฉันได้ยินว่า "${heard}" ลองอีกครั้งนะ`
+          : '🤔 ยังไม่ค่อยชัดเลย ลองอีกครั้งนะ';
+        modalMicFeedback.className = 'modal-mic-feedback bad';
+      }
+    },
+    onError(errCode) {
+      if (errCode === 'not-allowed' || errCode === 'service-not-allowed') {
+        modalMicFeedback.textContent = '🎙️ กรุณาอนุญาตให้ใช้ไมโครโฟนก่อนนะครับ';
+      } else if (errCode === 'no-speech') {
+        modalMicFeedback.textContent = '😶 ไม่ได้ยินเสียงเลย ลองพูดดังขึ้นอีกนิดนะ';
+      } else {
+        modalMicFeedback.textContent = '⚠️ เกิดข้อผิดพลาด ลองอีกครั้งนะครับ';
+      }
+      modalMicFeedback.className = 'modal-mic-feedback err';
+    },
+    onEnd() {
+      resetModalMicButton();
+    }
+  });
 });
 
 // ============================================================
@@ -4895,9 +5778,30 @@ searchInput.addEventListener('input', (e) => {
 });
 
 // ============================================================
+//  BACKGROUND FLOATERS
+// ============================================================
+function initBgFloaters() {
+  const container = document.getElementById('bgFloaters');
+  if (!container) return;
+  const emojis = ['⭐', '✨', '🌟', '🎈', '🎉', '🦄', '🌈', '💫', '🍭', '🎨'];
+  const count = 14;
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+    const left = Math.random() * 100;
+    const duration = 12 + Math.random() * 14;
+    const delay = Math.random() * 18;
+    const size = 16 + Math.random() * 18;
+    html += `<span style="left:${left}%; font-size:${size}px; animation-duration:${duration}s; animation-delay:-${delay}s;">${emoji}</span>`;
+  }
+  container.innerHTML = html;
+}
+
+// ============================================================
 //  INIT
 // ============================================================
 function init() {
+  initBgFloaters();
   allWords = parseVocabData(VOCAB_DATA);
   const seen = new Set();
   const unique = [];
