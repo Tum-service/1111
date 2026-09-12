@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>เกมตอบคำถามคำศัพท์ภาษาอังกฤษ</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{
+    font-family:'Segoe UI',Tahoma,'Leelawadee UI','Noto Sans Thai',sans-serif;
+    min-height:100vh;
+    background:linear-gradient(160deg,#5b6ef5 0%,#a855f7 45%,#ec4899 100%);
+    display:flex;align-items:center;justify-content:center;
+    padding:14px;color:#1f2937;
+  }
+  #app{width:100%;max-width:780px}
+  .card{
+    background:#fff;border-radius:26px;padding:26px 22px;
+    box-shadow:0 20px 45px rgba(0,0,0,.28);
+    animation:pop .35s ease;
+    position:relative;
+  }
+  @keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+  h1{font-size:1.5rem;text-align:center;color:#4c1d95;margin-bottom:6px}
+  h2{font-size:1.3rem;text-align:center;color:#4c1d95;margin-bottom:6px}
+  .sub{text-align:center;color:#6b7280;font-size:.92rem;margin-bottom:20px}
+
+  .back-btn{
+    border:none;background:#f3f4f6;color:#4b5563;border-radius:10px;
+    padding:8px 14px;font-weight:700;font-size:.85rem;cursor:pointer;
+    font-family:inherit;margin-bottom:14px;transition:.15s;
+  }
+  .back-btn:hover{background:#e5e7eb}
+
+  /* ---------- HOME ---------- */
+  .grades{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:10px}
+  .grade{
+    border:none;border-radius:18px;padding:16px 12px;cursor:pointer;
+    color:#fff;font-weight:800;font-size:1rem;text-align:left;
+    transition:transform .15s, box-shadow .15s;position:relative;overflow:hidden;
+    display:flex;flex-direction:column;gap:4px;
+    font-family:inherit;
+  }
+  .grade:hover{transform:translateY(-4px);box-shadow:0 12px 22px rgba(0,0,0,.22)}
+  .grade:active{transform:scale(.97)}
+  .grade small{font-weight:600;opacity:.9;font-size:.75rem}
+  .grade .emo{font-size:1.5rem}
+  .g1{background:linear-gradient(135deg,#ff9a56,#ff5e62)}
+  .g2{background:linear-gradient(135deg,#43cea2,#185a9d)}
+  .g3{background:linear-gradient(135deg,#f7971e,#ffd200);color:#5b3b00}
+  .g4{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#053b52}
+  .g5{background:linear-gradient(135deg,#fa709a,#fee140);color:#5b1a2c}
+  .g6{background:linear-gradient(135deg,#7028e4,#e5b2ca)}
+  .g7{background:linear-gradient(135deg,#00b09b,#96c93d)}
+
+  /* ---------- SETS ---------- */
+  .sets-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(135px,1fr));
+    gap:10px;
+    margin-top:6px;
+    max-height:60vh;
+    overflow-y:auto;
+    padding-right:4px;
+  }
+  .set-btn{
+    border:2px solid #ddd6fe;background:#f5f3ff;color:#5b21b6;
+    padding:14px 10px;border-radius:14px;cursor:pointer;
+    font-weight:800;font-size:.95rem;text-align:center;
+    transition:.15s;font-family:inherit;
+    display:flex;flex-direction:column;gap:3px;align-items:center;
+  }
+  .set-btn:hover{
+    background:linear-gradient(135deg,#7c3aed,#a855f7);
+    color:#fff;border-color:transparent;
+    transform:translateY(-3px);
+    box-shadow:0 10px 20px rgba(124,58,237,.3);
+  }
+  .set-btn small{font-weight:600;font-size:.72rem;opacity:.8}
+  .set-btn .set-no{font-size:1.05rem}
+  .set-btn.last{border-color:#fbbf24;background:#fffbeb}
+  .set-btn.last:hover{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff}
+
+  /* ---------- QUIZ ---------- */
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+  .pill{background:#f3f4f6;border-radius:999px;padding:7px 14px;font-weight:800;font-size:.82rem;color:#4b5563;white-space:nowrap}
+  .pill.score{background:#ecfdf5;color:#047857}
+  .pill.set{background:#ede9fe;color:#6d28d9}
+  .bar{height:10px;background:#ede9fe;border-radius:999px;overflow:hidden;margin-bottom:20px}
+  .bar > i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#8b5cf6,#ec4899);transition:width .35s ease}
+  .qbox{text-align:center;margin-bottom:22px;min-height:120px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px}
+  .ask{font-size:.85rem;color:#9ca3af;font-weight:700;letter-spacing:.4px}
+  .qword{font-size:2.3rem;font-weight:900;color:#4c1d95;line-height:1.15;word-break:break-word}
+  .qword.th{font-size:1.75rem;color:#be185d}
+  .spk{
+    border:none;background:#ede9fe;color:#6d28d9;border-radius:999px;
+    padding:6px 16px;font-weight:800;font-size:.85rem;cursor:pointer;transition:.15s;
+    font-family:inherit;
+  }
+  .spk:hover{background:#ddd6fe}
+  .spk.speaking{background:#c4b5fd;animation:pulse 1s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  @media(max-width:520px){.opts{grid-template-columns:1fr}.qword{font-size:1.9rem}.qword.th{font-size:1.4rem}}
+  .opt{
+    border:2.5px solid #e5e7eb;background:#fff;border-radius:16px;
+    padding:15px 12px;font-size:1rem;font-weight:700;color:#374151;cursor:pointer;
+    transition:.15s;text-align:center;min-height:58px;display:flex;align-items:center;justify-content:center;
+    font-family:inherit;
+  }
+  .opt:hover:not(:disabled){border-color:#a78bfa;background:#faf5ff;transform:translateY(-2px)}
+  .opt:disabled{cursor:default}
+  .opt.right{background:#dcfce7;border-color:#22c55e;color:#166534;animation:shake-ok .4s}
+  .opt.wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b;animation:shake-no .4s}
+  .opt.fade{opacity:.45}
+  @keyframes shake-ok{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+  @keyframes shake-no{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+  .fb{text-align:center;font-weight:900;font-size:1.05rem;margin-top:14px;min-height:26px}
+  .fb.ok{color:#16a34a}.fb.no{color:#dc2626}
+
+  /* ---------- RESULT ---------- */
+  .rst{text-align:center}
+  .rst .big{font-size:3.4rem;font-weight:900;color:#7c3aed;line-height:1}
+  .rst .msg{font-size:1.05rem;font-weight:800;margin:10px 0 4px;color:#4c1d95}
+  .rst .pct{color:#6b7280;font-size:.9rem;margin-bottom:16px}
+  .review{max-height:230px;overflow-y:auto;text-align:left;background:#f9fafb;border-radius:14px;padding:12px;margin-bottom:18px}
+  .review h3{font-size:.85rem;color:#6b7280;margin-bottom:8px}
+  .rv{display:flex;justify-content:space-between;gap:10px;padding:7px 4px;border-bottom:1px dashed #e5e7eb;font-size:.9rem}
+  .rv:last-child{border:none}
+  .rv b{color:#4c1d95}
+  .rv span{color:#059669;font-weight:700}
+  .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .btn{
+    border:none;border-radius:14px;padding:13px 22px;font-weight:800;font-size:.9rem;
+    cursor:pointer;font-family:inherit;transition:.15s;
+  }
+  .btn.primary{background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;box-shadow:0 8px 18px rgba(124,58,237,.35)}
+  .btn.ghost{background:#f3f4f6;color:#4b5563}
+  .btn:hover{transform:translateY(-2px)}
+  .btn:active{transform:scale(.97)}
+  [hidden]{display:none!important}
+
+  .voice-note{
+    font-size:.72rem;color:#9ca3af;text-align:center;
+    margin-top:10px;
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ HOME ============ -->
+  <section id="home" class="card">
+    <h1>🎯 เกมตอบคำถามคำศัพท์ภาษาอังกฤษ</h1>
+    <p class="sub">เลือกระดับชั้น แล้วเลือกชุดคำศัพท์ที่ต้องการฝึก</p>
+    <div class="grades" id="gradeList"></div>
+    <p class="voice-note">🔊 ใช้เสียงจาก Google (หากมีในเบราว์เซอร์) เพื่อการออกเสียงที่ชัดเจน</p>
+  </section>
+
+  <!-- ============ SETS ============ -->
+  <section id="sets" class="card" hidden>
+    <button class="back-btn" id="backHomeBtn">← กลับหน้าหลัก</button>
+    <h2 id="setsTitle"></h2>
+    <p class="sub" id="setsSub" style="margin-bottom:14px"></p>
+    <div class="sets-grid" id="setsGrid"></div>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section id="quiz" class="card" hidden>
+    <div class="topbar">
+      <span class="pill set" id="setTxt">ชุดที่ 1</span>
+      <span class="pill" id="progressTxt">ข้อ 1 / 20</span>
+      <span class="pill score" id="scoreTxt">คะแนน 0</span>
+    </div>
+    <div class="bar"><i id="barFill"></i></div>
+
+    <div class="qbox">
+      <div class="ask" id="askTxt">คำนี้แปลว่าอะไร</div>
+      <div class="qword" id="qword">—</div>
+      <button class="spk" id="spkBtn" hidden>🔊 ฟังเสียงอีกครั้ง</button>
+    </div>
+
+    <div class="opts" id="opts"></div>
+    <div class="fb" id="fb"></div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section id="result" class="card rst" hidden>
+    <div class="big" id="rScore">0</div>
+    <div class="msg" id="rMsg"></div>
+    <div class="pct" id="rPct"></div>
+    <div class="review" id="rReview"></div>
+    <div class="btns">
+      <button class="btn primary" id="againBtn">🔁 เล่นชุดนี้อีกครั้ง</button>
+      <button class="btn ghost" id="chooseSetBtn">📚 เลือกชุดอื่น</button>
+      <button class="btn ghost" id="homeBtn">🏠 กลับหน้าหลัก</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* =========================================================
+   คลังคำศัพท์ (en|th)
+   ========================================================= */
+const RAW = {
+p1:`ant|มด
+apple|แอ๊ปเปิ้ล
+bag|กระเป๋า,ย่าม
+ball|ลูกบอล
+banana|กล้วย
+bat|ค้างคาว
+bean|ต้นถั่ว,ฝักถั่ว
+bear|หมี
+bee|ผึ้ง
+big|ใหญ่
+bin|ถังขยะ
+bird|นก
+birthday|วันเกิด
+book|หนังสือ
+box|กล่อง
+boy|เด็กผู้ชาย
+bread|ขนมปัง
+broom|ไม้กวาด
+brother|พี่ชาย,น้องชาย
+bus|รถประจำทาง
+cake|ขนมเค้ก
+candle|เทียนไข
+car|รถยนต์
+cat|แมว
+chair|เก้าอี้
+class|ชั้นเรียน
+close|ปิด
+count|นับ
+cry|ร้องไห้
+crayon|สีเทียน
+cup|ถ้วยกาแฟ
+cut|ตัด
+dad|พ่อ
+dance|เต้นรำ
+desk|โต๊ะเรียน
+dog|สุนัข
+door|ประตู
+dot|จุด
+ear|หู
+egg|ไข่
+eraser|ยางลบ
+eye|ตา
+face|หน้า,ใบหน้า
+fan|พัดลม
+fish|ปลา
+flower|ดอกไม้
+food|อาหาร
+foot|เท้า
+fox|สุนัขจิ้งจอก
+fruit|ผลไม้
+fun|ความสนุกสนาน
+giraffe|ยีราฟ
+girl|เด็กผู้หญิง
+glass|แก้วน้ำ
+go|ไป
+goat|แพะ
+good|ดี
+goodbye|ลาก่อน
+hair|ผม
+ham|เนื้อขาหมูรมควัน
+happy|มีความสุข
+head|ศีรษะ
+hello|สวัสดี
+house|บ้าน
+ice|น้ำแข็ง
+ice cream|ไอศกรีม
+jar|โอ่ง
+key|ลูกกุญแจ
+kick|เตะ
+king|พระราชา
+kid|เด็ก
+leg|ขา
+lemon|มะนาว
+line|เส้น,บรรทัด
+lion|สิงโต
+listen|ฟัง
+long|ยาว
+look|ดู,มองดู
+love|รัก
+meet|พบ,เจอ
+man|ผู้ชาย
+map|แผนที่
+milk|นม
+mom|แม่
+monkey|ลิง
+moon|ดวงจันทร์
+mother|มารดา
+mouth|ปาก
+farm|ไร่นา,ฟาร์ม
+farmer|ชาวนา
+father|บิดา
+orange|ส้ม
+owl|นกฮูก
+pan|กระทะ
+panda|หมีแพนด้า
+papaya|มะละกอ
+park|สวนสาธารณะ
+pear|ลูกแพร์
+pen|ปากกา
+pencil|ดินสอ
+pet|สัตว์เลี้ยง
+play|เล่น
+point|ชี้,คะแนน,จุด
+pool|สระน้ำ
+queen|ราชินี
+rabbit|กระต่าย
+rat|หนู
+ring|แหวน
+roof|หลังคา
+room|ห้อง
+ruler|ไม้บรรทัด
+sad|เศร้า
+salad|สลัดผัก
+say|พูด
+school|โรงเรียน
+see|เห็น
+sheep|แกะ
+ship|เรือ
+short|สั้น,เตี้ย
+show|แสดง
+sing|ร้องเพลง
+sister|พี่สาว,น้องสาว
+sit|นั่ง
+small|เล็ก
+smell|ได้กลิ่น,ดมกลิ่น
+snake|งู
+song|เพลง
+stand|ยืน
+star|ดวงดาว
+start|เริ่ม
+stop|หยุด
+student|นักเรียน
+sun|ดวงอาทิตย์
+name|ชื่อ
+nose|จมูก
+open|เปิด
+thank you|การแสดงความขอบคุณ
+tomato|มะเขือเทศ
+top|ลูกข่าง
+toy|ของเล่น
+tree|ต้นไม้
+ugly|น่าเกลียด
+van|รถตู้
+walk|เดิน
+water|น้ำ
+wig|ผมปลอม
+woman|ผู้หญิง
+zebra|ม้าลาย
+zoo|สวนสัตว์`,
+
+p2:`again|อีกครั้ง
+alphabet|พยัญชนะ
+animal|สัตว์
+answer|การตอบคำถาม,คำตอบ
+arm|แขน
+artist|ศิลปิน
+ask|ถาม
+aunt|ป้า
+bakery|ร้านขายขนมอบ
+balloon|ลูกโป่ง
+bank|ธนาคาร
+bed|เตียงนอน
+board|กระดาน
+boat|เรือ
+boots|รองเท้าหุ้มข้อหรือหุ้มขา
+bottle|ขวด
+bowl|ชาม
+butterfly|ผีเสื้อ
+can|กระป๋อง,สามารถ
+candy|ลูกอม
+cap|หมวกแก้ป
+card|บัตรอวยพร
+chant|บทพูดเข้าจังหวะ
+chat|คุยเล่น
+check|ตรวจสอบ,การตรวจสอบ
+cheese|เนยแข็ง
+cherry|ผลเชอร์รี่
+swim|ว่ายน้ำ
+T.V.|โทรทัศน์
+table|โต๊ะ
+tall|สูง
+tea|น้ำชา
+teacher|ครู
+clean|สะอาด
+clock|นาฬิกาติดผนัง
+cook|ปรุงหรือทำอาหาร
+cookie|ขนมอบ
+cool|เย็น
+cow|วัวตัวเมีย
+dish|จาน
+donkey|ลา
+elephant|ช้าง
+enjoy|สนุกสนาน
+family|ครอบครัว
+far|ไกล
+fat|อ้วน
+favorite|เป็นที่ชื่นชอบ
+fin|ครีบ
+fine|ดี,ค่าปรับ
+finish|เสร็จ,สำเร็จ
+floor|พื้นห้อง,ชั้นของตึก
+fly|บิน
+friend|เพื่อน
+frog|กบ
+gate|ประตู
+get up|ตื่น
+gloves|ถุงมือ
+glue|กาว
+grandma|คุณย่าหรือคุณยาย
+grandpa|คุณปู่หรือคุณตา
+grape|องุ่น
+group|กลุ่ม
+gum|หมากฝรั่ง
+hand|มือ
+hat|หมวก
+help|ช่วยเหลือ
+hen|แม่ไก่
+hide|แอบ,ซ่อน
+hot|ร้อน
+hot dog|ฮอทดอก
+hungry|หิวกระหาย
+idea|ความนึกคิด,ความคิดเห็น
+chicken|ไก่,เนื้อไก่
+children|เด็กหลายคน
+chilli|พริก
+chip|แผ่นมันฝรั่งทอดกรอบ
+circle|วงกลม
+clap|ปรบมือ
+like|ชื่นชอบ
+magic|มายากล,เวทย์มนต์
+make|ทำ
+mango|มะม่วง
+match|การเข้าชุดกัน
+music|ดนตรี
+new|ใหม่ สด แปลก
+notebook|สมุดบันทึก
+number|จำนวน,หมายเลข
+old|แก่,ชรา
+page|หน้าหนังสือ
+paint|ระบายสี
+paper|แผ่นกระดาษ
+pea|ถั่ว
+peach|ลูกพีช
+pencil case|กล่องดินสอ
+people|คน,ประชาชน
+person|คน,บุคคล
+pick|เลือก,หยิบ,จับ
+picture|รูปภาพ
+pig|หมู
+pillow|หมอน
+pineapple|สับปะรด
+place|สถานที่
+puppy|ลูกสุนัข
+put|วาง,ตั้ง
+quiet|เงียบ
+race|การแข่งด้านความเร็ว
+radio|วิทยุ
+rain|ฝน
+ready|พร้อม,พร้อมแล้ว
+relax|รู้สึกผ่อนคลาย
+replace|เปลี่ยนที่,แทนที่
+rice|ข้าว
+right|ความถูกต้อง
+robot|หุ่นยนต์
+rock|หิน,โขดหิน
+rope|เชือก,บ่วง
+round|กลม,เป็นวงกลม
+jam|แยม,ผลไม้กวนกับน้ำตาล
+job|งาน,อาชีพ
+jug|เหยือก
+kite|ว่าว
+knee|เข่า
+knife|มีด
+lady|ผู้หญิง สุภาพสตรี
+left|ข้างซ้าย
+letter|จดหมาย
+socks|ถุงเท้า
+sorry|ขอโทษ,ขออภัย
+spell|สะกด
+stamp|ดวงตราไปรษณียากร
+stand up|ยืนขึ้น
+store|ร้านค้า,คลังสินค้า
+story|เรื่องราว,เรื่องเล่า
+strawberry|ผลสตรอเบอร์รี่
+subject|วิชา
+tell|บอก
+tennis|กีฬาเทนนิส
+thumb|นิ้วหัวแม่มือ
+today|วันนี้
+toe|นิ้วเท้า
+touch|สัมผัส
+town|เมือง,ชุมชน
+T-shirt|เสื้อยืดคอกลม
+umbrella|ร่ม
+uncle|ลุง
+video|วีดีทัศน์
+watermelon|แตงโม
+week|สัปดาห์
+weekend|วันหยุดสุดสัปดาห์
+welcome|ซึ่งต้อนรับด้วยความยินดี
+whale|วาฬ
+window|หน้าต่าง
+worm|หนอน
+young|อ่อน,อายุน้อย
+yourself|ตัวของเธอเอง`,
+
+p3:`act|การแสดง,การกระทำ
+air|อากาศ
+airplane|เครื่องบิน
+around|โดยรอบ,รอบด้าน
+run|วิ่ง
+sandals|รองเท้าสาน,รองเท้ามีสายรัด
+sandwich|ขนมปังแซนด์วิช
+scooter|ยานยนต์แบบจักรยานขนาดเล็ก
+shark|ฉลาม
+shirt|เสื้อเชิ้ต
+shoes|รองเท้า
+sit down|นั่งลง
+skirt|กระโปรง
+bookcase|ชั้นหนังสือ
+borrow|ขอยืม
+bottom|ก้น
+breakfast|อาหารมื้อเช้า
+bug|แมลงปีกแข็ง
+buy|ซื้อ
+cabbage|กะหล่ำปลี
+carrot|แครอท
+castle|ปราสาท
+chalk|ชอล์ก
+chance|โอกาส,โชค
+change|เปลี่ยน,สลับ
+classroom|ห้องเรียน
+coffee|กาแฟ
+computer|คอมพิวเตอร์
+correct|ถูกต้อง
+cross|เครื่องหมายกากบาท
+cucumber|แตงกวา
+daughter|ลูกสาว
+dice|ลูกเต๋า
+dinner|อาหารมื้อเย็น
+dirty|สกปรก
+doctor|แพทย์
+double|เป็นสองเท่า
+drink|ดื่ม
+drum|กลอง
+duck|เป็ด
+durian|ทุเรียน
+eat|กิน,รับประทาน
+English|ภาษาอังกฤษ
+False|ผิด,ไม่ถูกต้อง
+finger|นิ้วมือ
+fishing|กีฬาตกปลา
+flag|ธง
+garden|สวน,สนามหญ้า
+give|ให้
+art|ศิลปะ
+basket|ตะกร้า
+bathroom|ห้องน้ำ
+beautiful|สวย
+bedroom|ห้องนอน
+beef|เนื้อวัว
+bell|กระดิ่ง,ระฆัง
+bicycle|รถจักรยาน
+bike|รถจักรยาน
+blackboard|กระดานดำ
+blank|ว่าง,ว่างเปล่า
+body|ร่างกาย
+homework|การบ้าน
+honey|น้ำผึ้ง
+hop|กระโดด
+horse|ม้า
+hut|กระท่อม
+ink|หมึก น้ำหมึก
+jacket|เสื้อแจ็คแก็ต
+jeans|กางเกงยีนส์
+join|เข้าด้วยกัน
+juice|น้ำผลไม้
+keep|เก็บรักษา
+kitten|ลูกแมว
+living-room|ห้องนั่งเล่น
+lock|กุญแจ แม่กุญแจ
+log|ซุง ท่อนซุง
+lunch|อาหารมื้อกลางวัน
+math|วิชาคณิตศาสตร์
+meat|เนื้อสัตว์
+mirror|กระจก
+month|เดือน
+mop|ไม้ถูพื้น
+move|ย้าย เคลื่อนย้าย เคลื่อนที่
+musician|นักดนตรี
+neck|คอ
+nest|รัง
+noodle|ก๋วยเตี๋ยว
+noon|เที่ยงวัน
+nurse|นางพยาบาล
+ox|วัวตัวผู้
+pair|คู่
+parrot|นกแก้ว
+path|ทางเดิน
+penguin|นกเพนกวิน
+goldfish|ปลาทอง
+golf|กีฬากอล์ฟ
+goose|ห่าน
+grandfather|ปู่,ตา
+grandmother|ย่า,ยาย
+grass|หญ้า
+great|ยิ่งใหญ่
+guitar|กีตาร์
+gun|ปืน
+hippo|ฮิปโปโปเตมัส
+hit|ตี
+hold|ถือ,จับ
+sand|ทราย
+sauce|น้ำจิ้ม
+sausage|ไส้กรอก
+seal|แมวน้ำ
+shampoo|ยาสระผม
+sharpener|กบเหลาดินสอ
+shorts|กางเกงขาสั้น
+shoulder|หัวไหล่
+skate|สเก็ต
+sleep|นอนหลับ
+slide|ลื่นไถล,ไถล
+smile|ยิ้ม
+snail|หอยทาก
+soap|สบู่
+sofa|โซฟา
+soldier|ทหาร
+son|ลูกชาย
+soup|น้ำแกง
+speak|พูด
+stick|กิ่งไม้,ก้านไม้
+study|เรียน
+sweet|หวาน
+swing|ชิงช้า
+telephone|โทรศัพท์
+thirsty|กระหาย
+tiger|เสือ
+toothbrush|แปรงสีฟัน
+toothpaste|ยาสีฟัน
+tortoise|เต่า
+truck|รถบรรทุก
+true|จริง,ถูก
+turtle|เต่าทะเล
+use|ใช้
+photo|รูปภาพ
+piano|เปียโน
+pie|ขนมพาย
+pizza|พิซซ่า
+plastic|พลาสติก
+pomelo|ส้มโอ
+pork|เนื้อหมู
+postman|บุรุษไปรษณีย์
+potato|มันฝรั่ง
+question|คำถาม
+rainy|ฝนตกชุก
+reach|ไปถึง,เข้าถึง
+read|อ่าน
+river|แม่น้ำ
+salt|เกลือ
+awake|ตื่นนอน
+baht|หน่วยเงินตราของไทย
+bamboo|ต้นไผ่,ไม้ไผ่
+barbecue|เตาย่างอาหารกลางแจ้ง
+beak|จงอยปากนก
+beverage|เครื่องดื่ม
+bomb|ระเบิด
+blanket|ผ้าห่ม
+blind|ซึ่งตาบอด
+blouse|เสื้อผ้าสตรี
+bone|กระดูก,ก้าง
+bored|ทำให้เบื่อ
+boxing|การชกมวย
+branch|กิ่งไม้,สาขา
+brush|พู่กัน,แปรง
+buffalo|ควาย
+butter|เนยเหลว
+camel|อูฐ
+camp|ค่ายพัก,เพิงพัก
+canteen|ร้านอาหารโรงเรียน
+careless|ประมาท,สะเพร่า
+centimeter|เซนติเมตร
+cheap|ถูก,ราคาถูก
+chin|คาง
+chocolate|ชอกโกแลต
+choose|เลือก
+cinema|โรงภาพยนตร์
+clear|โปร่งใส,ชัดเจน
+clever|ฉลาด
+climb|ปีน,ตะกาย
+violin|ไวโอลิน
+want|ต้องการ
+wash|ซักล้าง
+watch|นาฬิกาข้อมือ
+wing|ปีก
+wolf|หมาป่า
+wood|ไม้
+write|เขียน
+wrong|ผิด`,
+
+p4:`ache|อาการปวด
+afternoon|เวลาบ่าย
+airport|สนามบิน
+autumn|ฤดูใบไม้ร่วง
+desert|ทะเลทราย
+divide|แบ่ง
+diary|ไดอารี่,สมุดบันทึกประจำวัน
+dictionary|พจนานุกรม
+dolphin|ปลาโลมา
+doughnut|ขนมโดนัท
+drive|ขับขี่(รถยนต์)
+dry|แห้ง
+dust|ฝุ่น
+earring|ตุ้มหู
+earth|โลก,พื้นผิวโลก
+easy|ง่าย
+entertain|ทำให้สนุกสนาน เพลิดเพลิน
+evening|ตอนเย็น
+example|ตัวอย่าง
+exercise|ออกกำลังกาย,ฝึกหัด
+expensive|แพง
+fall|ฤดูใบไม้ร่วง,ตก,หล่น
+feed|ให้อาหาร(สัตว์),เลี้ยง
+feel|รู้สึก
+female|เพศหญิง
+fence|รั้ว
+festival|งานฉลอง
+file|ตู้,แฟ้มเก็บเอกสาร
+fill|เติม,บรรจุ
+film|ฟิล์ม,ภาพยนตร์
+find|หา,ค้น,พบ
+fish sauce|น้ำปลา
+flash|ไฟกระพริบ
+flour|แป้ง
+closet|ตู้
+clothes|เสื้อผ้า
+cloudy|เมฆหนา,เมฆมาก
+clown|ตัวตลก
+club|สโมสร
+coat|เสื้อคลุม
+coconut|มะพร้าว
+coin|เหรียญ
+cold|เย็น
+comb|หวี,หวีผม
+copy|สำเนา
+cousin|ลูกพี่ลูกน้อง
+cover|ปกคลุม
+crossword|ปริศนาอักษรไขว้
+cupcake|เค้กชิ้นเล็ก
+dark|มืด,ค่ำ
+deep|ลึก
+dentist|ทันตแพทย์
+hip|สะโพก
+holiday|วันหยุด
+hospital|โรงพยาบาล
+hotel|โรงแรม
+husband|สามี
+internet|อินเตอร์เน็ต
+insect|แมลง
+jelly|วุ้น
+jungle|ป่า
+kangaroo|จิงโจ้
+kayak|เรือแคนนูขนาดเล็ก
+kilo|กิโลกรัม
+kitchen|ครัว
+know|รู้
+lab|ห้องปฏิบัติการ
+leaf|ใบไม้
+lemonade|น้ำมะนาว
+lettuce|ผักกาดหอม
+library|ห้องสมุด
+life|ชีวิต
+lips|ริมฝีปาก
+litter|เล็กน้อย,เศษขยะ
+longan|ลำไย
+lotus|ดอกบัว
+male|ผู้ชาย
+mall|ห้างสรรพสินค้า
+mangosteen|มังคุด
+flute|ขลุ่ย
+foggy|หมอกหนา
+forecast|พยากรณ์
+fork|ส้อม
+funny|สนุก,ตลก
+game|เกม
+garage|โรงรถ
+ghost|ผี
+gift|ของขวัญ
+glasses|แว่นตา
+grocery|ร้านขายของชำ
+grow|เจริญงอกงาม,เติบโต,งอก
+gym|โรงยิม
+hall|ห้องประชุม,ห้องโถง
+health|สุขภาพ
+healthy|ซึ่งเป็นประโยชน์ต่อร่างกาย
+heart|หัวใจ
+hill|เนินเขา
+office|สำนักงาน
+omelet|ไข่เจียว
+onion|หัวหอมใหญ่
+orchid|กล้วยไม้
+P.E.|วิชาพละศึกษา
+pants|กางเกงขายาว
+parents|พ่อ แม่,ผู้ปกครอง
+pass|ผ่าน
+paste|วาง
+pepper|พริกไทย
+pill|ยาเม็ด
+planet|ดาวเคราะห์
+plant|พืช
+playground|สนามเด็กเล่น
+plum|ต้นพลัม
+plumber|ช่างประปา
+pocket|กระเป๋าหรือถุงใบเล็กๆ
+poem|โคลง กลอน
+poll|การสำรวจความคิดเห็น
+porridge|อาหารเช้าที่ทำจากข้าวโอ๊ต
+powder|ผง แป้ง ฝุ่น
+practice|ซ้อม,ฝึกซ้อม,ฝึกหัด
+prawn|กุ้ง
+present|ของขวัญ
+pretty|สวย,น่ารัก
+price|ราคา
+print|พิมพ์
+market|ตลาด
+medicine|แพทย์ศาสตร์,ยา
+melon|แคนตาลูป
+member|สมาชิก,ชาวคณะ
+midnight|เที่ยงคืน,ความมืดสนิท
+monk|พระสงฆ์
+monster|สัตว์ประหลาด
+morning|เวลาเช้า
+mountain|ภูเขา
+movie|ภาพยนตร์
+mug|แก้วขนาดใหญ่มีหูจับ
+nail|เล็บ
+nationality|เชื้อชาติ,สัญชาติ
+nephew|หลานชาย
+nice|ดี,นิสัยดี,น่าคบ
+niece|หลานสาว
+night|กลางคืน
+note|หมายเหตุ,ข้อความ
+now|ในขณะนี้,เดี๋ยวนี้
+nun|แม่ชี
+octopus|ปลาหมึกยักษ์
+sew|เย็บ
+shake|สั่น,เขย่า
+shelf|ชั้นวางของ,หิ้งวางของ
+shop|ร้านค้า
+shopping mall|ห้างสรรพสินค้า
+sick|ป่วย
+ski|กระดานสกี
+slow|ช้า
+smoke|ควัน
+snack|อาหารว่าง
+snowy|ปกคลุมไปด้วยหิมะ
+social|เกี่ยวกับสังคม
+soda|โซดา
+sore|เจ็บปวด
+sour|รสเปรี้ยว
+space|อวกาศ
+space ship|ยานอวกาศ
+special|เฉพาะ
+spend|ใช้เงิน
+spicy|รสเผ็ด
+spoon|ช้อน
+spring|ฤดูใบไม้ผลิ
+square|สี่เหลี่ยมจตุรัส
+station|สถานี
+pull|ดึง
+push|ผลัก
+quick|รวดเร็ว,เร่งรีบ
+rainbow|สายรุ้ง,รุ้งกินน้ำ
+repeat|พูดซ้ำ
+rescue|ช่วยชีวิต,การช่วยชีวิต
+restaurant|ร้านอาหาร,ภัตตาคาร
+ride|ขี่
+road|ถนน
+rob|ปล้น
+rocket|จรวด
+root|ราก
+rose|ดอกกุหลาบ
+routine|กิจวัตรประจำวัน
+satellite|ดาวเทียม
+scarf|ผ้าพันคอ
+science|วิชาวิทยาศาสตร์
+sea|ทะเล
+seed|เมล็ด
+sell|ขาย
+send|ส่ง
+weather|อากาศ
+wet|เปียก
+wife|ภรรยา
+windy|ซึ่งมีลมแรง
+winter|ฤดูหนาว
+work|ทำงาน
+year|ปี,ขวบ
+yesterday|เมื่อวานนี้
+yogurt|โยเกิร์ต
+yolk|ไข่แดง
+yummy|มีรสชาดี`,
+
+p5:`accountant|พนักงานบัญชี
+actor|นักแสดงชาย
+actress|นักแสดงหญิง
+adventure|การผจญภัย
+appear|ปรากฏ
+area|พื้นที่ บริเวณ
+author|นักเขียน,นักประพันธ์
+behind|ข้างหลัง,ด้านหลัง
+blow|พัด,เป่า,พ่น
+bridge|สะพาน
+buddy|เพื่อนคู่
+stem|ลำต้น
+straw|กองฟาง
+street|ถนน
+sugar|น้ำตาล
+summer|ฤดูร้อน
+sunny|แดดจ้า
+sweater|เสื้อกันหนาว
+syrup|น้ำเชื่อม
+tail|หาง
+talk|คุย
+teach|สอน
+team|ทีม,กลุ่ม,คณะ
+theater|โรงละคร
+thin|ผอม,บาง
+ticket|ตั๋ว บัตรผ่านประตู
+time|เวลา
+tofu|เต้าหู้
+tomorrow|วันพรุ่งนี้
+tonight|คืนนี้
+tour|การท่องเที่ยว การทัศนาจร
+underline|ขีดเส้นใต้
+uniform|เครื่องแบบ
+vegetable|ผัก
+wear|สวม,ใส่
+control|ควบคุม
+conversation|บทสนทนา
+country|ประเทศ,ชนบท
+craft|งานศิลปะที่ทำด้วยมือ
+crisps|มันฝรั่งทอดกรอบ
+crocodile|จระเข้
+curly|ลอน,เกลียว
+curry|แกงเผ็ด
+curtain|ผ้าม่าน
+cycling|การขี่จักรยาน
+dangerous|อันตราย
+dare|ความกล้า,กล้า
+dear|ที่รัก
+delicious|อร่อย
+dialogue|การสนทนา
+diet|อาหาร,โภชนาการ
+different|ที่แตกต่าง
+dining room|ห้องรับประทานอาหาร
+dinosaur|ไดโนเสาร์
+director|ผู้กำกับ,ผู้ควบคุม
+dove|นกเขา
+build|สร้าง,ก่อสร้าง
+burn|เผาไหม้
+busy|ยุ่ง,ไม่ว่าง
+button|กระดุม
+calculator|เครื่องคิดเลข
+calendar|ปฏิทิน
+camera|กล้องถ่ายภาพ
+canal|คลองขุด,ร่องน้ำ
+caramel|คาราเมล,ลูกกวาด น้ำตาลไหม้
+careful|ระมัดระวัง
+career|อาชีพ
+carpet|พรม
+carry|ถือ,แบก,หิ้ว
+CD player|เครื่องเล่นแผ่นเสียง
+cell|ห้องขัง,กฎิ,เซลล์ของสิ่งมีชีวิต
+center|ใจกลาง,ศูนย์กลาง
+cereal|อาหารเช้าที่ทำจากธัญพืช
+chopsticks|ตะเกียบ
+clinic|คลินิก
+coconut milk|น้ำกะทิ
+collect|สะสม
+company|บริษัท
+complete|สมบูรณ์
+container|บรรจุภัณฑ์
+hang glider|เครื่องร่อน
+happen|เกิดขึ้น
+hear|ได้ยิน
+heavy|หนัก หนักแน่นมาก
+hero|วีรบุรุษ
+hiking|การเดินเขา
+history|ประวัติศาสตร์
+hobby|งานอดิเรก
+hole|หลุม
+horn|แตร,เขาสัตว์
+house ware|เครื่องใช้ในบ้าน
+iron|เหล็ก,เตารีด,ตะกั่ว
+itch|อาการคัน โรคคัน
+jackfruit|ขนุน
+jasmine|ดอกมะลิ
+jewelry|อัญมณี
+kind|ใจดี
+kiwi|ผลกีวี
+knock|เคาะ
+koala|หมีโคอาล่า
+lake|ทะเลสาบ
+down town|ใจกลางเมือง
+downstairs|ชั้นล่าง
+dream|ความฝัน,ฝัน
+dress up|แต่งตัว
+driver|คนขับรถ
+eggplant|มะเขือยาว
+elder brother|พี่ชาย
+elder sister|พี่สาว
+end|จุดจบ ปลายสุด
+envelope|ซองจดหมาย
+factory|โรงงาน
+fair|งานนิทรรศการ,การแสดงสินค้า
+famous|ที่มีชื่อเสียง
+fire fighter|พนักงานดับเพลิง
+fitness|ศูนย์สุขภาพ
+float|ลอย
+follow|ตาม
+food court|ศูนย์อาหาร
+forest|ป่า
+frightening|น่ากลัว
+fur|ขน(สัตว์ เช่น หมี สุนัข)
+guava|ฝรั่ง
+guide|คนนำทาง,มัคคุเทศก์,แนะนำ
+gymnastic|กีฬายิมนาสติก
+habit|นิสัย
+haircut|การตัดผม
+half|ครึ่ง,ส่วนหนึ่ง
+ocean|มหาสมุทร
+operator|พนักงานต่อโทรศัพท์
+order|คำสั่ง,ลำดับที่,สั่ง,ออกคำสั่ง
+ostrich|นกกระจอกเทศ
+oven|เตาอบ
+pajamas|ชุดนอน
+paper clip|ที่หนีบกระดาษ
+parade|ขบวนแห่
+part|ส่วน,ชิ้นส่วน,ส่วนประกอบ
+past|ผ่านไป,สมัยก่อน,แต่ก่อน
+pay|จ่าย,ชำระ
+peak|ยอดเขา,จุดสุดยอด
+peacock|นกยูง
+pharmacy|ร้านขายยา
+laugh|หัวเราะ
+law|กฎหมาย
+learn|เรียนรู้
+leave|จากไป ออกจาก
+lend|ให้ยืม
+light|แสง,เบา
+magazine|นิตยสาร
+mail carrier|บุรุษไปรษณีย์
+marker|ปากกา,สิ่งที่ใช้ทำเครื่องหมาย
+marry|แต่งงาน
+meal|มื้ออาหาร
+menu|รายการอาหาร
+meter|เมตร
+microwave|เตาอบคลื่นแม่เหล็กไฟฟ้า
+minute|นาที
+miss|คิดถึง,พลาด
+mix|ผสม รวมกัน
+model|ต้นแบบ แบบอย่าง นางแบบ
+money|เงิน
+mosquito|ยุง
+museum|พิพิธภัณฑ์
+napkin|ผ้ากันเปื้อน
+neat|เรียบร้อย
+necklace|สร้อยคอ
+newspaper|หนังสือพิมพ์
+noise|เสียงดัง(รบกวน)
+occupation|อาชีพ
+set|ชุด,ตั้ง,ตั้งค่า,(ดวงอาทิตย์)ตก
+shallow|ตื้น
+sharp|คม แหลม
+shout|ตะโกน
+shrimp|กุ้งขนาดเล็ก
+silent|เงียบสงัด
+single|โสด,เดี่ยว
+sink|อ่างล้างจาน,จม
+skip|ข้าม,เขย่ง,กระโดด
+slippers|รองเท้าแตะ
+slippery|ลื่น
+smart|ฉลาด
+sound|เสียง
+staff|คณะผู้ทำงาน
+picnic|การไปเที่ยวและนำอาหารไปทานนอกบ้าน
+pilot|นักบิน
+plan|แผนการ,วางแผน
+plate|จาน
+plug|จุก,เสียบ
+pole|ขั้วโลก
+poor|จน,น่าสงสาร
+popular|ที่มีชื่อเสียง
+portfolio|แฟ้มสะสมผลงาน
+poster|ป้าย,ป้ายประกาศ
+pour|เท
+power|พลังงาน
+pray|สวดมนต์
+punch|น้ำผลไม้
+purse|กระเป๋าถือสตรี
+quarter|หนึ่งในสี่ส่วน
+queue|คิว,แถว
+rent|เช่า
+reporter|ผู้สื่อสาร,ผู้รายงาน
+rest|พักผ่อน,การพักผ่อน
+return|กลับ,คืนกลับ
+rhino|แรด
+ribbon|รีบบิ้น,โบว์
+rich|รวย,อุดมสมบูรณ์
+roll|ม้วนเอกสาร,ม้วน
+rubber band|ยางรัด
+rug|พรม
+safe|ตู้นิรภัย,ปลอดภัย
+sailor|กะลาสีเรือ
+salon|ร้านเสริมสวย
+scare|ตกใจ,กลัว
+season|ฤดู
+seat|ที่นั่ง
+secretary|เลขานุการ
+upstairs|ชั้นบน
+vacation|วันหยุดยาว
+value|มูลค่า,คุณค่า
+vet|สัตวแพทย์
+visit|เยี่ยมเยียน,เยี่ยมชม
+vocabulary|คำศัพท์
+voice|เสียงพูด
+vowel|เสียงสระ
+wait|รอ,รอคอย
+waiter|บริกรชาย
+staple|ลวดเย็บกระดาษ,เย็บด้วยลวดเย็บกระดาษ
+stapler|ที่เย็บกระดาษ
+steal|ขโมย
+sticker|รูปลอกภาพ
+stir|คนให้เข้ากัน,กวน
+storm|พายุ
+stone|หิน
+stove|เตา
+strange|แปลก
+strong|แข็งแรง
+stripe|แถบ,ลายเนื้อผ้า
+suit|ชุดเสื้อผ้า,เข้ากัน
+sunflower|ดอกทานตะวัน
+sure|แน่นอน
+surname|นามสกุล
+surprise|ประหลาดใจ
+sweep|กวาด
+table tennis|กีฬาปิงปอง
+take|เอาไป
+tape|เทปกาว,แถบบันทึกเสียง
+television|โทรทัศน์
+tent|เต็นท์
+term|ภาคเรียน ระยะเวลาที่กำหนด
+theme|หัวข้อ,ประเด็น
+thick|หนา
+think|คิด
+tissue|กระดาษชำระ,เนื้อเยื่อ
+towel|ผ้าเช็ดตัว
+trash|ขยะ
+trip|การเดินทาง
+trouble|ปัญหา,ความยุ่งยาก
+turn off|ปิดไฟ
+turn on|เปิดไฟ
+brain|สมอง
+brave|กล้าหาญ
+breath|ลมหายใจ
+bride|เจ้าสาว
+brilliant|ฉลาดมาก,ปราดเปรื่อง
+brother in law|พี่เขย,น้องเขย
+Buddhist|พุทธศาสนิกชน
+business|ธุรกิจ
+cafeteria|โรงอาหาร
+capital|เมืองหลวง
+waitress|บริกรหญิง
+wallet|กระเป๋าสตางค์บุรุษ
+want|ต้องการ
+wand|ไม้เรียว,ไม้คทา
+wave|คลื่น,โบกมือ
+wavy|ซึ่งเป็นคลื่น
+weight|น้ำหนัก
+win|ชนะ
+wheel|ล้อรถ
+worksheet|ใบงาน
+world|โลก
+yawn|หาว
+younger brother|น้องชาย
+younger sister|น้องสาว
+youth|เยาวชน`,
+
+p6:`advertisement|การโฆษณา
+aeroplane|เครื่องบิน
+afraid|กลัว
+ahead|ข้างหน้า
+amusement|สันทนาการ
+ancient|เก่าแก่,โบราณ
+animate|เคลื่อนไหว,มีชีวิต
+aquarium|ตู้ปลา
+architect|สถาปนิก
+arrange|จัด,เตรียม
+arrive|มา,มาถึง
+astronaut|นักบินอวกาศ
+astronomy|วิชาดาราศาสตร์
+attraction|การดึงดูด,เสน่ห์
+autograph|ลายเซ็นต์ของผู้มีชื่อเสียง
+backpack|เป้สะพายหลัง
+beat|ตี
+bill|ใบแจ้งหนี้
+biography|ชีวประวัติ
+bleed|เลือดไหล
+bracelet|สร้อยข้อมือ,กำไลข้อมือ
+democracy|ประชาธิปไตย
+depart|ออกเดินทาง
+describe|บรรยาย พรรณา
+dessert|ของหวาน
+detective|นักสืบ
+diagram|แผนภูมิ,แผนภาพ
+diarrhea|โรคท้องเสีย,โรคท้องร่วง
+cash|เงินสด
+catch|จับ,คว้า
+celebrate|เฉลิมฉลอง
+cell phone|โทรศัพท์เคลื่อนที่
+century|ศตวรรษ
+ceremony|พิธีการ งานพิธี
+character|ลักษณะ,บทบาทในละคร
+charity|การกุศล,ความใจบุญ
+charming|มีเสน่ห์
+chemist|นักเคมี
+classify|จัดกลุ่ม
+classmate|เพื่อนร่วมชั้นเรียน
+clear|ชัดเจน โปร่งใส
+clever|ฉลาด,มีไหวพริบ
+column|คอลัมน์
+community|ชุมชน
+competition|การแข่งขัน
+complain|บ่น,กล่าวหา
+concert|การแสดงดนตรี
+confident|ซึ่งไว้วางใจ,มั่นใจ
+congratulations|การแสดงความยินดี
+consist of|ประกอบด้วย
+contact|การติดต่อ
+coral reef|แนวปะการัง
+costume|เครื่องแต่งกาย
+cough|ไอ
+creative|มีความคิดสร้างสรรค์
+crosswalk|ทางเดินข้ามถนน
+crowd|กลุ่ม,ฝูงชน
+crown|มงกุฎ
+cruel|โหดร้าย
+culture|วัฒนธรรม
+damage|การทำลาย,ความเสียหาย
+deaf|ซึ่งหูหนวก
+death|ความตาย
+debate|โต้วาที,กลเกียง,อภิปราย
+decide|ตัดสินใจ
+decorate|ตกแต่ง ประดับ
+friendship|มิตรภาพ
+gallery|หอจัดแสดง
+garbage|ขยะ
+garlic|กระเทียม
+gentleman|สุภาพบุรุษ
+geography|ภูมิศาสตร์
+godmother|แม่อุปถัมภ์
+difficult|ยาก
+digital|ดิจิทัล
+direction|ทิศทาง,คำแนะนำ
+discuss|อภิปราย พิจารณา
+distance|ระยะทาง
+divorce|การหย่าร้าง
+dollar|หน่วยเงินตราดอลล่าร์
+donate|บริจาค
+dragonfly|แมลงปอ
+dustbin|ถังขยะ
+earache|อาการเจ็บหู
+education|การศึกษา
+effect|ผลกระทบ
+electricity|ไฟฟ้า
+energy|พลังงาน
+engineer|วิศวกร
+entrance|ประตูทางเข้า
+environment|สิ่งแวดล้อม
+escape|หนี
+exact|ถูกต้อง,แม่นยำ
+excellent|ดีมาก
+exciting|น่าตื่นเต้น
+exhibition|นิทรรศการ
+exit|ทางออก
+expect|คาดหวัง
+explode|ระเบิด
+explore|สำรวจ,ค้นหา
+fantastic|ยอดเยี่ยม,วิเศษ
+fashion|แฟชั่น,รูปแบบ
+father in law|พ่อตา
+feather|ขนนก
+ferry|ท่าเรือข้ามฟาก
+fever|ไข้
+figure|รูปร่าง
+flight attendant|พนักงานบนเครื่องบิน
+flood|น้ำท่วม
+florist|คนขายดอกไม้
+fluent|คล่องแคล่ว
+forehead|หน้าผาก
+freeze|แช่แข็ง
+fresh|สดชื่น
+modern|ทันสมัย
+monument|อนุสาวรีย์
+mother in law|แม่ยาย,แม่สามี
+narrow|แคบ
+grain|เมล็ดข้าว
+groom|เจ้าบ่าว
+guard|ยาม
+habitat|ที่อยู่อาศัย
+hairdryer|เครื่องเป่าผม
+handkerchief|ผ้าเช็ดหน้า
+handsome|หล่อ
+harmful|เป็นอันตราย
+helmet|หมวกกันน็อค
+helpful|ซึ่งเป็นประโยชน์
+honor|เกียรติยศ
+horoscope|ดวงชะตาราศี
+immediately|ทันทีทันใด
+important|สำคัญ
+improve|พัฒนา,ปรับปรุง
+information|ข้อมูล,ข่าวสาร
+ingredient|ส่วนผสม,ส่วนประกอบ
+instruction|การแนะนำ
+intelligent|ฉลาด,ซึ่งมีสติปัญญา
+interview|สัมภาษณ์
+introduce|แนะนำ
+invent|ประดิษฐ์,สร้างสรรค์
+invite|เชื้อเชิญ,ขอร้อง
+jail|คุก
+journey|การเดินทาง
+kingdom|อาณาจักร
+knowledge|ความรู้
+label|ป้าย,ฉลาก
+labor|แรงงาน
+language|ภาษา
+laundry|สถานที่ซักรีดเสื้อผ้า
+leather|หนัง
+length|ความยาว,ส่วนยาว
+liquid|ของเหลว
+location|สถานที่ตั้ง
+lottery|ล็อตเตอรี่
+marble|ลูกแก้ว,หินอ่อน,ลูกหิน
+message|ข้อความ,ข่าวสาร
+messy|ยุ่งเหยิง,ไม่เรียบร้อย
+mistake|ความผิดพลาด
+mix|ผสม
+semester|ภาคเรียน
+shore|ชายฝั่ง
+silly|โง่
+sister in law|น้องสะใภ้
+neighbor|เพื่อนบ้าน
+notice|ประกาศ,แจ้ง
+observe|สังเกต,เฝ้าดู
+opinion|ความคิดเห็น
+opposite|ตรงกันข้าม
+palace|พระราชวัง
+paragraph|ข้อความในหนึ่งย่อหน้า
+passport|หนังสือเดินทาง
+peace|สันติภาพ
+period|รอบ,ระยะเวลา
+personality|บุคลิกภาพ
+photographer|ช่างถ่ายภาพ
+planetarium|หอดูดาว,ท้องฟ้าจำลอง
+plump|อ้วน
+poison|ยาพิษ
+polite|สุภาพ,เรียบร้อย
+pollution|มลพิษ
+predict|พยากรณ์
+president|ประธานาธิบดี,ประธาน
+prince|เจ้าชาย
+princess|เจ้าหญิง
+prize|รางวัล
+problem|ปัญหา
+professional|ผู้เชี่ยวชาญ
+pronounce|ออกเสียง,เปล่งเสียง
+publish|จัดพิมพ์ ตีพิมพ์
+quiz|การทดสอบความรู้
+reason|เหตุผล
+recipe|ตำราอาหาร
+reduce|ลดลง ย่อลง
+refrigerator|ตู้เย็น
+refuse|ปฏิเสธ
+region|พื้นที่,บริเวณ,ขอบเขต
+regular|ตามปกติ
+relative|ญาติพี่น้อง
+remember|จดจำ
+reuse|นำกลับมาใช้
+review|ทบทวน
+route|เส้นทาง
+rubbish|ขยะ
+rule|กฎ
+save|ประหยัด รักษา เก็บ
+scream|หวีดร้อง
+search|ค้นหา
+situation|สถานการณ์
+smooth|นุ่ม,เรียบเนียน
+sneakers|รองเท้ากีฬา
+sneeze|จาม
+soft|นุ่ม
+soil|พื้นดิน,ผิวดิน
+solve|แก้ปัญหา,แก้ไข
+souvenir|ของที่ระลึก
+sparrow|นกกระจอก
+sponge|ฟองน้ำ
+stepfather|พ่อเลี้ยง
+stepmother|แม่เลี้ยง
+string|เชือก
+survey|สำรวจ
+teaspoon|ช้อนชา
+thief|ขโมย
+tidy|เรียบร้อย,สะอาด
+timetable|ตารางเวลา
+tongue|ลิ้น
+tourist|นักท่องเที่ยว
+traffic|การจราจร
+transport|ขนส่ง
+upset|ทำให้เสีย,ก่อกวน
+useful|มีประโยชน์
+valuable|มีคุณค่า
+vehicle|ยานพาหนะ
+vision|วิสัยทัศน์
+vocation|อาชีพ
+volcano|ภูเขาไฟ
+whisper|กระซิบ
+wide|กว้าง
+wonderful|น่าอัศจรรย์
+worry|กังวล,เครียด`,
+
+extra:`navy-blue|สีกรมท่า
+white|สีขาว
+green|สีเขียว
+indigo|สีคราม
+pink|สีชมพู
+black|สีดำ
+red|สีแดง
+grey|สีเทา
+dark grey|สีเทาเข้ม
+blue|สีน้ำเงิน
+brown|สีน้ำตาล
+sky blue|สีฟ้า
+violet|สีม่วง
+orange|สีส้ม
+yellow|สีเหลือง
+circle|วงกลม
+square|สี่เหลี่ยมจัตุรัส
+triangle|สามเหลี่ยม
+rectangle|สี่เหลี่ยมผืนผ้า
+pentagon|ห้าเหลี่ยม
+hexagon|หกเหลี่ยม
+oval|วงรี
+cube|สี่เหลี่ยมลูกบาศก์
+cone|กรวย
+crescent|รูปพระจันทร์เสี้ยว
+diamond|สี่เหลี่ยมข้าวหลามตัด
+Sunday|วันอาทิตย์
+Monday|วันจันทร์
+Tuesday|วันอังคาร
+Wednesday|วันพุธ
+Thursday|วันพฤหัสบดี
+Friday|วันศุกร์
+Saturday|วันเสาร์
+January|มกราคม
+February|กุมภาพันธ์
+March|มีนาคม
+April|เมษายน
+May|พฤษภาคม
+June|มิถุนายน
+July|กรกฎาคม
+August|สิงหาคม
+September|กันยายน
+October|ตุลาคม
+November|พฤศจิกายน
+December|ธันวาคม
+one|หนึ่ง
+two|สอง
+three|สาม
+four|สี่
+five|ห้า
+six|หก
+seven|เจ็ด
+eight|แปด
+nine|เก้า
+ten|สิบ
+eleven|สิบเอ็ด
+twelve|สิบสอง
+thirteen|สิบสาม
+fourteen|สิบสี่
+fifteen|สิบห้า
+sixteen|สิบหก
+seventeen|สิบเจ็ด
+eighteen|สิบแปด
+nineteen|สิบเก้า
+twenty|ยี่สิบ
+thirty|สามสิบ
+forty|สี่สิบ
+fifty|ห้าสิบ
+sixty|หกสิบ
+seventy|เจ็ดสิบ
+eighty|แปดสิบ
+ninety|เก้าสิบ
+one hundred|หนึ่งร้อย
+one thousand|หนึ่งพัน
+first|ลำดับที่หนึ่ง
+second|ลำดับที่สอง
+third|ลำดับที่สาม
+fourth|ลำดับที่สี่
+fifth|ลำดับที่ห้า
+sixth|ลำดับที่หก
+seventh|ลำดับที่เจ็ด
+eighth|ลำดับที่แปด
+ninth|ลำดับที่เก้า
+tenth|ลำดับที่สิบ
+eleventh|ลำดับที่สิบเอ็ด
+twelfth|ลำดับที่สิบสอง
+thirteenth|ลำดับที่สิบสาม
+fourteenth|ลำดับที่สิบสี่
+fifteenth|ลำดับที่สิบห้า
+sixteenth|ลำดับที่สิบหก
+seventeenth|ลำดับที่สิบเจ็ด
+eighteenth|ลำดับที่สิบแปด
+nineteenth|ลำดับที่สิบเก้า
+twentieth|ลำดับที่ยี่สิบ
+thirtieth|ลำดับที่สามสิบ
+fortieth|ลำดับที่สี่สิบ
+fiftieth|ลำดับที่ห้าสิบ
+sixtieth|ลำดับที่หกสิบ
+seventieth|ลำดับที่เจ็ดสิบ
+eightieth|ลำดับที่แปดสิบ
+ninetieth|ลำดับที่เก้าสิบ
+one hundredth|ลำดับที่หนึ่งร้อย
+one thousandth|ลำดับที่หนึ่งพัน`
+};
+
+/* =========================================================
+   แปลงข้อมูล
+   ========================================================= */
+function parseWords(raw){
+  const seen = new Set(), out = [];
+  raw.trim().split('\n').forEach(line=>{
+    const p = line.split('|');
+    if(p.length < 2) return;
+    const en = p[0].trim(), th = p[1].trim();
+    if(!en || !th) return;
+    const k = en.toLowerCase();
+    if(seen.has(k)) return;
+    seen.add(k);
+    out.push({en, th});
+  });
+  return out;
+}
+
+const POOLS = {};
+for(const k in RAW) POOLS[k] = parseWords(RAW[k]);
+
+const DUP_TH = {};
+for(const k in POOLS){
+  const cnt = {};
+  POOLS[k].forEach(w => cnt[w.th] = (cnt[w.th]||0)+1);
+  DUP_TH[k] = new Set(Object.keys(cnt).filter(t => cnt[t] > 1));
+}
+
+const GRADES = [
+  {id:'p1',   name:'ประถมศึกษาปีที่ 1', cls:'g1', emo:'1️⃣'},
+  {id:'p2',   name:'ประถมศึกษาปีที่ 2', cls:'g2', emo:'2️⃣'},
+  {id:'p3',   name:'ประถมศึกษาปีที่ 3', cls:'g3', emo:'3️⃣'},
+  {id:'p4',   name:'ประถมศึกษาปีที่ 4', cls:'g4', emo:'4️⃣'},
+  {id:'p5',   name:'ประถมศึกษาปีที่ 5', cls:'g5', emo:'5️⃣'},
+  {id:'p6',   name:'ประถมศึกษาปีที่ 6', cls:'g6', emo:'6️⃣'},
+  {id:'extra',name:'หมวดพิเศษ',        cls:'g7', emo:'⭐'}
+];
+
+/* =========================================================
+   เสียงเอฟเฟกต์ (Web Audio API)
+   ========================================================= */
+let actx = null;
+function initAudio(){
+  try{
+    if(!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+    if(actx.state === 'suspended') actx.resume();
+  }catch(e){}
+}
+function tone(freq, start, dur, type, vol){
+  if(!actx) return;
+  const t0 = actx.currentTime + start;
+  const o = actx.createOscillator();
+  const g = actx.createGain();
+  o.type = type || 'sine';
+  o.frequency.setValueAtTime(freq, t0);
+  g.gain.setValueAtTime(0.0001, t0);
+  g.gain.exponentialRampToValueAtTime(vol || 0.22, t0 + 0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  o.connect(g); g.connect(actx.destination);
+  o.start(t0); o.stop(t0 + dur + 0.05);
+}
+function sfxCorrect(){
+  initAudio();
+  [523.25, 659.25, 783.99, 1046.50].forEach((f,i)=> tone(f, i*0.085, 0.32, 'triangle', 0.20));
+}
+function sfxWrong(){
+  initAudio();
+  tone(220, 0,    0.22, 'sawtooth', 0.16);
+  tone(155, 0.20, 0.38, 'sawtooth', 0.16);
+}
+function sfxFinish(){
+  initAudio();
+  [523.25,659.25,783.99,1046.50,1318.51].forEach((f,i)=> tone(f, i*0.12, 0.45, 'triangle', 0.18));
+}
+function sfxClick(){ initAudio(); tone(880, 0, 0.07, 'sine', 0.10); }
+
+/* =========================================================
+   เสียงพูด (Web Speech API) — เลือก Google voice ก่อน
+   ========================================================= */
+let voices = [];
+let voicesReady = false;
+
+function refreshVoices(){
+  if(!('speechSynthesis' in window)) return;
+  const v = speechSynthesis.getVoices();
+  if(v && v.length){
+    voices = v;
+    voicesReady = true;
+  }
+}
+if('speechSynthesis' in window){
+  refreshVoices();
+  speechSynthesis.onvoiceschanged = refreshVoices;
+  // retry a few times for browsers that load voices asynchronously
+  let tries = 0;
+  const t = setInterval(() => {
+    refreshVoices();
+    if(voicesReady || ++tries > 20) clearInterval(t);
+  }, 200);
+}
+
+function pickVoice(langLower){
+  if(!voices.length) refreshVoices();
+  const matching = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith(langLower));
+  if(!matching.length) return null;
+  const scored = matching.map(v => {
+    let score = 0;
+    const name = (v.name || '').toLowerCase();
+    // ให้คะแนนสูงสุดกับ Google voice
+    if(name.includes('google')) score += 1000;
+    if(name.includes('natural'))  score += 120;
+    if(name.includes('neural'))   score += 110;
+    if(name.includes('enhanced')) score += 100;
+    if(name.includes('premium'))  score += 90;
+    if(name.includes('online'))   score += 60;
+    // ภาษาอังกฤษ: ชอบ en-US ก่อน
+    if(langLower === 'en'){
+      if(v.lang.toLowerCase() === 'en-us') score += 20;
+      if(v.lang.toLowerCase() === 'en-gb') score += 15;
+    }
+    // ภาษาไทย
+    if(langLower === 'th'){
+      if(name.includes('thai') || name.includes('ไทย')) score += 30;
+    }
+    // หลีกเลี่ยงเสียงที่รู้ว่าไม่เป็นธรรมชาติ
+    if(name.includes('zira') || name.includes('david')) score -= 20;
+    return {v, score};
+  });
+  scored.sort((a,b) => b.score - a.score);
+  return scored[0].v;
+}
+
+let currentUtter = null;
+function speak(text, lang){
+  if(!('speechSynthesis' in window)) return;
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = lang === 'th' ? 'th-TH' : 'en-US';
+    const voice = pickVoice(lang === 'th' ? 'th' : 'en');
+    if(voice){
+      u.voice = voice;
+      // แสดง log เล็กน้อยว่าใช้ voice อะไร (debug)
+      // console.log('Using voice:', voice.name, voice.lang);
+    }
+    u.rate = 0.92;
+    u.pitch = 1.0;
+    u.volume = 1.0;
+    u.onstart = () => { currentUtter = u; };
+    u.onend   = () => { currentUtter = null; };
+    u.onerror = () => { currentUtter = null; };
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+/* =========================================================
+   ฟังก์ชันช่วย
+   ========================================================= */
+function shuffle(a){
+  const arr = a.slice();
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+/* แบ่งชุด: ชุดละ 20 ข้อ, เศษที่เหลือรวมกับชุดสุดท้าย */
+function buildSetsForGrade(gradeId){
+  const pool = POOLS[gradeId];
+  const shuffled = shuffle(pool);
+  const total = shuffled.length;
+  const SET_SIZE = 20;
+  const sets = [];
+  if(total <= SET_SIZE){
+    sets.push(shuffled);
+  } else {
+    const remainder = total % SET_SIZE;
+    const numFull = Math.floor(total / SET_SIZE);
+    if(remainder === 0){
+      for(let i=0;i<numFull;i++){
+        sets.push(shuffled.slice(i*SET_SIZE, (i+1)*SET_SIZE));
+      }
+    } else {
+      // numFull - 1 ชุดเต็ม + ชุดสุดท้ายที่รวมเศษ
+      for(let i=0;i<numFull-1;i++){
+        sets.push(shuffled.slice(i*SET_SIZE, (i+1)*SET_SIZE));
+      }
+      sets.push(shuffled.slice((numFull-1)*SET_SIZE));
+    }
+  }
+  return sets;
+}
+
+/* สร้างคำถามจากชุดคำ */
+function buildQuestionsFromWords(words, poolId){
+  const pool = POOLS[poolId];
+  const dupSet = DUP_TH[poolId];
+  const shuffled = shuffle(words);
+  const qs = [];
+  for(const target of shuffled){
+    const reverse = Math.random() < 0.35 && !dupSet.has(target.th);
+    const candidates = shuffle(pool.filter(w => w.en !== target.en && w.th !== target.th));
+    const distract = [];
+    for(const w of candidates){
+      if(distract.length >= 3) break;
+      if(distract.some(d => d.th === w.th)) continue;
+      distract.push(w);
+    }
+    if(distract.length < 3) continue;
+    const options = shuffle([target, ...distract]);
+    qs.push({
+      target, reverse, options,
+      prompt: reverse ? target.th : target.en,
+      ask: reverse ? 'คำภาษาอังกฤษข้อใดมีความหมายว่า' : 'คำนี้แปลว่าอะไร',
+      correctText: reverse ? target.en : target.th
+    });
+  }
+  return qs;
+}
+
+/* =========================================================
+   State & DOM
+   ========================================================= */
+const $ = id => document.getElementById(id);
+const homeEl = $('home'), setsEl = $('sets'), quizEl = $('quiz'), resultEl = $('result');
+
+let state = {
+  gradeId: null,
+  sets: [],
+  setIndex: 0,
+  questions: [],
+  idx: 0,
+  score: 0,
+  wrongList: [],
+  locked: false
+};
+
+/* ---------- HOME ---------- */
+function renderGrades(){
+  const wrap = $('gradeList');
+  wrap.innerHTML = '';
+  GRADES.forEach(g => {
+    const b = document.createElement('button');
+    b.className = 'grade ' + g.cls;
+    const count = POOLS[g.id].length;
+    b.innerHTML = `<span class="emo">${g.emo}</span><span>${g.name}</span><small>${count} คำ</small>`;
+    b.onclick = () => { sfxClick(); showSets(g.id); };
+    wrap.appendChild(b);
+  });
+}
+
+/* ---------- SETS ---------- */
+function showSets(gradeId){
+  state.gradeId = gradeId;
+  state.sets = buildSetsForGrade(gradeId);
+  const grade = GRADES.find(g => g.id === gradeId);
+  const totalWords = POOLS[gradeId].length;
+  $('setsTitle').textContent = grade.name;
+  $('setsSub').textContent = `ทั้งหมด ${state.sets.length} ชุด • ${totalWords} คำ`;
+
+  const grid = $('setsGrid');
+  grid.innerHTML = '';
+  state.sets.forEach((setWords, i) => {
+    const b = document.createElement('button');
+    const isLast = i === state.sets.length - 1;
+    b.className = 'set-btn' + (isLast && setWords.length > 20 ? ' last' : '');
+    b.innerHTML = `<span class="set-no">ชุดที่ ${i+1}</span><small>${setWords.length} ข้อ</small>`;
+    b.onclick = () => startSet(i);
+    grid.appendChild(b);
+  });
+
+  homeEl.hidden = true;
+  setsEl.hidden = false;
+  quizEl.hidden = true;
+  resultEl.hidden = true;
+}
+
+/* ---------- START SET ---------- */
+function startSet(setIndex){
+  sfxClick();
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  state.setIndex = setIndex;
+  state.questions = buildQuestionsFromWords(state.sets[setIndex], state.gradeId);
+  state.idx = 0;
+  state.score = 0;
+  state.wrongList = [];
+  state.locked = false;
+  homeEl.hidden = true;
+  setsEl.hidden = true;
+  resultEl.hidden = true;
+  quizEl.hidden = false;
+  renderQuestion();
+}
+
+/* ---------- QUIZ ---------- */
+function renderQuestion(){
+  state.locked = false;
+  const q = state.questions[state.idx];
+  const totalQ = state.questions.length;
+
+  $('setTxt').textContent = `ชุดที่ ${state.setIndex+1}`;
+  $('progressTxt').textContent = `ข้อ ${state.idx+1} / ${totalQ}`;
+  $('scoreTxt').textContent = `คะแนน ${state.score}`;
+  $('barFill').style.width = (state.idx / totalQ * 100) + '%';
+
+  $('askTxt').textContent = q.ask;
+  const qw = $('qword');
+  qw.textContent = q.prompt;
+  qw.className = 'qword' + (q.reverse ? ' th' : '');
+
+  const spk = $('spkBtn');
+  if(!q.reverse){
+    spk.hidden = false;
+    spk.classList.remove('speaking');
+    spk.onclick = (e) => {
+      e.stopPropagation();
+      spk.classList.add('speaking');
+      speak(q.target.en, 'en');
+      setTimeout(() => spk.classList.remove('speaking'), 1200);
+    };
+  } else {
+    spk.hidden = true;
+  }
+
+  $('fb').textContent = '';
+  $('fb').className = 'fb';
+
+  const box = $('opts');
+  box.innerHTML = '';
+  q.options.forEach(op => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = q.reverse ? op.en : op.th;
+    btn.onclick = () => answer(btn, op, q);
+    box.appendChild(btn);
+  });
+
+  // auto-speak English word for EN→TH questions
+  if(!q.reverse){
+    const wordToSay = q.target.en;
+    setTimeout(() => {
+      if(!state.locked && !quizEl.hidden){
+        speak(wordToSay, 'en');
+        const s = $('spkBtn');
+        s.classList.add('speaking');
+        setTimeout(() => s.classList.remove('speaking'), 1200);
+      }
+    }, 420);
+  }
+}
+
+/* ---------- ANSWER ---------- */
+function answer(btn, op, q){
+  if(state.locked) return;
+  state.locked = true;
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+
+  const isCorrect = (op.en === q.target.en);
+  const buttons = [...document.querySelectorAll('.opt')];
+  buttons.forEach(b => b.disabled = true);
+
+  if(isCorrect){
+    btn.classList.add('right');
+    state.score++;
+    sfxCorrect();
+    $('fb').textContent = '🎉 ถูกต้อง! เก่งมากเลย';
+    $('fb').className = 'fb ok';
+    // ออกเสียงคำภาษาอังกฤษด้วย Google voice
+    setTimeout(() => speak(q.target.en, 'en'), 480);
+  } else {
+    btn.classList.add('wrong');
+    sfxWrong();
+    $('fb').textContent = `❌ ยังไม่ถูก คำตอบคือ "${q.correctText}"`;
+    $('fb').className = 'fb no';
+    buttons.forEach(b => {
+      if(b.textContent === q.correctText) b.classList.add('right');
+      else if(b !== btn) b.classList.add('fade');
+    });
+    state.wrongList.push(q);
+    // ออกเสียงคำตอบที่ถูกต้อง
+    setTimeout(() => speak(q.target.en, 'en'), 650);
+  }
+
+  $('scoreTxt').textContent = `คะแนน ${state.score}`;
+
+  setTimeout(() => {
+    state.idx++;
+    if(state.idx >= state.questions.length) showResult();
+    else renderQuestion();
+  }, isCorrect ? 1300 : 2100);
+}
+
+/* ---------- RESULT ---------- */
+function showResult(){
+  quizEl.hidden = true;
+  resultEl.hidden = false;
+  sfxFinish();
+
+  const total = state.questions.length;
+  const pct = Math.round(state.score / total * 100);
+  $('rScore').textContent = `${state.score}/${total}`;
+  $('rPct').textContent = `ชุดที่ ${state.setIndex+1} • คิดเป็น ${pct}%`;
+
+  let msg;
+  if(pct === 100)      msg = '🏆 สุดยอด! ตอบถูกทั้งหมดเลย';
+  else if(pct >= 80)   msg = '🌟 ยอดเยี่ยมมาก! ใกล้เต็มแล้ว';
+  else if(pct >= 60)   msg = '👍 ดีมาก! ฝึกอีกนิดจะเก่งสุด ๆ';
+  else if(pct >= 40)   msg = '💪 สู้ต่อไป! ลองทบทวนคำศัพท์อีกครั้งนะ';
+  else                 msg = '📚 ไม่เป็นไรเลย มาฝึกใหม่กันอีกครั้ง!';
+  $('rMsg').textContent = msg;
+
+  const rv = $('rReview');
+  if(state.wrongList.length === 0){
+    rv.innerHTML = '<h3>🎊 ไม่มีข้อที่ตอบผิดเลย</h3>';
+  } else {
+    rv.innerHTML = '<h3>📝 คำศัพท์ที่ควรทบทวน</h3>' + state.wrongList.map(q =>
+      `<div class="rv"><b>${q.target.en}</b><span>${q.target.th}</span></div>`
+    ).join('');
+  }
+}
+
+/* =========================================================
+   Event handlers
+   ========================================================= */
+$('backHomeBtn').onclick = () => { sfxClick(); showHome(); };
+$('againBtn').onclick = () => { sfxClick(); startSet(state.setIndex); };
+$('chooseSetBtn').onclick = () => { sfxClick(); showSets(state.gradeId); };
+$('homeBtn').onclick = () => { sfxClick(); showHome(); };
+
+function showHome(){
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  homeEl.hidden = false;
+  setsEl.hidden = true;
+  quizEl.hidden = true;
+  resultEl.hidden = true;
+}
+
+/* ปลดล็อกเสียงเมื่อผู้ใช้แตะครั้งแรก */
+document.addEventListener('touchstart', initAudio, {once:true});
+document.addEventListener('click', initAudio, {once:true});
+
+/* เริ่มต้น */
+renderGrades();
+</script>
+</body>
+</html>
