@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>เกมตอบคำถามคำศัพท์ภาษาอังกฤษ</title>
+<title>เกมคำศัพท์ภาษาอังกฤษ · ชุด + สร้างเกมเอง</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   body{
@@ -13,33 +13,29 @@
     display:flex;align-items:center;justify-content:center;
     padding:14px;color:#1f2937;
   }
-  #app{width:100%;max-width:780px}
+  #app{width:100%;max-width:820px}
   .card{
     background:#fff;border-radius:26px;padding:26px 22px;
     box-shadow:0 20px 45px rgba(0,0,0,.28);
-    animation:pop .35s ease;
-    position:relative;
+    animation:pop .35s ease;position:relative;
   }
   @keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
   h1{font-size:1.5rem;text-align:center;color:#4c1d95;margin-bottom:6px}
   h2{font-size:1.3rem;text-align:center;color:#4c1d95;margin-bottom:6px}
   .sub{text-align:center;color:#6b7280;font-size:.92rem;margin-bottom:20px}
-
   .back-btn{
     border:none;background:#f3f4f6;color:#4b5563;border-radius:10px;
     padding:8px 14px;font-weight:700;font-size:.85rem;cursor:pointer;
     font-family:inherit;margin-bottom:14px;transition:.15s;
   }
   .back-btn:hover{background:#e5e7eb}
-
-  /* ---------- HOME ---------- */
+  /* HOME */
   .grades{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:10px}
   .grade{
     border:none;border-radius:18px;padding:16px 12px;cursor:pointer;
     color:#fff;font-weight:800;font-size:1rem;text-align:left;
-    transition:transform .15s, box-shadow .15s;position:relative;overflow:hidden;
-    display:flex;flex-direction:column;gap:4px;
-    font-family:inherit;
+    transition:transform .15s, box-shadow .15s;
+    display:flex;flex-direction:column;gap:4px;font-family:inherit;
   }
   .grade:hover{transform:translateY(-4px);box-shadow:0 12px 22px rgba(0,0,0,.22)}
   .grade:active{transform:scale(.97)}
@@ -52,16 +48,10 @@
   .g5{background:linear-gradient(135deg,#fa709a,#fee140);color:#5b1a2c}
   .g6{background:linear-gradient(135deg,#7028e4,#e5b2ca)}
   .g7{background:linear-gradient(135deg,#00b09b,#96c93d)}
-
-  /* ---------- SETS ---------- */
+  /* SETS */
   .sets-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(135px,1fr));
-    gap:10px;
-    margin-top:6px;
-    max-height:60vh;
-    overflow-y:auto;
-    padding-right:4px;
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));
+    gap:10px;margin-top:6px;max-height:60vh;overflow-y:auto;padding-right:4px;
   }
   .set-btn{
     border:2px solid #ddd6fe;background:#f5f3ff;color:#5b21b6;
@@ -72,16 +62,30 @@
   }
   .set-btn:hover{
     background:linear-gradient(135deg,#7c3aed,#a855f7);
-    color:#fff;border-color:transparent;
-    transform:translateY(-3px);
+    color:#fff;border-color:transparent;transform:translateY(-3px);
     box-shadow:0 10px 20px rgba(124,58,237,.3);
   }
   .set-btn small{font-weight:600;font-size:.72rem;opacity:.8}
   .set-btn .set-no{font-size:1.05rem}
   .set-btn.last{border-color:#fbbf24;background:#fffbeb}
   .set-btn.last:hover{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff}
-
-  /* ---------- QUIZ ---------- */
+  .set-btn.custom-game{
+    grid-column:1/-1;flex-direction:row;justify-content:center;gap:10px;
+    background:linear-gradient(135deg,#f59e0b,#ec4899);color:#fff;
+    border-color:transparent;padding:16px;
+    box-shadow:0 10px 24px rgba(236,72,153,.4);
+    animation:cgPulse 2.2s infinite;
+  }
+  .set-btn.custom-game:hover{
+    background:linear-gradient(135deg,#ec4899,#8b5cf6);
+    box-shadow:0 14px 28px rgba(139,92,246,.5);
+  }
+  .set-btn.custom-game .set-no{font-size:1.05rem}
+  @keyframes cgPulse{
+    0%,100%{box-shadow:0 10px 24px rgba(236,72,153,.4)}
+    50%{box-shadow:0 10px 30px rgba(139,92,246,.75)}
+  }
+  /* QUIZ (existing) */
   .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
   .pill{background:#f3f4f6;border-radius:999px;padding:7px 14px;font-weight:800;font-size:.82rem;color:#4b5563;white-space:nowrap}
   .pill.score{background:#ecfdf5;color:#047857}
@@ -94,8 +98,7 @@
   .qword.th{font-size:1.75rem;color:#be185d}
   .spk{
     border:none;background:#ede9fe;color:#6d28d9;border-radius:999px;
-    padding:6px 16px;font-weight:800;font-size:.85rem;cursor:pointer;transition:.15s;
-    font-family:inherit;
+    padding:6px 16px;font-weight:800;font-size:.85rem;cursor:pointer;transition:.15s;font-family:inherit;
   }
   .spk:hover{background:#ddd6fe}
   .spk.speaking{background:#c4b5fd;animation:pulse 1s infinite}
@@ -105,8 +108,7 @@
   .opt{
     border:2.5px solid #e5e7eb;background:#fff;border-radius:16px;
     padding:15px 12px;font-size:1rem;font-weight:700;color:#374151;cursor:pointer;
-    transition:.15s;text-align:center;min-height:58px;display:flex;align-items:center;justify-content:center;
-    font-family:inherit;
+    transition:.15s;text-align:center;min-height:58px;display:flex;align-items:center;justify-content:center;font-family:inherit;
   }
   .opt:hover:not(:disabled){border-color:#a78bfa;background:#faf5ff;transform:translateY(-2px)}
   .opt:disabled{cursor:default}
@@ -117,8 +119,7 @@
   @keyframes shake-no{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
   .fb{text-align:center;font-weight:900;font-size:1.05rem;margin-top:14px;min-height:26px}
   .fb.ok{color:#16a34a}.fb.no{color:#dc2626}
-
-  /* ---------- RESULT ---------- */
+  /* RESULT */
   .rst{text-align:center}
   .rst .big{font-size:3.4rem;font-weight:900;color:#7c3aed;line-height:1}
   .rst .msg{font-size:1.05rem;font-weight:800;margin:10px 0 4px;color:#4c1d95}
@@ -139,11 +140,196 @@
   .btn:hover{transform:translateY(-2px)}
   .btn:active{transform:scale(.97)}
   [hidden]{display:none!important}
-
-  .voice-note{
-    font-size:.72rem;color:#9ca3af;text-align:center;
-    margin-top:10px;
+  .voice-note{font-size:.72rem;color:#9ca3af;text-align:center;margin-top:10px}
+  /* ===== WORD PICKER ===== */
+  .wp-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;max-height:120px;overflow-y:auto;padding-right:4px}
+  .wp-chip{
+    border:2px solid #ddd6fe;background:#f5f3ff;color:#5b21b6;
+    padding:7px 14px;border-radius:999px;font-weight:700;font-size:.82rem;
+    cursor:pointer;font-family:inherit;transition:.15s;
   }
+  .wp-chip:hover{background:#ede9fe;transform:translateY(-2px)}
+  .wp-chip.clear{background:#fee2e2;color:#991b1b;border-color:#fecaca}
+  .wp-chip.clear:hover{background:#fecaca}
+  .wp-chip.all{background:linear-gradient(135deg,#06b6d4,#3b82f6);color:#fff;border-color:transparent}
+  .wp-chip.all:hover{transform:translateY(-2px) scale(1.03)}
+  .wp-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+    gap:8px;max-height:52vh;overflow-y:auto;padding:4px;
+    background:#f9fafb;border-radius:16px;
+  }
+  .wp-card{
+    border:2.5px solid #e5e7eb;background:#fff;border-radius:14px;
+    padding:10px 8px;cursor:pointer;position:relative;transition:.15s;
+    text-align:center;font-family:inherit;
+  }
+  .wp-card:hover{border-color:#a78bfa;background:#faf5ff;transform:translateY(-2px)}
+  .wp-card.selected{border-color:#22c55e;background:#f0fdf4;box-shadow:0 4px 12px rgba(34,197,94,.2)}
+  .wp-card.selected::after{
+    content:"✓";position:absolute;top:4px;right:6px;
+    color:#16a34a;font-weight:900;font-size:14px;
+    background:#fff;border-radius:50%;width:20px;height:20px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 4px rgba(0,0,0,.1);
+  }
+  .wp-card .wp-en{font-weight:800;color:#4c1d95;font-size:.9rem;word-break:break-word}
+  .wp-card .wp-th{font-size:.74rem;color:#6b7280;margin-top:2px;word-break:break-word}
+  .wp-bottom{
+    position:sticky;bottom:0;background:#fff;padding:12px 0 0;margin-top:12px;
+    border-top:2px solid #f3f4f6;display:flex;justify-content:space-between;
+    align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .wp-count{font-weight:800;color:#4c1d95;font-size:1rem}
+  .wp-count.warn{color:#dc2626}
+  .wp-next{
+    border:none;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;
+    border-radius:14px;padding:12px 26px;font-weight:800;font-size:.95rem;
+    cursor:pointer;font-family:inherit;transition:.15s;
+    box-shadow:0 8px 18px rgba(124,58,237,.35);
+  }
+  .wp-next:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+  .wp-next:not(:disabled):hover{transform:translateY(-2px)}
+  /* ===== GAME CHOOSER ===== */
+  .games-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:14px;margin-top:14px;
+  }
+  .game-card{
+    border:none;border-radius:20px;padding:24px 16px;cursor:pointer;
+    color:#fff;font-weight:800;font-size:1rem;font-family:inherit;
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    transition:.18s;text-align:center;
+  }
+  .game-card:hover{transform:translateY(-5px) scale(1.02)}
+  .game-card:active{transform:scale(.97)}
+  .game-card .gc-icon{font-size:3rem;line-height:1}
+  .game-card .gc-name{font-size:1.15rem}
+  .game-card .gc-desc{font-size:.78rem;font-weight:600;opacity:.9}
+  .gc-match{background:linear-gradient(135deg,#06b6d4,#3b82f6)}
+  .gc-choice{background:linear-gradient(135deg,#8b5cf6,#ec4899)}
+  .gc-shoot{background:linear-gradient(135deg,#f59e0b,#ef4444)}
+  /* ===== MATCH GAME ===== */
+  .match-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+  .match-timer{font-weight:800;color:#4c1d95;font-size:.95rem;background:#ede9fe;padding:7px 14px;border-radius:999px}
+  .match-pairs{font-weight:800;color:#047857;font-size:.95rem;background:#ecfdf5;padding:7px 14px;border-radius:999px}
+  .match-grid{
+    display:grid;gap:8px;
+    grid-template-columns:repeat(auto-fill,minmax(85px,1fr));
+    max-height:70vh;overflow-y:auto;
+  }
+  .mcard{perspective:800px;cursor:pointer;aspect-ratio:1;transition:opacity .5s, transform .5s;font-family:inherit}
+  .mcard-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .45s}
+  .mcard.flipped .mcard-inner{transform:rotateY(180deg)}
+  .mcard-front,.mcard-back{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:14px;display:flex;align-items:center;justify-content:center;padding:6px;
+    text-align:center;font-weight:700;overflow:hidden;
+  }
+  .mcard-front{
+    background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;
+    font-size:1.8rem;box-shadow:0 6px 14px rgba(124,58,237,.35);
+  }
+  .mcard-back{
+    background:#fff;color:#4c1d95;transform:rotateY(180deg);
+    border:2.5px solid #ddd6fe;font-size:clamp(.7rem,2.4vw,1rem);word-break:break-word;
+  }
+  .mcard.matched{animation:matchPop .6s;opacity:0;transform:scale(.5);pointer-events:none}
+  @keyframes matchPop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(.5);opacity:0}}
+  .mcard.wrong{animation:shakeX .4s}
+  @keyframes shakeX{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .mcard.wrong .mcard-back{background:#fee2e2;border-color:#ef4444;color:#991b1b}
+  .mcard.matched .mcard-back{background:#dcfce7;border-color:#22c55e;color:#166534}
+  /* ===== SHOOT GAME ===== */
+  .shoot-hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
+  .shoot-lives{font-size:1.4rem;letter-spacing:2px;font-weight:900}
+  .shoot-score{font-weight:800;color:#4c1d95;font-size:1.05rem}
+  .playfield{
+    position:relative;width:100%;height:65vh;min-height:420px;
+    background:radial-gradient(1px 1px at 20% 30%,#fff,transparent),
+               radial-gradient(1px 1px at 40% 70%,#fff,transparent),
+               radial-gradient(1px 1px at 60% 20%,#fff,transparent),
+               radial-gradient(1px 1px at 80% 50%,#fff,transparent),
+               radial-gradient(1px 1px at 10% 80%,#fff,transparent),
+               radial-gradient(1px 1px at 90% 90%,#fff,transparent),
+               radial-gradient(1px 1px at 50% 50%,#fff,transparent),
+               linear-gradient(180deg,#0f172a 0%,#1e1b4b 60%,#312e81 100%);
+    border-radius:20px;overflow:hidden;
+    box-shadow:inset 0 0 40px rgba(0,0,0,.4);
+    touch-action:none;user-select:none;cursor:crosshair;
+  }
+  .target{
+    position:absolute;padding:10px 16px;border-radius:30px;
+    background:linear-gradient(135deg,#22d3ee,#3b82f6);
+    color:#fff;font-weight:800;font-size:.9rem;
+    box-shadow:0 8px 20px rgba(59,130,246,.5), inset 0 -3px 0 rgba(0,0,0,.15);
+    white-space:nowrap;pointer-events:none;
+    border:2px solid rgba(255,255,255,.35);
+    max-width:140px;overflow:hidden;text-overflow:ellipsis;
+    will-change:transform;
+  }
+  .target.popping{animation:popOut .35s forwards}
+  @keyframes popOut{0%{transform:scale(1);opacity:1}100%{transform:scale(1.8);opacity:0}}
+  .gun{
+    position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
+    background:linear-gradient(135deg,#fbbf24,#f59e0b);
+    color:#1f2937;font-weight:900;font-size:1.05rem;
+    padding:12px 28px;border-radius:40px;
+    box-shadow:0 10px 24px rgba(245,158,11,.55), inset 0 -4px 0 rgba(0,0,0,.15);
+    border:3px solid #fff;z-index:10;pointer-events:none;
+    text-align:center;max-width:80%;word-break:break-word;min-width:140px;
+  }
+  .gun::before{
+    content:"🔫";position:absolute;left:-10px;top:-26px;font-size:2rem;
+    transform:rotate(-30deg);filter:drop-shadow(0 4px 6px rgba(0,0,0,.4));
+  }
+  .gun-hint{display:block;font-size:.7rem;font-weight:700;color:#4b5563;opacity:.8;margin-top:2px}
+  .aim-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
+  .aim-line{
+    stroke:#fbbf24;stroke-width:4;stroke-dasharray:10 10;stroke-linecap:round;
+    filter:drop-shadow(0 0 6px rgba(251,191,36,.9));
+    animation:flowDots .5s linear infinite;
+  }
+  @keyframes flowDots{to{stroke-dashoffset:-20}}
+  .bullet{
+    position:absolute;width:18px;height:18px;border-radius:50%;
+    background:radial-gradient(circle at 30% 30%,#fff,#fbbf24 60%,#f59e0b);
+    box-shadow:0 0 14px #fbbf24,0 0 24px #fbbf24;
+    pointer-events:none;z-index:8;
+    transform:translate(-50%,-50%);
+  }
+  .red-flash{
+    position:absolute;inset:0;background:rgba(239,68,68,.4);
+    pointer-events:none;z-index:20;opacity:0;
+  }
+  .red-flash.active{animation:redFlash .45s}
+  @keyframes redFlash{0%{opacity:1}100%{opacity:0}}
+  .score-pop{
+    position:absolute;color:#fbbf24;font-weight:900;font-size:1.6rem;
+    pointer-events:none;z-index:15;
+    text-shadow:0 2px 6px rgba(0,0,0,.6);
+    animation:scorePop 1s forwards;
+  }
+  @keyframes scorePop{
+    0%{transform:translate(-50%,-50%) scale(.5);opacity:0}
+    30%{transform:translate(-50%,-50%) scale(1.2);opacity:1}
+    100%{transform:translate(-50%,-120%) scale(1);opacity:0}
+  }
+  .gover{
+    position:absolute;inset:0;background:rgba(15,23,42,.88);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    z-index:30;color:#fff;gap:12px;padding:20px;text-align:center;
+    backdrop-filter:blur(6px);
+  }
+  .gover h2{font-size:2rem;font-weight:900;color:#fbbf24}
+  .gover p{font-size:1.1rem;opacity:.9}
+  .gover .btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+  .gover .btn.primary{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1f2937;box-shadow:0 8px 18px rgba(245,158,11,.4)}
+  .gover .btn.ghost{background:rgba(255,255,255,.15);color:#fff}
+  /* ===== GAME RESULT ===== */
+  .gr-wrap{text-align:center}
+  .gr-big{font-size:3.5rem;font-weight:900;color:#7c3aed;line-height:1}
+  .gr-msg{font-size:1.1rem;font-weight:800;margin:12px 0 8px;color:#4c1d95}
+  .gr-detail{color:#6b7280;font-size:.95rem;margin-bottom:18px}
 </style>
 </head>
 <body>
@@ -165,7 +351,44 @@
     <div class="sets-grid" id="setsGrid"></div>
   </section>
 
-  <!-- ============ QUIZ ============ -->
+  <!-- ============ WORD PICKER (NEW) ============ -->
+  <section id="wordPicker" class="card" hidden>
+    <button class="back-btn" id="wpBackBtn">← กลับหน้าเลือกชุด</button>
+    <h2 id="wpTitle"></h2>
+    <p class="sub" id="wpSub" style="margin-bottom:12px"></p>
+    <div class="wp-actions" id="wpActions"></div>
+    <div class="wp-grid" id="wpGrid"></div>
+    <div class="wp-bottom">
+      <span class="wp-count" id="wpCount">เลือกแล้ว 0 คำ</span>
+      <button class="wp-next" id="wpNextBtn" disabled>ถัดไป ▶</button>
+    </div>
+  </section>
+
+  <!-- ============ GAME CHOOSER (NEW) ============ -->
+  <section id="gameChooser" class="card" hidden>
+    <button class="back-btn" id="gcBackBtn">← กลับไปเลือกคำ</button>
+    <h2>เลือกเกมที่ต้องการเล่น</h2>
+    <p class="sub" id="gcSub"></p>
+    <div class="games-grid">
+      <button class="game-card gc-match" data-game="match">
+        <span class="gc-icon">🃏</span>
+        <span class="gc-name">จับคู่คำศัพท์</span>
+        <span class="gc-desc">พลิกการ์ดหาคู่ อังกฤษ ↔ ไทย</span>
+      </button>
+      <button class="game-card gc-choice" data-game="choice">
+        <span class="gc-icon">❓</span>
+        <span class="gc-name">ทายคำ 4 ตัวเลือก</span>
+        <span class="gc-desc">เลือกคำตอบที่ถูกต้อง</span>
+      </button>
+      <button class="game-card gc-shoot" data-game="shoot">
+        <span class="gc-icon">🔫</span>
+        <span class="gc-name">ยิงเป้าคำศัพท์</span>
+        <span class="gc-desc">ลากเล็ง · ยิงให้ตรงเป้า</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ QUIZ (existing set quiz) ============ -->
   <section id="quiz" class="card" hidden>
     <div class="topbar">
       <span class="pill set" id="setTxt">ชุดที่ 1</span>
@@ -173,18 +396,16 @@
       <span class="pill score" id="scoreTxt">คะแนน 0</span>
     </div>
     <div class="bar"><i id="barFill"></i></div>
-
     <div class="qbox">
       <div class="ask" id="askTxt">คำนี้แปลว่าอะไร</div>
       <div class="qword" id="qword">—</div>
       <button class="spk" id="spkBtn" hidden>🔊 ฟังเสียงอีกครั้ง</button>
     </div>
-
     <div class="opts" id="opts"></div>
     <div class="fb" id="fb"></div>
   </section>
 
-  <!-- ============ RESULT ============ -->
+  <!-- ============ RESULT (existing) ============ -->
   <section id="result" class="card rst" hidden>
     <div class="big" id="rScore">0</div>
     <div class="msg" id="rMsg"></div>
@@ -194,6 +415,63 @@
       <button class="btn primary" id="againBtn">🔁 เล่นชุดนี้อีกครั้ง</button>
       <button class="btn ghost" id="chooseSetBtn">📚 เลือกชุดอื่น</button>
       <button class="btn ghost" id="homeBtn">🏠 กลับหน้าหลัก</button>
+    </div>
+  </section>
+
+  <!-- ============ MATCH GAME (NEW) ============ -->
+  <section id="matchGame" class="card" hidden>
+    <div class="match-top">
+      <button class="back-btn" id="mgBackBtn" style="margin:0">← กลับ</button>
+      <span class="match-timer" id="mgTimer">⏱️ 00:00</span>
+      <span class="match-pairs" id="mgPairs">คู่ 0 / 0</span>
+    </div>
+    <div class="match-grid" id="mgGrid"></div>
+  </section>
+
+  <!-- ============ CHOICE GAME (NEW) ============ -->
+  <section id="choiceGame" class="card" hidden>
+    <div class="topbar">
+      <button class="back-btn" id="cgBackBtn2" style="margin:0">← กลับ</button>
+      <span class="pill" id="chProgress">ข้อ 1 / 10</span>
+      <span class="pill score" id="chScore">คะแนน 0</span>
+    </div>
+    <div class="bar"><i id="chBarFill"></i></div>
+    <div class="qbox">
+      <div class="ask" id="chAskTxt">คำนี้แปลว่าอะไร</div>
+      <div class="qword" id="chQword">—</div>
+      <button class="spk" id="chSpkBtn" hidden>🔊 ฟังเสียงอีกครั้ง</button>
+    </div>
+    <div class="opts" id="chOpts"></div>
+    <div class="fb" id="chFb"></div>
+  </section>
+
+  <!-- ============ SHOOT GAME (NEW) ============ -->
+  <section id="shootGame" class="card" hidden>
+    <div class="shoot-hud">
+      <button class="back-btn" id="shBackBtn" style="margin:0">← กลับ</button>
+      <span class="shoot-lives" id="shLives">❤️❤️❤️</span>
+      <span class="shoot-score" id="shScore">คะแนน 0</span>
+    </div>
+    <div class="playfield" id="playfield">
+      <svg class="aim-svg" id="aimSvg"></svg>
+      <div class="gun" id="gunEl">
+        <span id="gunText">cat</span>
+        <span class="gun-hint">ลากเล็ง → ปล่อยเพื่อยิง</span>
+      </div>
+      <div class="red-flash" id="redFlash"></div>
+    </div>
+  </section>
+
+  <!-- ============ GAME RESULT (NEW) ============ -->
+  <section id="gameResult" class="card gr-wrap" hidden>
+    <div class="gr-big" id="grBig">0</div>
+    <div class="gr-msg" id="grMsg"></div>
+    <div class="gr-detail" id="grDetail"></div>
+    <div class="btns">
+      <button class="btn primary" id="grAgainBtn">🔁 เล่นอีกครั้ง</button>
+      <button class="btn ghost" id="grOtherBtn">🎮 เกมอื่น</button>
+      <button class="btn ghost" id="grWordsBtn">📝 เลือกคำใหม่</button>
+      <button class="btn ghost" id="grHomeBtn">🏠 หน้าหลัก</button>
     </div>
   </section>
 
@@ -1586,13 +1864,14 @@ function initAudio(){
     if(actx.state === 'suspended') actx.resume();
   }catch(e){}
 }
-function tone(freq, start, dur, type, vol){
+function tone(freq, start, dur, type, vol, freqEnd){
   if(!actx) return;
   const t0 = actx.currentTime + start;
   const o = actx.createOscillator();
   const g = actx.createGain();
   o.type = type || 'sine';
   o.frequency.setValueAtTime(freq, t0);
+  if(freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd, t0 + dur);
   g.gain.setValueAtTime(0.0001, t0);
   g.gain.exponentialRampToValueAtTime(vol || 0.22, t0 + 0.02);
   g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
@@ -1613,32 +1892,84 @@ function sfxFinish(){
   [523.25,659.25,783.99,1046.50,1318.51].forEach((f,i)=> tone(f, i*0.12, 0.45, 'triangle', 0.18));
 }
 function sfxClick(){ initAudio(); tone(880, 0, 0.07, 'sine', 0.10); }
+/* NEW sounds */
+function sfxShoot(){
+  initAudio();
+  if(!actx) return;
+  const t0 = actx.currentTime;
+  const o = actx.createOscillator();
+  const g = actx.createGain();
+  o.type = 'square';
+  o.frequency.setValueAtTime(1200, t0);
+  o.frequency.exponentialRampToValueAtTime(180, t0 + 0.18);
+  g.gain.setValueAtTime(0.16, t0);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.18);
+  o.connect(g); g.connect(actx.destination);
+  o.start(t0); o.stop(t0 + 0.22);
+}
+function sfxExplode(){
+  initAudio();
+  if(!actx) return;
+  const t0 = actx.currentTime;
+  const dur = 0.5;
+  const bufSize = Math.floor(actx.sampleRate * dur);
+  const buffer = actx.createBuffer(1, bufSize, actx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for(let i=0;i<bufSize;i++){
+    data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufSize, 2);
+  }
+  const src = actx.createBufferSource();
+  src.buffer = buffer;
+  const g = actx.createGain();
+  g.gain.setValueAtTime(0.30, t0);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+  const f = actx.createBiquadFilter();
+  f.type = 'lowpass';
+  f.frequency.setValueAtTime(1200, t0);
+  f.frequency.exponentialRampToValueAtTime(120, t0 + dur);
+  src.connect(f); f.connect(g); g.connect(actx.destination);
+  src.start(t0); src.stop(t0 + dur + 0.05);
+}
+function sfxOops(){
+  initAudio();
+  if(!actx) return;
+  const t0 = actx.currentTime;
+  const o = actx.createOscillator();
+  const g = actx.createGain();
+  o.type = 'sine';
+  o.frequency.setValueAtTime(680, t0);
+  o.frequency.exponentialRampToValueAtTime(160, t0 + 0.42);
+  g.gain.setValueAtTime(0.22, t0);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.42);
+  o.connect(g); g.connect(actx.destination);
+  o.start(t0); o.stop(t0 + 0.48);
+}
+function sfxFlip(){ initAudio(); tone(700, 0, 0.07, 'sine', 0.10); }
+function sfxMatch(){
+  initAudio();
+  [659.25, 880, 1046.50].forEach((f,i)=> tone(f, i*0.08, 0.28, 'triangle', 0.18));
+}
+function sfxMiss(){ initAudio(); tone(300, 0, 0.13, 'triangle', 0.14); tone(200, 0.10, 0.20, 'triangle', 0.14); }
 
 /* =========================================================
-   เสียงพูด (Web Speech API) — เลือก Google voice ก่อน
+   เสียงพูด (Web Speech API)
    ========================================================= */
 let voices = [];
 let voicesReady = false;
-
 function refreshVoices(){
   if(!('speechSynthesis' in window)) return;
   const v = speechSynthesis.getVoices();
-  if(v && v.length){
-    voices = v;
-    voicesReady = true;
-  }
+  if(v && v.length){ voices = v; voicesReady = true; }
 }
 if('speechSynthesis' in window){
   refreshVoices();
   speechSynthesis.onvoiceschanged = refreshVoices;
-  // retry a few times for browsers that load voices asynchronously
   let tries = 0;
   const t = setInterval(() => {
     refreshVoices();
     if(voicesReady || ++tries > 20) clearInterval(t);
   }, 200);
 }
-
 function pickVoice(langLower){
   if(!voices.length) refreshVoices();
   const matching = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith(langLower));
@@ -1646,31 +1977,22 @@ function pickVoice(langLower){
   const scored = matching.map(v => {
     let score = 0;
     const name = (v.name || '').toLowerCase();
-    // ให้คะแนนสูงสุดกับ Google voice
     if(name.includes('google')) score += 1000;
     if(name.includes('natural'))  score += 120;
     if(name.includes('neural'))   score += 110;
     if(name.includes('enhanced')) score += 100;
-    if(name.includes('premium'))  score += 90;
     if(name.includes('online'))   score += 60;
-    // ภาษาอังกฤษ: ชอบ en-US ก่อน
     if(langLower === 'en'){
       if(v.lang.toLowerCase() === 'en-us') score += 20;
       if(v.lang.toLowerCase() === 'en-gb') score += 15;
     }
-    // ภาษาไทย
-    if(langLower === 'th'){
-      if(name.includes('thai') || name.includes('ไทย')) score += 30;
-    }
-    // หลีกเลี่ยงเสียงที่รู้ว่าไม่เป็นธรรมชาติ
+    if(langLower === 'th' && (name.includes('thai') || name.includes('ไทย'))) score += 30;
     if(name.includes('zira') || name.includes('david')) score -= 20;
     return {v, score};
   });
   scored.sort((a,b) => b.score - a.score);
   return scored[0].v;
 }
-
-let currentUtter = null;
 function speak(text, lang){
   if(!('speechSynthesis' in window)) return;
   try{
@@ -1678,17 +2000,8 @@ function speak(text, lang){
     const u = new SpeechSynthesisUtterance(text);
     u.lang = lang === 'th' ? 'th-TH' : 'en-US';
     const voice = pickVoice(lang === 'th' ? 'th' : 'en');
-    if(voice){
-      u.voice = voice;
-      // แสดง log เล็กน้อยว่าใช้ voice อะไร (debug)
-      // console.log('Using voice:', voice.name, voice.lang);
-    }
-    u.rate = 0.92;
-    u.pitch = 1.0;
-    u.volume = 1.0;
-    u.onstart = () => { currentUtter = u; };
-    u.onend   = () => { currentUtter = null; };
-    u.onerror = () => { currentUtter = null; };
+    if(voice) u.voice = voice;
+    u.rate = 0.92; u.pitch = 1.0; u.volume = 1.0;
     speechSynthesis.speak(u);
   }catch(e){}
 }
@@ -1705,34 +2018,28 @@ function shuffle(a){
   return arr;
 }
 
-/* แบ่งชุด: ชุดละ 20 ข้อ, เศษที่เหลือรวมกับชุดสุดท้าย */
+/* แบ่งชุดตามลำดับคำเดิม */
 function buildSetsForGrade(gradeId){
   const pool = POOLS[gradeId];
-  const shuffled = shuffle(pool);
-  const total = shuffled.length;
+  const total = pool.length;
   const SET_SIZE = 20;
   const sets = [];
   if(total <= SET_SIZE){
-    sets.push(shuffled);
+    sets.push(pool.slice());
   } else {
     const remainder = total % SET_SIZE;
     const numFull = Math.floor(total / SET_SIZE);
     if(remainder === 0){
-      for(let i=0;i<numFull;i++){
-        sets.push(shuffled.slice(i*SET_SIZE, (i+1)*SET_SIZE));
-      }
+      for(let i=0;i<numFull;i++) sets.push(pool.slice(i*SET_SIZE, (i+1)*SET_SIZE));
     } else {
-      // numFull - 1 ชุดเต็ม + ชุดสุดท้ายที่รวมเศษ
-      for(let i=0;i<numFull-1;i++){
-        sets.push(shuffled.slice(i*SET_SIZE, (i+1)*SET_SIZE));
-      }
-      sets.push(shuffled.slice((numFull-1)*SET_SIZE));
+      for(let i=0;i<numFull-1;i++) sets.push(pool.slice(i*SET_SIZE, (i+1)*SET_SIZE));
+      sets.push(pool.slice((numFull-1)*SET_SIZE));
     }
   }
   return sets;
 }
 
-/* สร้างคำถามจากชุดคำ */
+/* สร้างคำถาม 4 ตัวเลือกจากชุดคำ */
 function buildQuestionsFromWords(words, poolId){
   const pool = POOLS[poolId];
   const dupSet = DUP_TH[poolId];
@@ -1764,19 +2071,24 @@ function buildQuestionsFromWords(words, poolId){
    ========================================================= */
 const $ = id => document.getElementById(id);
 const homeEl = $('home'), setsEl = $('sets'), quizEl = $('quiz'), resultEl = $('result');
+const wordPickerEl = $('wordPicker'), gameChooserEl = $('gameChooser');
+const matchGameEl = $('matchGame'), choiceGameEl = $('choiceGame'), shootGameEl = $('shootGame');
+const gameResultEl = $('gameResult');
 
 let state = {
-  gradeId: null,
-  sets: [],
-  setIndex: 0,
-  questions: [],
-  idx: 0,
-  score: 0,
-  wrongList: [],
-  locked: false
+  gradeId: null, sets: [], setIndex: 0,
+  questions: [], idx: 0, score: 0, wrongList: [], locked: false
 };
 
-/* ---------- HOME ---------- */
+const custom = {
+  gradeId: null,
+  selectedEn: new Set(),
+  gameType: null,
+};
+
+/* =========================================================
+   HOME
+   ========================================================= */
 function renderGrades(){
   const wrap = $('gradeList');
   wrap.innerHTML = '';
@@ -1790,7 +2102,9 @@ function renderGrades(){
   });
 }
 
-/* ---------- SETS ---------- */
+/* =========================================================
+   SETS
+   ========================================================= */
 function showSets(gradeId){
   state.gradeId = gradeId;
   state.sets = buildSetsForGrade(gradeId);
@@ -1810,62 +2124,46 @@ function showSets(gradeId){
     grid.appendChild(b);
   });
 
-  homeEl.hidden = true;
-  setsEl.hidden = false;
-  quizEl.hidden = true;
-  resultEl.hidden = true;
+  // ===== ปุ่ม "สร้างเกมเอง" =====
+  const cg = document.createElement('button');
+  cg.className = 'set-btn custom-game';
+  cg.innerHTML = `<span class="set-no">🎮 สร้างเกมเอง</span><small>เลือกคำเอง · 3 เกมใหม่</small>`;
+  cg.onclick = () => { sfxClick(); showWordPicker(gradeId); };
+  grid.appendChild(cg);
+
+  showScreen('sets');
 }
 
-/* ---------- START SET ---------- */
+/* =========================================================
+   QUIZ (existing)
+   ========================================================= */
 function startSet(setIndex){
   sfxClick();
   if('speechSynthesis' in window) speechSynthesis.cancel();
   state.setIndex = setIndex;
   state.questions = buildQuestionsFromWords(state.sets[setIndex], state.gradeId);
-  state.idx = 0;
-  state.score = 0;
-  state.wrongList = [];
-  state.locked = false;
-  homeEl.hidden = true;
-  setsEl.hidden = true;
-  resultEl.hidden = true;
-  quizEl.hidden = false;
+  state.idx = 0; state.score = 0; state.wrongList = []; state.locked = false;
+  showScreen('quiz');
   renderQuestion();
 }
-
-/* ---------- QUIZ ---------- */
 function renderQuestion(){
   state.locked = false;
   const q = state.questions[state.idx];
   const totalQ = state.questions.length;
-
   $('setTxt').textContent = `ชุดที่ ${state.setIndex+1}`;
   $('progressTxt').textContent = `ข้อ ${state.idx+1} / ${totalQ}`;
   $('scoreTxt').textContent = `คะแนน ${state.score}`;
   $('barFill').style.width = (state.idx / totalQ * 100) + '%';
-
   $('askTxt').textContent = q.ask;
   const qw = $('qword');
   qw.textContent = q.prompt;
   qw.className = 'qword' + (q.reverse ? ' th' : '');
-
   const spk = $('spkBtn');
   if(!q.reverse){
-    spk.hidden = false;
-    spk.classList.remove('speaking');
-    spk.onclick = (e) => {
-      e.stopPropagation();
-      spk.classList.add('speaking');
-      speak(q.target.en, 'en');
-      setTimeout(() => spk.classList.remove('speaking'), 1200);
-    };
-  } else {
-    spk.hidden = true;
-  }
-
-  $('fb').textContent = '';
-  $('fb').className = 'fb';
-
+    spk.hidden = false; spk.classList.remove('speaking');
+    spk.onclick = (e) => { e.stopPropagation(); spk.classList.add('speaking'); speak(q.target.en, 'en'); setTimeout(() => spk.classList.remove('speaking'), 1200); };
+  } else spk.hidden = true;
+  $('fb').textContent = ''; $('fb').className = 'fb';
   const box = $('opts');
   box.innerHTML = '';
   q.options.forEach(op => {
@@ -1875,8 +2173,6 @@ function renderQuestion(){
     btn.onclick = () => answer(btn, op, q);
     box.appendChild(btn);
   });
-
-  // auto-speak English word for EN→TH questions
   if(!q.reverse){
     const wordToSay = q.target.en;
     setTimeout(() => {
@@ -1889,67 +2185,48 @@ function renderQuestion(){
     }, 420);
   }
 }
-
-/* ---------- ANSWER ---------- */
 function answer(btn, op, q){
   if(state.locked) return;
   state.locked = true;
   if('speechSynthesis' in window) speechSynthesis.cancel();
-
   const isCorrect = (op.en === q.target.en);
   const buttons = [...document.querySelectorAll('.opt')];
   buttons.forEach(b => b.disabled = true);
-
   if(isCorrect){
-    btn.classList.add('right');
-    state.score++;
-    sfxCorrect();
-    $('fb').textContent = '🎉 ถูกต้อง! เก่งมากเลย';
-    $('fb').className = 'fb ok';
-    // ออกเสียงคำภาษาอังกฤษด้วย Google voice
+    btn.classList.add('right'); state.score++; sfxCorrect();
+    $('fb').textContent = '🎉 ถูกต้อง! เก่งมากเลย'; $('fb').className = 'fb ok';
     setTimeout(() => speak(q.target.en, 'en'), 480);
   } else {
-    btn.classList.add('wrong');
-    sfxWrong();
-    $('fb').textContent = `❌ ยังไม่ถูก คำตอบคือ "${q.correctText}"`;
-    $('fb').className = 'fb no';
+    btn.classList.add('wrong'); sfxWrong();
+    $('fb').textContent = `❌ ยังไม่ถูก คำตอบคือ "${q.correctText}"`; $('fb').className = 'fb no';
     buttons.forEach(b => {
       if(b.textContent === q.correctText) b.classList.add('right');
       else if(b !== btn) b.classList.add('fade');
     });
     state.wrongList.push(q);
-    // ออกเสียงคำตอบที่ถูกต้อง
     setTimeout(() => speak(q.target.en, 'en'), 650);
   }
-
   $('scoreTxt').textContent = `คะแนน ${state.score}`;
-
   setTimeout(() => {
     state.idx++;
     if(state.idx >= state.questions.length) showResult();
     else renderQuestion();
   }, isCorrect ? 1300 : 2100);
 }
-
-/* ---------- RESULT ---------- */
 function showResult(){
-  quizEl.hidden = true;
-  resultEl.hidden = false;
+  showScreen('result');
   sfxFinish();
-
   const total = state.questions.length;
   const pct = Math.round(state.score / total * 100);
   $('rScore').textContent = `${state.score}/${total}`;
   $('rPct').textContent = `ชุดที่ ${state.setIndex+1} • คิดเป็น ${pct}%`;
-
   let msg;
-  if(pct === 100)      msg = '🏆 สุดยอด! ตอบถูกทั้งหมดเลย';
-  else if(pct >= 80)   msg = '🌟 ยอดเยี่ยมมาก! ใกล้เต็มแล้ว';
-  else if(pct >= 60)   msg = '👍 ดีมาก! ฝึกอีกนิดจะเก่งสุด ๆ';
-  else if(pct >= 40)   msg = '💪 สู้ต่อไป! ลองทบทวนคำศัพท์อีกครั้งนะ';
-  else                 msg = '📚 ไม่เป็นไรเลย มาฝึกใหม่กันอีกครั้ง!';
+  if(pct === 100) msg = '🏆 สุดยอด! ตอบถูกทั้งหมดเลย';
+  else if(pct >= 80) msg = '🌟 ยอดเยี่ยมมาก! ใกล้เต็มแล้ว';
+  else if(pct >= 60) msg = '👍 ดีมาก! ฝึกอีกนิดจะเก่งสุด ๆ';
+  else if(pct >= 40) msg = '💪 สู้ต่อไป! ลองทบทวนคำศัพท์อีกครั้งนะ';
+  else msg = '📚 ไม่เป็นไรเลย มาฝึกใหม่กันอีกครั้ง!';
   $('rMsg').textContent = msg;
-
   const rv = $('rReview');
   if(state.wrongList.length === 0){
     rv.innerHTML = '<h3>🎊 ไม่มีข้อที่ตอบผิดเลย</h3>';
@@ -1961,6 +2238,752 @@ function showResult(){
 }
 
 /* =========================================================
+   WORD PICKER (NEW)
+   ========================================================= */
+function showWordPicker(gradeId){
+  custom.gradeId = gradeId;
+  custom.selectedEn = new Set();
+  const grade = GRADES.find(g => g.id === gradeId);
+  const pool = POOLS[gradeId];
+
+  $('wpTitle').textContent = `🎮 สร้างเกมเอง · ${grade.name}`;
+  $('wpSub').textContent = `เลือกอย่างน้อย 4 คำ (มีทั้งหมด ${pool.length} คำ)`;
+
+  // Quick action chips
+  const actions = $('wpActions');
+  actions.innerHTML = '';
+  const sets = buildSetsForGrade(gradeId);
+  sets.forEach((setWords, i) => {
+    const chip = document.createElement('button');
+    chip.className = 'wp-chip';
+    chip.textContent = `✅ เลือกชุดที่ ${i+1} (${setWords.length} คำ)`;
+    chip.onclick = () => { sfxClick(); selectSetWords(setWords); };
+    actions.appendChild(chip);
+  });
+  const allBtn = document.createElement('button');
+  allBtn.className = 'wp-chip all';
+  allBtn.textContent = `⭐ เลือกทั้งหมด (${pool.length} คำ)`;
+  allBtn.onclick = () => { sfxClick(); pool.forEach(w => custom.selectedEn.add(w.en)); updateWPUI(); };
+  actions.appendChild(allBtn);
+
+  const clr = document.createElement('button');
+  clr.className = 'wp-chip clear';
+  clr.textContent = `🗑️ ล้างทั้งหมด`;
+  clr.onclick = () => { sfxClick(); custom.selectedEn.clear(); updateWPUI(); };
+  actions.appendChild(clr);
+
+  // Grid of all words
+  const grid = $('wpGrid');
+  grid.innerHTML = '';
+  pool.forEach(w => {
+    const c = document.createElement('button');
+    c.className = 'wp-card';
+    c.dataset.en = w.en;
+    c.innerHTML = `<div class="wp-en">${escapeHtml(w.en)}</div><div class="wp-th">${escapeHtml(w.th)}</div>`;
+    c.onclick = () => {
+      if(custom.selectedEn.has(w.en)) custom.selectedEn.delete(w.en);
+      else custom.selectedEn.add(w.en);
+      sfxClick();
+      updateWPUI();
+    };
+    grid.appendChild(c);
+  });
+
+  updateWPUI();
+  showScreen('wordPicker');
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+function selectSetWords(setWords){
+  custom.selectedEn.clear();
+  setWords.forEach(w => custom.selectedEn.add(w.en));
+  updateWPUI();
+}
+
+function updateWPUI(){
+  document.querySelectorAll('.wp-card').forEach(c => {
+    if(custom.selectedEn.has(c.dataset.en)) c.classList.add('selected');
+    else c.classList.remove('selected');
+  });
+  const n = custom.selectedEn.size;
+  const cnt = $('wpCount');
+  cnt.textContent = `เลือกแล้ว ${n} คำ`;
+  cnt.className = 'wp-count' + (n < 4 ? ' warn' : '');
+  $('wpNextBtn').disabled = n < 4;
+}
+
+/* =========================================================
+   GAME CHOOSER
+   ========================================================= */
+function showGameChooser(){
+  const n = custom.selectedEn.size;
+  $('gcSub').textContent = `เลือกคำไว้ ${n} คำ — เลือกเกมที่ต้องการเล่น`;
+  showScreen('gameChooser');
+}
+
+document.querySelectorAll('.game-card').forEach(card => {
+  card.onclick = () => {
+    sfxClick();
+    const g = card.dataset.game;
+    custom.gameType = g;
+    if(g === 'match') startMatchGame();
+    else if(g === 'choice') startChoiceGame();
+    else if(g === 'shoot') startShootGame();
+  };
+});
+
+function getSelectedWords(){
+  const pool = POOLS[custom.gradeId];
+  return pool.filter(w => custom.selectedEn.has(w.en));
+}
+
+/* =========================================================
+   MATCHING GAME (NEW)
+   ========================================================= */
+const match = {
+  timer: 0, timerId: null, pairs: 0, totalPairs: 0,
+  firstCard: null, secondCard: null, lock: false, startTime: 0,
+};
+
+function startMatchGame(){
+  const words = getSelectedWords();
+  if(words.length < 2){ alert('ต้องเลือกอย่างน้อย 2 คำ'); return; }
+  match.pairs = 0;
+  match.totalPairs = words.length;
+  match.firstCard = null;
+  match.secondCard = null;
+  match.lock = false;
+  match.startTime = 0;
+  clearInterval(match.timerId);
+  match.timerId = null;
+  $('mgTimer').textContent = '⏱️ 00:00';
+  $('mgPairs').textContent = `คู่ 0 / ${match.totalPairs}`;
+
+  // Build cards: for each word, make EN card + TH card
+  const cards = [];
+  words.forEach((w, idx) => {
+    cards.push({id: 'e'+idx, pairId: 'p'+idx, text: w.en, type: 'en', data: w});
+    cards.push({id: 't'+idx, pairId: 'p'+idx, text: w.th, type: 'th', data: w});
+  });
+  const shuffled = shuffle(cards);
+
+  const grid = $('mgGrid');
+  grid.innerHTML = '';
+  // Choose cols: if many cards use smaller minmax
+  const totalCards = shuffled.length;
+  let minSize = 85;
+  if(totalCards > 24) minSize = 70;
+  if(totalCards > 40) minSize = 58;
+  grid.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minSize}px, 1fr))`;
+
+  shuffled.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'mcard';
+    el.dataset.pairId = c.pairId;
+    el.dataset.cardId = c.id;
+    el.dataset.type = c.type;
+    el.innerHTML = `<div class="mcard-inner">
+      <div class="mcard-front">?</div>
+      <div class="mcard-back">${escapeHtml(c.text)}</div>
+    </div>`;
+    el.onclick = () => handleMatchCardClick(el);
+    grid.appendChild(el);
+  });
+
+  showScreen('matchGame');
+}
+
+function handleMatchCardClick(el){
+  if(match.lock) return;
+  if(el.classList.contains('flipped') || el.classList.contains('matched')) return;
+  // Start timer on first flip
+  if(!match.timerId){
+    match.startTime = Date.now();
+    match.timerId = setInterval(() => {
+      const sec = Math.floor((Date.now() - match.startTime) / 1000);
+      const m = String(Math.floor(sec/60)).padStart(2,'0');
+      const s = String(sec%60).padStart(2,'0');
+      $('mgTimer').textContent = `⏱️ ${m}:${s}`;
+    }, 250);
+  }
+
+  sfxFlip();
+  el.classList.add('flipped');
+
+  if(!match.firstCard){
+    match.firstCard = el;
+    return;
+  }
+  // Second card
+  match.secondCard = el;
+  match.lock = true;
+  const a = match.firstCard, b = match.secondCard;
+  // Match if same pairId AND different type (en vs th)
+  if(a.dataset.pairId === b.dataset.pairId && a.dataset.type !== b.dataset.type){
+    // matched!
+    setTimeout(() => {
+      sfxMatch();
+      a.classList.add('matched');
+      b.classList.add('matched');
+      match.pairs++;
+      $('mgPairs').textContent = `คู่ ${match.pairs} / ${match.totalPairs}`;
+      match.firstCard = null; match.secondCard = null; match.lock = false;
+      if(match.pairs >= match.totalPairs) finishMatchGame();
+    }, 350);
+  } else {
+    // wrong
+    setTimeout(() => {
+      sfxMiss();
+      a.classList.add('wrong');
+      b.classList.add('wrong');
+    }, 200);
+    setTimeout(() => {
+      a.classList.remove('flipped','wrong');
+      b.classList.remove('flipped','wrong');
+      match.firstCard = null; match.secondCard = null; match.lock = false;
+    }, 1200);
+  }
+}
+
+function finishMatchGame(){
+  clearInterval(match.timerId);
+  match.timerId = null;
+  const sec = Math.floor((Date.now() - match.startTime) / 1000);
+  const m = Math.floor(sec/60), s = sec%60;
+  const timeStr = `${m} นาที ${s} วินาที`;
+  sfxFinish();
+  $('grBig').textContent = '🎉';
+  $('grMsg').textContent = 'จับคู่ครบทั้งหมด!';
+  $('grDetail').textContent = `จับคู่ ${match.totalPairs} คู่ · ใช้เวลา ${timeStr}`;
+  showScreen('gameResult');
+}
+
+/* =========================================================
+   CHOICE GAME (NEW)
+   ========================================================= */
+const choice = { questions: [], idx: 0, score: 0, locked: false };
+
+function startChoiceGame(){
+  const words = getSelectedWords();
+  if(words.length < 4){ alert('ต้องเลือกอย่างน้อย 4 คำ'); return; }
+  choice.questions = buildQuestionsFromWords(words, custom.gradeId);
+  choice.idx = 0;
+  choice.score = 0;
+  choice.locked = false;
+  showScreen('choiceGame');
+  renderChoiceQuestion();
+}
+
+function renderChoiceQuestion(){
+  choice.locked = false;
+  const q = choice.questions[choice.idx];
+  const totalQ = choice.questions.length;
+  $('chProgress').textContent = `ข้อ ${choice.idx+1} / ${totalQ}`;
+  $('chScore').textContent = `คะแนน ${choice.score}`;
+  $('chBarFill').style.width = (choice.idx / totalQ * 100) + '%';
+  $('chAskTxt').textContent = q.ask;
+  const qw = $('chQword');
+  qw.textContent = q.prompt;
+  qw.className = 'qword' + (q.reverse ? ' th' : '');
+  const spk = $('chSpkBtn');
+  if(!q.reverse){
+    spk.hidden = false; spk.classList.remove('speaking');
+    spk.onclick = (e) => { e.stopPropagation(); spk.classList.add('speaking'); speak(q.target.en, 'en'); setTimeout(() => spk.classList.remove('speaking'), 1200); };
+  } else spk.hidden = true;
+  $('chFb').textContent = ''; $('chFb').className = 'fb';
+  const box = $('chOpts');
+  box.innerHTML = '';
+  q.options.forEach(op => {
+    const btn = document.createElement('button');
+    btn.className = 'opt';
+    btn.textContent = q.reverse ? op.en : op.th;
+    btn.onclick = () => answerChoice(btn, op, q);
+    box.appendChild(btn);
+  });
+  if(!q.reverse){
+    const wordToSay = q.target.en;
+    setTimeout(() => {
+      if(!choice.locked && !choiceGameEl.hidden){
+        speak(wordToSay, 'en');
+        const s = $('chSpkBtn');
+        s.classList.add('speaking');
+        setTimeout(() => s.classList.remove('speaking'), 1200);
+      }
+    }, 400);
+  }
+}
+
+function answerChoice(btn, op, q){
+  if(choice.locked) return;
+  choice.locked = true;
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  const isCorrect = (op.en === q.target.en);
+  const buttons = [...document.querySelectorAll('#chOpts .opt')];
+  buttons.forEach(b => b.disabled = true);
+  if(isCorrect){
+    btn.classList.add('right'); choice.score++; sfxCorrect();
+    $('chFb').textContent = '🎉 ถูกต้อง!'; $('chFb').className = 'fb ok';
+    setTimeout(() => speak(q.target.en, 'en'), 450);
+  } else {
+    btn.classList.add('wrong'); sfxWrong();
+    $('chFb').textContent = `❌ ยังไม่ถูก คำตอบคือ "${q.correctText}"`; $('chFb').className = 'fb no';
+    buttons.forEach(b => {
+      if(b.textContent === q.correctText) b.classList.add('right');
+      else if(b !== btn) b.classList.add('fade');
+    });
+    setTimeout(() => speak(q.target.en, 'en'), 600);
+  }
+  $('chScore').textContent = `คะแนน ${choice.score}`;
+  setTimeout(() => {
+    choice.idx++;
+    if(choice.idx >= choice.questions.length){
+      finishChoiceGame();
+    } else renderChoiceQuestion();
+  }, isCorrect ? 1300 : 2100);
+}
+
+function finishChoiceGame(){
+  sfxFinish();
+  const total = choice.questions.length;
+  const pct = Math.round(choice.score / total * 100);
+  $('grBig').textContent = `${choice.score}/${total}`;
+  let msg;
+  if(pct === 100) msg = '🏆 สุดยอด! ตอบถูกทั้งหมด';
+  else if(pct >= 80) msg = '🌟 ยอดเยี่ยมมาก!';
+  else if(pct >= 60) msg = '👍 ดีมาก!';
+  else if(pct >= 40) msg = '💪 สู้ต่อไป!';
+  else msg = '📚 มาฝึกใหม่กันอีกครั้ง!';
+  $('grMsg').textContent = msg;
+  $('grDetail').textContent = `ทายคำ ${total} ข้อ · คิดเป็น ${pct}%`;
+  showScreen('gameResult');
+}
+
+/* =========================================================
+   SHOOTING GAME (NEW)
+   ========================================================= */
+const shoot = {
+  pool: [],
+  targets: [],       // {el, data, isCorrect, x, y, speed, alive}
+  current: null,     // {en, th, reverse}
+  score: 0,
+  lives: 3,
+  running: false,
+  rafId: null,
+  lastFrame: 0,
+  aiming: false,
+  aimStartX: 0, aimStartY: 0,
+  aimEndX: 0, aimEndY: 0,
+  gunX: 0, gunY: 0,
+  bullets: [],       // active bullets
+  cooldown: 0,
+  playfieldW: 0, playfieldH: 0,
+  TARGET_COUNT: 4,
+};
+
+function startShootGame(){
+  const words = getSelectedWords();
+  if(words.length < 4){ alert('ต้องเลือกอย่างน้อย 4 คำ'); return; }
+  shoot.pool = words.slice();
+  shoot.score = 0;
+  shoot.lives = 3;
+  shoot.targets = [];
+  shoot.bullets = [];
+  shoot.cooldown = 0;
+  shoot.running = true;
+
+  $('shLives').textContent = '❤️❤️❤️';
+  $('shScore').textContent = 'คะแนน 0';
+
+  const pf = $('playfield');
+  // Clear old target/gun children except known ones
+  pf.querySelectorAll('.target').forEach(t => t.remove());
+  pf.querySelectorAll('.bullet').forEach(t => t.remove());
+  pf.querySelectorAll('.score-pop').forEach(t => t.remove());
+  pf.querySelectorAll('.gover').forEach(t => t.remove());
+
+  showScreen('shootGame');
+
+  // Delay sizing to let layout settle
+  requestAnimationFrame(() => {
+    const rect = pf.getBoundingClientRect();
+    shoot.playfieldW = rect.width;
+    shoot.playfieldH = rect.height;
+    shoot.gunX = rect.width / 2;
+    shoot.gunY = rect.height - 55;
+
+    nextShootRound();
+
+    shoot.lastFrame = performance.now();
+    if(shoot.rafId) cancelAnimationFrame(shoot.rafId);
+    shoot.rafId = requestAnimationFrame(shootLoop);
+  });
+}
+
+function nextShootRound(){
+  // Reset targets, choose new question
+  const reverse = Math.random() < 0.5;
+  const correct = shoot.pool[Math.floor(Math.random() * shoot.pool.length)];
+  shoot.current = { en: correct.en, th: correct.th, reverse };
+
+  // Show on gun
+  const bulletText = reverse ? correct.th : correct.en;
+  $('gunText').textContent = bulletText;
+
+  // Remove existing targets
+  shoot.targets.forEach(t => t.el.remove());
+  shoot.targets = [];
+
+  // Pick 3 distractors (or N-1 if pool smaller than 4)
+  const distractCount = Math.min(3, shoot.pool.length - 1);
+  const others = shuffle(shoot.pool.filter(w => w.en !== correct.en)).slice(0, distractCount);
+  const allTargets = [{data: correct, isCorrect: true}, ...others.map(w => ({data: w, isCorrect: false}))];
+  const shuffledTargets = shuffle(allTargets);
+
+  // Spawn each at random x with staggered y
+  const pf = $('playfield');
+  shuffledTargets.forEach((t, i) => {
+    spawnTarget(t.data, t.isCorrect, i);
+  });
+}
+
+function spawnTarget(data, isCorrect, index){
+  const pf = $('playfield');
+  const el = document.createElement('div');
+  el.className = 'target';
+  const text = shoot.current.reverse ? data.en : data.th;
+  el.textContent = text;
+
+  // Random x: split into 4 columns to avoid overlap
+  const cols = shoot.TARGET_COUNT;
+  const colWidth = 100 / cols;
+  const col = index % cols;
+  const xPct = col * colWidth + Math.random() * (colWidth * 0.7) + colWidth * 0.15;
+  const startY = -60 - (index * 80); // stagger above
+  el.style.left = xPct + '%';
+  el.style.top = startY + 'px';
+  pf.appendChild(el);
+
+  shoot.targets.push({
+    el, data, isCorrect,
+    x: 0, y: startY,
+    speed: 0.6 + Math.random() * 0.5,  // px per frame at 60fps
+    xPct,
+    alive: true,
+  });
+}
+
+function shootLoop(now){
+  if(!shoot.running) return;
+  const dt = Math.min(50, now - shoot.lastFrame);
+  shoot.lastFrame = now;
+
+  const pf = $('playfield');
+  const rect = pf.getBoundingClientRect();
+  shoot.playfieldW = rect.width;
+  shoot.playfieldH = rect.height;
+  shoot.gunX = rect.width / 2;
+  shoot.gunY = rect.height - 55;
+
+  // Move targets down
+  shoot.targets.forEach(t => {
+    if(!t.alive) return;
+    t.y += t.speed * (dt / 16.67);
+    // if past bottom, wrap to top
+    if(t.y > shoot.playfieldH + 40){
+      t.y = -60;
+      // Re-randomize x within its column
+      const cols = shoot.TARGET_COUNT;
+      const colWidth = 100 / cols;
+      const col = Math.floor(Math.random() * cols);
+      t.xPct = col * colWidth + Math.random() * (colWidth * 0.7) + colWidth * 0.15;
+    }
+    t.el.style.top = t.y + 'px';
+    t.el.style.left = t.xPct + '%';
+  });
+
+  // Move bullets
+  for(let i = shoot.bullets.length - 1; i >= 0; i--){
+    const b = shoot.bullets[i];
+    b.x += b.vx * (dt / 16.67);
+    b.y += b.vy * (dt / 16.67);
+    b.el.style.left = b.x + 'px';
+    b.el.style.top = b.y + 'px';
+
+    // Collision check
+    let hit = null;
+    for(const t of shoot.targets){
+      if(!t.alive) continue;
+      const tr = t.el.getBoundingClientRect();
+      const pfr = pf.getBoundingClientRect();
+      const tx = tr.left - pfr.left + tr.width/2;
+      const ty = tr.top - pfr.top + tr.height/2;
+      const rad = Math.max(tr.width, tr.height)/2 + 8;
+      const dx = b.x - tx, dy = b.y - ty;
+      if(dx*dx + dy*dy < rad*rad){
+        hit = t; break;
+      }
+    }
+
+    // Off-screen?
+    const offscreen = b.x < -50 || b.x > shoot.playfieldW + 50 || b.y < -50 || b.y > shoot.playfieldH + 50;
+
+    if(hit){
+      // Remove bullet
+      b.el.remove();
+      shoot.bullets.splice(i, 1);
+      resolveHit(hit, b.x, b.y);
+    } else if(offscreen){
+      b.el.remove();
+      shoot.bullets.splice(i, 1);
+    }
+  }
+
+  // Cooldown
+  if(shoot.cooldown > 0) shoot.cooldown -= dt;
+
+  // Draw aim line
+  drawAim();
+
+  shoot.rafId = requestAnimationFrame(shootLoop);
+}
+
+function drawAim(){
+  const svg = $('aimSvg');
+  if(!shoot.aiming){
+    svg.innerHTML = '';
+    return;
+  }
+  const x1 = shoot.gunX, y1 = shoot.gunY;
+  const x2 = shoot.aimEndX, y2 = shoot.aimEndY;
+  // Extend the line a bit past the endpoint
+  const dx = x2 - x1, dy = y2 - y1;
+  const len = Math.hypot(dx, dy) || 1;
+  const ext = 300;
+  const x3 = x1 + dx / len * (len + ext);
+  const y3 = y1 + dy / len * (len + ext);
+  svg.innerHTML = `<line class="aim-line" x1="${x1}" y1="${y1}" x2="${x3}" y2="${y3}" />`;
+}
+
+function shootFire(){
+  if(shoot.cooldown > 0) return;
+  if(!shoot.aiming) return;
+  const dx = shoot.aimEndX - shoot.gunX;
+  const dy = shoot.aimEndY - shoot.gunY;
+  const len = Math.hypot(dx, dy);
+  if(len < 20) return; // too small
+  const speed = 18;
+  const vx = dx / len * speed;
+  const vy = dy / len * speed;
+
+  const pf = $('playfield');
+  const bulletEl = document.createElement('div');
+  bulletEl.className = 'bullet';
+  bulletEl.style.left = shoot.gunX + 'px';
+  bulletEl.style.top = shoot.gunY + 'px';
+  pf.appendChild(bulletEl);
+
+  shoot.bullets.push({ el: bulletEl, x: shoot.gunX, y: shoot.gunY, vx, vy });
+  sfxShoot();
+  shoot.cooldown = 250;
+}
+
+function resolveHit(target, hx, hy){
+  if(!target.alive) return;
+  if(target.isCorrect){
+    // Correct!
+    sfxExplode();
+    target.alive = false;
+    target.el.classList.add('popping');
+    setTimeout(() => target.el.remove(), 400);
+    shoot.score += 10;
+    $('shScore').textContent = `คะแนน ${shoot.score}`;
+    // Score pop
+    const pop = document.createElement('div');
+    pop.className = 'score-pop';
+    pop.textContent = '+10';
+    pop.style.left = hx + 'px';
+    pop.style.top = hy + 'px';
+    $('playfield').appendChild(pop);
+    setTimeout(() => pop.remove(), 1000);
+    // Next round after short delay
+    setTimeout(() => {
+      if(shoot.running) nextShootRound();
+    }, 500);
+  } else {
+    // Wrong
+    sfxOops();
+    shoot.lives--;
+    updateLives();
+    // Flash
+    const rf = $('redFlash');
+    rf.classList.remove('active');
+    void rf.offsetWidth;
+    rf.classList.add('active');
+    // Remove the wrong target and spawn a new wrong one
+    target.alive = false;
+    target.el.classList.add('popping');
+    setTimeout(() => target.el.remove(), 400);
+    // Respawn one wrong target after a short delay
+    setTimeout(() => {
+      if(!shoot.running) return;
+      // Pick a wrong answer that isn't already on screen and isn't the correct
+      const onScreen = new Set(shoot.targets.filter(t => t.alive).map(t => t.data.en));
+      onScreen.add(shoot.current.en);
+      const candidates = shoot.pool.filter(w => !onScreen.has(w.en));
+      if(candidates.length > 0){
+        const pick = candidates[Math.floor(Math.random() * candidates.length)];
+        // Find a free column
+        const usedCols = new Set();
+        shoot.targets.forEach(t => {
+          if(!t.alive) return;
+          usedCols.add(Math.floor(t.xPct / 25));
+        });
+        let col = 0;
+        for(let c=0;c<4;c++){ if(!usedCols.has(c)){ col = c; break; } }
+        // Replace in targets array
+        const newT = {el: null, data: pick, isCorrect: false, x:0, y:-80, speed: 0.6 + Math.random()*0.5, xPct: 0, alive: true};
+        newT.xPct = col * 25 + Math.random()*17 + 4;
+        const el = document.createElement('div');
+        el.className = 'target';
+        el.textContent = shoot.current.reverse ? pick.en : pick.th;
+        el.style.left = newT.xPct + '%';
+        el.style.top = '-80px';
+        $('playfield').appendChild(el);
+        newT.el = el;
+        // Remove old dead target from array
+        shoot.targets = shoot.targets.filter(t => t.alive);
+        shoot.targets.push(newT);
+      }
+    }, 300);
+
+    if(shoot.lives <= 0){
+      setTimeout(() => gameOverShoot(), 600);
+    }
+  }
+}
+
+function updateLives(){
+  const full = '❤️'.repeat(Math.max(0, shoot.lives));
+  const empty = '🖤'.repeat(Math.max(0, 3 - shoot.lives));
+  $('shLives').textContent = full + empty;
+}
+
+function gameOverShoot(){
+  shoot.running = false;
+  if(shoot.rafId) cancelAnimationFrame(shoot.rafId);
+  shoot.rafId = null;
+  const pf = $('playfield');
+  const gover = document.createElement('div');
+  gover.className = 'gover';
+  gover.innerHTML = `
+    <h2>💥 จบเกม!</h2>
+    <p>คะแนนรวม: <b style="color:#fbbf24;font-size:1.5rem">${shoot.score}</b></p>
+    <div class="btns">
+      <button class="btn primary" id="shAgainBtn">🔁 เล่นอีกครั้ง</button>
+      <button class="btn ghost" id="shOtherBtn">🎮 เกมอื่น</button>
+      <button class="btn ghost" id="shWordsBtn">📝 เลือกคำใหม่</button>
+      <button class="btn ghost" id="shHomeBtn">🏠 หน้าหลัก</button>
+    </div>
+  `;
+  pf.appendChild(gover);
+  gover.querySelector('#shAgainBtn').onclick = () => { sfxClick(); gover.remove(); startShootGame(); };
+  gover.querySelector('#shOtherBtn').onclick = () => { sfxClick(); gover.remove(); shoot.running = false; if(shoot.rafId) cancelAnimationFrame(shoot.rafId); showGameChooser(); };
+  gover.querySelector('#shWordsBtn').onclick = () => { sfxClick(); gover.remove(); shoot.running = false; if(shoot.rafId) cancelAnimationFrame(shoot.rafId); showWordPicker(custom.gradeId); };
+  gover.querySelector('#shHomeBtn').onclick = () => { sfxClick(); gover.remove(); shoot.running = false; if(shoot.rafId) cancelAnimationFrame(shoot.rafId); showHome(); };
+  sfxFinish();
+}
+
+/* Playfield input handling */
+(function setupPlayfieldInput(){
+  const pf = $('playfield');
+
+  function getPos(e){
+    const rect = pf.getBoundingClientRect();
+    let x, y;
+    if(e.touches && e.touches[0]){
+      x = e.touches[0].clientX - rect.left;
+      y = e.touches[0].clientY - rect.top;
+    } else {
+      x = e.clientX - rect.left;
+      y = e.clientY - rect.top;
+    }
+    return {x, y};
+  }
+
+  function onDown(e){
+    if(!shoot.running) return;
+    e.preventDefault();
+    const p = getPos(e);
+    shoot.aiming = true;
+    shoot.aimEndX = p.x;
+    shoot.aimEndY = p.y;
+  }
+  function onMove(e){
+    if(!shoot.aiming) return;
+    e.preventDefault();
+    const p = getPos(e);
+    shoot.aimEndX = p.x;
+    shoot.aimEndY = p.y;
+  }
+  function onUp(e){
+    if(!shoot.aiming) return;
+    e.preventDefault();
+    shoot.aiming = false;
+    shootFire();
+    const svg = $('aimSvg');
+    svg.innerHTML = '';
+  }
+
+  pf.addEventListener('mousedown', onDown);
+  pf.addEventListener('mousemove', onMove);
+  pf.addEventListener('mouseup', onUp);
+  pf.addEventListener('mouseleave', () => { if(shoot.aiming){ shoot.aiming = false; $('aimSvg').innerHTML = ''; } });
+  pf.addEventListener('touchstart', onDown, {passive: false});
+  pf.addEventListener('touchmove', onMove, {passive: false});
+  pf.addEventListener('touchend', onUp, {passive: false});
+  pf.addEventListener('touchcancel', onUp, {passive: false});
+})();
+
+/* =========================================================
+   SCREEN MANAGER
+   ========================================================= */
+function showScreen(name){
+  const screens = {
+    home: homeEl, sets: setsEl, quiz: quizEl, result: resultEl,
+    wordPicker: wordPickerEl, gameChooser: gameChooserEl,
+    matchGame: matchGameEl, choiceGame: choiceGameEl, shootGame: shootGameEl,
+    gameResult: gameResultEl,
+  };
+  for(const k in screens) screens[k].hidden = true;
+  if(screens[name]) screens[name].hidden = false;
+
+  // If leaving match, stop timer
+  if(name !== 'matchGame'){
+    if(match.timerId){ clearInterval(match.timerId); match.timerId = null; }
+  }
+  // If leaving shoot, stop raf
+  if(name !== 'shootGame'){
+    shoot.running = false;
+    if(shoot.rafId){ cancelAnimationFrame(shoot.rafId); shoot.rafId = null; }
+    shoot.bullets.forEach(b => b.el.remove());
+    shoot.bullets = [];
+    shoot.targets.forEach(t => { if(t.el && t.el.parentNode) t.el.remove(); });
+    shoot.targets = [];
+    $('aimSvg').innerHTML = '';
+    const gover = $('playfield').querySelector('.gover');
+    if(gover) gover.remove();
+  }
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+}
+
+function showHome(){
+  showScreen('home');
+}
+
+/* =========================================================
    Event handlers
    ========================================================= */
 $('backHomeBtn').onclick = () => { sfxClick(); showHome(); };
@@ -1968,19 +2991,32 @@ $('againBtn').onclick = () => { sfxClick(); startSet(state.setIndex); };
 $('chooseSetBtn').onclick = () => { sfxClick(); showSets(state.gradeId); };
 $('homeBtn').onclick = () => { sfxClick(); showHome(); };
 
-function showHome(){
-  if('speechSynthesis' in window) speechSynthesis.cancel();
-  homeEl.hidden = false;
-  setsEl.hidden = true;
-  quizEl.hidden = true;
-  resultEl.hidden = true;
-}
+$('wpBackBtn').onclick = () => { sfxClick(); showSets(custom.gradeId); };
+$('wpNextBtn').onclick = () => {
+  if(custom.selectedEn.size < 4) return;
+  sfxClick();
+  showGameChooser();
+};
 
-/* ปลดล็อกเสียงเมื่อผู้ใช้แตะครั้งแรก */
+$('gcBackBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId); };
+
+$('mgBackBtn').onclick = () => { sfxClick(); showGameChooser(); };
+$('cgBackBtn2').onclick = () => { sfxClick(); showGameChooser(); };
+$('shBackBtn').onclick = () => { sfxClick(); showGameChooser(); };
+
+$('grAgainBtn').onclick = () => {
+  sfxClick();
+  if(custom.gameType === 'match') startMatchGame();
+  else if(custom.gameType === 'choice') startChoiceGame();
+  else if(custom.gameType === 'shoot') startShootGame();
+};
+$('grOtherBtn').onclick = () => { sfxClick(); showGameChooser(); };
+$('grWordsBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId); };
+$('grHomeBtn').onclick = () => { sfxClick(); showHome(); };
+
 document.addEventListener('touchstart', initAudio, {once:true});
 document.addEventListener('click', initAudio, {once:true});
 
-/* เริ่มต้น */
 renderGrades();
 </script>
 </body>
