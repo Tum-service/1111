@@ -3,118 +3,519 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>เกมคำศัพท์ภาษาอังกฤษ · ชุด + สร้างเกมเอง</title>
+<title>เกมคำศัพท์ภาษาอังกฤษ</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  :root{
+    --accent:#ec4899; --accent2:#8b5cf6; --accent3:#06b6d4;
+    --ink:#1e293b; --muted:#64748b;
+  }
   body{
     font-family:'Segoe UI',Tahoma,'Leelawadee UI','Noto Sans Thai',sans-serif;
     min-height:100vh;
-    background:linear-gradient(160deg,#5b6ef5 0%,#a855f7 45%,#ec4899 100%);
+    background:
+      radial-gradient(circle at 15% 10%, rgba(139,92,246,.40), transparent 45%),
+      radial-gradient(circle at 85% 20%, rgba(236,72,153,.35), transparent 45%),
+      radial-gradient(circle at 50% 100%, rgba(6,182,212,.30), transparent 55%),
+      linear-gradient(160deg,#0f172a 0%,#1e1b4b 40%,#4c1d95 75%,#831843 100%);
+    background-attachment:fixed;
     display:flex;align-items:center;justify-content:center;
-    padding:14px;color:#1f2937;
+    padding:14px;color:var(--ink);
+    min-height:100dvh;
   }
-  #app{width:100%;max-width:820px}
+  #app{width:100%;max-width:860px}
   .card{
-    background:#fff;border-radius:26px;padding:26px 22px;
-    box-shadow:0 20px 45px rgba(0,0,0,.28);
-    animation:pop .35s ease;position:relative;
+    background:rgba(255,255,255,.72);
+    -webkit-backdrop-filter:blur(40px) saturate(180%);
+    backdrop-filter:blur(40px) saturate(180%);
+    border-radius:30px;padding:32px 26px;
+    box-shadow:
+      0 30px 60px -20px rgba(15,23,42,.45),
+      0 12px 30px -10px rgba(124,58,237,.30),
+      inset 0 1px 0 rgba(255,255,255,.9);
+    animation:pop .4s cubic-bezier(.34,1.56,.64,1);position:relative;
+    border:1px solid rgba(255,255,255,.55);
+    overflow:hidden;
   }
-  @keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
-  h1{font-size:1.5rem;text-align:center;color:#4c1d95;margin-bottom:6px}
-  h2{font-size:1.3rem;text-align:center;color:#4c1d95;margin-bottom:6px}
-  .sub{text-align:center;color:#6b7280;font-size:.92rem;margin-bottom:20px}
+  .card::before{
+    content:"";position:absolute;top:-40%;right:-20%;
+    width:340px;height:340px;border-radius:50%;
+    background:radial-gradient(circle, rgba(139,92,246,.10), transparent 65%);
+    pointer-events:none;
+  }
+  .card::after{
+    content:"";position:absolute;bottom:-45%;left:-15%;
+    width:320px;height:320px;border-radius:50%;
+    background:radial-gradient(circle, rgba(236,72,153,.08), transparent 65%);
+    pointer-events:none;
+  }
+  .card > *{position:relative;z-index:1}
+  @keyframes pop{from{transform:scale(.94) translateY(8px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+  h1{
+    font-size:1.6rem;text-align:center;line-height:1.3;
+    background:linear-gradient(135deg,#4c1d95 0%,#7c3aed 45%,#ec4899 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:6px;font-weight:900;letter-spacing:-.4px;
+  }
+  h2{font-size:1.3rem;text-align:center;color:#4c1d95;margin-bottom:6px;font-weight:800}
+  .sub{
+    text-align:center;color:var(--muted);font-size:.9rem;
+    margin-bottom:22px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+  }
   .back-btn{
-    border:none;background:#f3f4f6;color:#4b5563;border-radius:10px;
-    padding:8px 14px;font-weight:700;font-size:.85rem;cursor:pointer;
-    font-family:inherit;margin-bottom:14px;transition:.15s;
+    border:none;background:linear-gradient(180deg,#f8fafc,#f1f5f9);
+    color:#475569;border-radius:12px;
+    padding:9px 16px;font-weight:800;font-size:.85rem;cursor:pointer;
+    font-family:inherit;margin-bottom:14px;transition:.18s;
+    border:1px solid #e2e8f0;
+    box-shadow:0 2px 4px rgba(15,23,42,.05);
   }
-  .back-btn:hover{background:#e5e7eb}
-  .grades{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:10px}
+  .back-btn:hover{background:linear-gradient(180deg,#f1f5f9,#e2e8f0);transform:translateY(-1px)}
+
+  /* ============ HOME / GRADES ============ */
+  .grades{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+  .grade-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
   .grade{
-    border:none;border-radius:18px;padding:16px 12px;cursor:pointer;
-    color:#fff;font-weight:800;font-size:1rem;text-align:left;
-    transition:transform .15s, box-shadow .15s;
-    display:flex;flex-direction:column;gap:4px;font-family:inherit;
+    flex:0 0 178px;width:178px;min-height:96px;
+    border-radius:20px;border:none;cursor:pointer;
+    font-family:inherit;color:#fff;
+    position:relative;overflow:hidden;
+    padding:16px 18px;
+    display:flex;flex-direction:column;justify-content:center;gap:5px;
+    text-align:left;
+    transition:transform .22s cubic-bezier(.34,1.56,.64,1), box-shadow .22s;
+    box-shadow:
+      0 12px 26px -10px rgba(15,23,42,.55),
+      0 4px 10px rgba(0,0,0,.15),
+      inset 0 1px 0 rgba(255,255,255,.35),
+      inset 0 -3px 0 rgba(0,0,0,.18);
   }
-  .grade:hover{transform:translateY(-4px);box-shadow:0 12px 22px rgba(0,0,0,.22)}
-  .grade:active{transform:scale(.97)}
-  .grade small{font-weight:600;opacity:.9;font-size:.75rem}
-  .grade .emo{font-size:1.5rem}
-  .g1{background:linear-gradient(135deg,#ff9a56,#ff5e62)}
-  .g2{background:linear-gradient(135deg,#43cea2,#185a9d)}
-  .g3{background:linear-gradient(135deg,#f7971e,#ffd200);color:#5b3b00}
-  .g4{background:linear-gradient(135deg,#4facfe,#00f2fe);color:#053b52}
-  .g5{background:linear-gradient(135deg,#fa709a,#fee140);color:#5b1a2c}
-  .g6{background:linear-gradient(135deg,#7028e4,#e5b2ca)}
-  .g7{background:linear-gradient(135deg,#00b09b,#96c93d)}
-  .sets-grid{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));
-    gap:10px;margin-top:6px;max-height:60vh;overflow-y:auto;padding-right:4px;
+  .grade::before{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(circle at 82% 12%, rgba(255,255,255,.32), transparent 45%),
+      radial-gradient(circle at 8% 92%, rgba(0,0,0,.25), transparent 55%);
+    pointer-events:none;
   }
-  .set-btn{
-    border:2px solid #ddd6fe;background:#f5f3ff;color:#5b21b6;
-    padding:14px 10px;border-radius:14px;cursor:pointer;
-    font-weight:800;font-size:.95rem;text-align:center;
-    transition:.15s;font-family:inherit;
-    display:flex;flex-direction:column;gap:3px;align-items:center;
+  .grade::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(120deg, transparent 35%, rgba(255,255,255,.30) 50%, transparent 65%);
+    transform:translateX(-120%);transition:transform .85s ease;pointer-events:none;
   }
-  .set-btn:hover{
-    background:linear-gradient(135deg,#7c3aed,#a855f7);
-    color:#fff;border-color:transparent;transform:translateY(-3px);
-    box-shadow:0 10px 20px rgba(124,58,237,.3);
+  .grade:hover::after{transform:translateX(120%)}
+  .grade:hover{
+    transform:translateY(-5px) scale(1.02);
+    box-shadow:
+      0 22px 40px -12px rgba(15,23,42,.65),
+      0 8px 18px rgba(0,0,0,.20),
+      inset 0 1px 0 rgba(255,255,255,.4),
+      inset 0 -3px 0 rgba(0,0,0,.2);
   }
-  .set-btn small{font-weight:600;font-size:.72rem;opacity:.8}
-  .set-btn .set-no{font-size:1.05rem}
-  .set-btn.last{border-color:#fbbf24;background:#fffbeb}
-  .set-btn.last:hover{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff}
-  .set-btn.custom-game{
-    grid-column:1/-1;flex-direction:row;justify-content:center;gap:10px;
-    background:linear-gradient(135deg,#f59e0b,#ec4899);color:#fff;
-    border-color:transparent;padding:16px;
-    box-shadow:0 10px 24px rgba(236,72,153,.4);
-    animation:cgPulse 2.2s infinite;
+  .grade:active{transform:translateY(-1px) scale(.98)}
+  .g-name{font-size:1.35rem;font-weight:900;line-height:1.15;text-shadow:0 2px 6px rgba(0,0,0,.35);letter-spacing:-.3px;position:relative;z-index:1;color:#fff}
+  .g-count{font-size:.78rem;font-weight:700;opacity:.95;align-self:flex-start;background:rgba(0,0,0,.22);padding:3px 10px;border-radius:999px;backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.20);position:relative;z-index:1;color:#fff}
+  .g1{background:linear-gradient(135deg,#ff9a56 0%,#ff5e62 100%)}
+  .g2{background:linear-gradient(135deg,#43cea2 0%,#185a9d 100%)}
+  .g3{background:linear-gradient(135deg,#f7971e 0%,#ffb300 100%)}
+  .g4{background:linear-gradient(135deg,#4facfe 0%,#00c6ff 100%)}
+  .g5{background:linear-gradient(135deg,#fa709a 0%,#fecc47 100%)}
+  .g6{background:linear-gradient(135deg,#7028e4 0%,#d68ac5 100%)}
+  .g7{background:linear-gradient(135deg,#00b09b 0%,#96c93d 100%)}
+  @media(max-width:520px){
+    .grade{flex:0 0 158px;width:158px;min-height:84px;padding:12px 14px}
+    .g-name{font-size:1.15rem}
+    .g-count{font-size:.7rem}
   }
-  .set-btn.custom-game:hover{
-    background:linear-gradient(135deg,#ec4899,#8b5cf6);
-    box-shadow:0 14px 28px rgba(139,92,246,.5);
+
+  /* ===== Transparent Home & GradeMenu (no white bg) ===== */
+  #home, #gradeMenu{
+    background:transparent !important;
+    -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
+    box-shadow:none !important;
+    border:none !important;
+    padding:20px 14px;
   }
-  @keyframes cgPulse{
-    0%,100%{box-shadow:0 10px 24px rgba(236,72,153,.4)}
-    50%{box-shadow:0 10px 30px rgba(139,92,246,.75)}
+  #home::before, #home::after,
+  #gradeMenu::before, #gradeMenu::after{display:none !important}
+  #home h1{
+    background:linear-gradient(135deg,#fef9c3 0%,#f9a8d4 45%,#c4b5fd 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 4px 22px rgba(236,72,153,.55));
+    font-size:1.9rem;
   }
+  #home .sub{color:rgba(255,255,255,.85)}
+  #gradeMenu h2{color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35)}
+  #gradeMenu .back-btn{
+    background:rgba(255,255,255,.20);color:#fff;border:1px solid rgba(255,255,255,.3);
+    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  }
+  #gradeMenu .back-btn:hover{background:rgba(255,255,255,.30)}
+
+  /* ============ GRADE SUB-MENU (IMPROVED 3D BUTTONS) ============ */
+  .grade-menu-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:34px;
+    padding:34px 20px 20px;max-width:660px;margin:0 auto;
+  }
+  @media(max-width:520px){.grade-menu-grid{gap:20px;padding:22px 0 8px}}
+  .circle-btn-3d{
+    position:relative;aspect-ratio:1;border-radius:50%;border:none;cursor:pointer;
+    font-family:inherit;font-weight:900;color:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:10px;padding:18px;overflow:hidden;isolation:isolate;
+    transition:transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
+  }
+  .circle-btn-3d::before{
+    content:"";position:absolute;inset:0;border-radius:50%;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(circle at 30% 22%, rgba(255,255,255,.65), transparent 42%),
+      radial-gradient(circle at 72% 85%, rgba(0,0,0,.50), transparent 60%);
+  }
+  .circle-btn-3d::after{
+    content:"";position:absolute;inset:6%;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle at 50% 25%, rgba(255,255,255,.22), transparent 65%);
+  }
+  .circle-btn-3d .cb-icon{
+    font-size:3rem;line-height:1;
+    filter:drop-shadow(0 6px 12px rgba(0,0,0,.55)) drop-shadow(0 2px 3px rgba(0,0,0,.4));
+    position:relative;z-index:2;
+    transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .circle-btn-3d .cb-label{
+    font-size:1.1rem;font-weight:900;letter-spacing:.5px;
+    text-shadow:0 2px 8px rgba(0,0,0,.7), 0 1px 2px rgba(0,0,0,.5);
+    text-align:center;line-height:1.2;
+    position:relative;z-index:2;
+  }
+  .circle-btn-3d .cb-shine{
+    position:absolute;top:8%;left:18%;width:44%;height:22%;
+    border-radius:50%;
+    background:radial-gradient(ellipse at 50% 50%, rgba(255,255,255,.85), rgba(255,255,255,.2) 60%, transparent 85%);
+    filter:blur(2px);pointer-events:none;z-index:3;
+    transition:transform .4s ease, opacity .4s ease;
+  }
+  .circle-btn-3d:hover{transform:translateY(-10px) scale(1.04)}
+  .circle-btn-3d:hover .cb-icon{transform:scale(1.15) rotate(-6deg)}
+  .circle-btn-3d:hover .cb-shine{transform:translate(-15%,-20%) scale(1.15);opacity:.95}
+  .circle-btn-3d:active{transform:translateY(-3px) scale(.97)}
+  .circle-btn-3d:active .cb-icon{transform:scale(.95)}
+  .cb-quiz{
+    background:radial-gradient(circle at 32% 24%, #d8b4fe 0%, #a855f7 35%, #7c3aed 62%, #4c1d95 100%);
+    box-shadow:
+      0 28px 50px -14px rgba(76,29,149,.85),
+      0 14px 26px rgba(124,58,237,.55),
+      inset 0 -16px 30px rgba(0,0,0,.48),
+      inset 0 14px 26px rgba(255,255,255,.35),
+      0 0 0 2px rgba(255,255,255,.15),
+      0 0 50px rgba(168,85,247,.4);
+  }
+  .cb-custom{
+    background:radial-gradient(circle at 32% 24%, #fef3c7 0%, #fbbf24 35%, #f59e0b 62%, #b45309 100%);
+    box-shadow:
+      0 28px 50px -14px rgba(180,83,9,.85),
+      0 14px 26px rgba(245,158,11,.55),
+      inset 0 -16px 30px rgba(0,0,0,.48),
+      inset 0 14px 26px rgba(255,255,255,.45),
+      0 0 0 2px rgba(255,255,255,.20),
+      0 0 50px rgba(251,191,36,.45);
+  }
+  @media(max-width:520px){
+    .circle-btn-3d .cb-icon{font-size:2.2rem}
+    .circle-btn-3d .cb-label{font-size:.95rem}
+  }
+
+  /* ============ WORD PICKER (TRANSPARENT TILES) ============ */
+  .wp-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding:6px 4px;align-items:center;justify-content:center}
+  .wp-chip{
+    min-width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;font-family:inherit;
+    font-weight:900;font-size:1.35rem;color:#fff;
+    display:flex;align-items:center;justify-content:center;padding:0 14px;
+    transition:transform .15s cubic-bezier(.34,1.56,.64,1), box-shadow .15s;
+    background:radial-gradient(circle at 32% 24%, #6ee7b7, #10b981 45%, #047857 100%);
+    box-shadow:0 12px 20px -8px rgba(4,120,87,.7),0 5px 10px rgba(0,0,0,.20),inset 0 -7px 12px rgba(0,0,0,.30),inset 0 7px 12px rgba(255,255,255,.35);
+    position:relative;isolation:isolate;letter-spacing:-.5px;font-variant-numeric:tabular-nums;text-shadow:0 1px 2px rgba(0,0,0,.35);
+  }
+  .wp-chip::after{content:"";position:absolute;top:8%;left:22%;width:42%;height:28%;border-radius:50%;background:radial-gradient(ellipse, rgba(255,255,255,.55), transparent 70%);pointer-events:none}
+  .wp-chip:hover{transform:translateY(-4px) scale(1.08)}
+  .wp-chip:active{transform:translateY(0) scale(.95)}
+  .wp-chip.all{min-width:auto;height:52px;padding:0 22px;border-radius:999px;font-size:1rem;letter-spacing:.5px;background:radial-gradient(circle at 32% 24%, #67e8f9, #06b6d4 45%, #0e7490 100%);box-shadow:0 12px 20px -8px rgba(14,116,144,.7),0 5px 10px rgba(0,0,0,.2),inset 0 -7px 12px rgba(0,0,0,.3),inset 0 7px 12px rgba(255,255,255,.35)}
+  .wp-chip.clear{min-width:52px;height:52px;padding:0;background:radial-gradient(circle at 32% 24%, #fca5a5, #ef4444 45%, #7f1d1d 100%);box-shadow:0 12px 20px -8px rgba(127,29,29,.7),0 5px 10px rgba(0,0,0,.2),inset 0 -7px 12px rgba(0,0,0,.3),inset 0 7px 12px rgba(255,255,255,.3);font-size:1.5rem}
+  @media(max-width:520px){
+    .wp-chip{min-width:48px;height:48px;font-size:1.15rem;padding:0 10px}
+    .wp-chip.all{height:44px;font-size:.9rem;padding:0 16px}
+    .wp-chip.clear{min-width:44px;height:44px;font-size:1.2rem}
+  }
+  .wp-grid-wrap{background:transparent;border-radius:16px;padding:6px}
+  .wp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;max-height:52vh;overflow-y:auto;padding:4px}
+  .wp-card{
+    background:transparent;
+    border:2px solid rgba(124,58,237,.35);
+    border-radius:14px;
+    padding:12px 10px;
+    cursor:pointer;
+    position:relative;
+    transition:all .18s;
+    text-align:center;
+    font-family:inherit;
+    color:#3b0764;
+    -webkit-backdrop-filter:blur(4px);
+    backdrop-filter:blur(4px);
+  }
+  .wp-card:hover{
+    border-color:#a78bfa;
+    background:rgba(167,139,250,.14);
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px -8px rgba(124,58,237,.4);
+  }
+  .wp-card.selected{
+    border-color:#22c55e;
+    background:rgba(34,197,94,.14);
+    box-shadow:0 4px 14px rgba(34,197,94,.28);
+  }
+  .wp-card.selected::after{
+    content:"✓";position:absolute;top:4px;right:6px;color:#16a34a;font-weight:900;font-size:14px;
+    background:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 6px rgba(0,0,0,.2);
+  }
+  .wp-card .wp-en{
+    font-weight:800;color:#4c1d95;font-size:.98rem;word-break:break-word;
+    text-shadow:0 1px 2px rgba(255,255,255,.6);
+  }
+  .wp-card .wp-th{
+    font-size:.8rem;color:#3b0764;margin-top:4px;word-break:break-word;
+    text-shadow:0 1px 2px rgba(255,255,255,.5);
+  }
+  .wp-card .wp-ex{
+    font-size:.7rem;color:#5b21b6;margin-top:6px;font-style:italic;
+    word-break:break-word;line-height:1.35;
+    text-shadow:0 1px 2px rgba(255,255,255,.5);
+  }
+  .wp-card.custom{
+    border-color:#f59e0b;
+    border-style:dashed;
+    background:rgba(251,191,36,.10);
+  }
+  .wp-card.custom:hover{background:rgba(251,191,36,.20)}
+  .wp-card .wp-edit,
+  .wp-card .wp-delete{
+    position:absolute;bottom:4px;width:26px;height:26px;border-radius:50%;
+    border:none;color:#fff;font-size:.78rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    z-index:2;padding:0;line-height:1;font-family:inherit;
+    transition:transform .15s;
+    box-shadow:0 3px 8px rgba(0,0,0,.3);
+  }
+  .wp-card .wp-edit{
+    right:4px;
+    background:linear-gradient(135deg,#7c3aed,#ec4899);
+  }
+  .wp-card .wp-edit:hover{transform:scale(1.15)}
+  .wp-card .wp-delete{
+    right:34px;
+    background:linear-gradient(135deg,#f87171,#dc2626);
+  }
+  .wp-card .wp-delete:hover{transform:scale(1.15)}
+  .wp-bottom{position:sticky;bottom:0;background:transparent;padding:14px 0 0;margin-top:12px;border-top:1px solid rgba(124,58,237,.2);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+  .wp-count{font-weight:800;color:#4c1d95;font-size:1rem}
+  .wp-count.warn{color:#dc2626}
+  .wp-next{border:none;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border-radius:14px;padding:12px 26px;font-weight:800;font-size:.95rem;cursor:pointer;font-family:inherit;transition:.15s;box-shadow:0 8px 18px rgba(124,58,237,.35)}
+  .wp-next:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+  .wp-next:not(:disabled):hover{transform:translateY(-2px)}
+  .wp-add-btn{
+    display:block;margin:0 auto 14px;border:none;
+    background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#fff;
+    border-radius:999px;padding:12px 26px;font-family:inherit;
+    font-weight:800;font-size:.92rem;cursor:pointer;
+    box-shadow:0 8px 18px -4px rgba(245,158,11,.6),inset 0 -3px 0 rgba(0,0,0,.15);
+    transition:transform .15s;
+  }
+  .wp-add-btn:hover{transform:translateY(-2px)}
+
+  /* ============ ADD WORDS PAGE ============ */
+  .aw-table-wrap{background:rgba(255,255,255,.55);border-radius:16px;padding:10px;border:1px solid rgba(255,255,255,.65);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+  .aw-head{
+    display:grid;grid-template-columns:1fr 1fr 1.3fr 1.3fr 46px;gap:8px;
+    padding:8px 10px;font-weight:800;color:#4c1d95;font-size:.82rem;
+    border-bottom:1px solid rgba(124,58,237,.15);
+  }
+  .aw-row{display:grid;grid-template-columns:1fr 1fr 1.3fr 1.3fr 46px;gap:8px;padding:6px 4px;align-items:center}
+  .aw-input{
+    width:100%;padding:10px 12px;border-radius:10px;
+    border:1.5px solid rgba(124,58,237,.2);background:rgba(255,255,255,.95);
+    font-family:inherit;font-size:.88rem;color:#1e293b;outline:none;
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .aw-input:focus{border-color:#a78bfa;box-shadow:0 0 0 3px rgba(139,92,246,.15)}
+  .aw-plus,.aw-remove{
+    width:42px;height:42px;border-radius:50%;border:none;
+    color:#fff;font-size:1.15rem;font-weight:900;cursor:pointer;
+    font-family:inherit;display:flex;align-items:center;justify-content:center;
+    transition:transform .15s;padding:0;line-height:1;
+  }
+  .aw-plus{background:radial-gradient(circle at 32% 24%,#6ee7b7,#10b981 45%,#047857 100%);box-shadow:0 6px 14px -4px rgba(4,120,87,.6),inset 0 -4px 8px rgba(0,0,0,.25),inset 0 4px 8px rgba(255,255,255,.35)}
+  .aw-remove{background:radial-gradient(circle at 32% 24%,#fca5a5,#ef4444 45%,#7f1d1d 100%);box-shadow:0 6px 14px -4px rgba(127,29,29,.6),inset 0 -4px 8px rgba(0,0,0,.25),inset 0 4px 8px rgba(255,255,255,.3)}
+  .aw-plus:hover,.aw-remove:hover{transform:scale(1.08)}
+  .aw-plus:active,.aw-remove:active{transform:scale(.94)}
+  @media(max-width:720px){
+    .aw-head{display:none}
+    .aw-row{
+      display:flex;flex-direction:column;gap:8px;
+      padding:12px;margin-bottom:10px;position:relative;
+      background:rgba(255,255,255,.55);border:1px solid rgba(124,58,237,.15);
+      border-radius:14px;
+    }
+    .aw-input{font-size:.9rem;padding:11px 12px}
+    .aw-plus{position:absolute;bottom:12px;right:12px;width:44px;height:44px;font-size:1.2rem}
+  }
+
+  /* ============ EDIT MODAL ============ */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(15,23,42,.6);
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+    display:flex;align-items:center;justify-content:center;z-index:300;padding:20px;
+  }
+  .modal-box{
+    background:rgba(255,255,255,.92);
+    -webkit-backdrop-filter:blur(40px) saturate(180%);
+    backdrop-filter:blur(40px) saturate(180%);
+    border:1px solid rgba(255,255,255,.7);border-radius:22px;padding:24px;
+    max-width:460px;width:100%;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.5);
+    animation:pop .3s cubic-bezier(.34,1.56,.64,1);
+    max-height:90vh;overflow-y:auto;
+  }
+  .modal-box h3{color:#4c1d95;font-size:1.15rem;margin-bottom:14px;text-align:center}
+  .modal-box label{display:block;font-size:.78rem;font-weight:800;color:#6d28d9;margin-bottom:5px;letter-spacing:.3px}
+  .modal-box input{
+    width:100%;padding:12px 14px;border-radius:12px;
+    border:1.5px solid rgba(124,58,237,.2);background:rgba(255,255,255,.95);
+    font-family:inherit;font-size:.95rem;margin-bottom:12px;outline:none;color:#1e293b;
+  }
+  .modal-box input:focus{border-color:#a78bfa;box-shadow:0 0 0 3px rgba(139,92,246,.15)}
+
+  /* ============ GAME CHOOSER ============ */
+  .games-grid-4{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;padding:6px}
+  .game-card{
+    border:none;border-radius:22px;padding:32px 18px;cursor:pointer;
+    color:#fff;font-weight:800;font-size:1.1rem;font-family:inherit;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+    transition:.2s;text-align:center;position:relative;overflow:hidden;
+    box-shadow:0 12px 28px -10px rgba(0,0,0,.4), inset 0 -4px 0 rgba(0,0,0,.18);
+    aspect-ratio:1.15;
+  }
+  .game-card::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 40%,rgba(255,255,255,.25) 50%,transparent 60%);transform:translateX(-100%);transition:transform .8s ease;pointer-events:none}
+  .game-card:hover::after{transform:translateX(100%)}
+  .game-card:hover{transform:translateY(-5px) scale(1.02)}
+  .game-card:active{transform:scale(.97)}
+  .game-card .gc-icon{font-size:3.4rem;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3))}
+  .game-card .gc-name{font-size:1.15rem;letter-spacing:.3px}
+  .gc-match{background:linear-gradient(135deg,#06b6d4,#3b82f6)}
+  .gc-choice{background:linear-gradient(135deg,#8b5cf6,#ec4899)}
+  .gc-shoot{background:linear-gradient(135deg,#f59e0b,#ef4444)}
+  .gc-mosquito{background:linear-gradient(135deg,#84cc16,#166534)}
+
+  /* ============ MATCH ============ */
+  .match-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+  .match-timer{font-weight:800;color:#4c1d95;font-size:.95rem;background:#ede9fe;padding:7px 14px;border-radius:999px}
+  .match-pairs{font-weight:800;color:#047857;font-size:.95rem;background:#ecfdf5;padding:7px 14px;border-radius:999px}
+  .match-grid{display:grid;gap:14px;grid-template-columns:repeat(5, minmax(0,1fr));margin:0 auto;max-width:100%;padding:8px 2px}
+  @media(max-width:640px){.match-grid{gap:9px}}
+  @media(max-width:480px){.match-grid{gap:7px}}
+  .mcard{perspective:1000px;cursor:pointer;aspect-ratio:5 / 7;transition:opacity .5s, transform .5s;font-family:inherit;position:relative}
+  .mcard-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.34,1.2,.64,1)}
+  .mcard.flipped .mcard-inner{transform:rotateY(180deg)}
+  .mcard-front,.mcard-back{
+    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+    border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;
+  }
+  .mcard-front{
+    background:linear-gradient(180deg,#fffefb,#fff9ec);
+    border:2px solid;
+    box-shadow:0 8px 20px -6px rgba(0,0,0,.45), inset 0 0 0 1px rgba(0,0,0,.03);
+    padding:0;
+  }
+  .mcard-front .cf-corner{position:absolute;font-weight:900;line-height:.95;text-align:center;font-family:'Times New Roman',serif;display:flex;flex-direction:column;align-items:center}
+  .mcard-front .cf-corner .cf-letter{font-size:.95rem;letter-spacing:-.5px}
+  .mcard-front .cf-corner .cf-suit{font-size:.9rem;line-height:1;margin-top:1px}
+  .mcard-front .cf-tl{top:5px;left:6px}
+  .mcard-front .cf-br{bottom:5px;right:6px;transform:rotate(180deg)}
+  .mcard-front .cf-center{position:absolute;inset:22% 20%;display:flex;align-items:center;justify-content:center;font-family:'Times New Roman',serif;font-size:2.8rem;line-height:1;text-shadow:0 2px 4px rgba(0,0,0,.15)}
+  .mcard-front .cf-frame{position:absolute;inset:12%;border-radius:6px;border:1.5px solid;opacity:.55}
+  .mcard-front .cf-frame::before{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:70%;height:70%;border-radius:50%;border:1px dashed;opacity:.6}
+  .mcard-front .cf-frame::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:36%;height:36%;border-radius:50%;border:1px solid;opacity:.7}
+  .mcard-front.p0,.mcard-front.p1{border-color:#c8102e;color:#c8102e}
+  .mcard-front.p0 .cf-frame,.mcard-front.p1 .cf-frame{border-color:#c8102e}
+  .mcard-front.p2,.mcard-front.p3,.mcard-front.p4{border-color:#111827;color:#111827}
+  .mcard-front.p2 .cf-frame,.mcard-front.p3 .cf-frame,.mcard-front.p4 .cf-frame{border-color:#111827}
+  .mcard-front.p5,.mcard-front.p6{border-color:#b45309;color:#b45309}
+  .mcard-front.p5 .cf-frame,.mcard-front.p6 .cf-frame{border-color:#b45309}
+  .mcard-front.p7,.mcard-front.p8{border-color:#7c2d12;color:#7c2d12}
+  .mcard-front.p7 .cf-frame,.mcard-front.p8 .cf-frame{border-color:#7c2d12}
+  .mcard-back{
+    background:radial-gradient(circle at 100% 0%, rgba(124,58,237,.08), transparent 55%),radial-gradient(circle at 0% 100%, rgba(236,72,153,.08), transparent 55%),linear-gradient(180deg,#ffffff,#f8fafc);
+    color:#1e293b;transform:rotateY(180deg);
+    border:2px solid #e2e8f0;
+    font-size:clamp(.85rem,2.4vw,1.15rem);word-break:break-word;font-weight:800;
+    box-shadow:0 8px 16px -4px rgba(0,0,0,.2);padding:8px;text-align:center;
+  }
+  .mcard.matched{animation:matchPop .65s cubic-bezier(.34,1.56,.64,1);opacity:0;transform:scale(.4) rotate(8deg);pointer-events:none}
+  @keyframes matchPop{0%{transform:scale(1)}40%{transform:scale(1.18) rotate(-3deg)}100%{transform:scale(.4) rotate(8deg);opacity:0}}
+  .mcard.wrong{animation:shakeX .42s}
+  @keyframes shakeX{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .mcard.wrong .mcard-back{background:#fee2e2;border-color:#ef4444;color:#991b1b}
+  .mcard.matched .mcard-back{background:#dcfce7;border-color:#22c55e;color:#166534}
+  .match-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(76,29,149,.94),rgba(131,24,67,.94));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:26px;text-align:center;border-radius:26px;z-index:50;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+  .match-overlay h3{color:#fbbf24;font-size:1.5rem;font-weight:900;text-shadow:0 4px 12px rgba(0,0,0,.5)}
+  .match-overlay p{color:#e0e7ff;font-size:1rem;font-weight:700}
+
+  /* ============ QUIZ ============ */
   .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
   .pill{background:#f3f4f6;border-radius:999px;padding:7px 14px;font-weight:800;font-size:.82rem;color:#4b5563;white-space:nowrap}
   .pill.score{background:#ecfdf5;color:#047857}
   .pill.set{background:#ede9fe;color:#6d28d9}
-  .bar{height:10px;background:#ede9fe;border-radius:999px;overflow:hidden;margin-bottom:20px}
-  .bar > i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#8b5cf6,#ec4899);transition:width .35s ease}
-  .qbox{text-align:center;margin-bottom:22px;min-height:120px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px}
-  .ask{font-size:.85rem;color:#9ca3af;font-weight:700;letter-spacing:.4px}
-  .qword{font-size:2.3rem;font-weight:900;color:#4c1d95;line-height:1.15;word-break:break-word}
-  .qword.th{font-size:1.75rem;color:#be185d}
-  .spk{
-    border:none;background:#ede9fe;color:#6d28d9;border-radius:999px;
-    padding:6px 16px;font-weight:800;font-size:.85rem;cursor:pointer;transition:.15s;font-family:inherit;
+  .bar{height:12px;background:linear-gradient(180deg,#ede9fe,#ddd6fe);border-radius:999px;overflow:hidden;margin-bottom:22px;box-shadow:inset 0 2px 4px rgba(76,29,149,.15)}
+  .bar > i{display:block;height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,#8b5cf6,#a855f7,#ec4899);transition:width .5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 12px rgba(236,72,153,.5)}
+  .qbox{
+    text-align:center;margin-bottom:26px;min-height:190px;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;
+    padding:32px 20px;border-radius:26px;
+    background:
+      radial-gradient(circle at 15% 15%, rgba(236,72,153,.10), transparent 50%),
+      radial-gradient(circle at 85% 85%, rgba(6,182,212,.10), transparent 50%),
+      linear-gradient(180deg,#fdfcff 0%,#f4f0ff 100%);
+    border:1.5px solid rgba(139,92,246,.18);
+    box-shadow:0 20px 40px -20px rgba(76,29,149,.25), inset 0 2px 14px rgba(139,92,246,.08);
+    position:relative;overflow:hidden;
   }
-  .spk:hover{background:#ddd6fe}
+  .qbox::before{content:"";position:absolute;top:-40%;right:-20%;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(139,92,246,.18),transparent 65%);pointer-events:none}
+  .qbox::after{content:"";position:absolute;bottom:-45%;left:-15%;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(236,72,153,.15),transparent 65%);pointer-events:none}
+  .ask{font-size:.78rem;color:#8b5cf6;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;padding:5px 14px;border-radius:999px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);position:relative;z-index:1}
+  .qword{font-size:2.7rem;font-weight:900;line-height:1.1;word-break:break-word;background:linear-gradient(135deg,#4c1d95 0%,#7c3aed 45%,#ec4899 100%);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.5px;position:relative;z-index:1}
+  .qword.th{font-size:2rem;background:linear-gradient(135deg,#be185d 0%,#ec4899 55%,#f97316 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .spk{border:none;background:linear-gradient(180deg,#f3e8ff,#ede9fe);color:#6d28d9;border-radius:999px;padding:8px 20px;font-weight:800;font-size:.85rem;cursor:pointer;transition:.15s;font-family:inherit;box-shadow:0 4px 12px -4px rgba(124,58,237,.35),inset 0 -2px 0 rgba(124,58,237,.15);position:relative;z-index:1}
+  .spk:hover{background:linear-gradient(180deg,#ede9fe,#ddd6fe);transform:translateY(-1px)}
   .spk.speaking{background:#c4b5fd;animation:pulse 1s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
-  .opts{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-  @media(max-width:520px){.opts{grid-template-columns:1fr}.qword{font-size:1.9rem}.qword.th{font-size:1.4rem}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:520px){.opts{grid-template-columns:1fr}.qword{font-size:2.1rem}.qword.th{font-size:1.6rem}}
   .opt{
-    border:2.5px solid #e5e7eb;background:#fff;border-radius:16px;
-    padding:15px 12px;font-size:1rem;font-weight:700;color:#374151;cursor:pointer;
-    transition:.15s;text-align:center;min-height:58px;display:flex;align-items:center;justify-content:center;font-family:inherit;
+    border:2.5px solid #e5e7eb;background:#fff;border-radius:18px;
+    padding:20px 16px;font-size:1.05rem;font-weight:700;color:#334155;cursor:pointer;
+    transition:.18s;text-align:center;min-height:70px;display:flex;align-items:center;justify-content:center;font-family:inherit;
+    box-shadow:0 6px 16px -8px rgba(15,23,42,.12);
+    position:relative;overflow:hidden;
   }
-  .opt:hover:not(:disabled){border-color:#a78bfa;background:#faf5ff;transform:translateY(-2px)}
+  .opt::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 40%,rgba(139,92,246,.10) 50%,transparent 60%);transform:translateX(-100%);transition:transform .55s;pointer-events:none}
+  .opt:hover:not(:disabled)::before{transform:translateX(100%)}
+  .opt:hover:not(:disabled){border-color:#a78bfa;background:linear-gradient(180deg,#faf5ff,#f3e8ff);transform:translateY(-3px);box-shadow:0 12px 24px -8px rgba(124,58,237,.35)}
   .opt:disabled{cursor:default}
-  .opt.right{background:#dcfce7;border-color:#22c55e;color:#166534;animation:shake-ok .4s}
-  .opt.wrong{background:#fee2e2;border-color:#ef4444;color:#991b1b;animation:shake-no .4s}
-  .opt.fade{opacity:.45}
-  @keyframes shake-ok{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
-  @keyframes shake-no{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
-  .fb{text-align:center;font-weight:900;font-size:1.05rem;margin-top:14px;min-height:26px}
+  .opt.right{background:linear-gradient(180deg,#dcfce7,#bbf7d0);border-color:#22c55e;color:#166534;animation:shake-ok .5s;box-shadow:0 12px 26px -8px rgba(34,197,94,.5)}
+  .opt.wrong{background:linear-gradient(180deg,#fee2e2,#fecaca);border-color:#ef4444;color:#991b1b;animation:shake-no .5s;box-shadow:0 12px 26px -8px rgba(239,68,68,.4)}
+  .opt.fade{opacity:.4}
+  @keyframes shake-ok{0%{transform:scale(1)}50%{transform:scale(1.07)}100%{transform:scale(1)}}
+  @keyframes shake-no{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  .fb{text-align:center;font-weight:900;font-size:1.15rem;margin-top:14px;min-height:28px}
   .fb.ok{color:#16a34a}.fb.no{color:#dc2626}
+
   .rst{text-align:center}
   .rst .big{font-size:3.4rem;font-weight:900;color:#7c3aed;line-height:1}
   .rst .msg{font-size:1.05rem;font-weight:800;margin:10px 0 4px;color:#4c1d95}
@@ -126,336 +527,231 @@
   .rv b{color:#4c1d95}
   .rv span{color:#059669;font-weight:700}
   .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-  .btn{
-    border:none;border-radius:14px;padding:13px 22px;font-weight:800;font-size:.9rem;
-    cursor:pointer;font-family:inherit;transition:.15s;
-  }
-  .btn.primary{background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;box-shadow:0 8px 18px rgba(124,58,237,.35)}
+  .btn{border:none;border-radius:14px;padding:13px 22px;font-weight:800;font-size:.9rem;cursor:pointer;font-family:inherit;transition:.18s}
+  .btn.primary{background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;box-shadow:0 10px 22px -8px rgba(124,58,237,.6)}
+  .btn.primary:hover{transform:translateY(-2px);box-shadow:0 14px 28px -8px rgba(124,58,237,.75)}
   .btn.ghost{background:#f3f4f6;color:#4b5563}
-  .btn:hover{transform:translateY(-2px)}
+  .btn.ghost:hover{background:#e5e7eb}
   .btn:active{transform:scale(.97)}
   [hidden]{display:none!important}
-  .voice-note{font-size:.72rem;color:#9ca3af;text-align:center;margin-top:10px}
-  .wp-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;max-height:120px;overflow-y:auto;padding-right:4px}
-  .wp-chip{
-    border:2px solid #ddd6fe;background:#f5f3ff;color:#5b21b6;
-    padding:7px 14px;border-radius:999px;font-weight:700;font-size:.82rem;
-    cursor:pointer;font-family:inherit;transition:.15s;
-  }
-  .wp-chip:hover{background:#ede9fe;transform:translateY(-2px)}
-  .wp-chip.clear{background:#fee2e2;color:#991b1b;border-color:#fecaca}
-  .wp-chip.clear:hover{background:#fecaca}
-  .wp-chip.all{background:linear-gradient(135deg,#06b6d4,#3b82f6);color:#fff;border-color:transparent}
-  .wp-chip.all:hover{transform:translateY(-2px) scale(1.03)}
-  .wp-grid{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
-    gap:8px;max-height:52vh;overflow-y:auto;padding:4px;
-    background:#f9fafb;border-radius:16px;
-  }
-  .wp-card{
-    border:2.5px solid #e5e7eb;background:#fff;border-radius:14px;
-    padding:10px 8px;cursor:pointer;position:relative;transition:.15s;
-    text-align:center;font-family:inherit;
-  }
-  .wp-card:hover{border-color:#a78bfa;background:#faf5ff;transform:translateY(-2px)}
-  .wp-card.selected{border-color:#22c55e;background:#f0fdf4;box-shadow:0 4px 12px rgba(34,197,94,.2)}
-  .wp-card.selected::after{
-    content:"✓";position:absolute;top:4px;right:6px;
-    color:#16a34a;font-weight:900;font-size:14px;
-    background:#fff;border-radius:50%;width:20px;height:20px;
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:0 2px 4px rgba(0,0,0,.1);
-  }
-  .wp-card .wp-en{font-weight:800;color:#4c1d95;font-size:.9rem;word-break:break-word}
-  .wp-card .wp-th{font-size:.74rem;color:#6b7280;margin-top:2px;word-break:break-word}
-  .wp-bottom{
-    position:sticky;bottom:0;background:#fff;padding:12px 0 0;margin-top:12px;
-    border-top:2px solid #f3f4f6;display:flex;justify-content:space-between;
-    align-items:center;gap:10px;flex-wrap:wrap;
-  }
-  .wp-count{font-weight:800;color:#4c1d95;font-size:1rem}
-  .wp-count.warn{color:#dc2626}
-  .wp-next{
-    border:none;background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;
-    border-radius:14px;padding:12px 26px;font-weight:800;font-size:.95rem;
-    cursor:pointer;font-family:inherit;transition:.15s;
-    box-shadow:0 8px 18px rgba(124,58,237,.35);
-  }
-  .wp-next:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
-  .wp-next:not(:disabled):hover{transform:translateY(-2px)}
-  .games-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:14px;margin-top:14px;
-  }
-  .game-card{
-    border:none;border-radius:20px;padding:24px 16px;cursor:pointer;
-    color:#fff;font-weight:800;font-size:1rem;font-family:inherit;
-    display:flex;flex-direction:column;align-items:center;gap:8px;
-    transition:.18s;text-align:center;
-  }
-  .game-card:hover{transform:translateY(-5px) scale(1.02)}
-  .game-card:active{transform:scale(.97)}
-  .game-card .gc-icon{font-size:3rem;line-height:1}
-  .game-card .gc-name{font-size:1.15rem}
-  .game-card .gc-desc{font-size:.78rem;font-weight:600;opacity:.9}
-  .gc-match{background:linear-gradient(135deg,#06b6d4,#3b82f6)}
-  .gc-choice{background:linear-gradient(135deg,#8b5cf6,#ec4899)}
-  .gc-shoot{background:linear-gradient(135deg,#f59e0b,#ef4444)}
-  .match-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
-  .match-timer{font-weight:800;color:#4c1d95;font-size:.95rem;background:#ede9fe;padding:7px 14px;border-radius:999px}
-  .match-pairs{font-weight:800;color:#047857;font-size:.95rem;background:#ecfdf5;padding:7px 14px;border-radius:999px}
-  .match-grid{
-    display:grid;gap:8px;
-    grid-template-columns:repeat(auto-fill,minmax(85px,1fr));
-    max-height:70vh;overflow-y:auto;
-  }
-  .mcard{perspective:800px;cursor:pointer;aspect-ratio:1;transition:opacity .5s, transform .5s;font-family:inherit}
-  .mcard-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .45s}
-  .mcard.flipped .mcard-inner{transform:rotateY(180deg)}
-  .mcard-front,.mcard-back{
-    position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
-    border-radius:14px;display:flex;align-items:center;justify-content:center;padding:6px;
-    text-align:center;font-weight:700;overflow:hidden;
-  }
-  .mcard-front{
-    background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;
-    font-size:1.8rem;box-shadow:0 6px 14px rgba(124,58,237,.35);
-  }
-  .mcard-back{
-    background:#fff;color:#4c1d95;transform:rotateY(180deg);
-    border:2.5px solid #ddd6fe;font-size:clamp(.7rem,2.4vw,1rem);word-break:break-word;
-  }
-  .mcard.matched{animation:matchPop .6s;opacity:0;transform:scale(.5);pointer-events:none}
-  @keyframes matchPop{0%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(.5);opacity:0}}
-  .mcard.wrong{animation:shakeX .4s}
-  @keyframes shakeX{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
-  .mcard.wrong .mcard-back{background:#fee2e2;border-color:#ef4444;color:#991b1b}
-  .mcard.matched .mcard-back{background:#dcfce7;border-color:#22c55e;color:#166534}
 
-  /* ===== SHOOT GAME (default in card) ===== */
+  /* ============ DART ============ */
   .shoot-hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap}
   .shoot-lives{font-size:1.3rem;letter-spacing:2px;font-weight:900}
   .shoot-score{font-weight:800;color:#4c1d95;font-size:1rem}
-  .shoot-timer{
-    font-weight:900;color:#dc2626;font-size:1rem;
-    background:#fef2f2;padding:7px 14px;border-radius:999px;
-    border:2px solid #fecaca;white-space:nowrap;
-    font-variant-numeric:tabular-nums;
-  }
+  .shoot-timer{font-weight:900;color:#dc2626;font-size:1rem;background:#fef2f2;padding:7px 14px;border-radius:999px;border:2px solid #fecaca;white-space:nowrap;font-variant-numeric:tabular-nums}
   .shoot-timer.warning{background:#fee2e2;animation:pulse 1s infinite}
   .playfield{
-    position:relative;width:100%;height:65vh;min-height:420px;
-    background:radial-gradient(1px 1px at 20% 30%,#fff,transparent),
-               radial-gradient(1px 1px at 40% 70%,#fff,transparent),
-               radial-gradient(1px 1px at 60% 20%,#fff,transparent),
-               radial-gradient(1px 1px at 80% 50%,#fff,transparent),
-               radial-gradient(1px 1px at 10% 80%,#fff,transparent),
-               radial-gradient(1px 1px at 90% 90%,#fff,transparent),
-               radial-gradient(1px 1px at 50% 50%,#fff,transparent),
-               linear-gradient(180deg,#0f172a 0%,#1e1b4b 60%,#312e81 100%);
-    border-radius:20px;overflow:hidden;
-    box-shadow:inset 0 0 40px rgba(0,0,0,.4);
-    touch-action:none;user-select:none;cursor:crosshair;
+    position:relative;width:100%;height:68vh;min-height:440px;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(139,92,246,.35), transparent 60%),
+      radial-gradient(ellipse at 50% 100%, rgba(236,72,153,.20), transparent 60%),
+      radial-gradient(1px 1px at 20% 30%,#fff,transparent),
+      radial-gradient(1px 1px at 40% 70%,#fff,transparent),
+      radial-gradient(1px 1px at 60% 20%,#fff,transparent),
+      radial-gradient(1px 1px at 80% 50%,#fff,transparent),
+      radial-gradient(1px 1px at 10% 80%,#fff,transparent),
+      radial-gradient(1px 1px at 90% 90%,#fff,transparent),
+      linear-gradient(180deg,#0f172a 0%,#1e1b4b 55%,#312e81 100%);
+    border-radius:22px;overflow:hidden;
+    box-shadow:inset 0 0 60px rgba(0,0,0,.5), 0 0 0 1px rgba(139,92,246,.25);
+    touch-action:manipulation;user-select:none;cursor:crosshair;
   }
-  .target{
-    position:absolute;padding:10px 16px;border-radius:30px;
-    background:linear-gradient(135deg,#22d3ee,#3b82f6);
-    color:#fff;font-weight:800;font-size:.9rem;
-    box-shadow:0 8px 20px rgba(59,130,246,.5), inset 0 -3px 0 rgba(0,0,0,.15);
-    white-space:nowrap;pointer-events:none;
-    border:2px solid rgba(255,255,255,.35);
-    max-width:140px;overflow:hidden;text-overflow:ellipsis;
-    will-change:transform;
-  }
-  .target.popping{animation:popOut .35s forwards}
-  @keyframes popOut{0%{transform:scale(1);opacity:1}100%{transform:scale(1.8);opacity:0}}
-  .gun{
-    position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
-    background:linear-gradient(135deg,#fbbf24,#f59e0b);
-    color:#1f2937;font-weight:900;font-size:1.05rem;
-    padding:12px 28px;border-radius:40px;
-    box-shadow:0 10px 24px rgba(245,158,11,.55), inset 0 -4px 0 rgba(0,0,0,.15);
-    border:3px solid #fff;z-index:10;pointer-events:none;
-    text-align:center;max-width:80%;word-break:break-word;min-width:140px;
-  }
-  .gun::before{
-    content:"🔫";position:absolute;left:-10px;top:-26px;font-size:2rem;
-    transform:rotate(-30deg);filter:drop-shadow(0 4px 6px rgba(0,0,0,.4));
-  }
-  .gun-hint{display:block;font-size:.7rem;font-weight:700;color:#4b5563;opacity:.8;margin-top:2px}
-  .aim-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
-  .aim-line{
-    stroke:#fbbf24;stroke-width:4;stroke-dasharray:10 10;stroke-linecap:round;
-    filter:drop-shadow(0 0 6px rgba(251,191,36,.9));
-    animation:flowDots .5s linear infinite;
-  }
-  @keyframes flowDots{to{stroke-dashoffset:-20}}
-  .bullet{
-    position:absolute;width:18px;height:18px;border-radius:50%;
-    background:radial-gradient(circle at 30% 30%,#fff,#fbbf24 60%,#f59e0b);
-    box-shadow:0 0 14px #fbbf24,0 0 24px #fbbf24;
-    pointer-events:none;z-index:8;
-    transform:translate(-50%,-50%);
-  }
-  .red-flash{
-    position:absolute;inset:0;background:rgba(239,68,68,.4);
-    pointer-events:none;z-index:20;opacity:0;
-  }
-  .red-flash.active{animation:redFlash .45s}
+  .playfield.shake{animation:fieldShake .35s}
+  @keyframes fieldShake{0%,100%{transform:translate(0,0)}20%{transform:translate(-5px,2px)}40%{transform:translate(5px,-3px)}60%{transform:translate(-3px,4px)}80%{transform:translate(3px,-2px)}}
+  .dart-group{position:absolute;left:3%;right:3%;display:flex;flex-direction:column;align-items:center;gap:8px;will-change:transform}
+  .dart-boards{display:flex;justify-content:center;gap:14px;width:100%}
+  .dart-target{position:relative;width:92px;height:92px;display:flex;align-items:center;justify-content:center;cursor:pointer;filter:drop-shadow(0 8px 12px rgba(0,0,0,.6));will-change:transform;transition:transform .15s}
+  .dart-target:hover{transform:scale(1.06)}
+  .dart-target .dartboard{position:absolute;inset:0;border-radius:50%;background:#1a1a1a;box-shadow:inset 0 0 14px rgba(0,0,0,.9),0 4px 12px rgba(0,0,0,.7),0 0 0 2px #fbbf24;overflow:hidden}
+  .dart-target .dartboard::before{content:"";position:absolute;inset:6%;border-radius:50%;background:conic-gradient(#f5e6c8 0deg 18deg,#2a2a2a 18deg 36deg,#f5e6c8 36deg 54deg,#2a2a2a 54deg 72deg,#f5e6c8 72deg 90deg,#2a2a2a 90deg 108deg,#f5e6c8 108deg 126deg,#2a2a2a 126deg 144deg,#f5e6c8 144deg 162deg,#2a2a2a 162deg 180deg,#f5e6c8 180deg 198deg,#2a2a2a 198deg 216deg,#f5e6c8 216deg 234deg,#2a2a2a 234deg 252deg,#f5e6c8 252deg 270deg,#2a2a2a 270deg 288deg,#f5e6c8 288deg 306deg,#2a2a2a 306deg 324deg,#f5e6c8 324deg 342deg,#2a2a2a 342deg 360deg)}
+  .dart-target .dartboard::after{content:"";position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,#15803d 0 6%,#dc2626 6% 10%,transparent 10% 20%,#dc2626 20% 24%,transparent 24% 30%,#15803d 30% 34%,transparent 34% 42%,#dc2626 42% 46%,transparent 46% 100%)}
+  .dart-target .dart-word{position:relative;z-index:2;background:rgba(255,255,255,.97);color:#1e293b;font-weight:900;font-size:.72rem;padding:3px 9px;border-radius:8px;box-shadow:0 3px 8px rgba(0,0,0,.5);border:1.5px solid #fbbf24;white-space:nowrap;max-width:88px;overflow:hidden;text-overflow:ellipsis;font-family:inherit;pointer-events:none}
+  .dart-target.hit .dartboard{box-shadow:inset 0 0 22px rgba(255,255,255,.6),0 0 34px rgba(255,215,0,.95),0 0 0 3px #fbbf24}
+  .dart-target.hit{animation:targetHit .55s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes targetHit{0%{transform:scale(1)}45%{transform:scale(1.22)}100%{transform:scale(1)}}
+  .dart-target.fading{animation:dartFadeOut .6s cubic-bezier(.4,.1,1,1) forwards}
+  @keyframes dartFadeOut{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.35) rotate(25deg)}}
+  .dart-target.shaking{animation:dartShake .4s}
+  @keyframes dartShake{0%,100%{transform:translateX(0) rotate(0)}20%{transform:translateX(-8px) rotate(-4deg)}40%{transform:translateX(8px) rotate(4deg)}60%{transform:translateX(-6px) rotate(-2deg)}80%{transform:translateX(6px) rotate(2deg)}}
+  .dart{position:absolute;width:70px;height:70px;pointer-events:none;z-index:25;transform-origin:center center;will-change:transform,left,top;--rot:0deg}
+  .dart .dart-svg{width:100%;height:100%;display:block;filter:drop-shadow(0 4px 8px rgba(0,0,0,.7))}
+  .dart .dart-label{position:absolute;top:-14px;left:50%;transform:translateX(-50%) rotate(calc(-1 * var(--rot)));background:linear-gradient(180deg,#fff,#f0fdf4);color:#065f46;font-weight:900;font-size:.72rem;padding:3px 10px;border-radius:8px;border:1.5px solid #10b981;white-space:nowrap;box-shadow:0 3px 8px rgba(0,0,0,.5);z-index:3;letter-spacing:.3px;max-width:110px;overflow:hidden;text-overflow:ellipsis;transition:transform .3s ease}
+  .dart.thrown{transition:left .24s cubic-bezier(.4,0,.5,1), top .24s cubic-bezier(.4,0,.5,1), transform .24s ease-out}
+  .gun{position:absolute;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#22c55e,#15803d);color:#fff;font-weight:900;font-size:1.05rem;padding:14px 32px;border-radius:40px;box-shadow:0 14px 30px -10px rgba(34,197,94,.7),inset 0 -4px 0 rgba(0,0,0,.2);border:3px solid #fff;z-index:10;pointer-events:none;text-align:center;max-width:80%;word-break:break-word;min-width:150px}
+  .gun::before{content:"🎯";position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:1.5rem;filter:drop-shadow(0 4px 6px rgba(0,0,0,.4))}
+  .red-flash{position:absolute;inset:0;background:rgba(239,68,68,.45);pointer-events:none;z-index:20;opacity:0}
+  .red-flash.active{animation:redFlash .5s}
   @keyframes redFlash{0%{opacity:1}100%{opacity:0}}
-  .score-pop{
-    position:absolute;color:#fbbf24;font-weight:900;font-size:1.6rem;
-    pointer-events:none;z-index:15;
-    text-shadow:0 2px 6px rgba(0,0,0,.6);
-    animation:scorePop 1s forwards;
-  }
-  @keyframes scorePop{
-    0%{transform:translate(-50%,-50%) scale(.5);opacity:0}
-    30%{transform:translate(-50%,-50%) scale(1.2);opacity:1}
-    100%{transform:translate(-50%,-120%) scale(1);opacity:0}
-  }
-  .gover{
-    position:absolute;inset:0;background:rgba(15,23,42,.88);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    z-index:30;color:#fff;gap:12px;padding:20px;text-align:center;
-    backdrop-filter:blur(6px);
-  }
-  .gover h2{font-size:2rem;font-weight:900;color:#fbbf24}
-  .gover p{font-size:1.1rem;opacity:.9}
+  .score-pop{position:absolute;color:#fbbf24;font-weight:900;font-size:1.7rem;pointer-events:none;z-index:15;text-shadow:0 3px 8px rgba(0,0,0,.7),0 0 20px rgba(251,191,36,.9);animation:scorePop 1s forwards}
+  @keyframes scorePop{0%{transform:translate(-50%,-50%) scale(.5);opacity:0}30%{transform:translate(-50%,-50%) scale(1.25);opacity:1}100%{transform:translate(-50%,-140%) scale(1);opacity:0}}
+  .gover{position:absolute;inset:0;background:rgba(15,23,42,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:30;color:#fff;gap:14px;padding:24px;text-align:center}
+  .gover h2{font-size:2rem;font-weight:900;color:#fbbf24;text-shadow:0 4px 14px rgba(251,191,36,.5)}
+  .gover p{font-size:1.05rem;opacity:.95}
   .gover .btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px}
-  .gover .btn.primary{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1f2937;box-shadow:0 8px 18px rgba(245,158,11,.4)}
+  .gover .btn.primary{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1f2937;box-shadow:0 10px 22px -8px rgba(245,158,11,.6)}
   .gover .btn.ghost{background:rgba(255,255,255,.15);color:#fff}
 
-  /* ===== FULLSCREEN SHOOT MODE ===== */
-  body.shoot-fullscreen{
-    padding:0;
-    display:block;
-    background:#0f172a;
-    overflow:hidden;
-  }
+  body.shoot-fullscreen{padding:0;display:block;background:#0f172a;overflow:hidden}
   body.shoot-fullscreen #app{max-width:none}
-  body.shoot-fullscreen #shootGame.card{
-    position:fixed;
-    inset:0;
-    border-radius:0;
-    padding:0;
-    max-width:none;
-    width:100vw;
-    height:100vh;
-    margin:0;
-    z-index:100;
-    display:flex;
-    flex-direction:column;
-    animation:none;
-    box-shadow:none;
-    background:#0f172a;
-  }
-  body.shoot-fullscreen #shootGame .shoot-hud{
-    margin:0;
-    padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;
-    background:linear-gradient(135deg,#1e1b4b,#312e81);
-    border-bottom:1px solid rgba(255,255,255,.1);
-    flex-wrap:nowrap;
-    gap:6px;
-  }
-  body.shoot-fullscreen #shootGame .back-btn{
-    padding:6px 12px;
-    font-size:.78rem;
-    background:rgba(255,255,255,.15);
-    color:#fff;
-    margin:0;
-  }
-  body.shoot-fullscreen #shootGame .back-btn:hover{background:rgba(255,255,255,.25)}
-  body.shoot-fullscreen #shootGame .shoot-timer{
-    background:rgba(239,68,68,.25);
-    border-color:rgba(239,68,68,.5);
-    color:#fca5a5;
-    font-size:.85rem;
-    padding:5px 10px;
-  }
-  body.shoot-fullscreen #shootGame .shoot-lives{
-    font-size:1.05rem;
-    letter-spacing:1px;
-  }
-  body.shoot-fullscreen #shootGame .shoot-score{
-    color:#fbbf24;
-    font-size:.85rem;
-    background:rgba(251,191,36,.15);
-    padding:5px 10px;
-    border-radius:999px;
-    border:1px solid rgba(251,191,36,.3);
-  }
-  body.shoot-fullscreen #shootGame .playfield{
-    flex:1;
-    height:auto;
-    min-height:0;
-    border-radius:0;
-    padding-bottom:env(safe-area-inset-bottom,0px);
-  }
+  body.shoot-fullscreen #shootGame.card{position:fixed;inset:0;border-radius:0;padding:0;max-width:none;width:100vw;height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;margin:0;z-index:100;display:flex;flex-direction:column;animation:none;box-shadow:none;background:#0f172a;overflow:hidden}
+  body.shoot-fullscreen #shootGame .shoot-hud{margin:0;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;background:linear-gradient(135deg,#1e1b4b,#312e81);border-bottom:1px solid rgba(255,255,255,.1);flex-wrap:nowrap;gap:6px;flex-shrink:0}
+  body.shoot-fullscreen #shootGame .back-btn{padding:6px 12px;font-size:.78rem;background:rgba(255,255,255,.15);color:#fff;margin:0;border-color:transparent}
+  body.shoot-fullscreen #shootGame .shoot-timer{background:rgba(239,68,68,.25);border-color:rgba(239,68,68,.5);color:#fca5a5;font-size:.85rem;padding:5px 10px}
+  body.shoot-fullscreen #shootGame .shoot-lives{font-size:1.05rem;letter-spacing:1px}
+  body.shoot-fullscreen #shootGame .shoot-score{color:#fbbf24;font-size:.85rem;background:rgba(251,191,36,.15);padding:5px 10px;border-radius:999px;border:1px solid rgba(251,191,36,.3)}
+  body.shoot-fullscreen #shootGame .playfield{flex:1;height:auto;min-height:0;border-radius:0;padding-bottom:env(safe-area-inset-bottom,0px);overflow:hidden}
+
+  body.mosquito-fullscreen{padding:0;display:block;background:#c8f5c8;overflow:hidden}
+  body.mosquito-fullscreen #app{max-width:none}
+  body.mosquito-fullscreen #mosquitoGame.card{position:fixed;inset:0;border-radius:0;padding:0;max-width:none;width:100vw;height:100vh;height:100dvh;max-height:100vh;max-height:100dvh;margin:0;z-index:100;display:flex;flex-direction:column;animation:none;box-shadow:none;background:#c8f5c8;overflow:hidden}
+  body.mosquito-fullscreen #mosquitoGame .shoot-hud{margin:0;padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;background:linear-gradient(135deg,#166534,#15803d);border-bottom:1px solid rgba(255,255,255,.15);flex-wrap:nowrap;gap:6px;flex-shrink:0;color:#fff}
+  body.mosquito-fullscreen #mosquitoGame .back-btn{padding:6px 12px;font-size:.78rem;background:rgba(255,255,255,.2);color:#fff;margin:0;border-color:transparent}
+  body.mosquito-fullscreen #mosquitoGame .shoot-timer{background:rgba(239,68,68,.3);border-color:rgba(239,68,68,.5);color:#fff;font-size:.85rem;padding:5px 10px}
+  body.mosquito-fullscreen #mosquitoGame .shoot-lives{font-size:1.05rem;letter-spacing:1px;color:#fff}
+  body.mosquito-fullscreen #mosquitoGame .shoot-score{color:#fde047;font-size:.85rem;background:rgba(251,191,36,.25);padding:5px 10px;border-radius:999px;border:1px solid rgba(251,191,36,.5)}
+
+  /* ============ MOSQUITO ============ */
+  .mosquito-field{position:relative;width:100%;flex:1;min-height:0;background:#c8f5c8;overflow:hidden;touch-action:manipulation;user-select:none;padding-bottom:env(safe-area-inset-bottom,0px)}
+  .shinchan-wrap{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .shinchan-svg{width:100%;height:100%;max-width:100%;max-height:100%;display:block}
+  .butt-area{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);width:38%;height:26%;pointer-events:none}
+  .mosquito{position:absolute;width:50px;height:50px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;line-height:1;pointer-events:auto;cursor:pointer;filter:drop-shadow(0 4px 6px rgba(0,0,0,.35));will-change:transform;user-select:none;transition:transform .15s;transform-origin:center center}
+  .mosquito .mosquito-word{position:absolute;left:50%;top:105%;transform:translateX(-50%);background:rgba(255,255,255,.97);color:#1e293b;font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:8px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.25);font-family:inherit;pointer-events:none;max-width:120px;overflow:hidden;text-overflow:ellipsis;border:1.5px solid #fbbf24}
+  .mosquito.landed{cursor:pointer;animation:mosqIdle 1.2s ease-in-out infinite}
+  @keyframes mosqIdle{0%,100%{transform:scale(1) rotate(-3deg)}50%{transform:scale(1.08) rotate(3deg)}}
+  .mosquito.flying{opacity:.85;cursor:default;animation:mosqFlutter .4s infinite}
+  @keyframes mosqFlutter{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+  .mosquito.dead{pointer-events:none;animation:mosqDie .6s forwards}
+  @keyframes mosqDie{0%{transform:scale(1,1) rotate(0);opacity:1}35%{transform:scale(1.5,.35) rotate(20deg);opacity:1;filter:brightness(.5)}100%{transform:scale(1.7,.15) rotate(35deg);opacity:0}}
+  .swatter{position:absolute;bottom:calc(14px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f97316,#dc2626);color:#fff;font-weight:900;font-size:1.15rem;padding:14px 32px;border-radius:24px;box-shadow:0 12px 28px rgba(220,38,38,.55),inset 0 -4px 0 rgba(0,0,0,.2);border:3px solid #fff;z-index:10;pointer-events:none;text-align:center;max-width:88%;word-break:break-word;min-width:160px}
+  .swatter::before{content:"🖐️";position:absolute;left:-10px;top:-30px;font-size:2.2rem;transform:rotate(-25deg);filter:drop-shadow(0 4px 6px rgba(0,0,0,.4))}
+  .swatter-hint{display:block;font-size:.68rem;font-weight:700;color:rgba(255,255,255,.9);margin-top:3px}
+  .slap-hand{position:absolute;font-size:4.5rem;line-height:1;pointer-events:none;z-index:30;transform:translate(-50%,-50%);transform-origin:50% 70%;filter:drop-shadow(0 8px 14px rgba(0,0,0,.55));animation:slapAnim .55s cubic-bezier(.2,.9,.3,1.4) forwards;user-select:none}
+  @keyframes slapAnim{0%{transform:translate(-50%,-90%) scale(.6) rotate(-35deg);opacity:0}30%{transform:translate(-50%,-50%) scale(1.3) rotate(15deg);opacity:1}55%{transform:translate(-50%,-50%) scale(1.05) rotate(0deg);opacity:1}100%{transform:translate(-50%,-40%) scale(.9) rotate(-8deg);opacity:0}}
+  .slap-impact{position:absolute;width:64px;height:64px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.9) 10%,rgba(250,204,21,.7) 40%,transparent 75%);transform:translate(-50%,-50%);pointer-events:none;z-index:28;animation:impactFade .45s ease-out forwards}
+  @keyframes impactFade{0%{transform:translate(-50%,-50%) scale(.3);opacity:1}100%{transform:translate(-50%,-50%) scale(1.7);opacity:0}}
+  .blood-splat{position:absolute;pointer-events:none;z-index:8;width:70px;height:70px;margin-left:-35px;margin-top:-35px;background:radial-gradient(circle at 50% 50%,#6b0000 15%,#a80000 40%,rgba(168,0,0,.85) 55%,transparent 72%),radial-gradient(circle at 22% 32%,#a80000 4px,transparent 8px),radial-gradient(circle at 78% 68%,#a80000 4px,transparent 8px),radial-gradient(circle at 25% 75%,#8b0000 3px,transparent 6px),radial-gradient(circle at 72% 25%,#8b0000 3px,transparent 6px);border-radius:50%;filter:blur(1.5px);animation:bloodFade 2s ease-out forwards}
+  @keyframes bloodFade{0%{transform:scale(.2);opacity:0}15%{transform:scale(1.4);opacity:1}55%{transform:scale(1.15);opacity:1}100%{transform:scale(1.3);opacity:0}}
+  .butt-mark{position:absolute;width:34px;height:34px;border-radius:50%;background:radial-gradient(circle,rgba(220,38,38,.9),rgba(220,38,38,.5) 55%,transparent 78%);filter:blur(2.5px);animation:markFade 4s ease forwards;pointer-events:none;z-index:6}
+  @keyframes markFade{0%{opacity:0;transform:scale(.5)}15%{opacity:1;transform:scale(1.15)}30%{transform:scale(1)}75%{opacity:.85}100%{opacity:0;transform:scale(.7)}}
+  .mosquito-field.dying{filter:grayscale(.9) brightness(1.15);transition:filter 1.2s ease}
+  .shinchan-wrap.dying{animation:shinDie 2.5s forwards}
+  @keyframes shinDie{0%{transform:rotate(0) scale(1)}20%{transform:rotate(-6deg) scale(1)}60%{transform:rotate(-12deg) scale(.95) translateY(10px)}100%{transform:rotate(-18deg) scale(.85) translateY(30px);opacity:.5}}
+  .ghost{position:absolute;font-size:5rem;left:50%;bottom:40%;transform:translateX(-50%);z-index:25;pointer-events:none;animation:ghostFloat 4s ease-out forwards;filter:drop-shadow(0 0 22px rgba(255,255,255,.95))}
+  @keyframes ghostFloat{0%{transform:translate(-50%,0) scale(.3) rotate(-10deg);opacity:0}20%{transform:translate(-50%,-40px) scale(1.2) rotate(5deg);opacity:1}50%{transform:translate(-40%,-140px) scale(1) rotate(-5deg);opacity:.95}100%{transform:translate(-60%,-550px) scale(.6) rotate(10deg);opacity:0}}
+  .death-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:40;padding:20px;text-align:center;pointer-events:none}
+  .death-msg-inner{background:rgba(15,23,42,.88);color:#fff;padding:26px 30px;border-radius:20px;font-size:1.05rem;font-weight:800;line-height:1.6;max-width:440px;box-shadow:0 20px 40px rgba(0,0,0,.5);border:2px solid rgba(255,255,255,.25);animation:msgIn .8s cubic-bezier(.34,1.56,.64,1);font-style:italic}
+  @keyframes msgIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+
+  .time-picker{position:fixed;inset:0;background:rgba(15,23,42,.7);display:flex;align-items:center;justify-content:center;z-index:200;backdrop-filter:blur(8px);padding:20px}
+  .time-picker-inner{background:linear-gradient(180deg,#fff,#fafaff);border-radius:26px;padding:28px 24px;max-width:420px;width:100%;box-shadow:0 30px 60px rgba(0,0,0,.4);text-align:center;animation:pop .35s cubic-bezier(.34,1.56,.64,1);border:1px solid rgba(255,255,255,.7)}
+  .time-picker-inner h3{color:#4c1d95;font-size:1.3rem;margin-bottom:8px}
+  .time-picker-inner p{color:#6b7280;font-size:.9rem;margin-bottom:18px}
+  .time-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .time-opt{border:2px solid #ddd6fe;background:#f5f3ff;color:#5b21b6;padding:14px;border-radius:14px;font-weight:800;font-size:1rem;cursor:pointer;font-family:inherit;transition:.15s}
+  .time-opt:hover{background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border-color:transparent}
+  .time-opt.selected{background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border-color:transparent}
+  .time-picker-btns{display:flex;gap:10px;justify-content:center}
 
   .gr-wrap{text-align:center}
   .gr-big{font-size:3.5rem;font-weight:900;color:#7c3aed;line-height:1}
   .gr-msg{font-size:1.1rem;font-weight:800;margin:12px 0 8px;color:#4c1d95}
   .gr-detail{color:#6b7280;font-size:.95rem;margin-bottom:18px}
+
+  .pause-btn{border:none;background:linear-gradient(180deg,#fbbf24,#f59e0b);color:#1f2937;width:42px;height:42px;border-radius:50%;font-size:1.15rem;font-weight:900;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px -4px rgba(245,158,11,.6),inset 0 -3px 0 rgba(0,0,0,.2);transition:.15s;flex-shrink:0;padding:0;line-height:1}
+  .pause-btn:hover{transform:scale(1.08)}
+  .pause-btn:active{transform:scale(.94)}
+  .pause-btn.paused{background:linear-gradient(180deg,#4ade80,#22c55e);color:#fff}
 </style>
 </head>
 <body>
 <div id="app">
 
   <section id="home" class="card">
-    <h1>🎯 เกมตอบคำถามคำศัพท์ภาษาอังกฤษ</h1>
-    <p class="sub">เลือกระดับชั้น แล้วเลือกชุดคำศัพท์ที่ต้องการฝึก</p>
+    <h1>🎯 เลือกระดับชั้น</h1>
     <div class="grades" id="gradeList"></div>
-    <p class="voice-note">🔊 ใช้เสียงจาก Google (หากมีในเบราว์เซอร์) เพื่อการออกเสียงที่ชัดเจน</p>
   </section>
 
-  <section id="sets" class="card" hidden>
-    <button class="back-btn" id="backHomeBtn">← กลับหน้าหลัก</button>
-    <h2 id="setsTitle"></h2>
-    <p class="sub" id="setsSub" style="margin-bottom:14px"></p>
-    <div class="sets-grid" id="setsGrid"></div>
+  <section id="gradeMenu" class="card" hidden>
+    <button class="back-btn" id="gmBackBtn">← กลับ</button>
+    <h2 id="gmTitle" style="margin-bottom:18px"></h2>
+    <div class="grade-menu-grid">
+      <button class="circle-btn-3d cb-quiz" id="gmQuizBtn">
+        <span class="cb-shine"></span>
+        <span class="cb-icon">🎯</span>
+        <span class="cb-label">เกมเดาศัพท์</span>
+      </button>
+      <button class="circle-btn-3d cb-custom" id="gmCustomBtn">
+        <span class="cb-shine"></span>
+        <span class="cb-icon">🎮</span>
+        <span class="cb-label">เกมสร้างเอง</span>
+      </button>
+    </div>
   </section>
 
   <section id="wordPicker" class="card" hidden>
-    <button class="back-btn" id="wpBackBtn">← กลับหน้าเลือกชุด</button>
-    <h2 id="wpTitle"></h2>
-    <p class="sub" id="wpSub" style="margin-bottom:12px"></p>
+    <button class="back-btn" id="wpBackBtn">← กลับ</button>
+    <h2 id="wpTitle" style="margin-bottom:10px"></h2>
+    <p class="sub" id="wpSub" style="margin-bottom:14px"></p>
+    <button class="wp-add-btn" id="wpAddWordBtn">➕ เพิ่มคำศัพท์</button>
     <div class="wp-actions" id="wpActions"></div>
-    <div class="wp-grid" id="wpGrid"></div>
+    <div class="wp-grid-wrap">
+      <div class="wp-grid" id="wpGrid"></div>
+    </div>
     <div class="wp-bottom">
       <span class="wp-count" id="wpCount">เลือกแล้ว 0 คำ</span>
       <button class="wp-next" id="wpNextBtn" disabled>ถัดไป ▶</button>
     </div>
   </section>
 
+  <section id="addWords" class="card" hidden>
+    <button class="back-btn" id="awBackBtn">← กลับ</button>
+    <h2 style="text-align:center;margin-bottom:6px">➕ เพิ่มคำศัพท์</h2>
+    <p class="sub" style="margin-bottom:16px">กรอกคำศัพท์ คำแปล และตัวอย่างประโยค (ไม่บังคับ)</p>
+    <div class="aw-table-wrap">
+      <div class="aw-head">
+        <span>คำศัพท์</span>
+        <span>คำแปล</span>
+        <span>ตัวอย่างประโยค</span>
+        <span>คำแปลประโยค</span>
+        <span></span>
+      </div>
+      <div id="awRows"></div>
+    </div>
+    <div class="btns" style="margin-top:18px">
+      <button class="btn primary" id="awSaveBtn">💾 บันทึก</button>
+    </div>
+  </section>
+
   <section id="gameChooser" class="card" hidden>
-    <button class="back-btn" id="gcBackBtn">← กลับไปเลือกคำ</button>
-    <h2>เลือกเกมที่ต้องการเล่น</h2>
-    <p class="sub" id="gcSub"></p>
-    <div class="games-grid">
+    <button class="back-btn" id="gcBackBtn">← กลับ</button>
+    <div class="games-grid-4">
       <button class="game-card gc-match" data-game="match">
         <span class="gc-icon">🃏</span>
         <span class="gc-name">จับคู่คำศัพท์</span>
-        <span class="gc-desc">พลิกการ์ดหาคู่ อังกฤษ ↔ ไทย</span>
       </button>
       <button class="game-card gc-choice" data-game="choice">
         <span class="gc-icon">❓</span>
         <span class="gc-name">ทายคำ 4 ตัวเลือก</span>
-        <span class="gc-desc">เลือกคำตอบที่ถูกต้อง</span>
       </button>
       <button class="game-card gc-shoot" data-game="shoot">
-        <span class="gc-icon">🔫</span>
-        <span class="gc-name">ยิงเป้าคำศัพท์</span>
-        <span class="gc-desc">ลากเล็ง · ยิงให้ตรงเป้า · 1:30</span>
+        <span class="gc-icon">🎯</span>
+        <span class="gc-name">ปาเป้าคำศัพท์</span>
+      </button>
+      <button class="game-card gc-mosquito" data-game="mosquito">
+        <span class="gc-icon">🦟</span>
+        <span class="gc-name">ตบยุง</span>
       </button>
     </div>
   </section>
 
   <section id="quiz" class="card" hidden>
     <div class="topbar">
-      <span class="pill set" id="setTxt">ชุดที่ 1</span>
+      <button class="back-btn" id="quizBackBtn" style="margin:0">← กลับ</button>
       <span class="pill" id="progressTxt">ข้อ 1 / 20</span>
       <span class="pill score" id="scoreTxt">คะแนน 0</span>
+      <button class="pause-btn" id="quizPauseBtn" title="หยุดชั่วคราว">⏸</button>
     </div>
     <div class="bar"><i id="barFill"></i></div>
     <div class="qbox">
@@ -473,9 +769,8 @@
     <div class="pct" id="rPct"></div>
     <div class="review" id="rReview"></div>
     <div class="btns">
-      <button class="btn primary" id="againBtn">🔁 เล่นชุดนี้อีกครั้ง</button>
-      <button class="btn ghost" id="chooseSetBtn">📚 เลือกชุดอื่น</button>
-      <button class="btn ghost" id="homeBtn">🏠 กลับหน้าหลัก</button>
+      <button class="btn primary" id="againBtn">🔁 เล่นอีกครั้ง</button>
+      <button class="btn ghost" id="chooseSetBtn">🏠 กลับหน้าหลัก</button>
     </div>
   </section>
 
@@ -484,6 +779,7 @@
       <button class="back-btn" id="mgBackBtn" style="margin:0">← กลับ</button>
       <span class="match-timer" id="mgTimer">⏱️ 00:00</span>
       <span class="match-pairs" id="mgPairs">คู่ 0 / 0</span>
+      <button class="pause-btn" id="mgPauseBtn" title="หยุดชั่วคราว">⏸</button>
     </div>
     <div class="match-grid" id="mgGrid"></div>
   </section>
@@ -493,6 +789,7 @@
       <button class="back-btn" id="cgBackBtn2" style="margin:0">← กลับ</button>
       <span class="pill" id="chProgress">ข้อ 1 / 10</span>
       <span class="pill score" id="chScore">คะแนน 0</span>
+      <button class="pause-btn" id="chPauseBtn" title="หยุดชั่วคราว">⏸</button>
     </div>
     <div class="bar"><i id="chBarFill"></i></div>
     <div class="qbox">
@@ -507,17 +804,55 @@
   <section id="shootGame" class="card" hidden>
     <div class="shoot-hud">
       <button class="back-btn" id="shBackBtn" style="margin:0">← กลับ</button>
-      <span class="shoot-timer" id="shTimer">⏱️ 1:30</span>
+      <span class="shoot-timer" id="shTimer">⏱️ 3:00</span>
       <span class="shoot-lives" id="shLives">❤️❤️❤️</span>
       <span class="shoot-score" id="shScore">คะแนน 0</span>
+      <button class="pause-btn" id="shPauseBtn" title="หยุดชั่วคราว">⏸</button>
     </div>
     <div class="playfield" id="playfield">
-      <svg class="aim-svg" id="aimSvg"></svg>
       <div class="gun" id="gunEl">
         <span id="gunText">cat</span>
-        <span class="gun-hint">ลากเล็ง → ปล่อยเพื่อยิง</span>
       </div>
       <div class="red-flash" id="redFlash"></div>
+    </div>
+  </section>
+
+  <section id="mosquitoGame" class="card" hidden>
+    <div class="shoot-hud">
+      <button class="back-btn" id="msBackBtn" style="margin:0">← กลับ</button>
+      <span class="shoot-timer" id="msTimer">⏱️ 2:00</span>
+      <span class="shoot-lives" id="msLives">❤️❤️❤️</span>
+      <span class="shoot-score" id="msScore">ตบได้ 0 ตัว</span>
+      <button class="pause-btn" id="msPauseBtn" title="หยุดชั่วคราว">⏸</button>
+    </div>
+    <div class="mosquito-field" id="mosquitoField">
+      <div class="shinchan-wrap" id="shinWrap">
+        <svg class="shinchan-svg" viewBox="0 0 500 660" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="250" cy="90" rx="130" ry="80" fill="#1a1a1a"/>
+          <ellipse cx="115" cy="115" rx="26" ry="40" fill="#f5c6a0" stroke="#7a4a2c" stroke-width="3.5"/>
+          <ellipse cx="385" cy="115" rx="26" ry="40" fill="#f5c6a0" stroke="#7a4a2c" stroke-width="3.5"/>
+          <path d="M 145 175 Q 85 220 70 300 L 70 400 Q 95 420 130 400 L 130 360 L 370 360 L 370 400 Q 405 420 430 400 L 430 300 Q 415 220 355 175 Q 305 145 250 145 Q 195 145 145 175 Z" fill="#c0392b" stroke="#7a1f14" stroke-width="4"/>
+          <path d="M 85 280 Q 50 340 85 400 Q 110 420 155 400" fill="none" stroke="#c0392b" stroke-width="45" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M 415 280 Q 450 340 415 400 Q 390 420 345 400" fill="none" stroke="#c0392b" stroke-width="45" stroke-linecap="round" stroke-linejoin="round"/>
+          <ellipse cx="175" cy="380" rx="100" ry="95" fill="#f5c6a0" stroke="#7a4a2c" stroke-width="4"/>
+          <ellipse cx="325" cy="380" rx="100" ry="95" fill="#f5c6a0" stroke="#7a4a2c" stroke-width="4"/>
+          <path d="M 250 305 Q 240 380 250 455" fill="none" stroke="#7a4a2c" stroke-width="5" stroke-linecap="round"/>
+          <ellipse cx="145" cy="350" rx="30" ry="22" fill="rgba(255,255,255,.55)"/>
+          <ellipse cx="355" cy="350" rx="30" ry="22" fill="rgba(255,255,255,.55)"/>
+          <ellipse cx="160" cy="440" rx="35" ry="26" fill="#f5c6a0" stroke="#7a4a2c" stroke-width="3.5"/>
+          <ellipse cx="340" cy="440" rx="35" ry="26" fill="#f5c6a0" stroke="#7a4a2c" stroke-width="3.5"/>
+          <path d="M 100 460 Q 145 440 200 450 L 250 470 L 300 450 Q 355 440 400 460 L 425 555 L 380 575 L 335 560 L 290 570 L 250 575 L 210 570 L 165 560 L 120 575 L 75 555 Z" fill="#f5d24a" stroke="#b8941f" stroke-width="4"/>
+          <rect x="150" y="565" width="75" height="50" fill="#f5c6a0" stroke="#7a4a2c" stroke-width="3"/>
+          <rect x="275" y="565" width="75" height="50" fill="#f5c6a0" stroke="#7a4a2c" stroke-width="3"/>
+          <path d="M 145 610 Q 145 640 152 650 L 232 650 Q 240 640 240 610 Z" fill="#fff" stroke="#999" stroke-width="3"/>
+          <path d="M 260 610 Q 260 640 267 650 L 347 650 Q 355 640 355 610 Z" fill="#fff" stroke="#999" stroke-width="3"/>
+        </svg>
+      </div>
+      <div class="butt-area" id="buttArea"></div>
+      <div class="swatter" id="swatterEl">
+        <span id="swatterText">cat</span>
+        <span class="swatter-hint">ตบยุงที่ตรงกับคำนี้ · ยุงต้องจับก้นก่อน</span>
+      </div>
     </div>
   </section>
 
@@ -529,16 +864,42 @@
       <button class="btn primary" id="grAgainBtn">🔁 เล่นอีกครั้ง</button>
       <button class="btn ghost" id="grOtherBtn">🎮 เกมอื่น</button>
       <button class="btn ghost" id="grWordsBtn">📝 เลือกคำใหม่</button>
-      <button class="btn ghost" id="grHomeBtn">🏠 หน้าหลัก</button>
     </div>
   </section>
+
+  <div id="timePicker" class="time-picker" hidden>
+    <div class="time-picker-inner">
+      <h3 id="timePickerTitle">⏱️ เลือกเวลาเล่น</h3>
+      <p id="timePickerSub">เลือกเวลาที่ต้องการเล่น</p>
+      <div class="time-opts" id="timeOpts"></div>
+      <div class="time-picker-btns">
+        <button class="btn primary" id="timeStartBtn">เริ่มเลย</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="editWordModal" class="modal-overlay" hidden>
+    <div class="modal-box">
+      <h3>✏️ แก้ไขคำศัพท์</h3>
+      <label>คำศัพท์</label>
+      <input id="ewEn" placeholder="เช่น apple" />
+      <label>คำแปล</label>
+      <input id="ewTh" placeholder="เช่น แอ๊ปเปิ้ล" />
+      <label>ตัวอย่างประโยค</label>
+      <input id="ewExEn" placeholder="เช่น I eat an apple every day." />
+      <label>คำแปลประโยค</label>
+      <input id="ewExTh" placeholder="เช่น ฉันกินแอ๊ปเปิ้ลทุกวัน" />
+      <div class="btns">
+        <button class="btn ghost" id="ewCancel">ยกเลิก</button>
+        <button class="btn primary" id="ewSave">บันทึก</button>
+      </div>
+    </div>
+  </div>
 
 </div>
 
 <script>
-/* =========================================================
-   คลังคำศัพท์ (en|th)
-   ========================================================= */
+/* ===== Word pools (full) ===== */
 const RAW = {
 p1:`ant|มด
 apple|แอ๊ปเปิ้ล
@@ -689,7 +1050,6 @@ wig|ผมปลอม
 woman|ผู้หญิง
 zebra|ม้าลาย
 zoo|สวนสัตว์`,
-
 p2:`again|อีกครั้ง
 alphabet|พยัญชนะ
 animal|สัตว์
@@ -790,7 +1150,7 @@ pick|เลือก,หยิบ,จับ
 picture|รูปภาพ
 pig|หมู
 pillow|หมอน
-pineapple|สับปะรด
+pineapple|สัปปะรด
 place|สถานที่
 puppy|ลูกสุนัข
 put|วาง,ตั้ง
@@ -845,7 +1205,6 @@ window|หน้าต่าง
 worm|หนอน
 young|อ่อน,อายุน้อย
 yourself|ตัวของเธอเอง`,
-
 p3:`act|การแสดง,การกระทำ
 air|อากาศ
 airplane|เครื่องบิน
@@ -1039,7 +1398,6 @@ wolf|หมาป่า
 wood|ไม้
 write|เขียน
 wrong|ผิด`,
-
 p4:`ache|อาการปวด
 afternoon|เวลาบ่าย
 airport|สนามบิน
@@ -1241,7 +1599,6 @@ yesterday|เมื่อวานนี้
 yogurt|โยเกิร์ต
 yolk|ไข่แดง
 yummy|มีรสชาดี`,
-
 p5:`accountant|พนักงานบัญชี
 actor|นักแสดงชาย
 actress|นักแสดงหญิง
@@ -1527,7 +1884,6 @@ yawn|หาว
 younger brother|น้องชาย
 younger sister|น้องสาว
 youth|เยาวชน`,
-
 p6:`advertisement|การโฆษณา
 aeroplane|เครื่องบิน
 afraid|กลัว
@@ -1768,7 +2124,6 @@ whisper|กระซิบ
 wide|กว้าง
 wonderful|น่าอัศจรรย์
 worry|กังวล,เครียด`,
-
 extra:`navy-blue|สีกรมท่า
 white|สีขาว
 green|สีเขียว
@@ -1874,47 +2229,67 @@ one hundredth|ลำดับที่หนึ่งร้อย
 one thousandth|ลำดับที่หนึ่งพัน`
 };
 
-/* =========================================================
-   แปลงข้อมูล
-   ========================================================= */
 function parseWords(raw){
   const seen = new Set(), out = [];
   raw.trim().split('\n').forEach(line=>{
     const p = line.split('|');
     if(p.length < 2) return;
     const en = p[0].trim(), th = p[1].trim();
+    const exEn = (p[2]||'').trim();
+    const exTh = (p[3]||'').trim();
     if(!en || !th) return;
     const k = en.toLowerCase();
     if(seen.has(k)) return;
     seen.add(k);
-    out.push({en, th});
+    out.push({en, th, exEn, exTh});
   });
   return out;
 }
-
 const POOLS = {};
 for(const k in RAW) POOLS[k] = parseWords(RAW[k]);
-
 const DUP_TH = {};
 for(const k in POOLS){
   const cnt = {};
   POOLS[k].forEach(w => cnt[w.th] = (cnt[w.th]||0)+1);
   DUP_TH[k] = new Set(Object.keys(cnt).filter(t => cnt[t] > 1));
 }
-
 const GRADES = [
-  {id:'p1',   name:'ประถมศึกษาปีที่ 1', cls:'g1', emo:'1️⃣'},
-  {id:'p2',   name:'ประถมศึกษาปีที่ 2', cls:'g2', emo:'2️⃣'},
-  {id:'p3',   name:'ประถมศึกษาปีที่ 3', cls:'g3', emo:'3️⃣'},
-  {id:'p4',   name:'ประถมศึกษาปีที่ 4', cls:'g4', emo:'4️⃣'},
-  {id:'p5',   name:'ประถมศึกษาปีที่ 5', cls:'g5', emo:'5️⃣'},
-  {id:'p6',   name:'ประถมศึกษาปีที่ 6', cls:'g6', emo:'6️⃣'},
-  {id:'extra',name:'หมวดพิเศษ',        cls:'g7', emo:'⭐'}
+  {id:'p1',   name:'ป.1', cls:'g1'},
+  {id:'p2',   name:'ป.2', cls:'g2'},
+  {id:'p3',   name:'ป.3', cls:'g3'},
+  {id:'p4',   name:'ป.4', cls:'g4'},
+  {id:'p5',   name:'ป.5', cls:'g5'},
+  {id:'p6',   name:'ป.6', cls:'g6'},
+  {id:'extra',name:'หมวดพิเศษ', cls:'g7'}
 ];
 
-/* =========================================================
-   เสียงเอฟเฟกต์
-   ========================================================= */
+/* ===== Custom Vocabulary ===== */
+const CUSTOM_KEY = 'vocab_custom_v1';
+let customWords = [];
+function loadCustomWords(){
+  try{
+    const s = localStorage.getItem(CUSTOM_KEY);
+    customWords = s ? JSON.parse(s) : [];
+    if(!Array.isArray(customWords)) customWords = [];
+    customWords = customWords.filter(w => w && w.en && w.th);
+  }catch(e){ customWords = []; }
+}
+function persistCustomWords(){
+  try{ localStorage.setItem(CUSTOM_KEY, JSON.stringify(customWords)); }catch(e){}
+}
+function rebuildExtraPool(){
+  const base = parseWords(RAW.extra);
+  const baseEnLower = new Set(base.map(w => w.en.toLowerCase()));
+  const custom = customWords
+    .filter(w => w && w.en && w.th && !baseEnLower.has(w.en.toLowerCase()))
+    .map(w => ({en:w.en, th:w.th, exEn:w.exEn||'', exTh:w.exTh||'', custom:true}));
+  POOLS.extra = [...base, ...custom];
+  const cnt = {};
+  POOLS.extra.forEach(w => cnt[w.th] = (cnt[w.th]||0)+1);
+  DUP_TH.extra = new Set(Object.keys(cnt).filter(t => cnt[t] > 1));
+}
+
+/* ===== Audio ===== */
 let actx = null;
 function initAudio(){
   try{
@@ -1925,8 +2300,7 @@ function initAudio(){
 function tone(freq, start, dur, type, vol, freqEnd){
   if(!actx) return;
   const t0 = actx.currentTime + start;
-  const o = actx.createOscillator();
-  const g = actx.createGain();
+  const o = actx.createOscillator(); const g = actx.createGain();
   o.type = type || 'sine';
   o.frequency.setValueAtTime(freq, t0);
   if(freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd, t0 + dur);
@@ -1940,44 +2314,10 @@ function sfxCorrect(){ initAudio(); [523.25, 659.25, 783.99, 1046.50].forEach((f
 function sfxWrong(){ initAudio(); tone(220, 0, 0.22, 'sawtooth', 0.16); tone(155, 0.20, 0.38, 'sawtooth', 0.16); }
 function sfxFinish(){ initAudio(); [523.25,659.25,783.99,1046.50,1318.51].forEach((f,i)=> tone(f, i*0.12, 0.45, 'triangle', 0.18)); }
 function sfxClick(){ initAudio(); tone(880, 0, 0.07, 'sine', 0.10); }
-function sfxShoot(){
-  initAudio(); if(!actx) return;
-  const t0 = actx.currentTime;
-  const o = actx.createOscillator();
-  const g = actx.createGain();
-  o.type = 'square';
-  o.frequency.setValueAtTime(1200, t0);
-  o.frequency.exponentialRampToValueAtTime(180, t0 + 0.18);
-  g.gain.setValueAtTime(0.16, t0);
-  g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.18);
-  o.connect(g); g.connect(actx.destination);
-  o.start(t0); o.stop(t0 + 0.22);
-}
-function sfxExplode(){
-  initAudio(); if(!actx) return;
-  const t0 = actx.currentTime;
-  const dur = 0.5;
-  const bufSize = Math.floor(actx.sampleRate * dur);
-  const buffer = actx.createBuffer(1, bufSize, actx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for(let i=0;i<bufSize;i++) data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufSize, 2);
-  const src = actx.createBufferSource();
-  src.buffer = buffer;
-  const g = actx.createGain();
-  g.gain.setValueAtTime(0.30, t0);
-  g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-  const f = actx.createBiquadFilter();
-  f.type = 'lowpass';
-  f.frequency.setValueAtTime(1200, t0);
-  f.frequency.exponentialRampToValueAtTime(120, t0 + dur);
-  src.connect(f); f.connect(g); g.connect(actx.destination);
-  src.start(t0); src.stop(t0 + dur + 0.05);
-}
 function sfxOops(){
   initAudio(); if(!actx) return;
   const t0 = actx.currentTime;
-  const o = actx.createOscillator();
-  const g = actx.createGain();
+  const o = actx.createOscillator(); const g = actx.createGain();
   o.type = 'sine';
   o.frequency.setValueAtTime(680, t0);
   o.frequency.exponentialRampToValueAtTime(160, t0 + 0.42);
@@ -1986,25 +2326,241 @@ function sfxOops(){
   o.connect(g); g.connect(actx.destination);
   o.start(t0); o.stop(t0 + 0.48);
 }
+function sfxDartStick(){
+  initAudio(); if(!actx) return;
+  const t0 = actx.currentTime;
+  const o1 = actx.createOscillator(); const g1 = actx.createGain();
+  o1.type = 'sine'; o1.frequency.setValueAtTime(200, t0);
+  o1.frequency.exponentialRampToValueAtTime(70, t0 + 0.14);
+  g1.gain.setValueAtTime(0.32, t0);
+  g1.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.20);
+  o1.connect(g1); g1.connect(actx.destination);
+  o1.start(t0); o1.stop(t0 + 0.24);
+  const o2 = actx.createOscillator(); const g2 = actx.createGain();
+  o2.type = 'square'; o2.frequency.setValueAtTime(2400, t0);
+  o2.frequency.exponentialRampToValueAtTime(900, t0 + 0.06);
+  g2.gain.setValueAtTime(0.14, t0);
+  g2.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.09);
+  o2.connect(g2); g2.connect(actx.destination);
+  o2.start(t0); o2.stop(t0 + 0.11);
+}
+function sfxDartBounce(){
+  initAudio(); if(!actx) return;
+  const t0 = actx.currentTime;
+  [1, 0.85, 0.72].forEach((mult, i) => {
+    const o = actx.createOscillator(); const g = actx.createGain();
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(1800 * mult, t0 + i * 0.03);
+    o.frequency.exponentialRampToValueAtTime(380 * mult, t0 + 0.20 + i * 0.03);
+    g.gain.setValueAtTime(0.18 / (i+1), t0 + i * 0.03);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.24 + i * 0.03);
+    o.connect(g); g.connect(actx.destination);
+    o.start(t0 + i * 0.03); o.stop(t0 + 0.28 + i * 0.03);
+  });
+}
 function sfxFlip(){ initAudio(); tone(700, 0, 0.07, 'sine', 0.10); }
 function sfxMatch(){ initAudio(); [659.25, 880, 1046.50].forEach((f,i)=> tone(f, i*0.08, 0.28, 'triangle', 0.18)); }
 function sfxMiss(){ initAudio(); tone(300, 0, 0.13, 'triangle', 0.14); tone(200, 0.10, 0.20, 'triangle', 0.14); }
+function sfxSwat(){
+  initAudio(); if(!actx) return;
+  const t0 = actx.currentTime;
+  const o = actx.createOscillator(); const g = actx.createGain();
+  o.type = 'square';
+  o.frequency.setValueAtTime(200, t0);
+  o.frequency.exponentialRampToValueAtTime(70, t0 + 0.10);
+  g.gain.setValueAtTime(0.24, t0);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.10);
+  o.connect(g); g.connect(actx.destination);
+  o.start(t0); o.stop(t0 + 0.14);
+}
+function sfxMosquitoDie(){
+  initAudio(); if(!actx) return;
+  const t0 = actx.currentTime;
+  const o = actx.createOscillator(); const g = actx.createGain();
+  o.type = 'sawtooth';
+  o.frequency.setValueAtTime(380, t0);
+  o.frequency.exponentialRampToValueAtTime(60, t0 + 0.30);
+  g.gain.setValueAtTime(0.22, t0);
+  g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.30);
+  o.connect(g); g.connect(actx.destination);
+  o.start(t0); o.stop(t0 + 0.34);
+}
+function sfxOuch(){
+  initAudio(); if(!actx) return;
+  const t0 = actx.currentTime;
+  [520, 400, 290].forEach((f, i) => {
+    const o = actx.createOscillator(); const g = actx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(f, t0 + i * 0.08);
+    g.gain.setValueAtTime(0.20, t0 + i * 0.08);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + i * 0.08 + 0.16);
+    o.connect(g); g.connect(actx.destination);
+    o.start(t0 + i * 0.08); o.stop(t0 + i * 0.08 + 0.19);
+  });
+}
 
-/* =========================================================
-   เสียงพูด
-   ========================================================= */
+/* ===== BGM – bright cheerful ===== */
+let bgmNodes = null;
+let bgmTimer = null;
+let bgmStep = 0;
+const BGM_BEAT_MS = 280;
+const BGM_TUNE = [
+  523.25, 587.33, 659.25, 783.99, 880.00, 783.99, 659.25, 587.33,
+  523.25, 659.25, 783.99, 1046.50, 1318.51, 1046.50, 783.99, 659.25,
+  587.33, 698.46, 880.00, 1174.66, 1396.91, 1174.66, 880.00, 698.46,
+  659.25, 783.99, 987.77, 1318.51, 1567.98, 1318.51, 987.77, 783.99,
+];
+const BGM_BASS = [130.81, 146.83, 164.81, 174.61];
+function playBellNote(freq, time, dur, gainVal){
+  if(!actx || !bgmNodes) return;
+  try{
+    const o1 = actx.createOscillator();
+    o1.type = 'triangle'; o1.frequency.value = freq;
+    const g1 = actx.createGain();
+    g1.gain.setValueAtTime(0.0001, time);
+    g1.gain.exponentialRampToValueAtTime(gainVal, time + 0.008);
+    g1.gain.exponentialRampToValueAtTime(gainVal*0.35, time + dur*0.35);
+    g1.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+    o1.connect(g1); g1.connect(bgmNodes.master);
+    o1.start(time); o1.stop(time + dur + 0.05);
+    const o2 = actx.createOscillator();
+    o2.type = 'sine'; o2.frequency.value = freq * 2;
+    const g2 = actx.createGain();
+    g2.gain.setValueAtTime(0.0001, time);
+    g2.gain.exponentialRampToValueAtTime(gainVal*0.18, time + 0.005);
+    g2.gain.exponentialRampToValueAtTime(0.0001, time + dur*0.4);
+    o2.connect(g2); g2.connect(bgmNodes.master);
+    o2.start(time); o2.stop(time + dur + 0.05);
+  }catch(e){}
+}
+function playBassNote(freq, time, dur, gainVal){
+  if(!actx || !bgmNodes) return;
+  try{
+    const o = actx.createOscillator();
+    o.type = 'sine'; o.frequency.value = freq;
+    const g = actx.createGain();
+    g.gain.setValueAtTime(0.0001, time);
+    g.gain.exponentialRampToValueAtTime(gainVal, time + 0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001, time + dur);
+    o.connect(g); g.connect(bgmNodes.master);
+    o.start(time); o.stop(time + dur + 0.05);
+  }catch(e){}
+}
+function bgmTick(){
+  if(!bgmNodes || !actx) return;
+  try{
+    const t = actx.currentTime + 0.05;
+    const note = BGM_TUNE[bgmStep % BGM_TUNE.length];
+    playBellNote(note, t, 0.55, 0.15);
+    if(bgmStep % 4 === 0){
+      const bass = BGM_BASS[(Math.floor(bgmStep / 4)) % BGM_BASS.length];
+      playBassNote(bass, t, 1.5, 0.10);
+    }
+    bgmStep++;
+  }catch(e){}
+}
+function startBGM(){
+  initAudio();
+  if(!actx || bgmNodes) return;
+  try{
+    const master = actx.createGain();
+    master.gain.setValueAtTime(0.0001, actx.currentTime);
+    master.gain.exponentialRampToValueAtTime(0.075, actx.currentTime + 1.5);
+    master.connect(actx.destination);
+    bgmNodes = { master };
+    bgmStep = 0;
+    bgmTimer = setInterval(bgmTick, BGM_BEAT_MS);
+    bgmTick();
+  }catch(e){ bgmNodes = null; }
+}
+function stopBGM(){
+  if(bgmTimer){ clearInterval(bgmTimer); bgmTimer = null; }
+  if(!bgmNodes || !actx){ bgmNodes = null; return; }
+  const nodes = bgmNodes; bgmNodes = null;
+  try{
+    const t = actx.currentTime;
+    nodes.master.gain.cancelScheduledValues(t);
+    const cur = Math.max(0.0001, nodes.master.gain.value || 0.0001);
+    nodes.master.gain.setValueAtTime(cur, t);
+    nodes.master.gain.exponentialRampToValueAtTime(0.0001, t + 0.8);
+    setTimeout(() => { try{ nodes.master.disconnect(); }catch(e){} }, 1000);
+  }catch(e){}
+}
+
+/* ===== Mosquito buzz ===== */
+let buzzNodes = null;
+let buzzStopTimeout = null;
+function startBuzzSound(){
+  initAudio();
+  if(!actx) return;
+  if(buzzStopTimeout){ clearTimeout(buzzStopTimeout); buzzStopTimeout = null; }
+  if(buzzNodes) return;
+  try{
+    const t0 = actx.currentTime;
+    const osc1 = actx.createOscillator(); osc1.type = 'triangle'; osc1.frequency.setValueAtTime(620, t0);
+    const osc2 = actx.createOscillator(); osc2.type = 'triangle'; osc2.frequency.setValueAtTime(628, t0);
+    const osc2Gain = actx.createGain(); osc2Gain.gain.value = 0.7;
+    const bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.setValueAtTime(980, t0); bp.Q.setValueAtTime(3.2, t0);
+    const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.setValueAtTime(2600, t0); lp.Q.setValueAtTime(0.7, t0);
+    const amLfo = actx.createOscillator(); amLfo.type = 'sine'; amLfo.frequency.setValueAtTime(28, t0);
+    const amDepth = actx.createGain(); amDepth.gain.setValueAtTime(0.35, t0);
+    const amGain = actx.createGain(); amGain.gain.setValueAtTime(0.7, t0);
+    amLfo.connect(amDepth); amDepth.connect(amGain.gain);
+    const vibLfo = actx.createOscillator(); vibLfo.type = 'sine'; vibLfo.frequency.setValueAtTime(4.5, t0);
+    const vibDepth = actx.createGain(); vibDepth.gain.setValueAtTime(14, t0);
+    vibLfo.connect(vibDepth); vibDepth.connect(osc1.frequency); vibDepth.connect(osc2.frequency);
+    const outGain = actx.createGain();
+    outGain.gain.setValueAtTime(0.0001, t0);
+    outGain.gain.exponentialRampToValueAtTime(0.035, t0 + 0.3);
+    osc1.connect(bp); osc2.connect(osc2Gain); osc2Gain.connect(bp);
+    bp.connect(lp); lp.connect(amGain); amGain.connect(outGain); outGain.connect(actx.destination);
+    osc1.start(t0); osc2.start(t0); amLfo.start(t0); vibLfo.start(t0);
+    buzzNodes = { osc1, osc2, osc2Gain, bp, lp, amLfo, amDepth, amGain, vibLfo, vibDepth, outGain };
+  }catch(e){ buzzNodes = null; }
+}
+function stopBuzzSound(){
+  if(!buzzNodes || !actx){ buzzNodes = null; return; }
+  const nodes = buzzNodes; buzzNodes = null;
+  try{
+    const t = actx.currentTime;
+    nodes.outGain.gain.cancelScheduledValues(t);
+    const cur = Math.max(0.0001, nodes.outGain.gain.value || 0.0001);
+    nodes.outGain.gain.setValueAtTime(cur, t);
+    nodes.outGain.gain.exponentialRampToValueAtTime(0.0001, t + 0.2);
+    buzzStopTimeout = setTimeout(() => {
+      buzzStopTimeout = null;
+      try{ nodes.osc1.stop(); }catch(e){}
+      try{ nodes.osc2.stop(); }catch(e){}
+      try{ nodes.amLfo.stop(); }catch(e){}
+      try{ nodes.vibLfo.stop(); }catch(e){}
+      try{
+        nodes.osc1.disconnect(); nodes.osc2.disconnect(); nodes.osc2Gain.disconnect();
+        nodes.bp.disconnect(); nodes.lp.disconnect();
+        nodes.amLfo.disconnect(); nodes.amDepth.disconnect(); nodes.amGain.disconnect();
+        nodes.vibLfo.disconnect(); nodes.vibDepth.disconnect(); nodes.outGain.disconnect();
+      }catch(e){}
+    }, 300);
+  }catch(e){}
+}
+function updateBuzzSound(){
+  if(!mosquito.running || mosquito.paused){ stopBuzzSound(); return; }
+  const flyingCount = mosquito.mosquitoes.filter(m => m.alive && m.state === 'flying').length;
+  if(flyingCount > 0) startBuzzSound();
+  else stopBuzzSound();
+}
+
+/* ===== Speech ===== */
 let voices = [];
-let voicesReady = false;
 function refreshVoices(){
   if(!('speechSynthesis' in window)) return;
   const v = speechSynthesis.getVoices();
-  if(v && v.length){ voices = v; voicesReady = true; }
+  if(v && v.length) voices = v;
 }
 if('speechSynthesis' in window){
   refreshVoices();
   speechSynthesis.onvoiceschanged = refreshVoices;
   let tries = 0;
-  const t = setInterval(() => { refreshVoices(); if(voicesReady || ++tries > 20) clearInterval(t); }, 200);
+  const t = setInterval(() => { refreshVoices(); if(voices.length || ++tries > 20) clearInterval(t); }, 200);
 }
 function pickVoice(langLower){
   if(!voices.length) refreshVoices();
@@ -2042,9 +2598,7 @@ function speak(text, lang){
   }catch(e){}
 }
 
-/* =========================================================
-   ฟังก์ชันช่วย
-   ========================================================= */
+/* ===== Helpers ===== */
 function shuffle(a){
   const arr = a.slice();
   for(let i=arr.length-1;i>0;i--){
@@ -2053,15 +2607,16 @@ function shuffle(a){
   }
   return arr;
 }
-
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
 function buildSetsForGrade(gradeId){
   const pool = POOLS[gradeId];
   const total = pool.length;
   const SET_SIZE = 20;
   const sets = [];
-  if(total <= SET_SIZE){
-    sets.push(pool.slice());
-  } else {
+  if(total <= SET_SIZE){ sets.push(pool.slice()); }
+  else {
     const remainder = total % SET_SIZE;
     const numFull = Math.floor(total / SET_SIZE);
     if(remainder === 0){
@@ -2073,7 +2628,6 @@ function buildSetsForGrade(gradeId){
   }
   return sets;
 }
-
 function buildQuestionsFromWords(words, poolId){
   const pool = POOLS[poolId];
   const dupSet = DUP_TH[poolId];
@@ -2099,91 +2653,347 @@ function buildQuestionsFromWords(words, poolId){
   }
   return qs;
 }
+const SUITS = [
+  {ch:'♠', color:'black', letter:'K'},
+  {ch:'♥', color:'red',   letter:'K'},
+  {ch:'♦', color:'red',   letter:'Q'},
+  {ch:'♣', color:'black', letter:'Q'},
+  {ch:'♠', color:'black', letter:'J'},
+  {ch:'♥', color:'red',   letter:'J'},
+  {ch:'♦', color:'red',   letter:'A'},
+  {ch:'♣', color:'black', letter:'A'},
+  {ch:'♥', color:'red',   letter:'10'},
+];
+function cardFrontHTML(suitIdx){
+  const s = SUITS[suitIdx % SUITS.length];
+  return `
+    <div class="cf-corner cf-tl">
+      <span class="cf-letter">${s.letter}</span>
+      <span class="cf-suit">${s.ch}</span>
+    </div>
+    <div class="cf-frame"></div>
+    <div class="cf-center">${s.letter}</div>
+    <div class="cf-corner cf-br">
+      <span class="cf-letter">${s.letter}</span>
+      <span class="cf-suit">${s.ch}</span>
+    </div>
+  `;
+}
 
-/* =========================================================
-   State & DOM
-   ========================================================= */
+/* ===== DOM ===== */
 const $ = id => document.getElementById(id);
-const homeEl = $('home'), setsEl = $('sets'), quizEl = $('quiz'), resultEl = $('result');
+const homeEl = $('home'), gradeMenuEl = $('gradeMenu'), quizEl = $('quiz'), resultEl = $('result');
 const wordPickerEl = $('wordPicker'), gameChooserEl = $('gameChooser');
-const matchGameEl = $('matchGame'), choiceGameEl = $('choiceGame'), shootGameEl = $('shootGame');
-const gameResultEl = $('gameResult');
+const matchGameEl = $('matchGame'), choiceGameEl = $('choiceGame');
+const shootGameEl = $('shootGame'), mosquitoGameEl = $('mosquitoGame');
+const gameResultEl = $('gameResult'), addWordsEl = $('addWords');
 
-let state = {
-  gradeId: null, sets: [], setIndex: 0,
-  questions: [], idx: 0, score: 0, wrongList: [], locked: false
-};
+let state = { gradeId:null, questions:[], idx:0, score:0, wrongList:[], locked:false };
+const custom = { gradeId:null, selectedEn:new Set(), gameType:null };
 
-const custom = {
-  gradeId: null,
-  selectedEn: new Set(),
-  gameType: null,
-};
-
-/* =========================================================
-   HOME
-   ========================================================= */
+/* HOME */
 function renderGrades(){
   const wrap = $('gradeList');
   wrap.innerHTML = '';
-  GRADES.forEach(g => {
+  const row1 = document.createElement('div');
+  row1.className = 'grade-row';
+  const row2 = document.createElement('div');
+  row2.className = 'grade-row';
+  GRADES.forEach((g, i) => {
     const b = document.createElement('button');
     b.className = 'grade ' + g.cls;
     const count = POOLS[g.id].length;
-    b.innerHTML = `<span class="emo">${g.emo}</span><span>${g.name}</span><small>${count} คำ</small>`;
-    b.onclick = () => { sfxClick(); showSets(g.id); };
-    wrap.appendChild(b);
+    b.innerHTML = `
+      <div class="g-name">${g.name}</div>
+      <div class="g-count">${count} คำ</div>
+    `;
+    b.onclick = () => { sfxClick(); showGradeMenu(g.id); };
+    if(i < 4) row1.appendChild(b);
+    else row2.appendChild(b);
   });
+  wrap.appendChild(row1);
+  wrap.appendChild(row2);
 }
 
-/* =========================================================
-   SETS
-   ========================================================= */
-function showSets(gradeId){
+function showGradeMenu(gradeId){
   state.gradeId = gradeId;
-  state.sets = buildSetsForGrade(gradeId);
   const grade = GRADES.find(g => g.id === gradeId);
-  const totalWords = POOLS[gradeId].length;
-  $('setsTitle').textContent = grade.name;
-  $('setsSub').textContent = `ทั้งหมด ${state.sets.length} ชุด • ${totalWords} คำ`;
-
-  const grid = $('setsGrid');
-  grid.innerHTML = '';
-  state.sets.forEach((setWords, i) => {
-    const b = document.createElement('button');
-    const isLast = i === state.sets.length - 1;
-    b.className = 'set-btn' + (isLast && setWords.length > 20 ? ' last' : '');
-    b.innerHTML = `<span class="set-no">ชุดที่ ${i+1}</span><small>${setWords.length} ข้อ</small>`;
-    b.onclick = () => startSet(i);
-    grid.appendChild(b);
-  });
-
-  const cg = document.createElement('button');
-  cg.className = 'set-btn custom-game';
-  cg.innerHTML = `<span class="set-no">🎮 สร้างเกมเอง</span><small>เลือกคำเอง · 3 เกมใหม่</small>`;
-  cg.onclick = () => { sfxClick(); showWordPicker(gradeId); };
-  grid.appendChild(cg);
-
-  showScreen('sets');
+  $('gmTitle').textContent = grade.name;
+  showScreen('gradeMenu');
 }
 
-/* =========================================================
-   QUIZ
-   ========================================================= */
-function startSet(setIndex){
+/* WORD PICKER */
+function showWordPicker(gradeId, preserveSelection){
+  custom.gradeId = gradeId;
+  if(!preserveSelection) custom.selectedEn = new Set();
+  const grade = GRADES.find(g => g.id === gradeId);
+  const pool = POOLS[gradeId];
+  $('wpTitle').textContent = grade.name;
+  $('wpSub').textContent = `เลือกอย่างน้อย 4 คำ · ทั้งหมด ${pool.length} คำ`;
+
+  const actions = $('wpActions');
+  actions.innerHTML = '';
+  const sets = buildSetsForGrade(gradeId);
+  sets.forEach((setWords, i) => {
+    const chip = document.createElement('button');
+    chip.className = 'wp-chip';
+    chip.textContent = String(i + 1);
+    chip.title = `ชุดที่ ${i+1}`;
+    chip.onclick = () => { sfxClick(); selectSetWords(setWords); };
+    actions.appendChild(chip);
+  });
+  const allBtn = document.createElement('button');
+  allBtn.className = 'wp-chip all';
+  allBtn.textContent = 'ทั้งหมด';
+  allBtn.onclick = () => { sfxClick(); pool.forEach(w => custom.selectedEn.add(w.en)); updateWPUI(); };
+  actions.appendChild(allBtn);
+  const clr = document.createElement('button');
+  clr.className = 'wp-chip clear';
+  clr.textContent = '🗑';
+  clr.title = 'ล้าง';
+  clr.onclick = () => { sfxClick(); custom.selectedEn.clear(); updateWPUI(); };
+  actions.appendChild(clr);
+
+  const grid = $('wpGrid');
+  grid.innerHTML = '';
+  pool.forEach(w => {
+    const c = document.createElement('button');
+    c.className = 'wp-card' + (w.custom ? ' custom' : '');
+    c.dataset.en = w.en;
+    let html = `<div class="wp-en">${escapeHtml(w.en)}</div><div class="wp-th">${escapeHtml(w.th)}</div>`;
+    if(w.exEn) html += `<div class="wp-ex">📝 ${escapeHtml(w.exEn)}</div>`;
+    if(w.custom){
+      html += `<button class="wp-delete" title="ลบ" data-en="${escapeHtml(w.en)}">🗑</button>`;
+      html += `<button class="wp-edit" title="แก้ไข" data-en="${escapeHtml(w.en)}">✏️</button>`;
+    }
+    c.innerHTML = html;
+    c.onclick = (ev) => {
+      const t = ev.target;
+      if(t.classList.contains('wp-edit')){
+        ev.stopPropagation();
+        openEditWord(w.en);
+        return;
+      }
+      if(t.classList.contains('wp-delete')){
+        ev.stopPropagation();
+        confirmDeleteWord(w.en);
+        return;
+      }
+      if(custom.selectedEn.has(w.en)) custom.selectedEn.delete(w.en);
+      else custom.selectedEn.add(w.en);
+      sfxClick(); updateWPUI();
+    };
+    grid.appendChild(c);
+  });
+  updateWPUI();
+  showScreen('wordPicker');
+}
+function selectSetWords(setWords){
+  custom.selectedEn.clear();
+  setWords.forEach(w => custom.selectedEn.add(w.en));
+  updateWPUI();
+}
+function updateWPUI(){
+  document.querySelectorAll('.wp-card').forEach(c => {
+    if(custom.selectedEn.has(c.dataset.en)) c.classList.add('selected');
+    else c.classList.remove('selected');
+  });
+  const n = custom.selectedEn.size;
+  const cnt = $('wpCount');
+  cnt.textContent = `เลือกแล้ว ${n} คำ`;
+  cnt.className = 'wp-count' + (n < 4 ? ' warn' : '');
+  $('wpNextBtn').disabled = n < 4;
+}
+function showGameChooser(){ showScreen('gameChooser'); }
+function getSelectedWords(){
+  const pool = POOLS[custom.gradeId];
+  return pool.filter(w => custom.selectedEn.has(w.en));
+}
+function confirmDeleteWord(en){
+  if(!confirm(`ลบคำศัพท์ "${en}" ออกจากรายการของคุณหรือไม่?`)) return;
+  const idx = customWords.findIndex(w => w.en === en);
+  if(idx < 0) return;
+  customWords.splice(idx, 1);
+  persistCustomWords();
+  rebuildExtraPool();
+  custom.selectedEn.delete(en);
+  sfxWrong();
+  showWordPicker(custom.gradeId, true);
+}
+
+/* ===== Add Words ===== */
+function showAddWords(){
+  const rows = $('awRows');
+  rows.innerHTML = '';
+  addAwRow();
+  showScreen('addWords');
+}
+function addAwRow(en='', th='', exEn='', exTh=''){
+  const rows = $('awRows');
+  const row = document.createElement('div');
+  row.className = 'aw-row';
+  row.innerHTML = `
+    <input class="aw-input aw-en" placeholder="คำศัพท์" value="${escapeHtml(en)}">
+    <input class="aw-input aw-th" placeholder="คำแปล" value="${escapeHtml(th)}">
+    <input class="aw-input aw-exen" placeholder="ตัวอย่างประโยค" value="${escapeHtml(exEn)}">
+    <input class="aw-input aw-exth" placeholder="คำแปลประโยค" value="${escapeHtml(exTh)}">
+    <button class="aw-plus" title="เพิ่มคำต่อไป">+</button>
+  `;
+  row.querySelector('.aw-plus').onclick = (e) => {
+    e.preventDefault(); sfxClick();
+    const newRow = addAwRow();
+    row.after(newRow);
+    newRow.querySelector('.aw-en').focus();
+  };
+  rows.appendChild(row);
+  return row;
+}
+function saveAwWords(){
+  const rows = document.querySelectorAll('#awRows .aw-row');
+  const toAdd = [];
+  let hasError = false;
+  const existingEn = new Set([
+    ...POOLS.extra.map(w => w.en.toLowerCase()),
+    ...customWords.map(w => w.en.toLowerCase())
+  ]);
+  rows.forEach(row => {
+    const enEl = row.querySelector('.aw-en');
+    const thEl = row.querySelector('.aw-th');
+    const exEnEl = row.querySelector('.aw-exen');
+    const exThEl = row.querySelector('.aw-exth');
+    enEl.style.borderColor = '';
+    thEl.style.borderColor = '';
+    const en = enEl.value.trim();
+    const th = thEl.value.trim();
+    const exEn = exEnEl.value.trim();
+    const exTh = exThEl.value.trim();
+    if(!en && !th && !exEn && !exTh) return;
+    if(!en || !th){
+      hasError = true;
+      (en ? thEl : enEl).style.borderColor = '#ef4444';
+      return;
+    }
+    if(existingEn.has(en.toLowerCase())){
+      hasError = true;
+      enEl.style.borderColor = '#ef4444';
+      return;
+    }
+    existingEn.add(en.toLowerCase());
+    toAdd.push({en, th, exEn, exTh});
+  });
+  if(hasError){ sfxWrong(); return; }
+  if(toAdd.length === 0){ sfxWrong(); return; }
+  customWords.push(...toAdd);
+  persistCustomWords();
+  rebuildExtraPool();
+  sfxCorrect();
+  showWordPicker(custom.gradeId, true);
+}
+
+/* ===== Edit Word Modal ===== */
+let editingEn = null;
+function openEditWord(en){
+  const w = customWords.find(x => x.en === en);
+  if(!w) return;
+  editingEn = en;
+  $('ewEn').value = w.en;
+  $('ewTh').value = w.th;
+  $('ewExEn').value = w.exEn || '';
+  $('ewExTh').value = w.exTh || '';
+  ['ewEn','ewTh','ewExEn','ewExTh'].forEach(id => $(id).style.borderColor = '');
+  $('editWordModal').hidden = false;
+  setTimeout(() => $('ewEn').focus(), 60);
+}
+function closeEditWord(){
+  $('editWordModal').hidden = true;
+  editingEn = null;
+}
+function commitEditWord(){
+  const en = $('ewEn').value.trim();
+  const th = $('ewTh').value.trim();
+  const exEn = $('ewExEn').value.trim();
+  const exTh = $('ewExTh').value.trim();
+  if(!en || !th){
+    if(!en) $('ewEn').style.borderColor = '#ef4444';
+    if(!th) $('ewTh').style.borderColor = '#ef4444';
+    sfxWrong(); return;
+  }
+  const idx = customWords.findIndex(w => w.en === editingEn);
+  if(idx >= 0){
+    const lower = en.toLowerCase();
+    const dup = POOLS.extra.some(w => w.en.toLowerCase() === lower && w.en !== editingEn)
+             || customWords.some(w => w.en.toLowerCase() === lower && w.en !== editingEn);
+    if(dup){ $('ewEn').style.borderColor = '#ef4444'; sfxWrong(); return; }
+    if(en !== editingEn && custom.selectedEn.has(editingEn)){
+      custom.selectedEn.delete(editingEn);
+      custom.selectedEn.add(en);
+    }
+    customWords[idx] = {en, th, exEn, exTh};
+    persistCustomWords();
+    rebuildExtraPool();
+    closeEditWord();
+    sfxCorrect();
+    showWordPicker(custom.gradeId, true);
+  } else closeEditWord();
+}
+$('ewCancel').onclick = () => { sfxClick(); closeEditWord(); };
+$('ewSave').onclick = () => { sfxClick(); commitEditWord(); };
+$('ewEn').addEventListener('keydown', e => { if(e.key === 'Enter') $('ewTh').focus(); });
+$('ewTh').addEventListener('keydown', e => { if(e.key === 'Enter') $('ewExEn').focus(); });
+$('ewExEn').addEventListener('keydown', e => { if(e.key === 'Enter') $('ewExTh').focus(); });
+$('ewExTh').addEventListener('keydown', e => { if(e.key === 'Enter') commitEditWord(); });
+
+/* TIME PICKER */
+let timePickerCallback = null;
+let selectedTimeSec = 120;
+function openTimePicker(title, sub, options, defaultSec, callback){
+  $('timePickerTitle').textContent = title;
+  $('timePickerSub').textContent = sub;
+  const box = $('timeOpts');
+  box.innerHTML = '';
+  selectedTimeSec = defaultSec;
+  options.forEach(opt => {
+    const b = document.createElement('button');
+    b.className = 'time-opt' + (opt.sec === defaultSec ? ' selected' : '');
+    b.textContent = opt.label;
+    b.onclick = () => {
+      sfxClick(); selectedTimeSec = opt.sec;
+      box.querySelectorAll('.time-opt').forEach(x => x.classList.remove('selected'));
+      b.classList.add('selected');
+    };
+    box.appendChild(b);
+  });
+  timePickerCallback = callback;
+  $('timePicker').hidden = false;
+}
+$('timeStartBtn').onclick = () => {
+  sfxClick();
+  const cb = timePickerCallback;
+  $('timePicker').hidden = true;
+  timePickerCallback = null;
+  if(cb) cb(selectedTimeSec);
+};
+
+/* QUIZ */
+let quizPaused = false;
+function startMergedQuiz(gradeId){
   sfxClick();
   if('speechSynthesis' in window) speechSynthesis.cancel();
-  state.setIndex = setIndex;
-  state.questions = buildQuestionsFromWords(state.sets[setIndex], state.gradeId);
+  state.gradeId = gradeId;
+  const pool = POOLS[gradeId];
+  state.questions = buildQuestionsFromWords(pool, gradeId);
   state.idx = 0; state.score = 0; state.wrongList = []; state.locked = false;
+  quizPaused = false;
+  $('quizPauseBtn').textContent = '⏸';
+  $('quizPauseBtn').classList.remove('paused');
   showScreen('quiz');
   renderQuestion();
+  startBGM();
 }
 function renderQuestion(){
   state.locked = false;
   const q = state.questions[state.idx];
   const totalQ = state.questions.length;
-  $('setTxt').textContent = `ชุดที่ ${state.setIndex+1}`;
   $('progressTxt').textContent = `ข้อ ${state.idx+1} / ${totalQ}`;
   $('scoreTxt').textContent = `คะแนน ${state.score}`;
   $('barFill').style.width = (state.idx / totalQ * 100) + '%';
@@ -2207,10 +3017,9 @@ function renderQuestion(){
     box.appendChild(btn);
   });
   if(!q.reverse){
-    const wordToSay = q.target.en;
     setTimeout(() => {
-      if(!state.locked && !quizEl.hidden){
-        speak(wordToSay, 'en');
+      if(!state.locked && !quizEl.hidden && !quizPaused){
+        speak(q.target.en, 'en');
         const s = $('spkBtn');
         s.classList.add('speaking');
         setTimeout(() => s.classList.remove('speaking'), 1200);
@@ -2219,7 +3028,7 @@ function renderQuestion(){
   }
 }
 function answer(btn, op, q){
-  if(state.locked) return;
+  if(state.locked || quizPaused) return;
   state.locked = true;
   if('speechSynthesis' in window) speechSynthesis.cancel();
   const isCorrect = (op.en === q.target.en);
@@ -2227,11 +3036,11 @@ function answer(btn, op, q){
   buttons.forEach(b => b.disabled = true);
   if(isCorrect){
     btn.classList.add('right'); state.score++; sfxCorrect();
-    $('fb').textContent = '🎉 ถูกต้อง! เก่งมากเลย'; $('fb').className = 'fb ok';
+    $('fb').textContent = '🎉 ถูกต้อง!'; $('fb').className = 'fb ok';
     setTimeout(() => speak(q.target.en, 'en'), 480);
   } else {
     btn.classList.add('wrong'); sfxWrong();
-    $('fb').textContent = `❌ ยังไม่ถูก คำตอบคือ "${q.correctText}"`; $('fb').className = 'fb no';
+    $('fb').textContent = `❌ คำตอบคือ "${q.correctText}"`; $('fb').className = 'fb no';
     buttons.forEach(b => {
       if(b.textContent === q.correctText) b.classList.add('right');
       else if(b !== btn) b.classList.add('fade');
@@ -2241,24 +3050,26 @@ function answer(btn, op, q){
   }
   $('scoreTxt').textContent = `คะแนน ${state.score}`;
   setTimeout(() => {
+    if(quizPaused) return;
     state.idx++;
     if(state.idx >= state.questions.length) showResult();
     else renderQuestion();
   }, isCorrect ? 1300 : 2100);
 }
 function showResult(){
+  stopBGM();
   showScreen('result');
   sfxFinish();
   const total = state.questions.length;
   const pct = Math.round(state.score / total * 100);
   $('rScore').textContent = `${state.score}/${total}`;
-  $('rPct').textContent = `ชุดที่ ${state.setIndex+1} • คิดเป็น ${pct}%`;
+  $('rPct').textContent = `คิดเป็น ${pct}%`;
   let msg;
-  if(pct === 100) msg = '🏆 สุดยอด! ตอบถูกทั้งหมดเลย';
-  else if(pct >= 80) msg = '🌟 ยอดเยี่ยมมาก! ใกล้เต็มแล้ว';
-  else if(pct >= 60) msg = '👍 ดีมาก! ฝึกอีกนิดจะเก่งสุด ๆ';
-  else if(pct >= 40) msg = '💪 สู้ต่อไป! ลองทบทวนคำศัพท์อีกครั้งนะ';
-  else msg = '📚 ไม่เป็นไรเลย มาฝึกใหม่กันอีกครั้ง!';
+  if(pct === 100) msg = '🏆 สุดยอด!';
+  else if(pct >= 80) msg = '🌟 ยอดเยี่ยมมาก!';
+  else if(pct >= 60) msg = '👍 ดีมาก!';
+  else if(pct >= 40) msg = '💪 สู้ต่อไป!';
+  else msg = '📚 มาฝึกใหม่กัน!';
   $('rMsg').textContent = msg;
   const rv = $('rReview');
   if(state.wrongList.length === 0){
@@ -2270,88 +3081,7 @@ function showResult(){
   }
 }
 
-/* =========================================================
-   WORD PICKER
-   ========================================================= */
-function showWordPicker(gradeId){
-  custom.gradeId = gradeId;
-  custom.selectedEn = new Set();
-  const grade = GRADES.find(g => g.id === gradeId);
-  const pool = POOLS[gradeId];
-
-  $('wpTitle').textContent = `🎮 สร้างเกมเอง · ${grade.name}`;
-  $('wpSub').textContent = `เลือกอย่างน้อย 4 คำ (มีทั้งหมด ${pool.length} คำ)`;
-
-  const actions = $('wpActions');
-  actions.innerHTML = '';
-  const sets = buildSetsForGrade(gradeId);
-  sets.forEach((setWords, i) => {
-    const chip = document.createElement('button');
-    chip.className = 'wp-chip';
-    chip.textContent = `✅ เลือกชุดที่ ${i+1} (${setWords.length} คำ)`;
-    chip.onclick = () => { sfxClick(); selectSetWords(setWords); };
-    actions.appendChild(chip);
-  });
-  const allBtn = document.createElement('button');
-  allBtn.className = 'wp-chip all';
-  allBtn.textContent = `⭐ เลือกทั้งหมด (${pool.length} คำ)`;
-  allBtn.onclick = () => { sfxClick(); pool.forEach(w => custom.selectedEn.add(w.en)); updateWPUI(); };
-  actions.appendChild(allBtn);
-
-  const clr = document.createElement('button');
-  clr.className = 'wp-chip clear';
-  clr.textContent = `🗑️ ล้างทั้งหมด`;
-  clr.onclick = () => { sfxClick(); custom.selectedEn.clear(); updateWPUI(); };
-  actions.appendChild(clr);
-
-  const grid = $('wpGrid');
-  grid.innerHTML = '';
-  pool.forEach(w => {
-    const c = document.createElement('button');
-    c.className = 'wp-card';
-    c.dataset.en = w.en;
-    c.innerHTML = `<div class="wp-en">${escapeHtml(w.en)}</div><div class="wp-th">${escapeHtml(w.th)}</div>`;
-    c.onclick = () => {
-      if(custom.selectedEn.has(w.en)) custom.selectedEn.delete(w.en);
-      else custom.selectedEn.add(w.en);
-      sfxClick();
-      updateWPUI();
-    };
-    grid.appendChild(c);
-  });
-
-  updateWPUI();
-  showScreen('wordPicker');
-}
-
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-function selectSetWords(setWords){
-  custom.selectedEn.clear();
-  setWords.forEach(w => custom.selectedEn.add(w.en));
-  updateWPUI();
-}
-
-function updateWPUI(){
-  document.querySelectorAll('.wp-card').forEach(c => {
-    if(custom.selectedEn.has(c.dataset.en)) c.classList.add('selected');
-    else c.classList.remove('selected');
-  });
-  const n = custom.selectedEn.size;
-  const cnt = $('wpCount');
-  cnt.textContent = `เลือกแล้ว ${n} คำ`;
-  cnt.className = 'wp-count' + (n < 4 ? ' warn' : '');
-  $('wpNextBtn').disabled = n < 4;
-}
-
-function showGameChooser(){
-  const n = custom.selectedEn.size;
-  $('gcSub').textContent = `เลือกคำไว้ ${n} คำ — เลือกเกมที่ต้องการเล่น`;
-  showScreen('gameChooser');
-}
-
+/* GAME CHOOSER */
 document.querySelectorAll('.game-card').forEach(card => {
   card.onclick = () => {
     sfxClick();
@@ -2359,75 +3089,97 @@ document.querySelectorAll('.game-card').forEach(card => {
     custom.gameType = g;
     if(g === 'match') startMatchGame();
     else if(g === 'choice') startChoiceGame();
-    else if(g === 'shoot') startShootGame();
+    else if(g === 'shoot') {
+      openTimePicker('⏱️ ปาเป้า · เลือกเวลาเล่น',
+        'ยิ่งเวลามาก ยิ่งมีโอกาสทำคะแนน',
+        [{label:'1 นาที', sec:60},{label:'2 นาที', sec:120},{label:'3 นาที', sec:180},{label:'5 นาที', sec:300}],
+        180,
+        (sec) => { dart.GAME_DURATION = sec; startDartGame(); });
+    }
+    else if(g === 'mosquito') {
+      openTimePicker('⏱️ ตบยุง · เลือกเวลาเล่น',
+        'ยิ่งเวลามาก ยิ่งตบยุงได้เยอะ',
+        [{label:'1 นาที', sec:60},{label:'2 นาที', sec:120},{label:'3 นาที', sec:180},{label:'5 นาที', sec:300}],
+        120,
+        (sec) => { mosquito.GAME_DURATION = sec; startMosquitoGame(); });
+    }
   };
 });
 
-function getSelectedWords(){
-  const pool = POOLS[custom.gradeId];
-  return pool.filter(w => custom.selectedEn.has(w.en));
-}
-
-/* =========================================================
-   MATCH GAME
-   ========================================================= */
+/* MATCH */
 const match = {
-  timerId: null, pairs: 0, totalPairs: 0,
-  firstCard: null, secondCard: null, lock: false, startTime: 0,
+  timerId:null, pairs:0, totalPairs:0,
+  firstCard:null, secondCard:null, lock:false, startTime:0,
+  sets: [], currentSetIndex: 0, setTimes: [], totalSets: 0,
+  paused:false, elapsed:0,
 };
-
 function startMatchGame(){
   const words = getSelectedWords();
   if(words.length < 2){ alert('ต้องเลือกอย่างน้อย 2 คำ'); return; }
+  const MAX_PER_SET = 5;
+  const sets = [];
+  for(let i = 0; i < words.length; i += MAX_PER_SET){
+    sets.push(words.slice(i, i + MAX_PER_SET));
+  }
+  match.sets = sets;
+  match.currentSetIndex = 0;
+  match.setTimes = [];
+  match.totalSets = sets.length;
+  match.paused = false;
+  $('mgPauseBtn').textContent = '⏸';
+  $('mgPauseBtn').classList.remove('paused');
+  loadMatchSet(0);
+}
+function loadMatchSet(idx){
+  match.currentSetIndex = idx;
+  const words = match.sets[idx];
   match.pairs = 0;
   match.totalPairs = words.length;
-  match.firstCard = null;
-  match.secondCard = null;
-  match.lock = false;
-  match.startTime = 0;
-  clearInterval(match.timerId);
-  match.timerId = null;
+  match.firstCard = null; match.secondCard = null;
+  match.lock = false; match.startTime = 0; match.elapsed = 0;
+  clearInterval(match.timerId); match.timerId = null;
   $('mgTimer').textContent = '⏱️ 00:00';
   $('mgPairs').textContent = `คู่ 0 / ${match.totalPairs}`;
 
   const cards = [];
-  words.forEach((w, idx) => {
-    cards.push({id: 'e'+idx, pairId: 'p'+idx, text: w.en, type: 'en'});
-    cards.push({id: 't'+idx, pairId: 'p'+idx, text: w.th, type: 'th'});
+  words.forEach((w, i) => {
+    cards.push({pairId:'p'+i, text:w.en, type:'en'});
+    cards.push({pairId:'p'+i, text:w.th, type:'th'});
   });
   const shuffled = shuffle(cards);
-
   const grid = $('mgGrid');
   grid.innerHTML = '';
-  const totalCards = shuffled.length;
-  let minSize = 85;
-  if(totalCards > 24) minSize = 70;
-  if(totalCards > 40) minSize = 58;
-  grid.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minSize}px, 1fr))`;
+  const total = shuffled.length;
+  let cols;
+  if(total <= 4) cols = 2;
+  else if(total <= 6) cols = 3;
+  else if(total <= 8) cols = 4;
+  else cols = 5;
+  grid.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
 
   shuffled.forEach(c => {
     const el = document.createElement('div');
     el.className = 'mcard';
     el.dataset.pairId = c.pairId;
     el.dataset.type = c.type;
+    const suitIdx = Math.floor(Math.random() * 9);
     el.innerHTML = `<div class="mcard-inner">
-      <div class="mcard-front">?</div>
+      <div class="mcard-front p${suitIdx}">${cardFrontHTML(suitIdx)}</div>
       <div class="mcard-back">${escapeHtml(c.text)}</div>
     </div>`;
     el.onclick = () => handleMatchCardClick(el);
     grid.appendChild(el);
   });
-
   showScreen('matchGame');
 }
-
 function handleMatchCardClick(el){
-  if(match.lock) return;
+  if(match.lock || match.paused) return;
   if(el.classList.contains('flipped') || el.classList.contains('matched')) return;
   if(!match.timerId){
     match.startTime = Date.now();
     match.timerId = setInterval(() => {
-      const sec = Math.floor((Date.now() - match.startTime) / 1000);
+      if(match.paused) return;
+      const sec = Math.floor((Date.now() - match.startTime)/1000);
       const m = String(Math.floor(sec/60)).padStart(2,'0');
       const s = String(sec%60).padStart(2,'0');
       $('mgTimer').textContent = `⏱️ ${m}:${s}`;
@@ -2435,7 +3187,6 @@ function handleMatchCardClick(el){
   }
   sfxFlip();
   el.classList.add('flipped');
-
   if(!match.firstCard){ match.firstCard = el; return; }
   match.secondCard = el;
   match.lock = true;
@@ -2443,56 +3194,68 @@ function handleMatchCardClick(el){
   if(a.dataset.pairId === b.dataset.pairId && a.dataset.type !== b.dataset.type){
     setTimeout(() => {
       sfxMatch();
-      a.classList.add('matched');
-      b.classList.add('matched');
+      a.classList.add('matched'); b.classList.add('matched');
       match.pairs++;
       $('mgPairs').textContent = `คู่ ${match.pairs} / ${match.totalPairs}`;
       match.firstCard = null; match.secondCard = null; match.lock = false;
-      if(match.pairs >= match.totalPairs) finishMatchGame();
+      if(match.pairs >= match.totalPairs) finishMatchSet();
     }, 350);
   } else {
+    setTimeout(() => { sfxMiss(); a.classList.add('wrong'); b.classList.add('wrong'); }, 200);
     setTimeout(() => {
-      sfxMiss();
-      a.classList.add('wrong');
-      b.classList.add('wrong');
-    }, 200);
-    setTimeout(() => {
-      a.classList.remove('flipped','wrong');
-      b.classList.remove('flipped','wrong');
+      a.classList.remove('flipped','wrong'); b.classList.remove('flipped','wrong');
       match.firstCard = null; match.secondCard = null; match.lock = false;
     }, 1200);
   }
 }
-
-function finishMatchGame(){
-  clearInterval(match.timerId);
-  match.timerId = null;
+function finishMatchSet(){
+  clearInterval(match.timerId); match.timerId = null;
   const sec = Math.floor((Date.now() - match.startTime) / 1000);
-  const m = Math.floor(sec/60), s = sec%60;
-  const timeStr = `${m} นาที ${s} วินาที`;
+  match.setTimes.push(sec);
+  if(match.currentSetIndex < match.sets.length - 1){
+    const overlay = document.createElement('div');
+    overlay.className = 'match-overlay';
+    overlay.innerHTML = `
+      <h3>🎉 เซ็ตที่ ${match.currentSetIndex+1} เสร็จแล้ว!</h3>
+      <p>ใช้เวลา ${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')} นาที</p>
+      <p style="opacity:.85;font-size:.9rem">ต่อไปเป็นเซ็ตที่ ${match.currentSetIndex+2} / ${match.totalSets}</p>
+      <button class="btn primary" id="mcNext">ไปเซ็ตถัดไป ▶</button>
+    `;
+    matchGameEl.appendChild(overlay);
+    overlay.querySelector('#mcNext').onclick = () => {
+      sfxClick(); overlay.remove();
+      loadMatchSet(match.currentSetIndex + 1);
+    };
+  } else {
+    finishMatchGame();
+  }
+}
+function finishMatchGame(){
+  clearInterval(match.timerId); match.timerId = null;
+  const totalSec = match.setTimes.reduce((a,b) => a+b, 0);
+  const m = Math.floor(totalSec/60), s = totalSec%60;
   sfxFinish();
   $('grBig').textContent = '🎉';
-  $('grMsg').textContent = 'จับคู่ครบทั้งหมด!';
-  $('grDetail').textContent = `จับคู่ ${match.totalPairs} คู่ · ใช้เวลา ${timeStr}`;
+  $('grMsg').textContent = 'จับคู่ครบ!';
+  const totalPairs = match.sets.reduce((a, set) => a + set.length, 0);
+  $('grDetail').textContent = `จับคู่ ${totalPairs} คู่ · รวมเวลา ${m} นาที ${s} วินาที`;
   showScreen('gameResult');
 }
 
-/* =========================================================
-   CHOICE GAME
-   ========================================================= */
-const choice = { questions: [], idx: 0, score: 0, locked: false };
-
+/* CHOICE */
+const choice = { questions:[], idx:0, score:0, locked:false, paused:false };
 function startChoiceGame(){
   const words = getSelectedWords();
   if(words.length < 4){ alert('ต้องเลือกอย่างน้อย 4 คำ'); return; }
   choice.questions = buildQuestionsFromWords(words, custom.gradeId);
-  choice.idx = 0;
-  choice.score = 0;
-  choice.locked = false;
+  choice.idx = 0; choice.score = 0; choice.locked = false;
+  choice.paused = false;
+  $('chPauseBtn').textContent = '⏸';
+  $('chPauseBtn').classList.remove('paused');
   showScreen('choiceGame');
   renderChoiceQuestion();
+  startBGM();
 }
-
 function renderChoiceQuestion(){
   choice.locked = false;
   const q = choice.questions[choice.idx];
@@ -2520,10 +3283,9 @@ function renderChoiceQuestion(){
     box.appendChild(btn);
   });
   if(!q.reverse){
-    const wordToSay = q.target.en;
     setTimeout(() => {
-      if(!choice.locked && !choiceGameEl.hidden){
-        speak(wordToSay, 'en');
+      if(!choice.locked && !choiceGameEl.hidden && !choice.paused){
+        speak(q.target.en, 'en');
         const s = $('chSpkBtn');
         s.classList.add('speaking');
         setTimeout(() => s.classList.remove('speaking'), 1200);
@@ -2531,9 +3293,8 @@ function renderChoiceQuestion(){
     }, 400);
   }
 }
-
 function answerChoice(btn, op, q){
-  if(choice.locked) return;
+  if(choice.locked || choice.paused) return;
   choice.locked = true;
   if('speechSynthesis' in window) speechSynthesis.cancel();
   const isCorrect = (op.en === q.target.en);
@@ -2545,7 +3306,7 @@ function answerChoice(btn, op, q){
     setTimeout(() => speak(q.target.en, 'en'), 450);
   } else {
     btn.classList.add('wrong'); sfxWrong();
-    $('chFb').textContent = `❌ ยังไม่ถูก คำตอบคือ "${q.correctText}"`; $('chFb').className = 'fb no';
+    $('chFb').textContent = `❌ คำตอบคือ "${q.correctText}"`; $('chFb').className = 'fb no';
     buttons.forEach(b => {
       if(b.textContent === q.correctText) b.classList.add('right');
       else if(b !== btn) b.classList.add('fade');
@@ -2554,598 +3315,858 @@ function answerChoice(btn, op, q){
   }
   $('chScore').textContent = `คะแนน ${choice.score}`;
   setTimeout(() => {
+    if(choice.paused) return;
     choice.idx++;
-    if(choice.idx >= choice.questions.length){
-      finishChoiceGame();
-    } else renderChoiceQuestion();
+    if(choice.idx >= choice.questions.length) finishChoiceGame();
+    else renderChoiceQuestion();
   }, isCorrect ? 1300 : 2100);
 }
-
 function finishChoiceGame(){
+  stopBGM();
   sfxFinish();
   const total = choice.questions.length;
   const pct = Math.round(choice.score / total * 100);
   $('grBig').textContent = `${choice.score}/${total}`;
   let msg;
-  if(pct === 100) msg = '🏆 สุดยอด! ตอบถูกทั้งหมด';
-  else if(pct >= 80) msg = '🌟 ยอดเยี่ยมมาก!';
+  if(pct === 100) msg = '🏆 สุดยอด!';
+  else if(pct >= 80) msg = '🌟 ยอดเยี่ยม!';
   else if(pct >= 60) msg = '👍 ดีมาก!';
   else if(pct >= 40) msg = '💪 สู้ต่อไป!';
-  else msg = '📚 มาฝึกใหม่กันอีกครั้ง!';
+  else msg = '📚 มาฝึกใหม่กัน!';
   $('grMsg').textContent = msg;
   $('grDetail').textContent = `ทายคำ ${total} ข้อ · คิดเป็น ${pct}%`;
   showScreen('gameResult');
 }
 
-/* =========================================================
-   SHOOT GAME (FIXED)
-   ========================================================= */
-const shoot = {
-  pool: [],
-  wordQueue: [],
-  queueIdx: 0,
-  targets: [],
-  current: null,
-  score: 0,
-  lives: 3,
-  running: false,
-  rafId: null,
-  lastFrame: 0,
-  aiming: false,
-  aimEndX: 0, aimEndY: 0,
-  gunX: 0, gunY: 0,
-  bullets: [],
-  cooldown: 0,
+/* DART */
+const dart = {
+  pool: [], wordQueue: [], queueIdx: 0, groups: [],
+  score: 0, lives: 3, running: false,
+  rafId: null, lastFrame: 0,
   playfieldW: 0, playfieldH: 0,
-  TARGET_COUNT: 4,
-  timeLeft: 90,
-  timerId: null,
-  GAME_DURATION: 90,
+  timeLeft: 180, timerId: null, GAME_DURATION: 180,
+  GROUP_SIZE: 3, SPAWN_INTERVAL: 3.0, FALL_DURATION: 10.0,
+  spawnAccum: 0, throwing: false, groupIdCounter: 0, paused: false,
 };
-
-function getNextShootWord(){
-  if(shoot.queueIdx >= shoot.wordQueue.length){
-    shoot.wordQueue = shuffle(shoot.pool.slice());
-    shoot.queueIdx = 0;
+function getNextDartWord(){
+  if(dart.queueIdx >= dart.wordQueue.length){
+    dart.wordQueue = shuffle(dart.pool.slice());
+    dart.queueIdx = 0;
   }
-  return shoot.wordQueue[shoot.queueIdx++];
+  return dart.wordQueue[dart.queueIdx++];
 }
-
 function formatTime(sec){
   const m = Math.floor(sec/60);
   const s = sec % 60;
   return `${m}:${String(s).padStart(2,'0')}`;
 }
-
-function updateShootTimer(){
+function updateDartTimer(){
   const el = $('shTimer');
-  el.textContent = `⏱️ ${formatTime(shoot.timeLeft)}`;
-  if(shoot.timeLeft <= 15) el.classList.add('warning');
+  el.textContent = `⏱️ ${formatTime(dart.timeLeft)}`;
+  if(dart.timeLeft <= 15) el.classList.add('warning');
   else el.classList.remove('warning');
 }
-
-function startShootGame(){
+function updateDartPrompt(){
+  const alive = dart.groups.filter(g => g.alive);
+  if(alive.length === 0){ $('gunText').textContent = '...'; return; }
+  const oldest = alive.reduce((a,b) => (a.y >= b.y ? a : b));
+  $('gunText').textContent = oldest.dartWord;
+}
+function startDartGame(){
   const words = getSelectedWords();
   if(words.length < 4){ alert('ต้องเลือกอย่างน้อย 4 คำ'); return; }
-  shoot.pool = words.slice();
-  shoot.wordQueue = shuffle(shoot.pool.slice());
-  shoot.queueIdx = 0;
-  shoot.score = 0;
-  shoot.lives = 3;
-  shoot.targets = [];
-  shoot.bullets = [];
-  shoot.cooldown = 0;
-  shoot.running = true;
-  shoot.timeLeft = shoot.GAME_DURATION;
-  shoot.aiming = false;
-
+  dart.pool = words.slice();
+  dart.wordQueue = shuffle(dart.pool.slice());
+  dart.queueIdx = 0;
+  dart.score = 0; dart.lives = 3;
+  dart.groups.forEach(g => { if(g.el && g.el.parentNode) g.el.remove(); });
+  dart.groups = [];
+  dart.running = true;
+  dart.timeLeft = dart.GAME_DURATION;
+  dart.spawnAccum = dart.SPAWN_INTERVAL;
+  dart.throwing = false;
+  dart.groupIdCounter = 0;
+  dart.paused = false;
+  $('shPauseBtn').textContent = '⏸';
+  $('shPauseBtn').classList.remove('paused');
   $('shLives').textContent = '❤️❤️❤️';
   $('shScore').textContent = 'คะแนน 0';
-  updateShootTimer();
-
-  clearInterval(shoot.timerId);
-  shoot.timerId = setInterval(() => {
-    if(!shoot.running) return;
-    shoot.timeLeft--;
-    updateShootTimer();
-    if(shoot.timeLeft <= 0){
-      gameOverShoot('time');
-    }
+  updateDartTimer();
+  clearInterval(dart.timerId);
+  dart.timerId = setInterval(() => {
+    if(!dart.running || dart.paused) return;
+    dart.timeLeft--;
+    updateDartTimer();
+    if(dart.timeLeft <= 0) gameOverDart('time');
   }, 1000);
-
   const pf = $('playfield');
-  pf.querySelectorAll('.target').forEach(t => t.remove());
-  pf.querySelectorAll('.bullet').forEach(t => t.remove());
+  pf.querySelectorAll('.dart-group').forEach(t => t.remove());
+  pf.querySelectorAll('.dart').forEach(t => t.remove());
   pf.querySelectorAll('.score-pop').forEach(t => t.remove());
   pf.querySelectorAll('.gover').forEach(t => t.remove());
-  $('aimSvg').innerHTML = '';
-
   showScreen('shootGame');
-
   requestAnimationFrame(() => {
     const rect = pf.getBoundingClientRect();
-    shoot.playfieldW = rect.width;
-    shoot.playfieldH = rect.height;
-    shoot.gunX = rect.width / 2;
-    shoot.gunY = rect.height - 55;
-
-    // Initial spawn
-    startNewRound();
-
-    shoot.lastFrame = performance.now();
-    if(shoot.rafId) cancelAnimationFrame(shoot.rafId);
-    shoot.rafId = requestAnimationFrame(shootLoop);
+    dart.playfieldW = rect.width;
+    dart.playfieldH = rect.height;
+    updateDartPrompt();
+    dart.lastFrame = performance.now();
+    if(dart.rafId) cancelAnimationFrame(dart.rafId);
+    dart.rafId = requestAnimationFrame(dartLoop);
   });
 }
-
-/* === Core spawn functions === */
-
-function spawnTarget(data, isCorrect, startY){
-  if(startY === undefined) startY = -80;
-  const pf = $('playfield');
+function dartSVG(){
+  return `
+    <svg class="dart-svg" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="2,30 14,26 14,34" fill="#c0c0c0"/>
+      <polygon points="2,30 14,26 14,30" fill="#f0f0f0"/>
+      <rect x="14" y="26" width="14" height="8" fill="#9ca3af" rx="1"/>
+      <rect x="14" y="26" width="14" height="3" fill="#d1d5db" rx="1"/>
+      <rect x="28" y="27" width="14" height="6" fill="#16a34a" rx="1"/>
+      <rect x="28" y="27" width="14" height="2" fill="#4ade80" rx="1"/>
+      <polygon points="42,12 58,22 58,30 42,30" fill="#22c55e"/>
+      <polygon points="42,48 58,38 58,30 42,30" fill="#22c55e"/>
+      <polygon points="42,12 56,20 58,30 56,40 42,48" fill="#16a34a" opacity="0.6"/>
+      <polygon points="42,12 54,18 58,30 54,42 42,48" fill="#15803d" opacity="0.4"/>
+      <line x1="44" y1="16" x2="56" y2="22" stroke="#86efac" stroke-width="1" opacity="0.9"/>
+      <line x1="44" y1="44" x2="56" y2="38" stroke="#86efac" stroke-width="1" opacity="0.9"/>
+    </svg>
+  `;
+}
+function createDartTarget(word, isCorrect){
   const el = document.createElement('div');
-  el.className = 'target';
-  el.textContent = shoot.current.reverse ? data.en : data.th;
-  el.style.left = '0px';
-  el.style.top = startY + 'px';
-  el.style.visibility = 'hidden';
-  pf.appendChild(el);
-
-  const targetW = el.offsetWidth;
-  const pfW = pf.clientWidth;
-  const cols = shoot.TARGET_COUNT;
-  const colWidth = pfW / cols;
-
-  // Find free columns
-  const usedCols = new Set();
-  shoot.targets.forEach(t => {
-    if(!t.alive) return;
-    usedCols.add(Math.floor(t.x / colWidth));
-  });
-
-  let col = Math.floor(Math.random() * cols);
-  if(usedCols.has(col)){
-    for(let c = 0; c < cols; c++){
-      if(!usedCols.has(c)){ col = c; break; }
-    }
-  }
-
-  const minX = col * colWidth + 6;
-  const maxX = Math.min((col + 1) * colWidth - targetW - 6, pfW - targetW - 6);
-  const range = Math.max(0, maxX - minX);
-  const x = Math.max(6, minX + Math.random() * range);
-
-  el.style.left = x + 'px';
-  el.style.visibility = 'visible';
-
-  // ✅ Speed: ~10 seconds to cross screen (9-11 sec random)
-  const pfH = pf.clientHeight;
-  const speedPxPerSec = pfH / (9 + Math.random() * 2);
-
-  shoot.targets.push({
-    el, data, isCorrect,
-    x, y: startY,
-    speed: speedPxPerSec,
-    alive: true,
-  });
-  return true;
+  el.className = 'dart-target';
+  el.innerHTML = `<div class="dartboard"></div><div class="dart-word">${escapeHtml(word)}</div>`;
+  el.dataset.word = word;
+  el.dataset.correct = isCorrect ? '1' : '0';
+  return el;
 }
-
-function spawnOneWrong(startY){
-  if(startY === undefined) startY = -80;
-  const onScreen = new Set(shoot.targets.filter(t => t.alive).map(t => t.data.en));
-  onScreen.add(shoot.current.en);
-  const candidates = shoot.pool.filter(w => !onScreen.has(w.en));
-  let pick;
-  if(candidates.length > 0){
-    pick = candidates[Math.floor(Math.random() * candidates.length)];
-  } else {
-    const wrongs = shoot.pool.filter(w => w.en !== shoot.current.en);
-    if(wrongs.length === 0) return false;
-    pick = wrongs[Math.floor(Math.random() * wrongs.length)];
+function spawnDartGroup(){
+  if(!dart.running) return;
+  const targetPair = getNextDartWord();
+  const boardShowsThai = Math.random() < 0.5;
+  const dartWord = boardShowsThai ? targetPair.en : targetPair.th;
+  const targetBoardWord = boardShowsThai ? targetPair.th : targetPair.en;
+  const onScreen = new Set();
+  dart.groups.forEach(g => g.boards.forEach(b => onScreen.add(b.word)));
+  const wrongs = [];
+  for(const w of shuffle(dart.pool)){
+    if(w.en === targetPair.en) continue;
+    const word = boardShowsThai ? w.th : w.en;
+    if(onScreen.has(word)) continue;
+    if(wrongs.includes(word)) continue;
+    wrongs.push(word);
+    if(wrongs.length >= 2) break;
   }
-  return spawnTarget(pick, false, startY);
-}
-
-/* Start a fresh round: pick new question, spawn all targets */
-function startNewRound(){
-  // Clear all dead targets
-  shoot.targets = shoot.targets.filter(t => t.alive);
-
-  // Remove existing targets (fresh round)
-  shoot.targets.forEach(t => { if(t.el && t.el.parentNode) t.el.remove(); });
-  shoot.targets = [];
-
-  // Pick new word
-  const reverse = Math.random() < 0.5;
-  const correct = getNextShootWord();
-  shoot.current = { en: correct.en, th: correct.th, reverse };
-  $('gunText').textContent = reverse ? correct.th : correct.en;
-
-  // Spawn correct target first (appears first)
-  spawnTarget(correct, true, -80);
-
-  // Spawn wrongs staggered (closer together)
-  const stagger = 70;
-  let y = -80 - stagger;
-  let safety = 10;
-  while(shoot.targets.length < shoot.TARGET_COUNT && safety-- > 0){
-    if(!spawnOneWrong(y)) break;
-    y -= stagger;
+  while(wrongs.length < 2){
+    const w = dart.pool[Math.floor(Math.random() * dart.pool.length)];
+    const word = boardShowsThai ? w.th : w.en;
+    wrongs.push(word);
   }
-}
-
-/* ✅ Advance question WITHOUT removing existing wrongs */
-function advanceAfterCorrectHit(){
-  if(!shoot.running) return;
-  shoot.targets = shoot.targets.filter(t => t.alive);
-
-  // Pick new word
-  const reverse = Math.random() < 0.5;
-  const correct = getNextShootWord();
-  shoot.current = { en: correct.en, th: correct.th, reverse };
-  $('gunText').textContent = reverse ? correct.th : correct.en;
-
-  // Remove any existing target that conflicts with new correct answer
-  const newCorrectDisplay = reverse ? correct.en : correct.th;
-  const conflicts = shoot.targets.filter(t =>
-    t.data.en === correct.en || t.el.textContent === newCorrectDisplay
-  );
-  conflicts.forEach(t => {
-    t.alive = false;
-    t.el.classList.add('popping');
-    setTimeout(() => { if(t.el.parentNode) t.el.remove(); }, 400);
-  });
-  shoot.targets = shoot.targets.filter(t => t.alive);
-
-  // Spawn new correct target
-  spawnTarget(correct, true, -80);
-
-  // Fill up to TARGET_COUNT with new wrongs (staggered, close)
-  let stagger = 70;
-  let safety = 10;
-  while(shoot.targets.length < shoot.TARGET_COUNT && safety-- > 0){
-    if(!spawnOneWrong(-80 - stagger)) break;
-    stagger += 70;
-  }
-}
-
-/* === Main loop === */
-
-function shootLoop(now){
-  if(!shoot.running) return;
-  const dt = Math.min(50, now - shoot.lastFrame);
-  shoot.lastFrame = now;
-
+  const boardWords = shuffle([targetBoardWord, wrongs[0], wrongs[1]]);
+  const groupEl = document.createElement('div');
+  groupEl.className = 'dart-group';
+  const boardsWrap = document.createElement('div');
+  boardsWrap.className = 'dart-boards';
+  groupEl.appendChild(boardsWrap);
   const pf = $('playfield');
-  const rect = pf.getBoundingClientRect();
-  shoot.playfieldW = rect.width;
-  shoot.playfieldH = rect.height;
-  shoot.gunX = rect.width / 2;
-  shoot.gunY = rect.height - 55;
-
-  let correctFell = false;
-  let wrongFellCount = 0;
-
-  shoot.targets.forEach(t => {
-    if(!t.alive) return;
-    t.y += t.speed * dt / 1000;
-    t.el.style.top = t.y + 'px';
-
-    if(t.y > shoot.playfieldH + 20){
-      // Fell off without being shot
-      t.alive = false;
-      t.el.remove();
-      shoot.lives--;
-      updateLives();
-      if(t.isCorrect) correctFell = true;
-      else wrongFellCount++;
-    }
+  pf.appendChild(groupEl);
+  const group = {
+    id: dart.groupIdCounter++,
+    el: groupEl, boards: [],
+    dartWord, targetBoardWord,
+    y: -110,
+    speed: dart.playfieldH / dart.FALL_DURATION,
+    alive: true, cleared: false,
+  };
+  boardWords.forEach(w => {
+    const isCorrect = (w === targetBoardWord);
+    const bEl = createDartTarget(w, isCorrect);
+    boardsWrap.appendChild(bEl);
+    const board = {word: w, isCorrect, el: bEl};
+    group.boards.push(board);
+    bEl.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if(!dart.running || dart.throwing || dart.paused) return;
+      if(!group.alive || group.cleared) return;
+      throwDartAt(group, board);
+    });
   });
-
-  shoot.targets = shoot.targets.filter(t => t.alive);
-
-  if(shoot.lives <= 0){
-    if(shoot.running) gameOverShoot('lives');
-    return;
-  }
-
-  if(correctFell){
-    sfxOops();
-    // Advance to new question but keep remaining wrongs
-    advanceAfterCorrectHit();
-  } else if(wrongFellCount > 0){
-    sfxOops();
-    for(let i = 0; i < wrongFellCount; i++){
-      spawnOneWrong(-80 - i * 60);
-    }
-  }
-
-  // Move bullets
-  for(let i = shoot.bullets.length - 1; i >= 0; i--){
-    const b = shoot.bullets[i];
-    b.x += b.vx * (dt / 16.67);
-    b.y += b.vy * (dt / 16.67);
-    b.el.style.left = b.x + 'px';
-    b.el.style.top = b.y + 'px';
-
-    let hit = null;
-    for(const t of shoot.targets){
-      if(!t.alive) continue;
-      const tr = t.el.getBoundingClientRect();
-      const pfr = pf.getBoundingClientRect();
-      const tx = tr.left - pfr.left + tr.width/2;
-      const ty = tr.top - pfr.top + tr.height/2;
-      const rad = Math.max(tr.width, tr.height)/2 + 8;
-      const dx = b.x - tx, dy = b.y - ty;
-      if(dx*dx + dy*dy < rad*rad){ hit = t; break; }
-    }
-
-    const offscreen = b.x < -50 || b.x > shoot.playfieldW + 50 || b.y < -50 || b.y > shoot.playfieldH + 50;
-
-    if(hit){
-      b.el.remove();
-      shoot.bullets.splice(i, 1);
-      resolveHit(hit, b.x, b.y);
-    } else if(offscreen){
-      b.el.remove();
-      shoot.bullets.splice(i, 1);
-    }
-  }
-
-  if(shoot.cooldown > 0) shoot.cooldown -= dt;
-  drawAim();
-  shoot.rafId = requestAnimationFrame(shootLoop);
+  dart.groups.push(group);
+  groupEl.style.top = group.y + 'px';
+  updateDartPrompt();
 }
-
-function drawAim(){
-  const svg = $('aimSvg');
-  if(!shoot.aiming){ svg.innerHTML = ''; return; }
-  const x1 = shoot.gunX, y1 = shoot.gunY;
-  const x2 = shoot.aimEndX, y2 = shoot.aimEndY;
-  const dx = x2 - x1, dy = y2 - y1;
-  const len = Math.hypot(dx, dy) || 1;
-  const ext = 300;
-  const x3 = x1 + dx / len * (len + ext);
-  const y3 = y1 + dy / len * (len + ext);
-  svg.innerHTML = `<line class="aim-line" x1="${x1}" y1="${y1}" x2="${x3}" y2="${y3}" />`;
-}
-
-function shootFire(){
-  if(shoot.cooldown > 0) return;
-  if(!shoot.aiming) return;
-  const dx = shoot.aimEndX - shoot.gunX;
-  const dy = shoot.aimEndY - shoot.gunY;
-  const len = Math.hypot(dx, dy);
-  if(len < 20) return;
-  const speed = 18;
-  const vx = dx / len * speed;
-  const vy = dy / len * speed;
-
+function throwDartAt(group, board){
+  if(dart.throwing) return;
+  if(!group.alive || group.cleared) return;
+  dart.throwing = true;
   const pf = $('playfield');
-  const bulletEl = document.createElement('div');
-  bulletEl.className = 'bullet';
-  bulletEl.style.left = shoot.gunX + 'px';
-  bulletEl.style.top = shoot.gunY + 'px';
-  pf.appendChild(bulletEl);
-
-  shoot.bullets.push({ el: bulletEl, x: shoot.gunX, y: shoot.gunY, vx, vy });
-  sfxShoot();
-  shoot.cooldown = 250;
+  const pfRect = pf.getBoundingClientRect();
+  const bRect = board.el.getBoundingClientRect();
+  const targetX = bRect.left - pfRect.left + bRect.width/2;
+  const targetY = bRect.top - pfRect.top + bRect.height/2;
+  const dartEl = document.createElement('div');
+  dartEl.className = 'dart';
+  dartEl.style.setProperty('--rot', '0deg');
+  dartEl.innerHTML = `
+    <div class="dart-label">${escapeHtml(group.dartWord)}</div>
+    ${dartSVG()}
+  `;
+  const startX = pfRect.width / 2;
+  const startY = pfRect.height + 30;
+  dartEl.style.left = (startX - 35) + 'px';
+  dartEl.style.top = (startY - 35) + 'px';
+  dartEl.style.transform = 'rotate(-90deg)';
+  dartEl.style.setProperty('--rot', '-90deg');
+  pf.appendChild(dartEl);
+  void dartEl.offsetWidth;
+  const dx = targetX - startX;
+  const dy = targetY - startY;
+  const angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+  dartEl.classList.add('thrown');
+  dartEl.style.left = (targetX - 35) + 'px';
+  dartEl.style.top = (targetY - 35) + 'px';
+  dartEl.style.transform = `rotate(${angle}deg)`;
+  dartEl.style.setProperty('--rot', `${angle}deg`);
+  setTimeout(() => {
+    if(board.isCorrect){
+      sfxDartStick();
+      board.el.classList.add('hit');
+      clearDartGroup(group, targetX, targetY, dartEl);
+    } else {
+      sfxDartBounce();
+      pf.classList.remove('shake');
+      void pf.offsetWidth;
+      pf.classList.add('shake');
+      setTimeout(() => pf.classList.remove('shake'), 400);
+      board.el.classList.add('shaking');
+      setTimeout(() => board.el.classList.remove('shaking'), 450);
+      const bounceDir = Math.random() * Math.PI * 2;
+      const bounceDist = 480 + Math.random() * 220;
+      const bounceX = targetX + Math.cos(bounceDir) * bounceDist;
+      const bounceY = targetY + Math.sin(bounceDir) * bounceDist;
+      const spinDir = (Math.random() < 0.5 ? -1 : 1);
+      const spin = angle + spinDir * (540 + Math.random() * 360);
+      dartEl.style.transition = 'left .7s cubic-bezier(.4,0,1,1), top .7s cubic-bezier(.4,0,1,1), transform .7s cubic-bezier(.4,0,1,1), opacity .7s ease-in';
+      dartEl.style.left = (bounceX - 35) + 'px';
+      dartEl.style.top = (bounceY - 35) + 'px';
+      dartEl.style.transform = `rotate(${spin}deg) scale(1.4)`;
+      dartEl.style.setProperty('--rot', `${spin}deg`);
+      dartEl.style.opacity = '0';
+      setTimeout(() => dartEl.remove(), 720);
+      dart.lives--;
+      updateDartLives();
+      const rf = $('redFlash');
+      rf.classList.remove('active');
+      void rf.offsetWidth;
+      rf.classList.add('active');
+      if(dart.lives <= 0){
+        setTimeout(() => { if(dart.running) gameOverDart('lives'); }, 500);
+      }
+    }
+    dart.throwing = false;
+  }, 260);
 }
-
-/* ✅ FIXED: Only remove shot target */
-function resolveHit(target, hx, hy){
-  if(!target.alive) return;
-  if(target.isCorrect){
-    sfxExplode();
-    // Remove ONLY this target
-    target.alive = false;
-    target.el.classList.add('popping');
-    setTimeout(() => { if(target.el.parentNode) target.el.remove(); }, 400);
-    shoot.targets = shoot.targets.filter(t => t.alive);
-
-    shoot.score += 10;
-    $('shScore').textContent = `คะแนน ${shoot.score}`;
-
-    const pop = document.createElement('div');
-    pop.className = 'score-pop';
-    pop.textContent = '+10';
-    pop.style.left = hx + 'px';
-    pop.style.top = hy + 'px';
-    $('playfield').appendChild(pop);
-    setTimeout(() => pop.remove(), 1000);
-
-    // Advance to new question, keep existing wrongs
-    setTimeout(() => {
-      if(shoot.running) advanceAfterCorrectHit();
-    }, 400);
-  } else {
-    sfxOops();
-    shoot.lives--;
-    updateLives();
+function clearDartGroup(group, hx, hy, dartEl){
+  group.alive = false;
+  group.cleared = true;
+  dart.score += 10;
+  $('shScore').textContent = `คะแนน ${dart.score}`;
+  const pop = document.createElement('div');
+  pop.className = 'score-pop';
+  pop.textContent = '+10';
+  pop.style.left = hx + 'px';
+  pop.style.top = hy + 'px';
+  $('playfield').appendChild(pop);
+  setTimeout(() => pop.remove(), 1000);
+  group.boards.forEach(b => b.el.classList.add('fading'));
+  setTimeout(() => {
+    if(group.el.parentNode) group.el.remove();
+    if(dartEl && dartEl.parentNode) dartEl.remove();
+  }, 620);
+  dart.groups = dart.groups.filter(g => g !== group);
+  updateDartPrompt();
+}
+function dartLoop(now){
+  if(!dart.running) return;
+  if(dart.paused){ dart.lastFrame = now; dart.rafId = requestAnimationFrame(dartLoop); return; }
+  const dt = Math.min(50, now - dart.lastFrame);
+  dart.lastFrame = now;
+  dart.spawnAccum += dt / 1000;
+  if(dart.spawnAccum >= dart.SPAWN_INTERVAL){
+    dart.spawnAccum -= dart.SPAWN_INTERVAL;
+    spawnDartGroup();
+  }
+  dart.groups.forEach(g => {
+    if(!g.alive) return;
+    g.y += g.speed * dt / 1000;
+    g.el.style.top = g.y + 'px';
+  });
+  const fallenGroups = dart.groups.filter(g => g.alive && g.y > dart.playfieldH + 20);
+  fallenGroups.forEach(g => {
+    g.alive = false;
+    if(g.el.parentNode) g.el.remove();
+    dart.lives--;
+    updateDartLives();
     const rf = $('redFlash');
     rf.classList.remove('active');
     void rf.offsetWidth;
     rf.classList.add('active');
-
-    target.alive = false;
-    target.el.classList.add('popping');
-    setTimeout(() => { if(target.el.parentNode) target.el.remove(); }, 400);
-    shoot.targets = shoot.targets.filter(t => t.alive);
-
-    // Spawn one replacement wrong quickly
-    setTimeout(() => {
-      if(shoot.running) spawnOneWrong(-80);
-    }, 200);
-
-    if(shoot.lives <= 0){
-      setTimeout(() => { if(shoot.running) gameOverShoot('lives'); }, 600);
-    }
+    sfxOops();
+  });
+  if(fallenGroups.length > 0){
+    dart.groups = dart.groups.filter(g => g.alive);
+    updateDartPrompt();
+    if(dart.lives <= 0){ gameOverDart('lives'); return; }
   }
+  dart.rafId = requestAnimationFrame(dartLoop);
 }
-
-function updateLives(){
-  const full = '❤️'.repeat(Math.max(0, shoot.lives));
-  const empty = '🖤'.repeat(Math.max(0, 3 - shoot.lives));
+function updateDartLives(){
+  const full = '❤️'.repeat(Math.max(0, dart.lives));
+  const empty = '🖤'.repeat(Math.max(0, 3 - dart.lives));
   $('shLives').textContent = full + empty;
 }
-
-function gameOverShoot(reason){
-  shoot.running = false;
-  if(shoot.rafId){ cancelAnimationFrame(shoot.rafId); shoot.rafId = null; }
-  if(shoot.timerId){ clearInterval(shoot.timerId); shoot.timerId = null; }
+function gameOverDart(reason){
+  dart.running = false;
+  if(dart.rafId){ cancelAnimationFrame(dart.rafId); dart.rafId = null; }
+  if(dart.timerId){ clearInterval(dart.timerId); dart.timerId = null; }
   if('speechSynthesis' in window) speechSynthesis.cancel();
-
-  shoot.bullets.forEach(b => b.el.remove());
-  shoot.bullets = [];
-
   const pf = $('playfield');
   const gover = document.createElement('div');
   gover.className = 'gover';
   const title = reason === 'time' ? '⏱️ หมดเวลา!' : '💥 จบเกม!';
-  const subtitle = reason === 'time'
-    ? `เล่นครบ ${shoot.GAME_DURATION} วินาทีแล้ว!`
-    : 'หัวใจหมดแล้ว!';
+  const subtitle = reason === 'time' ? `เล่นครบ ${formatTime(dart.GAME_DURATION)}` : 'หัวใจหมด!';
   gover.innerHTML = `
     <h2>${title}</h2>
     <p>${subtitle}</p>
-    <p>คะแนนรวม: <b style="color:#fbbf24;font-size:1.5rem">${shoot.score}</b></p>
+    <p>คะแนน: <b style="color:#fbbf24;font-size:1.5rem">${dart.score}</b></p>
     <div class="btns">
       <button class="btn primary" id="shAgainBtn">🔁 เล่นอีกครั้ง</button>
       <button class="btn ghost" id="shOtherBtn">🎮 เกมอื่น</button>
       <button class="btn ghost" id="shWordsBtn">📝 เลือกคำใหม่</button>
-      <button class="btn ghost" id="shHomeBtn">🏠 หน้าหลัก</button>
     </div>
   `;
   pf.appendChild(gover);
-  gover.querySelector('#shAgainBtn').onclick = () => { sfxClick(); gover.remove(); startShootGame(); };
+  gover.querySelector('#shAgainBtn').onclick = () => { sfxClick(); gover.remove(); startDartGame(); };
   gover.querySelector('#shOtherBtn').onclick = () => { sfxClick(); gover.remove(); showGameChooser(); };
-  gover.querySelector('#shWordsBtn').onclick = () => { sfxClick(); gover.remove(); showWordPicker(custom.gradeId); };
-  gover.querySelector('#shHomeBtn').onclick = () => { sfxClick(); gover.remove(); showHome(); };
+  gover.querySelector('#shWordsBtn').onclick = () => { sfxClick(); gover.remove(); showWordPicker(custom.gradeId, true); };
   sfxFinish();
 }
 
-/* Playfield input */
-(function setupPlayfieldInput(){
-  const pf = $('playfield');
-  function getPos(e){
-    const rect = pf.getBoundingClientRect();
-    let x, y;
-    if(e.touches && e.touches[0]){
-      x = e.touches[0].clientX - rect.left;
-      y = e.touches[0].clientY - rect.top;
-    } else {
-      x = e.clientX - rect.left;
-      y = e.clientY - rect.top;
+/* MOSQUITO */
+const mosquito = {
+  pool: [], wordQueue: [], queueIdx: 0, mosquitoes: [],
+  current: null, score: 0, lives: 3, running: false,
+  rafId: null, lastFrame: 0, fieldW: 0, fieldH: 0,
+  TARGET_COUNT: 5, timeLeft: 120, timerId: null, GAME_DURATION: 120,
+  wrongPhrases: ['Ouch!', 'Ow, that hurts!', 'Be careful!'],
+  deathPhrases: [
+    'I died by your hands. Prepare to be haunted.',
+    'You killed me, so I will haunt you forever.',
+    'You killed me. Now you will never escape me.'
+  ],
+  MIN_DIST: 58, paused: false,
+};
+function mosqDisplayWord(data){
+  return mosquito.current.reverse ? data.en : data.th;
+}
+function mosqTargetDisplay(){
+  return mosquito.current.reverse ? mosquito.current.th : mosquito.current.en;
+}
+function getNextMosquitoWord(){
+  if(mosquito.queueIdx >= mosquito.wordQueue.length){
+    mosquito.wordQueue = shuffle(mosquito.pool.slice());
+    mosquito.queueIdx = 0;
+  }
+  return mosquito.wordQueue[mosquito.queueIdx++];
+}
+function updateMosquitoTimer(){
+  const el = $('msTimer');
+  el.textContent = `⏱️ ${formatTime(mosquito.timeLeft)}`;
+  if(mosquito.timeLeft <= 15) el.classList.add('warning');
+  else el.classList.remove('warning');
+}
+function updateMosquitoLives(){
+  const full = '❤️'.repeat(Math.max(0, mosquito.lives));
+  const empty = '🖤'.repeat(Math.max(0, 3 - mosquito.lives));
+  $('msLives').textContent = full + empty;
+}
+function svgToField(sx, sy){
+  const field = $('mosquitoField');
+  const rect = field.getBoundingClientRect();
+  const W = rect.width || 1, H = rect.height || 1;
+  const scale = Math.min(W/500, H/660);
+  const offX = (W - 500*scale) / 2;
+  const offY = (H - 660*scale) / 2;
+  return { x: offX + sx * scale, y: offY + sy * scale, scale };
+}
+function pickButtLandingPoint(){
+  const cheeks = [
+    {cx:175, cy:380, rx:100, ry:95},
+    {cx:325, cy:380, rx:100, ry:95}
+  ];
+  const cheek = cheeks[Math.random() < 0.5 ? 0 : 1];
+  const rx = Math.max(30, cheek.rx - 25);
+  const ry = Math.max(28, cheek.ry - 25);
+  const angle = Math.random() * Math.PI * 2;
+  const r = Math.sqrt(Math.random()) * 0.95;
+  const sx = cheek.cx + Math.cos(angle) * rx * r;
+  const sy = cheek.cy + Math.sin(angle) * ry * r;
+  const p = svgToField(sx, sy);
+  return { x: p.x - 25, y: p.y - 25 };
+}
+function findFreeLandingSpot(excludeM){
+  const MIN_DIST = mosquito.MIN_DIST;
+  let bestX = 0, bestY = 0, bestScore = -1;
+  for(let attempt = 0; attempt < 40; attempt++){
+    const spot = pickButtLandingPoint();
+    const x = spot.x, y = spot.y;
+    let minD = Infinity;
+    for(const m of mosquito.mosquitoes){
+      if(!m.alive || m === excludeM) continue;
+      const d1 = Math.hypot(x - m.x, y - m.y);
+      const d2 = m.state === 'flying' ? Math.hypot(x - m.targetX, y - m.targetY) : Infinity;
+      const d = Math.min(d1, d2);
+      if(d < minD) minD = d;
     }
-    return {x, y};
+    if(excludeM && excludeM.lastLandingX !== undefined){
+      const d = Math.hypot(x - excludeM.lastLandingX, y - excludeM.lastLandingY);
+      if(d < minD) minD = d;
+    }
+    if(minD > bestScore){ bestScore = minD; bestX = x; bestY = y; }
+    if(minD >= MIN_DIST) return {x, y};
   }
-  function onDown(e){
-    if(!shoot.running) return;
-    e.preventDefault();
-    const p = getPos(e);
-    shoot.aiming = true;
-    shoot.aimEndX = p.x;
-    shoot.aimEndY = p.y;
+  return {x: bestX, y: bestY};
+}
+function makeMosquitoEl(data){
+  const el = document.createElement('div');
+  el.className = 'mosquito flying';
+  const word = mosqDisplayWord(data);
+  el.innerHTML = `🦟<span class="mosquito-word">${escapeHtml(word)}</span>`;
+  return el;
+}
+function refreshMosquitoWord(m){
+  const word = mosqDisplayWord(m.data);
+  m.el.innerHTML = `🦟<span class="mosquito-word">${escapeHtml(word)}</span>`;
+}
+function spawnMosquitoWrong(){
+  const targetDisplay = mosqTargetDisplay();
+  const used = new Set([targetDisplay]);
+  mosquito.mosquitoes.forEach(m => {
+    if(m.alive) used.add(mosqDisplayWord(m.data));
+  });
+  const candidates = mosquito.pool.filter(w => {
+    if(w.en === mosquito.current.en) return false;
+    const d = mosqDisplayWord(w);
+    return !used.has(d);
+  });
+  let pick;
+  if(candidates.length > 0){
+    pick = candidates[Math.floor(Math.random() * candidates.length)];
+  } else {
+    const wrongs = mosquito.pool.filter(w => w.en !== mosquito.current.en);
+    if(wrongs.length === 0) return false;
+    pick = wrongs[Math.floor(Math.random() * wrongs.length)];
   }
-  function onMove(e){
-    if(!shoot.aiming) return;
-    e.preventDefault();
-    const p = getPos(e);
-    shoot.aimEndX = p.x;
-    shoot.aimEndY = p.y;
+  return spawnMosquito(pick, false);
+}
+function spawnMosquito(data, isCorrect){
+  const field = $('mosquitoField');
+  const spot = findFreeLandingSpot(null);
+  const tx = spot.x, ty = spot.y;
+  const startEdge = Math.floor(Math.random() * 4);
+  let sx, sy;
+  if(startEdge === 0){ sx = Math.random() * mosquito.fieldW; sy = -50; }
+  else if(startEdge === 1){ sx = mosquito.fieldW + 50; sy = Math.random() * mosquito.fieldH * 0.5; }
+  else if(startEdge === 2){ sx = Math.random() * mosquito.fieldW; sy = -50; }
+  else { sx = -50; sy = Math.random() * mosquito.fieldH * 0.5; }
+  const el = makeMosquitoEl(data);
+  el.style.left = sx + 'px'; el.style.top = sy + 'px';
+  field.appendChild(el);
+  const m = {
+    el, data, isCorrect,
+    x: sx, y: sy, targetX: tx, targetY: ty,
+    state: 'flying', speed: 200 + Math.random() * 80,
+    alive: true, idleTimer: 0, wobble: Math.random() * Math.PI * 2,
+    lastLandingX: undefined, lastLandingY: undefined,
+  };
+  el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if(!mosquito.running || !m.alive || mosquito.paused) return;
+    if(m.state !== 'landed') return;
+    swatMosquito(m, e);
+  });
+  mosquito.mosquitoes.push(m);
+  return true;
+}
+function initMosquitoRound(){
+  mosquito.mosquitoes.forEach(m => { if(m.el && m.el.parentNode) m.el.remove(); });
+  mosquito.mosquitoes = [];
+  const reverse = Math.random() < 0.5;
+  const correct = getNextMosquitoWord();
+  mosquito.current = { en: correct.en, th: correct.th, reverse };
+  $('swatterText').textContent = reverse ? correct.th : correct.en;
+  spawnMosquito(correct, true);
+  let safety = 20;
+  while(mosquito.mosquitoes.length < mosquito.TARGET_COUNT && safety-- > 0){
+    if(!spawnMosquitoWrong()) break;
   }
-  function onUp(e){
-    if(!shoot.aiming) return;
-    e.preventDefault();
-    shootFire();
-    shoot.aiming = false;
-    $('aimSvg').innerHTML = '';
+}
+function advanceMosquitoRound(){
+  const reverse = mosquito.current.reverse;
+  const correct = getNextMosquitoWord();
+  mosquito.current = { en: correct.en, th: correct.th, reverse };
+  $('swatterText').textContent = reverse ? correct.th : correct.en;
+  const targetDisplay = mosqTargetDisplay();
+  const alive = mosquito.mosquitoes.filter(m => m.alive);
+  alive.forEach(m => m.isCorrect = false);
+  let existingCorrect = alive.find(m => mosqDisplayWord(m.data) === targetDisplay);
+  if(existingCorrect){
+    existingCorrect.isCorrect = true;
+    existingCorrect.idleTimer = 0;
+  } else {
+    const wrong = alive.filter(m => !m.isCorrect);
+    if(wrong.length > 0){
+      const target = wrong[0];
+      target.data = { en: correct.en, th: correct.th };
+      target.isCorrect = true;
+      refreshMosquitoWord(target);
+      target.idleTimer = 0;
+    } else {
+      spawnMosquito(correct, true);
+    }
   }
-  pf.addEventListener('mousedown', onDown);
-  pf.addEventListener('mousemove', onMove);
-  pf.addEventListener('mouseup', onUp);
-  pf.addEventListener('mouseleave', () => { if(shoot.aiming){ shoot.aiming = false; $('aimSvg').innerHTML = ''; } });
-  pf.addEventListener('touchstart', onDown, {passive: false});
-  pf.addEventListener('touchmove', onMove, {passive: false});
-  pf.addEventListener('touchend', onUp, {passive: false});
-  pf.addEventListener('touchcancel', onUp, {passive: false});
-})();
+  const aliveAfter = mosquito.mosquitoes.filter(m => m.alive);
+  let need = mosquito.TARGET_COUNT - aliveAfter.length;
+  let safety = 30;
+  while(need > 0 && safety-- > 0){
+    if(!spawnMosquitoWrong()) break;
+    need--;
+  }
+}
+function startMosquitoGame(){
+  const words = getSelectedWords();
+  if(words.length < 4){ alert('ต้องเลือกอย่างน้อย 4 คำ'); return; }
+  mosquito.pool = words.slice();
+  mosquito.wordQueue = shuffle(mosquito.pool.slice());
+  mosquito.queueIdx = 0;
+  mosquito.score = 0; mosquito.lives = 3; mosquito.mosquitoes = [];
+  mosquito.running = true;
+  mosquito.timeLeft = mosquito.GAME_DURATION;
+  mosquito.paused = false;
+  $('msPauseBtn').textContent = '⏸';
+  $('msPauseBtn').classList.remove('paused');
+  $('msLives').textContent = '❤️❤️❤️';
+  $('msScore').textContent = 'ตบได้ 0 ตัว';
+  updateMosquitoTimer();
+  clearInterval(mosquito.timerId);
+  mosquito.timerId = setInterval(() => {
+    if(!mosquito.running || mosquito.paused) return;
+    mosquito.timeLeft--;
+    updateMosquitoTimer();
+    if(mosquito.timeLeft <= 0) gameOverMosquito('time');
+  }, 1000);
+  const field = $('mosquitoField');
+  field.querySelectorAll('.mosquito').forEach(m => m.remove());
+  field.querySelectorAll('.butt-mark').forEach(m => m.remove());
+  field.querySelectorAll('.ghost').forEach(m => m.remove());
+  field.querySelectorAll('.death-msg').forEach(m => m.remove());
+  field.querySelectorAll('.blood-splat').forEach(m => m.remove());
+  field.querySelectorAll('.slap-hand').forEach(m => m.remove());
+  field.querySelectorAll('.slap-impact').forEach(m => m.remove());
+  field.classList.remove('dying');
+  $('shinWrap').classList.remove('dying');
+  $('shinWrap').style.opacity = '1';
+  showScreen('mosquitoGame');
+  requestAnimationFrame(() => {
+    const rect = field.getBoundingClientRect();
+    mosquito.fieldW = rect.width; mosquito.fieldH = rect.height;
+    initMosquitoRound();
+    mosquito.lastFrame = performance.now();
+    if(mosquito.rafId) cancelAnimationFrame(mosquito.rafId);
+    mosquito.rafId = requestAnimationFrame(mosquitoLoop);
+  });
+}
+function mosquitoLoop(now){
+  if(!mosquito.running) return;
+  if(mosquito.paused){ mosquito.lastFrame = now; mosquito.rafId = requestAnimationFrame(mosquitoLoop); return; }
+  const dt = Math.min(50, now - mosquito.lastFrame);
+  mosquito.lastFrame = now;
+  const field = $('mosquitoField');
+  const rect = field.getBoundingClientRect();
+  mosquito.fieldW = rect.width; mosquito.fieldH = rect.height;
+  mosquito.mosquitoes.forEach(m => {
+    if(!m.alive) return;
+    if(m.state === 'flying'){
+      const dx = m.targetX - m.x;
+      const dy = m.targetY - m.y;
+      const dist = Math.hypot(dx, dy);
+      const step = m.speed * dt / 1000;
+      if(dist <= step + 2){
+        m.x = m.targetX; m.y = m.targetY;
+        m.state = 'landed';
+        m.el.classList.remove('flying'); m.el.classList.add('landed');
+        m.idleTimer = 5;
+        m.lastLandingX = m.x; m.lastLandingY = m.y;
+      } else {
+        m.x += dx / dist * step;
+        m.y += dy / dist * step;
+      }
+    } else {
+      m.wobble += dt / 250;
+      m.idleTimer -= dt / 1000;
+      if(m.idleTimer <= 0){
+        const spot = findFreeLandingSpot(m);
+        m.targetX = spot.x; m.targetY = spot.y;
+        m.state = 'flying';
+        m.el.classList.remove('landed'); m.el.classList.add('flying');
+      }
+    }
+    m.el.style.left = m.x + 'px';
+    m.el.style.top = m.y + 'px';
+  });
+  updateBuzzSound();
+  mosquito.rafId = requestAnimationFrame(mosquitoLoop);
+}
+function showSlapEffect(fieldX, fieldY){
+  const field = $('mosquitoField');
+  const impact = document.createElement('div');
+  impact.className = 'slap-impact';
+  impact.style.left = fieldX + 'px'; impact.style.top = fieldY + 'px';
+  field.appendChild(impact);
+  setTimeout(() => impact.remove(), 500);
+  const hand = document.createElement('div');
+  hand.className = 'slap-hand';
+  hand.textContent = '🖐️';
+  hand.style.left = fieldX + 'px'; hand.style.top = fieldY + 'px';
+  field.appendChild(hand);
+  setTimeout(() => hand.remove(), 620);
+}
+function swatMosquito(target, evt){
+  if(!target.alive) return;
+  sfxSwat();
+  let cx = target.x + 25, cy = target.y + 25;
+  if(evt){
+    const fieldRect = $('mosquitoField').getBoundingClientRect();
+    cx = evt.clientX - fieldRect.left;
+    cy = evt.clientY - fieldRect.top;
+  }
+  showSlapEffect(cx, cy);
+  if(target.isCorrect){
+    target.alive = false;
+    sfxMosquitoDie();
+    target.el.classList.remove('landed');
+    target.el.classList.add('dead');
+    setTimeout(() => { if(target.el.parentNode) target.el.remove(); }, 700);
+    addBloodSplat(target.x + 25, target.y + 25);
+    mosquito.mosquitoes = mosquito.mosquitoes.filter(m => m.alive);
+    mosquito.score++;
+    $('msScore').textContent = `ตบได้ ${mosquito.score} ตัว`;
+    sfxCorrect();
+    setTimeout(() => { if(mosquito.running) advanceMosquitoRound(); }, 500);
+  } else {
+    sfxOuch();
+    mosquito.lives--;
+    updateMosquitoLives();
+    addButtMark();
+    const phrase = mosquito.wrongPhrases[Math.floor(Math.random() * mosquito.wrongPhrases.length)];
+    speak(phrase, 'en');
+    target.alive = false;
+    target.el.classList.add('dead');
+    setTimeout(() => { if(target.el.parentNode) target.el.remove(); }, 700);
+    mosquito.mosquitoes = mosquito.mosquitoes.filter(m => m.alive);
+    setTimeout(() => { if(mosquito.running) spawnMosquitoWrong(); }, 400);
+    if(mosquito.lives <= 0){
+      setTimeout(() => { if(mosquito.running) gameOverMosquito('dead'); }, 900);
+    }
+  }
+}
+function addBloodSplat(x, y){
+  const field = $('mosquitoField');
+  const b = document.createElement('div');
+  b.className = 'blood-splat';
+  b.style.left = x + 'px'; b.style.top = y + 'px';
+  field.appendChild(b);
+  setTimeout(() => b.remove(), 2100);
+}
+function addButtMark(){
+  const field = $('mosquitoField');
+  const cheek = Math.random() < 0.5
+    ? {cx:175, cy:380, rx:100, ry:95}
+    : {cx:325, cy:380, rx:100, ry:95};
+  const sx = cheek.cx + (Math.random() - 0.5) * cheek.rx * 1.2;
+  const sy = cheek.cy + (Math.random() - 0.5) * cheek.ry * 1.0;
+  const p = svgToField(sx, sy);
+  const mark = document.createElement('div');
+  mark.className = 'butt-mark';
+  mark.style.left = (p.x - 17) + 'px';
+  mark.style.top = (p.y - 17) + 'px';
+  field.appendChild(mark);
+  setTimeout(() => mark.remove(), 4200);
+}
+function gameOverMosquito(reason){
+  mosquito.running = false;
+  stopBuzzSound();
+  if(mosquito.rafId){ cancelAnimationFrame(mosquito.rafId); mosquito.rafId = null; }
+  if(mosquito.timerId){ clearInterval(mosquito.timerId); mosquito.timerId = null; }
+  if(reason === 'dead'){
+    const field = $('mosquitoField');
+    field.classList.add('dying');
+    $('shinWrap').classList.add('dying');
+    const ghost = document.createElement('div');
+    ghost.className = 'ghost'; ghost.textContent = '👻';
+    field.appendChild(ghost);
+    const phrase = mosquito.deathPhrases[Math.floor(Math.random() * mosquito.deathPhrases.length)];
+    setTimeout(() => {
+      speak(phrase, 'en');
+      const dmsg = document.createElement('div');
+      dmsg.className = 'death-msg';
+      dmsg.innerHTML = `<div class="death-msg-inner">💀 "${phrase}"</div>`;
+      field.appendChild(dmsg);
+    }, 1400);
+    setTimeout(() => { showMosquitoResult(phrase); }, 6200);
+  } else {
+    showMosquitoResult(null);
+  }
+}
+function showMosquitoResult(deathPhrase){
+  $('grBig').textContent = mosquito.score;
+  $('grMsg').textContent = deathPhrase ? '💀 เจ้าของก้นตายแล้ว!' : '🎉 ครบเวลาแล้ว!';
+  let detail = `ตบยุงได้ ${mosquito.score} ตัว · ใช้เวลา ${formatTime(mosquito.GAME_DURATION)}`;
+  if(deathPhrase){
+    detail += `<br><i style="color:#be185d;font-size:.85rem">"${deathPhrase}"</i>`;
+  }
+  $('grDetail').innerHTML = detail;
+  sfxFinish();
+  showScreen('gameResult');
+}
 
-/* =========================================================
-   SCREEN MANAGER (with fullscreen for shoot)
-   ========================================================= */
+/* PAUSE HANDLERS */
+$('quizPauseBtn').onclick = () => {
+  quizPaused = !quizPaused;
+  $('quizPauseBtn').textContent = quizPaused ? '▶' : '⏸';
+  $('quizPauseBtn').classList.toggle('paused', quizPaused);
+  if(quizPaused){ if('speechSynthesis' in window) speechSynthesis.cancel(); stopBGM(); }
+  else { startBGM(); }
+  sfxClick();
+};
+$('chPauseBtn').onclick = () => {
+  choice.paused = !choice.paused;
+  $('chPauseBtn').textContent = choice.paused ? '▶' : '⏸';
+  $('chPauseBtn').classList.toggle('paused', choice.paused);
+  if(choice.paused){ if('speechSynthesis' in window) speechSynthesis.cancel(); stopBGM(); }
+  else { startBGM(); }
+  sfxClick();
+};
+$('mgPauseBtn').onclick = () => {
+  match.paused = !match.paused;
+  $('mgPauseBtn').textContent = match.paused ? '▶' : '⏸';
+  $('mgPauseBtn').classList.toggle('paused', match.paused);
+  sfxClick();
+};
+$('shPauseBtn').onclick = () => {
+  dart.paused = !dart.paused;
+  $('shPauseBtn').textContent = dart.paused ? '▶' : '⏸';
+  $('shPauseBtn').classList.toggle('paused', dart.paused);
+  sfxClick();
+};
+$('msPauseBtn').onclick = () => {
+  mosquito.paused = !mosquito.paused;
+  $('msPauseBtn').textContent = mosquito.paused ? '▶' : '⏸';
+  $('msPauseBtn').classList.toggle('paused', mosquito.paused);
+  if(mosquito.paused) stopBuzzSound();
+  sfxClick();
+};
+
+/* SCREEN MANAGER */
 function showScreen(name){
   const screens = {
-    home: homeEl, sets: setsEl, quiz: quizEl, result: resultEl,
+    home: homeEl, gradeMenu: gradeMenuEl, quiz: quizEl, result: resultEl,
     wordPicker: wordPickerEl, gameChooser: gameChooserEl,
-    matchGame: matchGameEl, choiceGame: choiceGameEl, shootGame: shootGameEl,
+    matchGame: matchGameEl, choiceGame: choiceGameEl,
+    shootGame: shootGameEl, mosquitoGame: mosquitoGameEl,
     gameResult: gameResultEl,
+    addWords: addWordsEl,
   };
   for(const k in screens) screens[k].hidden = true;
   if(screens[name]) screens[name].hidden = false;
-
-  // ✅ Fullscreen mode for shoot game
-  if(name === 'shootGame'){
-    document.body.classList.add('shoot-fullscreen');
-  } else {
-    document.body.classList.remove('shoot-fullscreen');
-  }
-
+  document.body.classList.toggle('shoot-fullscreen', name === 'shootGame');
+  document.body.classList.toggle('mosquito-fullscreen', name === 'mosquitoGame');
   if(name !== 'matchGame'){
     if(match.timerId){ clearInterval(match.timerId); match.timerId = null; }
   }
   if(name !== 'shootGame'){
-    shoot.running = false;
-    if(shoot.rafId){ cancelAnimationFrame(shoot.rafId); shoot.rafId = null; }
-    if(shoot.timerId){ clearInterval(shoot.timerId); shoot.timerId = null; }
-    shoot.bullets.forEach(b => b.el.remove());
-    shoot.bullets = [];
-    shoot.targets.forEach(t => { if(t.el && t.el.parentNode) t.el.remove(); });
-    shoot.targets = [];
-    $('aimSvg').innerHTML = '';
+    dart.running = false;
+    if(dart.rafId){ cancelAnimationFrame(dart.rafId); dart.rafId = null; }
+    if(dart.timerId){ clearInterval(dart.timerId); dart.timerId = null; }
+    dart.groups.forEach(g => { if(g.el && g.el.parentNode) g.el.remove(); });
+    dart.groups = [];
+    $('playfield').querySelectorAll('.dart').forEach(d => d.remove());
     const gover = $('playfield').querySelector('.gover');
     if(gover) gover.remove();
   }
+  if(name !== 'mosquitoGame'){
+    mosquito.running = false;
+    stopBuzzSound();
+    if(mosquito.rafId){ cancelAnimationFrame(mosquito.rafId); mosquito.rafId = null; }
+    if(mosquito.timerId){ clearInterval(mosquito.timerId); mosquito.timerId = null; }
+    mosquito.mosquitoes.forEach(m => { if(m.el && m.el.parentNode) m.el.remove(); });
+    mosquito.mosquitoes = [];
+    const field = $('mosquitoField');
+    field.querySelectorAll('.ghost').forEach(g => g.remove());
+    field.querySelectorAll('.death-msg').forEach(g => g.remove());
+    field.querySelectorAll('.butt-mark').forEach(g => g.remove());
+    field.querySelectorAll('.blood-splat').forEach(g => g.remove());
+    field.querySelectorAll('.slap-hand').forEach(g => g.remove());
+    field.querySelectorAll('.slap-impact').forEach(g => g.remove());
+    field.classList.remove('dying');
+    $('shinWrap').classList.remove('dying');
+    $('shinWrap').style.opacity = '1';
+  }
+  if(name !== 'quiz' && name !== 'choiceGame') stopBGM();
   if('speechSynthesis' in window) speechSynthesis.cancel();
 }
+function showHome(){
+  quizPaused = false;
+  stopBGM();
+  showScreen('home');
+}
 
-function showHome(){ showScreen('home'); }
-
-/* =========================================================
-   Event handlers
-   ========================================================= */
-$('backHomeBtn').onclick = () => { sfxClick(); showHome(); };
-$('againBtn').onclick = () => { sfxClick(); startSet(state.setIndex); };
-$('chooseSetBtn').onclick = () => { sfxClick(); showSets(state.gradeId); };
-$('homeBtn').onclick = () => { sfxClick(); showHome(); };
-
-$('wpBackBtn').onclick = () => { sfxClick(); showSets(custom.gradeId); };
+/* EVENTS */
+$('gmBackBtn').onclick = () => { sfxClick(); showHome(); };
+$('gmQuizBtn').onclick = () => { startMergedQuiz(state.gradeId); };
+$('gmCustomBtn').onclick = () => { sfxClick(); showWordPicker(state.gradeId); };
+$('quizBackBtn').onclick = () => { sfxClick(); stopBGM(); quizPaused = false; showGradeMenu(state.gradeId); };
+$('againBtn').onclick = () => { sfxClick(); startMergedQuiz(state.gradeId); };
+$('chooseSetBtn').onclick = () => { sfxClick(); showHome(); };
+$('wpBackBtn').onclick = () => { sfxClick(); showGradeMenu(custom.gradeId); };
 $('wpNextBtn').onclick = () => {
   if(custom.selectedEn.size < 4) return;
-  sfxClick();
-  showGameChooser();
+  sfxClick(); showGameChooser();
 };
-
-$('gcBackBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId); };
+$('wpAddWordBtn').onclick = () => { sfxClick(); showAddWords(); };
+$('awBackBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId, true); };
+$('awSaveBtn').onclick = () => { sfxClick(); saveAwWords(); };
+$('gcBackBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId, true); };
 $('mgBackBtn').onclick = () => { sfxClick(); showGameChooser(); };
-$('cgBackBtn2').onclick = () => { sfxClick(); showGameChooser(); };
+$('cgBackBtn2').onclick = () => { sfxClick(); stopBGM(); showGameChooser(); };
 $('shBackBtn').onclick = () => { sfxClick(); showGameChooser(); };
-
+$('msBackBtn').onclick = () => { sfxClick(); showGameChooser(); };
 $('grAgainBtn').onclick = () => {
   sfxClick();
   if(custom.gameType === 'match') startMatchGame();
   else if(custom.gameType === 'choice') startChoiceGame();
-  else if(custom.gameType === 'shoot') startShootGame();
+  else if(custom.gameType === 'shoot') startDartGame();
+  else if(custom.gameType === 'mosquito') startMosquitoGame();
 };
 $('grOtherBtn').onclick = () => { sfxClick(); showGameChooser(); };
-$('grWordsBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId); };
-$('grHomeBtn').onclick = () => { sfxClick(); showHome(); };
+$('grWordsBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId, true); };
 
 document.addEventListener('touchstart', initAudio, {once:true});
 document.addEventListener('click', initAudio, {once:true});
 
+loadCustomWords();
+rebuildExtraPool();
 renderGrades();
 </script>
 </body>
