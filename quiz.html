@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>เกมคำศัพท์ภาษาอังกฤษ · ชุด + สร้างเกมเอง</title>
 <style>
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -29,7 +29,6 @@
     font-family:inherit;margin-bottom:14px;transition:.15s;
   }
   .back-btn:hover{background:#e5e7eb}
-  /* HOME */
   .grades{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:10px}
   .grade{
     border:none;border-radius:18px;padding:16px 12px;cursor:pointer;
@@ -48,7 +47,6 @@
   .g5{background:linear-gradient(135deg,#fa709a,#fee140);color:#5b1a2c}
   .g6{background:linear-gradient(135deg,#7028e4,#e5b2ca)}
   .g7{background:linear-gradient(135deg,#00b09b,#96c93d)}
-  /* SETS */
   .sets-grid{
     display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));
     gap:10px;margin-top:6px;max-height:60vh;overflow-y:auto;padding-right:4px;
@@ -80,12 +78,10 @@
     background:linear-gradient(135deg,#ec4899,#8b5cf6);
     box-shadow:0 14px 28px rgba(139,92,246,.5);
   }
-  .set-btn.custom-game .set-no{font-size:1.05rem}
   @keyframes cgPulse{
     0%,100%{box-shadow:0 10px 24px rgba(236,72,153,.4)}
     50%{box-shadow:0 10px 30px rgba(139,92,246,.75)}
   }
-  /* QUIZ (existing) */
   .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
   .pill{background:#f3f4f6;border-radius:999px;padding:7px 14px;font-weight:800;font-size:.82rem;color:#4b5563;white-space:nowrap}
   .pill.score{background:#ecfdf5;color:#047857}
@@ -119,7 +115,6 @@
   @keyframes shake-no{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
   .fb{text-align:center;font-weight:900;font-size:1.05rem;margin-top:14px;min-height:26px}
   .fb.ok{color:#16a34a}.fb.no{color:#dc2626}
-  /* RESULT */
   .rst{text-align:center}
   .rst .big{font-size:3.4rem;font-weight:900;color:#7c3aed;line-height:1}
   .rst .msg{font-size:1.05rem;font-weight:800;margin:10px 0 4px;color:#4c1d95}
@@ -141,7 +136,6 @@
   .btn:active{transform:scale(.97)}
   [hidden]{display:none!important}
   .voice-note{font-size:.72rem;color:#9ca3af;text-align:center;margin-top:10px}
-  /* ===== WORD PICKER ===== */
   .wp-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;max-height:120px;overflow-y:auto;padding-right:4px}
   .wp-chip{
     border:2px solid #ddd6fe;background:#f5f3ff;color:#5b21b6;
@@ -189,7 +183,6 @@
   }
   .wp-next:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
   .wp-next:not(:disabled):hover{transform:translateY(-2px)}
-  /* ===== GAME CHOOSER ===== */
   .games-grid{
     display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
     gap:14px;margin-top:14px;
@@ -208,7 +201,6 @@
   .gc-match{background:linear-gradient(135deg,#06b6d4,#3b82f6)}
   .gc-choice{background:linear-gradient(135deg,#8b5cf6,#ec4899)}
   .gc-shoot{background:linear-gradient(135deg,#f59e0b,#ef4444)}
-  /* ===== MATCH GAME ===== */
   .match-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
   .match-timer{font-weight:800;color:#4c1d95;font-size:.95rem;background:#ede9fe;padding:7px 14px;border-radius:999px}
   .match-pairs{font-weight:800;color:#047857;font-size:.95rem;background:#ecfdf5;padding:7px 14px;border-radius:999px}
@@ -239,10 +231,18 @@
   @keyframes shakeX{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
   .mcard.wrong .mcard-back{background:#fee2e2;border-color:#ef4444;color:#991b1b}
   .mcard.matched .mcard-back{background:#dcfce7;border-color:#22c55e;color:#166534}
-  /* ===== SHOOT GAME ===== */
-  .shoot-hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
-  .shoot-lives{font-size:1.4rem;letter-spacing:2px;font-weight:900}
-  .shoot-score{font-weight:800;color:#4c1d95;font-size:1.05rem}
+
+  /* ===== SHOOT GAME (default in card) ===== */
+  .shoot-hud{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap}
+  .shoot-lives{font-size:1.3rem;letter-spacing:2px;font-weight:900}
+  .shoot-score{font-weight:800;color:#4c1d95;font-size:1rem}
+  .shoot-timer{
+    font-weight:900;color:#dc2626;font-size:1rem;
+    background:#fef2f2;padding:7px 14px;border-radius:999px;
+    border:2px solid #fecaca;white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+  }
+  .shoot-timer.warning{background:#fee2e2;animation:pulse 1s infinite}
   .playfield{
     position:relative;width:100%;height:65vh;min-height:420px;
     background:radial-gradient(1px 1px at 20% 30%,#fff,transparent),
@@ -325,7 +325,74 @@
   .gover .btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px}
   .gover .btn.primary{background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1f2937;box-shadow:0 8px 18px rgba(245,158,11,.4)}
   .gover .btn.ghost{background:rgba(255,255,255,.15);color:#fff}
-  /* ===== GAME RESULT ===== */
+
+  /* ===== FULLSCREEN SHOOT MODE ===== */
+  body.shoot-fullscreen{
+    padding:0;
+    display:block;
+    background:#0f172a;
+    overflow:hidden;
+  }
+  body.shoot-fullscreen #app{max-width:none}
+  body.shoot-fullscreen #shootGame.card{
+    position:fixed;
+    inset:0;
+    border-radius:0;
+    padding:0;
+    max-width:none;
+    width:100vw;
+    height:100vh;
+    margin:0;
+    z-index:100;
+    display:flex;
+    flex-direction:column;
+    animation:none;
+    box-shadow:none;
+    background:#0f172a;
+  }
+  body.shoot-fullscreen #shootGame .shoot-hud{
+    margin:0;
+    padding:calc(10px + env(safe-area-inset-top,0px)) 14px 10px;
+    background:linear-gradient(135deg,#1e1b4b,#312e81);
+    border-bottom:1px solid rgba(255,255,255,.1);
+    flex-wrap:nowrap;
+    gap:6px;
+  }
+  body.shoot-fullscreen #shootGame .back-btn{
+    padding:6px 12px;
+    font-size:.78rem;
+    background:rgba(255,255,255,.15);
+    color:#fff;
+    margin:0;
+  }
+  body.shoot-fullscreen #shootGame .back-btn:hover{background:rgba(255,255,255,.25)}
+  body.shoot-fullscreen #shootGame .shoot-timer{
+    background:rgba(239,68,68,.25);
+    border-color:rgba(239,68,68,.5);
+    color:#fca5a5;
+    font-size:.85rem;
+    padding:5px 10px;
+  }
+  body.shoot-fullscreen #shootGame .shoot-lives{
+    font-size:1.05rem;
+    letter-spacing:1px;
+  }
+  body.shoot-fullscreen #shootGame .shoot-score{
+    color:#fbbf24;
+    font-size:.85rem;
+    background:rgba(251,191,36,.15);
+    padding:5px 10px;
+    border-radius:999px;
+    border:1px solid rgba(251,191,36,.3);
+  }
+  body.shoot-fullscreen #shootGame .playfield{
+    flex:1;
+    height:auto;
+    min-height:0;
+    border-radius:0;
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+
   .gr-wrap{text-align:center}
   .gr-big{font-size:3.5rem;font-weight:900;color:#7c3aed;line-height:1}
   .gr-msg{font-size:1.1rem;font-weight:800;margin:12px 0 8px;color:#4c1d95}
@@ -335,7 +402,6 @@
 <body>
 <div id="app">
 
-  <!-- ============ HOME ============ -->
   <section id="home" class="card">
     <h1>🎯 เกมตอบคำถามคำศัพท์ภาษาอังกฤษ</h1>
     <p class="sub">เลือกระดับชั้น แล้วเลือกชุดคำศัพท์ที่ต้องการฝึก</p>
@@ -343,7 +409,6 @@
     <p class="voice-note">🔊 ใช้เสียงจาก Google (หากมีในเบราว์เซอร์) เพื่อการออกเสียงที่ชัดเจน</p>
   </section>
 
-  <!-- ============ SETS ============ -->
   <section id="sets" class="card" hidden>
     <button class="back-btn" id="backHomeBtn">← กลับหน้าหลัก</button>
     <h2 id="setsTitle"></h2>
@@ -351,7 +416,6 @@
     <div class="sets-grid" id="setsGrid"></div>
   </section>
 
-  <!-- ============ WORD PICKER (NEW) ============ -->
   <section id="wordPicker" class="card" hidden>
     <button class="back-btn" id="wpBackBtn">← กลับหน้าเลือกชุด</button>
     <h2 id="wpTitle"></h2>
@@ -364,7 +428,6 @@
     </div>
   </section>
 
-  <!-- ============ GAME CHOOSER (NEW) ============ -->
   <section id="gameChooser" class="card" hidden>
     <button class="back-btn" id="gcBackBtn">← กลับไปเลือกคำ</button>
     <h2>เลือกเกมที่ต้องการเล่น</h2>
@@ -383,12 +446,11 @@
       <button class="game-card gc-shoot" data-game="shoot">
         <span class="gc-icon">🔫</span>
         <span class="gc-name">ยิงเป้าคำศัพท์</span>
-        <span class="gc-desc">ลากเล็ง · ยิงให้ตรงเป้า</span>
+        <span class="gc-desc">ลากเล็ง · ยิงให้ตรงเป้า · 1:30</span>
       </button>
     </div>
   </section>
 
-  <!-- ============ QUIZ (existing set quiz) ============ -->
   <section id="quiz" class="card" hidden>
     <div class="topbar">
       <span class="pill set" id="setTxt">ชุดที่ 1</span>
@@ -405,7 +467,6 @@
     <div class="fb" id="fb"></div>
   </section>
 
-  <!-- ============ RESULT (existing) ============ -->
   <section id="result" class="card rst" hidden>
     <div class="big" id="rScore">0</div>
     <div class="msg" id="rMsg"></div>
@@ -418,7 +479,6 @@
     </div>
   </section>
 
-  <!-- ============ MATCH GAME (NEW) ============ -->
   <section id="matchGame" class="card" hidden>
     <div class="match-top">
       <button class="back-btn" id="mgBackBtn" style="margin:0">← กลับ</button>
@@ -428,7 +488,6 @@
     <div class="match-grid" id="mgGrid"></div>
   </section>
 
-  <!-- ============ CHOICE GAME (NEW) ============ -->
   <section id="choiceGame" class="card" hidden>
     <div class="topbar">
       <button class="back-btn" id="cgBackBtn2" style="margin:0">← กลับ</button>
@@ -445,10 +504,10 @@
     <div class="fb" id="chFb"></div>
   </section>
 
-  <!-- ============ SHOOT GAME (NEW) ============ -->
   <section id="shootGame" class="card" hidden>
     <div class="shoot-hud">
       <button class="back-btn" id="shBackBtn" style="margin:0">← กลับ</button>
+      <span class="shoot-timer" id="shTimer">⏱️ 1:30</span>
       <span class="shoot-lives" id="shLives">❤️❤️❤️</span>
       <span class="shoot-score" id="shScore">คะแนน 0</span>
     </div>
@@ -462,7 +521,6 @@
     </div>
   </section>
 
-  <!-- ============ GAME RESULT (NEW) ============ -->
   <section id="gameResult" class="card gr-wrap" hidden>
     <div class="gr-big" id="grBig">0</div>
     <div class="gr-msg" id="grMsg"></div>
@@ -1855,7 +1913,7 @@ const GRADES = [
 ];
 
 /* =========================================================
-   เสียงเอฟเฟกต์ (Web Audio API)
+   เสียงเอฟเฟกต์
    ========================================================= */
 let actx = null;
 function initAudio(){
@@ -1878,24 +1936,12 @@ function tone(freq, start, dur, type, vol, freqEnd){
   o.connect(g); g.connect(actx.destination);
   o.start(t0); o.stop(t0 + dur + 0.05);
 }
-function sfxCorrect(){
-  initAudio();
-  [523.25, 659.25, 783.99, 1046.50].forEach((f,i)=> tone(f, i*0.085, 0.32, 'triangle', 0.20));
-}
-function sfxWrong(){
-  initAudio();
-  tone(220, 0,    0.22, 'sawtooth', 0.16);
-  tone(155, 0.20, 0.38, 'sawtooth', 0.16);
-}
-function sfxFinish(){
-  initAudio();
-  [523.25,659.25,783.99,1046.50,1318.51].forEach((f,i)=> tone(f, i*0.12, 0.45, 'triangle', 0.18));
-}
+function sfxCorrect(){ initAudio(); [523.25, 659.25, 783.99, 1046.50].forEach((f,i)=> tone(f, i*0.085, 0.32, 'triangle', 0.20)); }
+function sfxWrong(){ initAudio(); tone(220, 0, 0.22, 'sawtooth', 0.16); tone(155, 0.20, 0.38, 'sawtooth', 0.16); }
+function sfxFinish(){ initAudio(); [523.25,659.25,783.99,1046.50,1318.51].forEach((f,i)=> tone(f, i*0.12, 0.45, 'triangle', 0.18)); }
 function sfxClick(){ initAudio(); tone(880, 0, 0.07, 'sine', 0.10); }
-/* NEW sounds */
 function sfxShoot(){
-  initAudio();
-  if(!actx) return;
+  initAudio(); if(!actx) return;
   const t0 = actx.currentTime;
   const o = actx.createOscillator();
   const g = actx.createGain();
@@ -1908,16 +1954,13 @@ function sfxShoot(){
   o.start(t0); o.stop(t0 + 0.22);
 }
 function sfxExplode(){
-  initAudio();
-  if(!actx) return;
+  initAudio(); if(!actx) return;
   const t0 = actx.currentTime;
   const dur = 0.5;
   const bufSize = Math.floor(actx.sampleRate * dur);
   const buffer = actx.createBuffer(1, bufSize, actx.sampleRate);
   const data = buffer.getChannelData(0);
-  for(let i=0;i<bufSize;i++){
-    data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufSize, 2);
-  }
+  for(let i=0;i<bufSize;i++) data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufSize, 2);
   const src = actx.createBufferSource();
   src.buffer = buffer;
   const g = actx.createGain();
@@ -1931,8 +1974,7 @@ function sfxExplode(){
   src.start(t0); src.stop(t0 + dur + 0.05);
 }
 function sfxOops(){
-  initAudio();
-  if(!actx) return;
+  initAudio(); if(!actx) return;
   const t0 = actx.currentTime;
   const o = actx.createOscillator();
   const g = actx.createGain();
@@ -1945,14 +1987,11 @@ function sfxOops(){
   o.start(t0); o.stop(t0 + 0.48);
 }
 function sfxFlip(){ initAudio(); tone(700, 0, 0.07, 'sine', 0.10); }
-function sfxMatch(){
-  initAudio();
-  [659.25, 880, 1046.50].forEach((f,i)=> tone(f, i*0.08, 0.28, 'triangle', 0.18));
-}
+function sfxMatch(){ initAudio(); [659.25, 880, 1046.50].forEach((f,i)=> tone(f, i*0.08, 0.28, 'triangle', 0.18)); }
 function sfxMiss(){ initAudio(); tone(300, 0, 0.13, 'triangle', 0.14); tone(200, 0.10, 0.20, 'triangle', 0.14); }
 
 /* =========================================================
-   เสียงพูด (Web Speech API)
+   เสียงพูด
    ========================================================= */
 let voices = [];
 let voicesReady = false;
@@ -1965,10 +2004,7 @@ if('speechSynthesis' in window){
   refreshVoices();
   speechSynthesis.onvoiceschanged = refreshVoices;
   let tries = 0;
-  const t = setInterval(() => {
-    refreshVoices();
-    if(voicesReady || ++tries > 20) clearInterval(t);
-  }, 200);
+  const t = setInterval(() => { refreshVoices(); if(voicesReady || ++tries > 20) clearInterval(t); }, 200);
 }
 function pickVoice(langLower){
   if(!voices.length) refreshVoices();
@@ -1978,10 +2014,10 @@ function pickVoice(langLower){
     let score = 0;
     const name = (v.name || '').toLowerCase();
     if(name.includes('google')) score += 1000;
-    if(name.includes('natural'))  score += 120;
-    if(name.includes('neural'))   score += 110;
+    if(name.includes('natural')) score += 120;
+    if(name.includes('neural')) score += 110;
     if(name.includes('enhanced')) score += 100;
-    if(name.includes('online'))   score += 60;
+    if(name.includes('online')) score += 60;
     if(langLower === 'en'){
       if(v.lang.toLowerCase() === 'en-us') score += 20;
       if(v.lang.toLowerCase() === 'en-gb') score += 15;
@@ -2018,7 +2054,6 @@ function shuffle(a){
   return arr;
 }
 
-/* แบ่งชุดตามลำดับคำเดิม */
 function buildSetsForGrade(gradeId){
   const pool = POOLS[gradeId];
   const total = pool.length;
@@ -2039,7 +2074,6 @@ function buildSetsForGrade(gradeId){
   return sets;
 }
 
-/* สร้างคำถาม 4 ตัวเลือกจากชุดคำ */
 function buildQuestionsFromWords(words, poolId){
   const pool = POOLS[poolId];
   const dupSet = DUP_TH[poolId];
@@ -2124,7 +2158,6 @@ function showSets(gradeId){
     grid.appendChild(b);
   });
 
-  // ===== ปุ่ม "สร้างเกมเอง" =====
   const cg = document.createElement('button');
   cg.className = 'set-btn custom-game';
   cg.innerHTML = `<span class="set-no">🎮 สร้างเกมเอง</span><small>เลือกคำเอง · 3 เกมใหม่</small>`;
@@ -2135,7 +2168,7 @@ function showSets(gradeId){
 }
 
 /* =========================================================
-   QUIZ (existing)
+   QUIZ
    ========================================================= */
 function startSet(setIndex){
   sfxClick();
@@ -2190,7 +2223,7 @@ function answer(btn, op, q){
   state.locked = true;
   if('speechSynthesis' in window) speechSynthesis.cancel();
   const isCorrect = (op.en === q.target.en);
-  const buttons = [...document.querySelectorAll('.opt')];
+  const buttons = [...document.querySelectorAll('#opts .opt')];
   buttons.forEach(b => b.disabled = true);
   if(isCorrect){
     btn.classList.add('right'); state.score++; sfxCorrect();
@@ -2238,7 +2271,7 @@ function showResult(){
 }
 
 /* =========================================================
-   WORD PICKER (NEW)
+   WORD PICKER
    ========================================================= */
 function showWordPicker(gradeId){
   custom.gradeId = gradeId;
@@ -2249,7 +2282,6 @@ function showWordPicker(gradeId){
   $('wpTitle').textContent = `🎮 สร้างเกมเอง · ${grade.name}`;
   $('wpSub').textContent = `เลือกอย่างน้อย 4 คำ (มีทั้งหมด ${pool.length} คำ)`;
 
-  // Quick action chips
   const actions = $('wpActions');
   actions.innerHTML = '';
   const sets = buildSetsForGrade(gradeId);
@@ -2272,7 +2304,6 @@ function showWordPicker(gradeId){
   clr.onclick = () => { sfxClick(); custom.selectedEn.clear(); updateWPUI(); };
   actions.appendChild(clr);
 
-  // Grid of all words
   const grid = $('wpGrid');
   grid.innerHTML = '';
   pool.forEach(w => {
@@ -2315,9 +2346,6 @@ function updateWPUI(){
   $('wpNextBtn').disabled = n < 4;
 }
 
-/* =========================================================
-   GAME CHOOSER
-   ========================================================= */
 function showGameChooser(){
   const n = custom.selectedEn.size;
   $('gcSub').textContent = `เลือกคำไว้ ${n} คำ — เลือกเกมที่ต้องการเล่น`;
@@ -2341,10 +2369,10 @@ function getSelectedWords(){
 }
 
 /* =========================================================
-   MATCHING GAME (NEW)
+   MATCH GAME
    ========================================================= */
 const match = {
-  timer: 0, timerId: null, pairs: 0, totalPairs: 0,
+  timerId: null, pairs: 0, totalPairs: 0,
   firstCard: null, secondCard: null, lock: false, startTime: 0,
 };
 
@@ -2362,17 +2390,15 @@ function startMatchGame(){
   $('mgTimer').textContent = '⏱️ 00:00';
   $('mgPairs').textContent = `คู่ 0 / ${match.totalPairs}`;
 
-  // Build cards: for each word, make EN card + TH card
   const cards = [];
   words.forEach((w, idx) => {
-    cards.push({id: 'e'+idx, pairId: 'p'+idx, text: w.en, type: 'en', data: w});
-    cards.push({id: 't'+idx, pairId: 'p'+idx, text: w.th, type: 'th', data: w});
+    cards.push({id: 'e'+idx, pairId: 'p'+idx, text: w.en, type: 'en'});
+    cards.push({id: 't'+idx, pairId: 'p'+idx, text: w.th, type: 'th'});
   });
   const shuffled = shuffle(cards);
 
   const grid = $('mgGrid');
   grid.innerHTML = '';
-  // Choose cols: if many cards use smaller minmax
   const totalCards = shuffled.length;
   let minSize = 85;
   if(totalCards > 24) minSize = 70;
@@ -2383,7 +2409,6 @@ function startMatchGame(){
     const el = document.createElement('div');
     el.className = 'mcard';
     el.dataset.pairId = c.pairId;
-    el.dataset.cardId = c.id;
     el.dataset.type = c.type;
     el.innerHTML = `<div class="mcard-inner">
       <div class="mcard-front">?</div>
@@ -2399,7 +2424,6 @@ function startMatchGame(){
 function handleMatchCardClick(el){
   if(match.lock) return;
   if(el.classList.contains('flipped') || el.classList.contains('matched')) return;
-  // Start timer on first flip
   if(!match.timerId){
     match.startTime = Date.now();
     match.timerId = setInterval(() => {
@@ -2409,21 +2433,14 @@ function handleMatchCardClick(el){
       $('mgTimer').textContent = `⏱️ ${m}:${s}`;
     }, 250);
   }
-
   sfxFlip();
   el.classList.add('flipped');
 
-  if(!match.firstCard){
-    match.firstCard = el;
-    return;
-  }
-  // Second card
+  if(!match.firstCard){ match.firstCard = el; return; }
   match.secondCard = el;
   match.lock = true;
   const a = match.firstCard, b = match.secondCard;
-  // Match if same pairId AND different type (en vs th)
   if(a.dataset.pairId === b.dataset.pairId && a.dataset.type !== b.dataset.type){
-    // matched!
     setTimeout(() => {
       sfxMatch();
       a.classList.add('matched');
@@ -2434,7 +2451,6 @@ function handleMatchCardClick(el){
       if(match.pairs >= match.totalPairs) finishMatchGame();
     }, 350);
   } else {
-    // wrong
     setTimeout(() => {
       sfxMiss();
       a.classList.add('wrong');
@@ -2462,7 +2478,7 @@ function finishMatchGame(){
 }
 
 /* =========================================================
-   CHOICE GAME (NEW)
+   CHOICE GAME
    ========================================================= */
 const choice = { questions: [], idx: 0, score: 0, locked: false };
 
@@ -2562,51 +2578,90 @@ function finishChoiceGame(){
 }
 
 /* =========================================================
-   SHOOTING GAME (NEW)
+   SHOOT GAME (FIXED)
    ========================================================= */
 const shoot = {
   pool: [],
-  targets: [],       // {el, data, isCorrect, x, y, speed, alive}
-  current: null,     // {en, th, reverse}
+  wordQueue: [],
+  queueIdx: 0,
+  targets: [],
+  current: null,
   score: 0,
   lives: 3,
   running: false,
   rafId: null,
   lastFrame: 0,
   aiming: false,
-  aimStartX: 0, aimStartY: 0,
   aimEndX: 0, aimEndY: 0,
   gunX: 0, gunY: 0,
-  bullets: [],       // active bullets
+  bullets: [],
   cooldown: 0,
   playfieldW: 0, playfieldH: 0,
   TARGET_COUNT: 4,
+  timeLeft: 90,
+  timerId: null,
+  GAME_DURATION: 90,
 };
+
+function getNextShootWord(){
+  if(shoot.queueIdx >= shoot.wordQueue.length){
+    shoot.wordQueue = shuffle(shoot.pool.slice());
+    shoot.queueIdx = 0;
+  }
+  return shoot.wordQueue[shoot.queueIdx++];
+}
+
+function formatTime(sec){
+  const m = Math.floor(sec/60);
+  const s = sec % 60;
+  return `${m}:${String(s).padStart(2,'0')}`;
+}
+
+function updateShootTimer(){
+  const el = $('shTimer');
+  el.textContent = `⏱️ ${formatTime(shoot.timeLeft)}`;
+  if(shoot.timeLeft <= 15) el.classList.add('warning');
+  else el.classList.remove('warning');
+}
 
 function startShootGame(){
   const words = getSelectedWords();
   if(words.length < 4){ alert('ต้องเลือกอย่างน้อย 4 คำ'); return; }
   shoot.pool = words.slice();
+  shoot.wordQueue = shuffle(shoot.pool.slice());
+  shoot.queueIdx = 0;
   shoot.score = 0;
   shoot.lives = 3;
   shoot.targets = [];
   shoot.bullets = [];
   shoot.cooldown = 0;
   shoot.running = true;
+  shoot.timeLeft = shoot.GAME_DURATION;
+  shoot.aiming = false;
 
   $('shLives').textContent = '❤️❤️❤️';
   $('shScore').textContent = 'คะแนน 0';
+  updateShootTimer();
+
+  clearInterval(shoot.timerId);
+  shoot.timerId = setInterval(() => {
+    if(!shoot.running) return;
+    shoot.timeLeft--;
+    updateShootTimer();
+    if(shoot.timeLeft <= 0){
+      gameOverShoot('time');
+    }
+  }, 1000);
 
   const pf = $('playfield');
-  // Clear old target/gun children except known ones
   pf.querySelectorAll('.target').forEach(t => t.remove());
   pf.querySelectorAll('.bullet').forEach(t => t.remove());
   pf.querySelectorAll('.score-pop').forEach(t => t.remove());
   pf.querySelectorAll('.gover').forEach(t => t.remove());
+  $('aimSvg').innerHTML = '';
 
   showScreen('shootGame');
 
-  // Delay sizing to let layout settle
   requestAnimationFrame(() => {
     const rect = pf.getBoundingClientRect();
     shoot.playfieldW = rect.width;
@@ -2614,7 +2669,8 @@ function startShootGame(){
     shoot.gunX = rect.width / 2;
     shoot.gunY = rect.height - 55;
 
-    nextShootRound();
+    // Initial spawn
+    startNewRound();
 
     shoot.lastFrame = performance.now();
     if(shoot.rafId) cancelAnimationFrame(shoot.rafId);
@@ -2622,58 +2678,139 @@ function startShootGame(){
   });
 }
 
-function nextShootRound(){
-  // Reset targets, choose new question
-  const reverse = Math.random() < 0.5;
-  const correct = shoot.pool[Math.floor(Math.random() * shoot.pool.length)];
-  shoot.current = { en: correct.en, th: correct.th, reverse };
+/* === Core spawn functions === */
 
-  // Show on gun
-  const bulletText = reverse ? correct.th : correct.en;
-  $('gunText').textContent = bulletText;
-
-  // Remove existing targets
-  shoot.targets.forEach(t => t.el.remove());
-  shoot.targets = [];
-
-  // Pick 3 distractors (or N-1 if pool smaller than 4)
-  const distractCount = Math.min(3, shoot.pool.length - 1);
-  const others = shuffle(shoot.pool.filter(w => w.en !== correct.en)).slice(0, distractCount);
-  const allTargets = [{data: correct, isCorrect: true}, ...others.map(w => ({data: w, isCorrect: false}))];
-  const shuffledTargets = shuffle(allTargets);
-
-  // Spawn each at random x with staggered y
-  const pf = $('playfield');
-  shuffledTargets.forEach((t, i) => {
-    spawnTarget(t.data, t.isCorrect, i);
-  });
-}
-
-function spawnTarget(data, isCorrect, index){
+function spawnTarget(data, isCorrect, startY){
+  if(startY === undefined) startY = -80;
   const pf = $('playfield');
   const el = document.createElement('div');
   el.className = 'target';
-  const text = shoot.current.reverse ? data.en : data.th;
-  el.textContent = text;
-
-  // Random x: split into 4 columns to avoid overlap
-  const cols = shoot.TARGET_COUNT;
-  const colWidth = 100 / cols;
-  const col = index % cols;
-  const xPct = col * colWidth + Math.random() * (colWidth * 0.7) + colWidth * 0.15;
-  const startY = -60 - (index * 80); // stagger above
-  el.style.left = xPct + '%';
+  el.textContent = shoot.current.reverse ? data.en : data.th;
+  el.style.left = '0px';
   el.style.top = startY + 'px';
+  el.style.visibility = 'hidden';
   pf.appendChild(el);
+
+  const targetW = el.offsetWidth;
+  const pfW = pf.clientWidth;
+  const cols = shoot.TARGET_COUNT;
+  const colWidth = pfW / cols;
+
+  // Find free columns
+  const usedCols = new Set();
+  shoot.targets.forEach(t => {
+    if(!t.alive) return;
+    usedCols.add(Math.floor(t.x / colWidth));
+  });
+
+  let col = Math.floor(Math.random() * cols);
+  if(usedCols.has(col)){
+    for(let c = 0; c < cols; c++){
+      if(!usedCols.has(c)){ col = c; break; }
+    }
+  }
+
+  const minX = col * colWidth + 6;
+  const maxX = Math.min((col + 1) * colWidth - targetW - 6, pfW - targetW - 6);
+  const range = Math.max(0, maxX - minX);
+  const x = Math.max(6, minX + Math.random() * range);
+
+  el.style.left = x + 'px';
+  el.style.visibility = 'visible';
+
+  // ✅ Speed: ~10 seconds to cross screen (9-11 sec random)
+  const pfH = pf.clientHeight;
+  const speedPxPerSec = pfH / (9 + Math.random() * 2);
 
   shoot.targets.push({
     el, data, isCorrect,
-    x: 0, y: startY,
-    speed: 0.6 + Math.random() * 0.5,  // px per frame at 60fps
-    xPct,
+    x, y: startY,
+    speed: speedPxPerSec,
     alive: true,
   });
+  return true;
 }
+
+function spawnOneWrong(startY){
+  if(startY === undefined) startY = -80;
+  const onScreen = new Set(shoot.targets.filter(t => t.alive).map(t => t.data.en));
+  onScreen.add(shoot.current.en);
+  const candidates = shoot.pool.filter(w => !onScreen.has(w.en));
+  let pick;
+  if(candidates.length > 0){
+    pick = candidates[Math.floor(Math.random() * candidates.length)];
+  } else {
+    const wrongs = shoot.pool.filter(w => w.en !== shoot.current.en);
+    if(wrongs.length === 0) return false;
+    pick = wrongs[Math.floor(Math.random() * wrongs.length)];
+  }
+  return spawnTarget(pick, false, startY);
+}
+
+/* Start a fresh round: pick new question, spawn all targets */
+function startNewRound(){
+  // Clear all dead targets
+  shoot.targets = shoot.targets.filter(t => t.alive);
+
+  // Remove existing targets (fresh round)
+  shoot.targets.forEach(t => { if(t.el && t.el.parentNode) t.el.remove(); });
+  shoot.targets = [];
+
+  // Pick new word
+  const reverse = Math.random() < 0.5;
+  const correct = getNextShootWord();
+  shoot.current = { en: correct.en, th: correct.th, reverse };
+  $('gunText').textContent = reverse ? correct.th : correct.en;
+
+  // Spawn correct target first (appears first)
+  spawnTarget(correct, true, -80);
+
+  // Spawn wrongs staggered (closer together)
+  const stagger = 70;
+  let y = -80 - stagger;
+  let safety = 10;
+  while(shoot.targets.length < shoot.TARGET_COUNT && safety-- > 0){
+    if(!spawnOneWrong(y)) break;
+    y -= stagger;
+  }
+}
+
+/* ✅ Advance question WITHOUT removing existing wrongs */
+function advanceAfterCorrectHit(){
+  if(!shoot.running) return;
+  shoot.targets = shoot.targets.filter(t => t.alive);
+
+  // Pick new word
+  const reverse = Math.random() < 0.5;
+  const correct = getNextShootWord();
+  shoot.current = { en: correct.en, th: correct.th, reverse };
+  $('gunText').textContent = reverse ? correct.th : correct.en;
+
+  // Remove any existing target that conflicts with new correct answer
+  const newCorrectDisplay = reverse ? correct.en : correct.th;
+  const conflicts = shoot.targets.filter(t =>
+    t.data.en === correct.en || t.el.textContent === newCorrectDisplay
+  );
+  conflicts.forEach(t => {
+    t.alive = false;
+    t.el.classList.add('popping');
+    setTimeout(() => { if(t.el.parentNode) t.el.remove(); }, 400);
+  });
+  shoot.targets = shoot.targets.filter(t => t.alive);
+
+  // Spawn new correct target
+  spawnTarget(correct, true, -80);
+
+  // Fill up to TARGET_COUNT with new wrongs (staggered, close)
+  let stagger = 70;
+  let safety = 10;
+  while(shoot.targets.length < shoot.TARGET_COUNT && safety-- > 0){
+    if(!spawnOneWrong(-80 - stagger)) break;
+    stagger += 70;
+  }
+}
+
+/* === Main loop === */
 
 function shootLoop(now){
   if(!shoot.running) return;
@@ -2687,22 +2824,42 @@ function shootLoop(now){
   shoot.gunX = rect.width / 2;
   shoot.gunY = rect.height - 55;
 
-  // Move targets down
+  let correctFell = false;
+  let wrongFellCount = 0;
+
   shoot.targets.forEach(t => {
     if(!t.alive) return;
-    t.y += t.speed * (dt / 16.67);
-    // if past bottom, wrap to top
-    if(t.y > shoot.playfieldH + 40){
-      t.y = -60;
-      // Re-randomize x within its column
-      const cols = shoot.TARGET_COUNT;
-      const colWidth = 100 / cols;
-      const col = Math.floor(Math.random() * cols);
-      t.xPct = col * colWidth + Math.random() * (colWidth * 0.7) + colWidth * 0.15;
-    }
+    t.y += t.speed * dt / 1000;
     t.el.style.top = t.y + 'px';
-    t.el.style.left = t.xPct + '%';
+
+    if(t.y > shoot.playfieldH + 20){
+      // Fell off without being shot
+      t.alive = false;
+      t.el.remove();
+      shoot.lives--;
+      updateLives();
+      if(t.isCorrect) correctFell = true;
+      else wrongFellCount++;
+    }
   });
+
+  shoot.targets = shoot.targets.filter(t => t.alive);
+
+  if(shoot.lives <= 0){
+    if(shoot.running) gameOverShoot('lives');
+    return;
+  }
+
+  if(correctFell){
+    sfxOops();
+    // Advance to new question but keep remaining wrongs
+    advanceAfterCorrectHit();
+  } else if(wrongFellCount > 0){
+    sfxOops();
+    for(let i = 0; i < wrongFellCount; i++){
+      spawnOneWrong(-80 - i * 60);
+    }
+  }
 
   // Move bullets
   for(let i = shoot.bullets.length - 1; i >= 0; i--){
@@ -2712,7 +2869,6 @@ function shootLoop(now){
     b.el.style.left = b.x + 'px';
     b.el.style.top = b.y + 'px';
 
-    // Collision check
     let hit = null;
     for(const t of shoot.targets){
       if(!t.alive) continue;
@@ -2722,16 +2878,12 @@ function shootLoop(now){
       const ty = tr.top - pfr.top + tr.height/2;
       const rad = Math.max(tr.width, tr.height)/2 + 8;
       const dx = b.x - tx, dy = b.y - ty;
-      if(dx*dx + dy*dy < rad*rad){
-        hit = t; break;
-      }
+      if(dx*dx + dy*dy < rad*rad){ hit = t; break; }
     }
 
-    // Off-screen?
     const offscreen = b.x < -50 || b.x > shoot.playfieldW + 50 || b.y < -50 || b.y > shoot.playfieldH + 50;
 
     if(hit){
-      // Remove bullet
       b.el.remove();
       shoot.bullets.splice(i, 1);
       resolveHit(hit, b.x, b.y);
@@ -2741,24 +2893,16 @@ function shootLoop(now){
     }
   }
 
-  // Cooldown
   if(shoot.cooldown > 0) shoot.cooldown -= dt;
-
-  // Draw aim line
   drawAim();
-
   shoot.rafId = requestAnimationFrame(shootLoop);
 }
 
 function drawAim(){
   const svg = $('aimSvg');
-  if(!shoot.aiming){
-    svg.innerHTML = '';
-    return;
-  }
+  if(!shoot.aiming){ svg.innerHTML = ''; return; }
   const x1 = shoot.gunX, y1 = shoot.gunY;
   const x2 = shoot.aimEndX, y2 = shoot.aimEndY;
-  // Extend the line a bit past the endpoint
   const dx = x2 - x1, dy = y2 - y1;
   const len = Math.hypot(dx, dy) || 1;
   const ext = 300;
@@ -2773,7 +2917,7 @@ function shootFire(){
   const dx = shoot.aimEndX - shoot.gunX;
   const dy = shoot.aimEndY - shoot.gunY;
   const len = Math.hypot(dx, dy);
-  if(len < 20) return; // too small
+  if(len < 20) return;
   const speed = 18;
   const vx = dx / len * speed;
   const vy = dy / len * speed;
@@ -2790,17 +2934,20 @@ function shootFire(){
   shoot.cooldown = 250;
 }
 
+/* ✅ FIXED: Only remove shot target */
 function resolveHit(target, hx, hy){
   if(!target.alive) return;
   if(target.isCorrect){
-    // Correct!
     sfxExplode();
+    // Remove ONLY this target
     target.alive = false;
     target.el.classList.add('popping');
-    setTimeout(() => target.el.remove(), 400);
+    setTimeout(() => { if(target.el.parentNode) target.el.remove(); }, 400);
+    shoot.targets = shoot.targets.filter(t => t.alive);
+
     shoot.score += 10;
     $('shScore').textContent = `คะแนน ${shoot.score}`;
-    // Score pop
+
     const pop = document.createElement('div');
     pop.className = 'score-pop';
     pop.textContent = '+10';
@@ -2808,59 +2955,32 @@ function resolveHit(target, hx, hy){
     pop.style.top = hy + 'px';
     $('playfield').appendChild(pop);
     setTimeout(() => pop.remove(), 1000);
-    // Next round after short delay
+
+    // Advance to new question, keep existing wrongs
     setTimeout(() => {
-      if(shoot.running) nextShootRound();
-    }, 500);
+      if(shoot.running) advanceAfterCorrectHit();
+    }, 400);
   } else {
-    // Wrong
     sfxOops();
     shoot.lives--;
     updateLives();
-    // Flash
     const rf = $('redFlash');
     rf.classList.remove('active');
     void rf.offsetWidth;
     rf.classList.add('active');
-    // Remove the wrong target and spawn a new wrong one
+
     target.alive = false;
     target.el.classList.add('popping');
-    setTimeout(() => target.el.remove(), 400);
-    // Respawn one wrong target after a short delay
+    setTimeout(() => { if(target.el.parentNode) target.el.remove(); }, 400);
+    shoot.targets = shoot.targets.filter(t => t.alive);
+
+    // Spawn one replacement wrong quickly
     setTimeout(() => {
-      if(!shoot.running) return;
-      // Pick a wrong answer that isn't already on screen and isn't the correct
-      const onScreen = new Set(shoot.targets.filter(t => t.alive).map(t => t.data.en));
-      onScreen.add(shoot.current.en);
-      const candidates = shoot.pool.filter(w => !onScreen.has(w.en));
-      if(candidates.length > 0){
-        const pick = candidates[Math.floor(Math.random() * candidates.length)];
-        // Find a free column
-        const usedCols = new Set();
-        shoot.targets.forEach(t => {
-          if(!t.alive) return;
-          usedCols.add(Math.floor(t.xPct / 25));
-        });
-        let col = 0;
-        for(let c=0;c<4;c++){ if(!usedCols.has(c)){ col = c; break; } }
-        // Replace in targets array
-        const newT = {el: null, data: pick, isCorrect: false, x:0, y:-80, speed: 0.6 + Math.random()*0.5, xPct: 0, alive: true};
-        newT.xPct = col * 25 + Math.random()*17 + 4;
-        const el = document.createElement('div');
-        el.className = 'target';
-        el.textContent = shoot.current.reverse ? pick.en : pick.th;
-        el.style.left = newT.xPct + '%';
-        el.style.top = '-80px';
-        $('playfield').appendChild(el);
-        newT.el = el;
-        // Remove old dead target from array
-        shoot.targets = shoot.targets.filter(t => t.alive);
-        shoot.targets.push(newT);
-      }
-    }, 300);
+      if(shoot.running) spawnOneWrong(-80);
+    }, 200);
 
     if(shoot.lives <= 0){
-      setTimeout(() => gameOverShoot(), 600);
+      setTimeout(() => { if(shoot.running) gameOverShoot('lives'); }, 600);
     }
   }
 }
@@ -2871,15 +2991,25 @@ function updateLives(){
   $('shLives').textContent = full + empty;
 }
 
-function gameOverShoot(){
+function gameOverShoot(reason){
   shoot.running = false;
-  if(shoot.rafId) cancelAnimationFrame(shoot.rafId);
-  shoot.rafId = null;
+  if(shoot.rafId){ cancelAnimationFrame(shoot.rafId); shoot.rafId = null; }
+  if(shoot.timerId){ clearInterval(shoot.timerId); shoot.timerId = null; }
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+
+  shoot.bullets.forEach(b => b.el.remove());
+  shoot.bullets = [];
+
   const pf = $('playfield');
   const gover = document.createElement('div');
   gover.className = 'gover';
+  const title = reason === 'time' ? '⏱️ หมดเวลา!' : '💥 จบเกม!';
+  const subtitle = reason === 'time'
+    ? `เล่นครบ ${shoot.GAME_DURATION} วินาทีแล้ว!`
+    : 'หัวใจหมดแล้ว!';
   gover.innerHTML = `
-    <h2>💥 จบเกม!</h2>
+    <h2>${title}</h2>
+    <p>${subtitle}</p>
     <p>คะแนนรวม: <b style="color:#fbbf24;font-size:1.5rem">${shoot.score}</b></p>
     <div class="btns">
       <button class="btn primary" id="shAgainBtn">🔁 เล่นอีกครั้ง</button>
@@ -2890,16 +3020,15 @@ function gameOverShoot(){
   `;
   pf.appendChild(gover);
   gover.querySelector('#shAgainBtn').onclick = () => { sfxClick(); gover.remove(); startShootGame(); };
-  gover.querySelector('#shOtherBtn').onclick = () => { sfxClick(); gover.remove(); shoot.running = false; if(shoot.rafId) cancelAnimationFrame(shoot.rafId); showGameChooser(); };
-  gover.querySelector('#shWordsBtn').onclick = () => { sfxClick(); gover.remove(); shoot.running = false; if(shoot.rafId) cancelAnimationFrame(shoot.rafId); showWordPicker(custom.gradeId); };
-  gover.querySelector('#shHomeBtn').onclick = () => { sfxClick(); gover.remove(); shoot.running = false; if(shoot.rafId) cancelAnimationFrame(shoot.rafId); showHome(); };
+  gover.querySelector('#shOtherBtn').onclick = () => { sfxClick(); gover.remove(); showGameChooser(); };
+  gover.querySelector('#shWordsBtn').onclick = () => { sfxClick(); gover.remove(); showWordPicker(custom.gradeId); };
+  gover.querySelector('#shHomeBtn').onclick = () => { sfxClick(); gover.remove(); showHome(); };
   sfxFinish();
 }
 
-/* Playfield input handling */
+/* Playfield input */
 (function setupPlayfieldInput(){
   const pf = $('playfield');
-
   function getPos(e){
     const rect = pf.getBoundingClientRect();
     let x, y;
@@ -2912,7 +3041,6 @@ function gameOverShoot(){
     }
     return {x, y};
   }
-
   function onDown(e){
     if(!shoot.running) return;
     e.preventDefault();
@@ -2931,12 +3059,10 @@ function gameOverShoot(){
   function onUp(e){
     if(!shoot.aiming) return;
     e.preventDefault();
-    shoot.aiming = false;
     shootFire();
-    const svg = $('aimSvg');
-    svg.innerHTML = '';
+    shoot.aiming = false;
+    $('aimSvg').innerHTML = '';
   }
-
   pf.addEventListener('mousedown', onDown);
   pf.addEventListener('mousemove', onMove);
   pf.addEventListener('mouseup', onUp);
@@ -2948,7 +3074,7 @@ function gameOverShoot(){
 })();
 
 /* =========================================================
-   SCREEN MANAGER
+   SCREEN MANAGER (with fullscreen for shoot)
    ========================================================= */
 function showScreen(name){
   const screens = {
@@ -2960,14 +3086,20 @@ function showScreen(name){
   for(const k in screens) screens[k].hidden = true;
   if(screens[name]) screens[name].hidden = false;
 
-  // If leaving match, stop timer
+  // ✅ Fullscreen mode for shoot game
+  if(name === 'shootGame'){
+    document.body.classList.add('shoot-fullscreen');
+  } else {
+    document.body.classList.remove('shoot-fullscreen');
+  }
+
   if(name !== 'matchGame'){
     if(match.timerId){ clearInterval(match.timerId); match.timerId = null; }
   }
-  // If leaving shoot, stop raf
   if(name !== 'shootGame'){
     shoot.running = false;
     if(shoot.rafId){ cancelAnimationFrame(shoot.rafId); shoot.rafId = null; }
+    if(shoot.timerId){ clearInterval(shoot.timerId); shoot.timerId = null; }
     shoot.bullets.forEach(b => b.el.remove());
     shoot.bullets = [];
     shoot.targets.forEach(t => { if(t.el && t.el.parentNode) t.el.remove(); });
@@ -2979,9 +3111,7 @@ function showScreen(name){
   if('speechSynthesis' in window) speechSynthesis.cancel();
 }
 
-function showHome(){
-  showScreen('home');
-}
+function showHome(){ showScreen('home'); }
 
 /* =========================================================
    Event handlers
@@ -2999,7 +3129,6 @@ $('wpNextBtn').onclick = () => {
 };
 
 $('gcBackBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId); };
-
 $('mgBackBtn').onclick = () => { sfxClick(); showGameChooser(); };
 $('cgBackBtn2').onclick = () => { sfxClick(); showGameChooser(); };
 $('shBackBtn').onclick = () => { sfxClick(); showGameChooser(); };
