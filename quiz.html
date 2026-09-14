@@ -359,8 +359,8 @@
   .toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(15,23,42,.94);color:#fff;padding:12px 22px;border-radius:14px;font-weight:800;font-size:.9rem;z-index:400;opacity:0;transition:.3s;pointer-events:none;box-shadow:0 12px 30px rgba(0,0,0,.4);max-width:90vw;text-align:center}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .spr-wrap{text-align:center}
-  .spr-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
-  @media(max-width:520px){.spr-stats{grid-template-columns:1fr;gap:10px}}
+  .spr-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+  @media(max-width:520px){.spr-stats{grid-template-columns:repeat(2,1fr);gap:10px}}
   .spr-stat{background:rgba(255,255,255,.6);border:1.5px solid rgba(139,92,246,.2);border-radius:18px;padding:16px 10px;backdrop-filter:blur(8px)}
   .spr-stat .n{font-size:2rem;font-weight:900;line-height:1;font-variant-numeric:tabular-nums}
   .spr-stat .l{font-size:.8rem;color:#6b7280;font-weight:800;margin-top:4px}
@@ -808,7 +808,7 @@ bank|ธนาคาร
 bed|เตียงนอน
 board|กระดาน
 boat|เรือ
-boots|รองเท้าหุ้มข้อหรือหุ้มขา
+boots|รองเท้าอุ้มข้อหรืออุ้มขา
 bottle|ขวด
 bowl|ชาม
 butterfly|ผีเสื้อ
@@ -2936,195 +2936,89 @@ function showMosquitoResult(deathPhrase){
 }
 
 /* ============================================================
-   SPEAK GAME (พูดให้ถูกคำ) — with synonyms + Thai fuzzy match
+   SPEAK GAME — with full synonym dictionary + strict roots
    ============================================================ */
 
-// Synonyms dictionary for common Thai translations
+/* ===== พจนานุกรมคำพ้องความหมาย ===== */
 const SPEAK_SYNONYMS = {
-  'bus':['รถบัส','รถเมล์','รถเมย์','รถโดยสาร','รถประจำทาง','บัส','รถทัวร์','รถบขส'],
-  'apple':['แอปเปิ้ล','แอปเปิล','แอปเปิ้ล','แอบเปิ้ล'],
+  /* ===== Strict words (ต้องมี ≥2 ราก) ===== */
+  'arrange':['จัด','จัดเตรียม','เตรียม','เตรียมการ','จัดเรียง','จัดแจง','จัดระเบียบ','เรียบเรียง','วางแผน','จัดการ','ปรับแต่ง','จัดให้เป็นระเบียบ','วางแผนจัดการ'],
+  'organize':['จัด','จัดระเบียบ','จัดตั้ง','จัดระบบ','จัดให้เป็นระบบ','จัดให้เป็นระเบียบ','รวบรวม','ทำให้เป็นระบบ','จัดการ'],
+  'classify':['จำแนก','จำแนกประเภท','แยกประเภท','แยกชนิด','แยกหมวดหมู่','จัดกลุ่ม','จัดประเภท','จัดหมวดหมู่','แบ่งประเภท','แบ่งชั้น','แบ่งพวก','แยกแยะ','คัดแยก','จัดเข้าประเภท','แบ่งแยกตามประเภท'],
+  'categorize':['จัดหมวดหมู่','จัดกลุ่ม','จัดประเภท','แยกแยะ','จำแนก','แบ่งออกเป็นประเภท','จัดเป็นประเภท','จัดเข้าหมวด'],
+  'sort':['จัดเรียง','เรียงลำดับ','จัดประเภท','แยกประเภท','คัดแยก','แบ่งพวก','จัดลำดับ','เรียง','แยกชนิด','จัดเข้าประเภท','จัดเข้า','คัด'],
+  'label':['ติดป้าย','ติดฉลาก','ป้าย','ฉลาก','แบ่งประเภท','จัดประเภท','ระบุ','ทำเครื่องหมาย'],
+  'rank':['จัดอันดับ','จัดตำแหน่ง','จัดลำดับ','จัดระดับ','จัดชั้น','จัดเกรด','อันดับ','ระดับ','ชั้น'],
+  'order':['สั่ง','คำสั่ง','ลำดับ','จัดเรียง','เรียงลำดับ','จัด','จัดระเบียบ','เรียบเรียง'],
+  'list':['รายการ','รายชื่อ','บัญชี','จัดทำรายการ','ลงรายการ','บันทึก','จัดเรียง'],
+
+  /* ===== Lenient words ===== */
+  'group':['กลุ่ม','พวก','หมู่','คณะ','ฝ่าย','เหล่า','ชุด','ฝูง','จัดกลุ่ม','รวมกลุ่ม','แบ่งกลุ่ม','จัดหมู่','จัดพวก','จัดเข้าหมู่'],
+  'divide':['แบ่ง','แยก','แบ่งแยก','แยกเป็นสองส่วน','แบ่งสรร','ปันส่วน','แบ่งปัน','แบ่งออก','แยกออก','หาร','แบ่งสัน'],
+  'separate':['แยก','แบ่ง','แยกออก','แบ่งแยก','แยกจาก','แยกกัน','จับแยก','แยกออกจากกัน'],
+
+  'bus':['รถบัส','รถเมล์','รถเมย์','รถโดยสาร','รถประจำทาง','บัส','รถทัวร์','รถบขส','รถสองแถว'],
+  'car':['รถยนต์','รถเก๋ง','รถ','รถส่วนตัว','รถสี่ล้อ'],
+  'apple':['แอปเปิ้ล','แอปเปิล','แอ๊ปเปิ้ล','แอบเปิ้ล','ผลแอปเปิ้ล'],
   'ice cream':['ไอศครีม','ไอศกรีม','ไอติม'],
-  'thank you':['ขอบคุณ','ขอบใจ','ขอบพระคุณ'],
-  'car':['รถยนต์','รถเก๋ง','รถ','รถส่วนตัว'],
+  'thank you':['ขอบคุณ','ขอบใจ','ขอบพระคุณ','ขอบคุณมาก'],
   'dog':['สุนัข','หมา'],
-  'cat':['แมว','เจ้าเหมียว'],
-  'goodbye':['ลาก่อน','บาย','บ๊ายบาย'],
-  'hello':['สวัสดี','หวัดดี','ฮัลโหล','หวัดดีครับ','หวัดดีค่ะ'],
-  'birthday':['วันเกิด','วันคล้ายวันเกิด'],
-  'school':['โรงเรียน','สถานศึกษา','ร.ร.'],
-  'student':['นักเรียน','นักศึกษา'],
-  'teacher':['ครู','อาจารย์','คุณครู'],
-  'rice':['ข้าว','ข้าวสวย','ข้าวหุงสุก'],
+  'cat':['แมว','เจ้าเหมียว','วิฬาร์'],
+  'hello':['สวัสดี','หวัดดี','ฮัลโหล','สวัสดีครับ','สวัสดีค่ะ'],
+  'goodbye':['ลาก่อน','บาย','บ๊ายบาย','ล่ำลา','อำลา'],
+  'birthday':['วันเกิด','วันคล้ายวันเกิด','วันประสูติ'],
+  'school':['โรงเรียน','สถานศึกษา','ร.ร.','สถาบัน'],
+  'student':['นักเรียน','นักศึกษา','ผู้เรียน','ศิษย์'],
+  'teacher':['ครู','อาจารย์','คุณครู','ผู้สอน'],
+  'big':['ใหญ่','โต','ใหญ่โต','ใหญ่หลวง'],
+  'small':['เล็ก','เล็กๆ','จิ๋ว','น้อย','เล็กน้อย'],
+  'happy':['มีความสุข','สุขใจ','ดีใจ','สบายใจ','ยินดี'],
+  'sad':['เศร้า','เสียใจ','หดหู่','โศก','เศร้าสร้อย'],
+  'beautiful':['สวย','งาม','สวยงาม','น่ามอง','งดงาม'],
+  'pretty':['สวย','น่ารัก','สวยน่ารัก','น่ามอง'],
+  'handsome':['หล่อ','หล่อเหลา','รูปหล่อ','หล่อมาก'],
+  'smart':['ฉลาด','เก่ง','หัวดี','หลักแหลม','ฉลาดหลักแหลม'],
+  'clever':['ฉลาด','เก่ง','หัวไว','มีไหวพริบ','ฉลาดปราดเปรื่อง'],
+  'kind':['ใจดี','มีเมตตา','ใจบุญ','กรุณา','โอบอ้อมอารี'],
+  'funny':['ตลก','ขำ','น่าขำ','ตลกขบขัน','ฮา'],
+  'hungry':['หิว','หิวข้าว','หิวกระหาย','หิวโหย'],
+  'thirsty':['กระหาย','กระหายน้ำ','หิวน้ำ'],
+  'tired':['เหนื่อย','เพลีย','อ่อนเพลีย','เหนื่อยล้า'],
+  'angry':['โกรธ','โมโห','หัวเสีย','เกรี้ยวกราด'],
+  'scared':['กลัว','หวาดกลัว','ตกใจ','หวาดผวา'],
+  'afraid':['กลัว','หวาดกลัว'],
+  'busy':['ยุ่ง','ไม่ว่าง','ยุ่งมาก','ยุ่งเหยิง','ยุ่งวุ่นวาย'],
+  'free':['ว่าง','อิสระ','ฟรี','ไม่มีค่าใช้จ่าย','ว่างเปล่า'],
+  'ready':['พร้อม','เตรียมพร้อม','พร้อมแล้ว','เรียบร้อย'],
+  'sorry':['ขอโทษ','ขออภัย','เสียใจ','โทษที'],
+  'welcome':['ยินดีต้อนรับ','ต้อนรับ','ยินดีรับ'],
+  'please':['กรุณา','โปรด','ขอ','ขอร้อง'],
+  'yes':['ใช่','ครับ','ค่ะ','ถูกต้อง','ใช่แล้ว'],
+  'no':['ไม่','ไม่ใช่','ไม่เอา','เปล่า'],
+  'water':['น้ำ','น้ำเปล่า','น้ำดื่ม'],
+  'rice':['ข้าว','ข้าวสวย','ข้าวหุงสุก','ข้าวเปล่า'],
   'meat':['เนื้อ','เนื้อสัตว์'],
   'pork':['หมู','เนื้อหมู'],
-  'beef':['เนื้อวัว','วัว'],
+  'beef':['เนื้อวัว','วัว','เนื้อโค'],
   'chicken':['ไก่','เนื้อไก่'],
-  'big':['ใหญ่','โต','ใหญ่โต'],
-  'small':['เล็ก','เล็กๆ','จิ๋ว'],
-  'short':['สั้น','เตี้ย'],
-  'ugly':['น่าเกลียด','ขี้เหร่'],
-  'beautiful':['สวย','งาม','สวยงาม','น่ามอง'],
-  'pretty':['สวย','น่ารัก','สวยน่ารัก'],
-  'handsome':['หล่อ','หล่อเหลา'],
-  'smart':['ฉลาด','เก่ง','หัวดี'],
-  'clever':['ฉลาด','เก่ง','หัวไว'],
-  'kind':['ใจดี','มีเมตตา','ใจบุญ'],
-  'funny':['ตลก','ขำ','น่าขำ'],
-  'sad':['เศร้า','เสียใจ','หดหู่'],
-  'happy':['มีความสุข','สุขใจ','ดีใจ','สบายใจ'],
-  'hungry':['หิว','หิวข้าว','หิวกระหาย'],
-  'thirsty':['กระหาย','กระหายน้ำ','หิวน้ำ'],
-  'tired':['เหนื่อย','เพลีย','อ่อนเพลีย'],
-  'angry':['โกรธ','โมโห','หัวเสีย'],
-  'scared':['กลัว','หวาดกลัว','ตกใจ'],
-  'afraid':['กลัว','หวาดกลัว'],
-  'run':['วิ่ง','วิ่งเร็ว'],
-  'walk':['เดิน','เดินเล่น'],
-  'eat':['กิน','รับประทาน','ทาน'],
-  'drink':['ดื่ม','กิน'],
-  'sleep':['นอน','นอนหลับ','หลับ'],
-  'sit':['นั่ง','นั่งลง'],
-  'stand':['ยืน','ยืนขึ้น'],
-  'speak':['พูด','พูดคุย'],
-  'talk':['คุย','พูดคุย','สนทนา'],
-  'listen':['ฟัง','รับฟัง'],
-  'look':['ดู','มอง','มองดู'],
-  'see':['เห็น','มองเห็น'],
-  'watch':['ดู','เฝ้าดู','ดูอยู่'],
-  'write':['เขียน','จด'],
-  'sing':['ร้องเพลง','ร้อง'],
-  'dance':['เต้น','เต้นรำ'],
-  'play':['เล่น','เล่นสนุก'],
-  'swim':['ว่ายน้ำ','ว่าย'],
-  'cook':['ทำอาหาร','ปรุงอาหาร','ปรุง'],
-  'laugh':['หัวเราะ','ขำ'],
-  'cry':['ร้องไห้','ร่ำไห้'],
-  'smile':['ยิ้ม','ยิ้มแย้ม'],
-  'love':['รัก','รักชอบ','หลงรัก'],
-  'like':['ชอบ','ชื่นชอบ','โปรดปราน'],
-  'hate':['เกลียด','ชัง'],
-  'want':['ต้องการ','อยาก','อยากได้'],
-  'need':['ต้องการ','จำเป็น'],
-  'help':['ช่วย','ช่วยเหลือ','ช่วยด้วย'],
-  'give':['ให้','มอบให้'],
-  'take':['เอา','หยิบ','เอาไป'],
-  'buy':['ซื้อ','จัดซื้อ'],
-  'sell':['ขาย','จำหน่าย'],
-  'pay':['จ่าย','ชำระ','จ่ายเงิน'],
-  'open':['เปิด','เปิดออก'],
-  'close':['ปิด','ปิดลง'],
-  'start':['เริ่ม','เริ่มต้น','ตั้งต้น'],
-  'stop':['หยุด','ยุติ','จบ'],
-  'finish':['เสร็จ','เสร็จสิ้น','จบ','สำเร็จ'],
-  'book':['หนังสือ','สมุด'],
-  'notebook':['สมุด','สมุดบันทึก'],
-  'eraser':['ยางลบ','ยาง'],
-  'ruler':['ไม้บรรทัด','บรรทัด'],
-  'bag':['กระเป๋า','ถุง','ย่าม'],
-  'box':['กล่อง','หีบ'],
-  'chair':['เก้าอี้'],
-  'table':['โต๊ะ','โต๊ะอาหาร'],
-  'desk':['โต๊ะ','โต๊ะเรียน'],
-  'door':['ประตู','บานประตู'],
-  'window':['หน้าต่าง','บานหน้าต่าง'],
-  'house':['บ้าน','เรือน'],
-  'room':['ห้อง','ห้องนอน'],
-  'bedroom':['ห้องนอน'],
-  'bathroom':['ห้องน้ำ','ห้องส้วม','ห้องสุขา'],
-  'kitchen':['ครัว','ห้องครัว'],
-  'hospital':['โรงพยาบาล','รพ'],
-  'restaurant':['ร้านอาหาร','ภัตตาคาร'],
-  'market':['ตลาด','ตลาดสด'],
-  'store':['ร้านค้า','ร้าน','ร้านสะดวกซื้อ'],
-  'shop':['ร้าน','ร้านค้า'],
-  'bank':['ธนาคาร','แบงก์'],
-  'money':['เงิน','เงินตรา'],
-  'price':['ราคา','ค่าของ'],
-  'cheap':['ถูก','ราคาถูก'],
-  'expensive':['แพง','ราคาแพง'],
-  'rich':['รวย','มั่งมี','มีเงิน'],
-  'poor':['จน','ยากจน','น่าสงสาร'],
-  'friend':['เพื่อน','สหาย','มิตร'],
-  'family':['ครอบครัว'],
-  'mother':['แม่','มารดา','คุณแม่'],
-  'father':['พ่อ','บิดา','คุณพ่อ'],
-  'mom':['แม่','มาม๊า','คุณแม่'],
-  'dad':['พ่อ','ป๊า','คุณพ่อ'],
-  'brother':['พี่ชาย','น้องชาย'],
-  'sister':['พี่สาว','น้องสาว'],
-  'grandmother':['ย่า','ยาย','คุณยาย','คุณย่า'],
-  'grandfather':['ปู่','ตา','คุณปู่','คุณตา'],
-  'baby':['เด็กทารก','ทารก','ทารกน้อย','เด็กอ่อน'],
-  'child':['เด็ก','ลูก','บุตร'],
-  'children':['เด็ก','เด็กๆ','ลูกๆ'],
-  'man':['ผู้ชาย','ชาย','บุรุษ'],
-  'woman':['ผู้หญิง','หญิง','สตรี'],
-  'boy':['เด็กผู้ชาย','เด็กชาย','หนุ่ม'],
-  'girl':['เด็กผู้หญิง','เด็กหญิง','สาว'],
-  'morning':['เช้า','ตอนเช้า','ยามเช้า'],
-  'afternoon':['บ่าย','ตอนบ่าย','ยามบ่าย'],
-  'evening':['เย็น','ตอนเย็น','ยามเย็น'],
-  'night':['กลางคืน','คืน','ราตรี'],
-  'today':['วันนี้','ปัจจุบันนี้'],
-  'tomorrow':['พรุ่งนี้','วันพรุ่งนี้'],
-  'yesterday':['เมื่อวาน','เมื่อวานนี้'],
-  'week':['สัปดาห์','อาทิตย์'],
-  'month':['เดือน'],
-  'year':['ปี','ขวบ'],
-  'time':['เวลา','กาลเวลา'],
-  'hour':['ชั่วโมง','ชม.'],
-  'minute':['นาที'],
-  'busy':['ยุ่ง','ไม่ว่าง'],
-  'free':['ว่าง','อิสระ','ฟรี'],
-  'ready':['พร้อม','เตรียมพร้อม'],
-  'sorry':['ขอโทษ','ขออภัย','เสียใจ'],
-  'welcome':['ยินดีต้อนรับ','ต้อนรับ'],
-  'please':['กรุณา','โปรด','ขอ'],
-  'yes':['ใช่','ครับ','ค่ะ'],
-  'no':['ไม่','ไม่ใช่'],
-  'water':['น้ำ'],
-  'fire':['ไฟ','อัคคี'],
-  'earth':['โลก','ดิน'],
-  'air':['อากาศ','ลม'],
-  'sun':['ดวงอาทิตย์','พระอาทิตย์','ตะวัน'],
-  'moon':['ดวงจันทร์','พระจันทร์'],
-  'star':['ดวงดาว','ดาว'],
-  'sky':['ท้องฟ้า','ฟ้า'],
-  'sea':['ทะเล','สมุทร'],
-  'mountain':['ภูเขา','เขา'],
-  'river':['แม่น้ำ','ลำน้ำ'],
-  'forest':['ป่า','ป่าไม้'],
-  'tree':['ต้นไม้','ไม้'],
-  'flower':['ดอกไม้','บุปผา'],
-  'grass':['หญ้า'],
-  'animal':['สัตว์','เดียรัจฉาน'],
-  'bird':['นก','ปักษา'],
-  'fish':['ปลา','มัจฉา'],
-  'insect':['แมลง'],
-  'egg':['ไข่'],
-  'milk':['นม'],
-  'bread':['ขนมปัง'],
-  'cake':['เค้ก','ขนมเค้ก'],
-  'candy':['ลูกอม','ขนม'],
-  'fruit':['ผลไม้'],
-  'vegetable':['ผัก'],
-  'salt':['เกลือ'],
-  'sugar':['น้ำตาล'],
+  'fruit':['ผลไม้','ผล','ลูกไม้'],
+  'vegetable':['ผัก','พืชผัก','ผักสด'],
+  'salt':['เกลือ','เกลือสินเธาว์'],
+  'sugar':['น้ำตาล','น้ำตาลทราย'],
   'coffee':['กาแฟ'],
   'tea':['ชา','น้ำชา'],
-  'juice':['น้ำผลไม้','น้ำ'],
+  'juice':['น้ำผลไม้','น้ำ','น้ำคั้น'],
   'glass':['แก้ว','แก้วน้ำ'],
   'cup':['ถ้วย','ถ้วยกาแฟ'],
   'plate':['จาน','จานอาหาร'],
   'spoon':['ช้อน'],
   'fork':['ส้อม'],
   'knife':['มีด'],
-  'spoon':['ช้อน'],
   'chopsticks':['ตะเกียบ'],
   'clothes':['เสื้อผ้า','เครื่องแต่งกาย'],
   'shirt':['เสื้อ','เสื้อเชิ้ต'],
   'pants':['กางเกง','กางเกงขายาว'],
-  'shorts':['กางเกงขาสั้น','กางเกงขาสั้น'],
+  'shorts':['กางเกงขาสั้น'],
   'skirt':['กระโปรง'],
   'dress':['ชุด','ชุดกระโปรง'],
   'shoes':['รองเท้า'],
@@ -3149,11 +3043,29 @@ const SPEAK_SYNONYMS = {
   'gray':['เทา','สีเทา'],
 };
 
-const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-const speechSupported = !!SpeechRec;
+/* ===== กฎ Strict vs Lenient ===== */
+const STRICT_WORDS = ['arrange','organize','classify','categorize','sort','label','rank','order','list'];
+const STRICT_ROOTS = {
+  'arrange':   { roots:['จัด','เตรียม','เรียง','ระเบียบ','แผน','จัดการ'], minRoots:2 },
+  'organize':  { roots:['จัด','ระเบียบ','ระบบ','ตั้ง'],                  minRoots:2 },
+  'classify':  { roots:['แยก','จำแนก','ประเภท','ชนิด','หมวด','พวก','ชั้น','กลุ่ม'], minRoots:2 },
+  'categorize':{ roots:['จัด','แยก','หมวด','ประเภท','กลุ่ม'],           minRoots:2 },
+  'sort':      { roots:['จัด','เรียง','แยก','ประเภท','ลำดับ','ชนิด'],    minRoots:2 },
+  'label':     { roots:['ป้าย','ฉลาก','ประเภท','ระบุ'],                  minRoots:1 },
+  'rank':      { roots:['อันดับ','ตำแหน่ง','ระดับ','ชั้น','ลำดับ'],      minRoots:1 },
+  'order':     { roots:['สั่ง','ลำดับ','จัด','ระเบียบ'],                 minRoots:1 },
+  'list':      { roots:['รายการ','รายชื่อ','บัญชี','ลง'],                minRoots:1 },
+};
+function spkIsStrictWord(enWord){ return STRICT_WORDS.includes(String(enWord||'').toLowerCase()); }
+function spkCheckStrictRoots(saidLoose, enWord){
+  const rule = STRICT_ROOTS[String(enWord||'').toLowerCase()];
+  if(!rule) return true;
+  let matchCount = 0;
+  for(const root of rule.roots){ if(saidLoose.includes(root)) matchCount++; }
+  return matchCount >= rule.minRoots;
+}
 
-// ===== Thai-aware text matching =====
-// ตัดวรรณยุกต์/การันต์/ไม้ไต่คู้ ออก → "แอ๊ปเปิ้ล" กับ "แอปเปิ้ล" กลายเป็นตัวเดียวกัน
+/* ===== Thai-aware normalize ===== */
 function spkNormalize(s){
   return String(s||'').toLowerCase()
     .replace(/[.,!?;:"'`""''()\[\]{}\/\-–—_*#@&+]/g,' ')
@@ -3162,17 +3074,13 @@ function spkNormalize(s){
 }
 function spkNormalizeLoose(s){
   let t = spkNormalize(s);
-  // ตัดวรรณยุกต์ + การันต์ + ไม้ไต่คู้ + ไม้หันอากาศซ้ำ
   t = t.replace(/[่้๊๋์็ํ๎]/g,'');
-  // รวมช่องว่าง (ภาษาไทยมักเขียนติดกัน)
   t = t.replace(/\s+/g,'');
-  // รวมสระเสียงสั้น-ยาว: ี→ิ, ื→ึ, ู→ุ
   t = t.replace(/ี/g,'ิ');
   t = t.replace(/ื/g,'ึ');
   t = t.replace(/ู/g,'ุ');
   return t;
 }
-// Levenshtein distance
 function spkEditDistance(a, b){
   if(a === b) return 0;
   const m = a.length, n = b.length;
@@ -3192,82 +3100,16 @@ function spkEditDistance(a, b){
   return dp[n];
 }
 
-// ===== Answer checking =====
-function spkCheckAnswer(said, target){
-  const rawSaid = String(said||'').trim();
-  if(!rawSaid) return false;
+const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+const speechSupported = !!SpeechRec;
 
-  const normSaid = spkNormalize(rawSaid);
-  const looseSaid = spkNormalizeLoose(rawSaid);
-  if(!normSaid) return false;
-
-  // แยกคำแปลที่คั่นด้วย comma
-  const answers = String(target).split(',').map(s => s.trim()).filter(Boolean);
-
-  for(const ans of answers){
-    const normAns = spkNormalize(ans);
-    const looseAns = spkNormalizeLoose(ans);
-    if(!normAns) continue;
-
-    // 1) exact / loose exact
-    if(normSaid === normAns) return true;
-    if(looseSaid && looseAns && looseSaid === looseAns) return true;
-
-    // 2) containment
-    if(normSaid.includes(normAns)) return true;
-    if(looseSaid.includes(looseAns)) return true;
-    if(normAns.includes(normSaid) && normSaid.length >= 2) return true;
-    if(looseAns.includes(looseSaid) && looseSaid.length >= 2) return true;
-
-    // 3) Levenshtein distance (สำหรับสะกดเพี้ยน)
-    if(looseSaid.length >= 4 && looseAns.length >= 4){
-      const maxLen = Math.max(looseSaid.length, looseAns.length);
-      const d = spkEditDistance(looseSaid, looseAns);
-      let threshold;
-      if(maxLen <= 5) threshold = 1;
-      else if(maxLen <= 8) threshold = 2;
-      else threshold = 3;
-      if(d <= threshold && (d / maxLen) <= 0.30) return true;
-    }
-  }
-
-  // 4) เช็ค synonym dictionary
-  if(spkState.current){
-    const en = spkState.current.word.en.toLowerCase();
-    const syns = SPEAK_SYNONYMS[en];
-    if(syns){
-      for(const syn of syns){
-        const normSyn = spkNormalize(syn);
-        const looseSyn = spkNormalizeLoose(syn);
-        if(!normSyn) continue;
-        if(normSaid === normSyn) return true;
-        if(looseSaid && looseSyn && looseSaid === looseSyn) return true;
-        if(normSaid.includes(normSyn)) return true;
-        if(looseSaid.includes(looseSyn)) return true;
-        // fuzzy
-        if(looseSaid.length >= 4 && looseSyn.length >= 4){
-          const maxLen = Math.max(looseSaid.length, looseSyn.length);
-          const d = spkEditDistance(looseSaid, looseSyn);
-          let threshold;
-          if(maxLen <= 5) threshold = 1;
-          else if(maxLen <= 8) threshold = 2;
-          else threshold = 3;
-          if(d <= threshold && (d / maxLen) <= 0.30) return true;
-        }
-      }
-    }
-  }
-  return false;
-}
-
-// state
+/* state */
 const spkState = {
   running:false, paused:false, flipped:false,
   pool:[], queue:[], queueIdx:0,
   sideMap:{}, current:null,
-  attempts:[],                    // ความพยายามผิดของ "ข้อปัจจุบัน"
-  wordTracker:{},                 // en -> {en,th,attempts:[],skips:0,everCorrect:false}
-  wordOrder:[],                   // ลำดับคำที่เจอครั้งแรก
+  attempts:[],
+  wordTracker:{}, wordOrder:[],
   correctCount:0, wrongCount:0, totalSkips:0,
   startTime:0, timerId:null,
   rec:null, listening:false, recLang:'en-US',
@@ -3281,7 +3123,6 @@ function spkShowToast(msg, ms){
   clearTimeout(t._t);
   t._t = setTimeout(() => t.classList.remove('show'), ms || 3000);
 }
-
 function spkPickNextWord(){
   if(spkState.queueIdx >= spkState.queue.length){
     spkState.queue = shuffle(spkState.pool.slice());
@@ -3302,8 +3143,6 @@ function spkTracker(w){
   }
   return spkState.wordTracker[w.en];
 }
-
-/* Permission modal */
 function openSpeakPermModal(){
   const warn = $('spkPermWarn');
   const allowBtn = $('spkPermAllow');
@@ -3323,7 +3162,6 @@ function openSpeakPermModal(){
 }
 function closeSpeakPermModal(){ $('speakPermModal').hidden = true; }
 
-/* Start game */
 function startSpeakGame(){
   const words = getSelectedWords();
   if(words.length < 2){ alert('ต้องเลือกอย่างน้อย 2 คำ'); return; }
@@ -3385,7 +3223,7 @@ function spkNextQuestion(){
   const w = spkPickNextWord();
   const side = spkDecideSide(w);
   spkState.current = { word: w, side };
-  spkTracker(w); // ลงทะเบียนใน tracker
+  spkTracker(w);
 
   const promptEl = $('spkPrompt');
   const sideEl = $('spkSide');
@@ -3402,7 +3240,6 @@ function spkNextQuestion(){
   spkRestartRecognition();
 }
 
-/* Recognition lifecycle */
 function spkRestartRecognition(){
   if(spkState._restartTimer){ clearTimeout(spkState._restartTimer); spkState._restartTimer = null; }
   spkState._lastRestartAt = Date.now();
@@ -3454,10 +3291,7 @@ function spkOnResult(e){
       if(spkCheckSpoken(alt)){ matched = alt; break; }
     }
     const said = matched || (r[0] && r[0].transcript) || '';
-    if(said){
-      sfxHeard();
-      handleSpokenAnswer(said);
-    }
+    if(said){ sfxHeard(); handleSpokenAnswer(said); }
   }
 }
 function spkCheckSpoken(said){
@@ -3501,18 +3335,91 @@ function spkOnEnd(){
 function updateMicStatus(){
   const mic = $('spkMic');
   const txt = $('spkMicText');
-  if(spkState.flipped){
-    mic.className = 'spk-mic done';
-    txt.textContent = 'ตอบถูกแล้ว!';
-    return;
+  if(spkState.flipped){ mic.className = 'spk-mic done'; txt.textContent = 'ตอบถูกแล้ว!'; return; }
+  if(spkState.listening){ mic.className = 'spk-mic'; txt.textContent = 'กำลังฟัง...'; }
+  else { mic.className = 'spk-mic paused'; txt.textContent = 'รอสัญญาณไมค์...'; }
+}
+
+/* ===== Answer checking ===== */
+function spkCheckAnswer(said, target){
+  const rawSaid = String(said||'').trim();
+  if(!rawSaid) return false;
+
+  const normSaid = spkNormalize(rawSaid);
+  const looseSaid = spkNormalizeLoose(rawSaid);
+  if(!normSaid) return false;
+
+  const answers = String(target).split(',').map(s => s.trim()).filter(Boolean);
+  const enWord = spkState.current ? spkState.current.word.en.toLowerCase() : '';
+  const isStrict = spkIsStrictWord(enWord);
+  const strictPass = () => !isStrict || spkCheckStrictRoots(looseSaid, enWord);
+
+  // 1) ตรวจกับคำตอบหลัก
+  for(const ans of answers){
+    const normAns = spkNormalize(ans);
+    const looseAns = spkNormalizeLoose(ans);
+    if(!normAns) continue;
+
+    // exact / loose exact → ผ่านเสมอ
+    if(normSaid === normAns) return true;
+    if(looseSaid && looseAns && looseSaid === looseAns) return true;
+
+    // containment → strict ต้องผ่าน root check
+    if(normSaid.includes(normAns) || looseSaid.includes(looseAns)){
+      if(strictPass()) return true;
+    }
+    if(normAns.includes(normSaid) && normSaid.length >= 2){
+      if(strictPass()) return true;
+    }
+    if(looseAns.includes(looseSaid) && looseSaid.length >= 2){
+      if(strictPass()) return true;
+    }
+
+    // Levenshtein
+    if(looseSaid.length >= 4 && looseAns.length >= 4){
+      const maxLen = Math.max(looseSaid.length, looseAns.length);
+      const d = spkEditDistance(looseSaid, looseAns);
+      const threshold = maxLen <= 5 ? 1 : maxLen <= 8 ? 2 : 3;
+      if(d <= threshold && (d / maxLen) <= 0.30){
+        if(strictPass()) return true;
+      }
+    }
   }
-  if(spkState.listening){
-    mic.className = 'spk-mic';
-    txt.textContent = 'กำลังฟัง...';
-  } else {
-    mic.className = 'spk-mic paused';
-    txt.textContent = 'รอสัญญาณไมค์...';
+
+  // 2) ตรวจกับ synonyms
+  if(spkState.current){
+    const syns = SPEAK_SYNONYMS[enWord];
+    if(syns){
+      for(const syn of syns){
+        const normSyn = spkNormalize(syn);
+        const looseSyn = spkNormalizeLoose(syn);
+        if(!normSyn) continue;
+
+        if(normSaid === normSyn) return true;
+        if(looseSaid && looseSyn && looseSaid === looseSyn) return true;
+        if(normSaid.includes(normSyn) || looseSaid.includes(looseSyn)){
+          if(strictPass()) return true;
+        }
+        if(normSyn.includes(normSaid) && normSaid.length >= 2){
+          if(strictPass()) return true;
+        }
+        if(looseSyn.includes(looseSaid) && looseSaid.length >= 2){
+          if(strictPass()) return true;
+        }
+        // fuzzy
+        if(looseSaid.length >= 4 && looseSyn.length >= 4){
+          const maxLen = Math.max(looseSaid.length, looseSyn.length);
+          const d = spkEditDistance(looseSaid, looseSyn);
+          const threshold = maxLen <= 5 ? 1 : maxLen <= 8 ? 2 : 3;
+          if(d <= threshold && (d / maxLen) <= 0.30){
+            if(strictPass()) return true;
+          }
+        }
+      }
+    }
   }
+
+  return false;
 }
 
 /* Handle answer */
@@ -3531,9 +3438,7 @@ function handleSpokenAnswer(said){
     spkState.correctCount++;
     $('spkCorrectPill').textContent = `✓ ${spkState.correctCount}`;
     flipToAnswer(target, side);
-    if(side === 'th'){
-      setTimeout(() => speak(w.en, 'en'), 450);
-    }
+    if(side === 'th') setTimeout(() => speak(w.en, 'en'), 450);
   } else {
     sfxSpeakWrong();
     spkState.attempts.push({ said });
@@ -3547,11 +3452,7 @@ function handleSpokenAnswer(said){
 function renderAttempts(){
   const box = $('spkAttempts');
   box.innerHTML = spkState.attempts.map(a =>
-    `<div class="spk-attempt">
-      <span class="spk-att-emoji">🗣️</span>
-      <span>${escapeHtml(a.said)}</span>
-      <span class="spk-att-x">✗</span>
-    </div>`
+    `<div class="spk-attempt"><span class="spk-att-emoji">🗣️</span><span>${escapeHtml(a.said)}</span><span class="spk-att-x">✗</span></div>`
   ).join('');
 }
 function flipToAnswer(answerText, side){
@@ -3567,30 +3468,22 @@ function flipToAnswer(answerText, side){
   $('spkSkipBtn').hidden = true;
 }
 
-/* Skip word → push back to queue + track */
 function spkSkipWord(){
   if(!spkState.running || spkState.paused || spkState.flipped) return;
   if(!spkState.current) return;
   const w = spkState.current.word;
-  // นับการข้าม
   const tr = spkTracker(w);
   tr.skips++;
   spkState.totalSkips++;
-  // ยัดกลับไปท้ายคิว
   spkState.queue.push(w);
   sfxSkip();
   spkShowToast(`⏭️ ข้าม "${w.en}" (ครั้งที่ ${tr.skips}) จะวนกลับมาถามใหม่`);
   spkNextQuestion();
 }
 
-/* Finish game */
 function finishSpeakGame(){
-  // finalize current if not yet answered
   if(spkState.current && !spkState.flipped){
-    const w = spkState.current.word;
-    const tr = spkTracker(w);
-    // ถ้ายังไม่ตอบถูกในรอบนี้ ก็ปล่อยเป็น everCorrect=false ต่อไป
-    // ถ้ามี attempts ในรอบนี้ ให้เก็บไว้ใน tracker แล้ว (ทำไปแล้วตอน attempt)
+    // ปล่อยให้ tracker เก็บข้อมูลที่มีอยู่แล้ว
   }
   spkState.current = null;
   spkState.running = false;
@@ -3603,14 +3496,13 @@ function finishSpeakGame(){
   const m = Math.floor(totalSec/60);
   const s = totalSec % 60;
 
-  let correctQ = 0, wrongQ = 0, skippedQ = 0;
+  let correctQ = 0, wrongQ = 0;
   spkState.wordOrder.forEach(en => {
     const tr = spkState.wordTracker[en];
     if(!tr) return;
     if(tr.everCorrect) correctQ++;
-    else if(tr.skips > 0) skippedQ++;
+    else if(tr.skips > 0 && tr.attempts.length === 0) { /* ข้ามล้วน ไม่นับ */ }
     else wrongQ++;
-    // ถ้าเคยตอบถูกแล้ว แต่ข้ามไปด้วย ก็ยังนับเป็น correct
   });
 
   $('sprCorrect').textContent = String(correctQ);
@@ -3625,7 +3517,6 @@ function finishSpeakGame(){
     list.innerHTML = spkState.wordOrder.map((en, i) => {
       const tr = spkState.wordTracker[en];
       if(!tr) return '';
-      // group attempts โดยนับคำซ้ำ
       const grouped = [];
       const map = new Map();
       (tr.attempts || []).forEach(a => {
@@ -3639,9 +3530,7 @@ function finishSpeakGame(){
             `• ผู้พูดพูด "${escapeHtml(g.said)}" → ✗ ผิด${g.count > 1 ? ` (×${g.count})` : ''}`
           ).join('<br>')}</div>`
         : '';
-      const skipTag = tr.skips > 0
-        ? `<span class="spr-skip-tag">⏭️ ข้าม ${tr.skips} ครั้ง</span>`
-        : '';
+      const skipTag = tr.skips > 0 ? `<span class="spr-skip-tag">⏭️ ข้าม ${tr.skips} ครั้ง</span>` : '';
       let statusText;
       if(tr.everCorrect) statusText = '✓ ถูก';
       else if(tr.skips > 0 && tr.attempts.length === 0) statusText = '⏭️ ข้าม (ยังไม่ตอบ)';
