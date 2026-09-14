@@ -45,7 +45,42 @@
   .g5{background:linear-gradient(135deg,#fa709a 0%,#fecc47 100%)}
   .g6{background:linear-gradient(135deg,#7028e4 0%,#d68ac5 100%)}
   .g7{background:linear-gradient(135deg,#00b09b 0%,#96c93d 100%)}
-  @media(max-width:520px){.grade{flex:0 0 158px;width:158px;min-height:84px;padding:12px 14px}.g-name{font-size:1.15rem}.g-count{font-size:.7rem}}
+  .g-all{background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);flex:0 0 380px;width:380px;max-width:100%} /* ปุ่มรวมทั้งหมด */
+  @media(max-width:520px){.grade{flex:0 0 158px;width:158px;min-height:84px;padding:12px 14px}.g-name{font-size:1.15rem}.g-count{font-size:.7rem}.g-all{flex:0 0 100%;width:100%}}
+  
+  /* --- Home Screen Main Button --- */
+  .main-menu-btn {
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      padding: 40px 60px;
+      border-radius: 30px;
+      font-size: 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      border: none;
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      font-family: inherit;
+      margin-top: 20px;
+  }
+  .main-menu-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  }
+  .main-menu-btn span {
+      font-size: 1.2rem;
+      font-weight: 400;
+      opacity: 0.9;
+  }
+  @media(max-width:520px){
+      .main-menu-btn { font-size: 2.5rem; padding: 30px; }
+      .main-menu-btn span { font-size: 1rem; }
+  }
+
   #home,#gradeMenu{background:transparent!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:none!important;border:none!important;padding:20px 14px}
   #home::before,#home::after,#gradeMenu::before,#gradeMenu::after{display:none!important}
   #home h1{background:linear-gradient(135deg,#fef9c3 0%,#f9a8d4 45%,#c4b5fd 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 22px rgba(236,72,153,.55));font-size:1.9rem}
@@ -53,22 +88,7 @@
   #gradeMenu h2{color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.35)}
   #gradeMenu .back-btn{background:rgba(255,255,255,.20);color:#fff;border:1px solid rgba(255,255,255,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
   #gradeMenu .back-btn:hover{background:rgba(255,255,255,.30)}
-  .grade-menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:34px;padding:34px 20px 20px;max-width:660px;margin:0 auto}
-  @media(max-width:520px){.grade-menu-grid{gap:20px;padding:22px 0 8px}}
-  .circle-btn-3d{position:relative;aspect-ratio:1;border-radius:50%;border:none;cursor:pointer;font-family:inherit;font-weight:900;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:18px;overflow:hidden;isolation:isolate;transition:transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s}
-  .circle-btn-3d::before{content:"";position:absolute;inset:0;border-radius:50%;z-index:-1;pointer-events:none;background:radial-gradient(circle at 30% 22%, rgba(255,255,255,.65), transparent 42%),radial-gradient(circle at 72% 85%, rgba(0,0,0,.50), transparent 60%)}
-  .circle-btn-3d::after{content:"";position:absolute;inset:6%;border-radius:50%;pointer-events:none;background:radial-gradient(circle at 50% 25%, rgba(255,255,255,.22), transparent 65%)}
-  .circle-btn-3d .cb-icon{font-size:3rem;line-height:1;filter:drop-shadow(0 6px 12px rgba(0,0,0,.55)) drop-shadow(0 2px 3px rgba(0,0,0,.4));position:relative;z-index:2;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
-  .circle-btn-3d .cb-label{font-size:1.1rem;font-weight:900;letter-spacing:.5px;text-shadow:0 2px 8px rgba(0,0,0,.7),0 1px 2px rgba(0,0,0,.5);text-align:center;line-height:1.2;position:relative;z-index:2}
-  .circle-btn-3d .cb-shine{position:absolute;top:8%;left:18%;width:44%;height:22%;border-radius:50%;background:radial-gradient(ellipse at 50% 50%, rgba(255,255,255,.85), rgba(255,255,255,.2) 60%, transparent 85%);filter:blur(2px);pointer-events:none;z-index:3;transition:transform .4s ease, opacity .4s ease}
-  .circle-btn-3d:hover{transform:translateY(-10px) scale(1.04)}
-  .circle-btn-3d:hover .cb-icon{transform:scale(1.15) rotate(-6deg)}
-  .circle-btn-3d:hover .cb-shine{transform:translate(-15%,-20%) scale(1.15);opacity:.95}
-  .circle-btn-3d:active{transform:translateY(-3px) scale(.97)}
-  .circle-btn-3d:active .cb-icon{transform:scale(.95)}
-  .cb-quiz{background:radial-gradient(circle at 32% 24%, #d8b4fe 0%, #a855f7 35%, #7c3aed 62%, #4c1d95 100%);box-shadow:0 28px 50px -14px rgba(76,29,149,.85),0 14px 26px rgba(124,58,237,.55),inset 0 -16px 30px rgba(0,0,0,.48),inset 0 14px 26px rgba(255,255,255,.35),0 0 0 2px rgba(255,255,255,.15),0 0 50px rgba(168,85,247,.4)}
-  .cb-custom{background:radial-gradient(circle at 32% 24%, #fef3c7 0%, #fbbf24 35%, #f59e0b 62%, #b45309 100%);box-shadow:0 28px 50px -14px rgba(180,83,9,.85),0 14px 26px rgba(245,158,11,.55),inset 0 -16px 30px rgba(0,0,0,.48),inset 0 14px 26px rgba(255,255,255,.45),0 0 0 2px rgba(255,255,255,.20),0 0 50px rgba(251,191,36,.45)}
-  @media(max-width:520px){.circle-btn-3d .cb-icon{font-size:2.2rem}.circle-btn-3d .cb-label{font-size:.95rem}}
+  
   .wp-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding:6px 4px;align-items:center;justify-content:center}
   .wp-chip{min-width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;font-family:inherit;font-weight:900;font-size:1.35rem;color:#fff;display:flex;align-items:center;justify-content:center;padding:0 14px;transition:transform .15s cubic-bezier(.34,1.56,.64,1), box-shadow .15s;background:radial-gradient(circle at 32% 24%, #6ee7b7, #10b981 45%, #047857 100%);box-shadow:0 12px 20px -8px rgba(4,120,87,.7),0 5px 10px rgba(0,0,0,.20),inset 0 -7px 12px rgba(0,0,0,.30),inset 0 7px 12px rgba(255,255,255,.35);position:relative;isolation:isolate;letter-spacing:-.5px;font-variant-numeric:tabular-nums;text-shadow:0 1px 2px rgba(0,0,0,.35)}
   .wp-chip::after{content:"";position:absolute;top:8%;left:22%;width:42%;height:28%;border-radius:50%;background:radial-gradient(ellipse, rgba(255,255,255,.55), transparent 70%);pointer-events:none}
@@ -388,24 +408,31 @@
 <body>
 <div id="app">
 
+  <!-- 🔴 หน้าจอที่ 1: เมนูหลัก (Two Buttons) -->
   <section id="home" class="card">
-    <h1>🎯 เลือกระดับชั้น</h1>
-    <div class="grades" id="gradeList"></div>
-  </section>
-
-  <section id="gradeMenu" class="card" hidden>
-    <button class="back-btn" id="gmBackBtn">← กลับ</button>
-    <h2 id="gmTitle" style="margin-bottom:18px"></h2>
-    <div class="grade-menu-grid">
-      <button class="circle-btn-3d cb-quiz" id="gmQuizBtn">
-        <span class="cb-shine"></span><span class="cb-icon">🎯</span><span class="cb-label">เกมเดาศัพท์</span>
+    <h1>🎯 ระบบเกมคำศัพท์</h1>
+    <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+      <!-- ปุ่มที่ 1: เกมรวมเดิม -->
+      <button class="main-menu-btn" onclick="goToGrades()">
+        🧩❓🎯🦟🗣️
+        <span>คลิกเพื่อเลือกเกมและระดับชั้น</span>
       </button>
-      <button class="circle-btn-3d cb-custom" id="gmCustomBtn">
-        <span class="cb-shine"></span><span class="cb-icon">🎮</span><span class="cb-label">เกมสร้างเอง</span>
+      <!-- ปุ่มที่ 2: เกมใหม่เร็วๆ นี้ (ปุ่มแจ้งเตือนแทนลิงก์ที่ยังไม่มี) -->
+      <button class="main-menu-btn" onclick="alert('🎮 เกมใหม่กำลังจะมาเร็วๆ นี้! รอติดตามได้เลยครับ')" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+        🎮✨
+        <span>เกมใหม่เร็วๆนี้.....</span>
       </button>
     </div>
   </section>
 
+  <!-- 🔴 หน้าจอที่ 2: เลือกระดับชั้น -->
+  <section id="gradeMenu" class="card" hidden>
+    <button class="back-btn" id="gmBackBtn">← กลับ</button>
+    <h2 id="gmTitle" style="margin-bottom:18px">🍎 เลือกระดับชั้น</h2>
+    <div class="grades" id="gradeList"></div>
+  </section>
+
+  <!-- 🔴 หน้าจอที่ 3: เลือกคำศัพท์ (Word Picker) -->
   <section id="wordPicker" class="card" hidden>
     <button class="back-btn" id="wpBackBtn">← กลับ</button>
     <h2 id="wpTitle" style="margin-bottom:10px"></h2>
@@ -419,6 +446,23 @@
     </div>
   </section>
 
+  <!-- 🔴 หน้าจอที่ 4: เลือกเกม (Game Chooser) -->
+  <section id="gameChooser" class="card" hidden>
+    <button class="back-btn" id="gcBackBtn">← กลับ</button>
+    <h2 style="text-align:center;margin-bottom:6px">🎮 เลือกเกม</h2>
+    <p class="sub" id="gcSub" style="margin-bottom:18px">ระดับชั้น: -</p>
+    <div class="games-grid-4">
+      <button class="game-card gc-match" data-game="match"><span class="gc-icon">🃏</span><span class="gc-name">จับคู่คำศัพท์</span></button>
+      <button class="game-card gc-choice" data-game="choice"><span class="gc-icon">❓</span><span class="gc-name">ทายคำ 4 ตัวเลือก</span></button>
+      <button class="game-card gc-shoot" data-game="shoot"><span class="gc-icon">🎯</span><span class="gc-name">ปาเป้าคำศัพท์</span></button>
+      <button class="game-card gc-mosquito" data-game="mosquito"><span class="gc-icon">🦟</span><span class="gc-name">ตบยุง</span></button>
+      <button class="game-card gc-speak" data-game="speak"><span class="gc-icon">🎤</span><span class="gc-name">พูดให้ถูกคำ</span></button>
+    </div>
+    <div style="text-align:center; margin-top: 20px;">
+      <button class="btn ghost" id="gcCustomBtn">📝 เลือกคำศัพท์เอง</button>
+    </div>
+  </section>
+
   <section id="addWords" class="card" hidden>
     <button class="back-btn" id="awBackBtn">← กลับ</button>
     <h2 style="text-align:center;margin-bottom:6px">➕ เพิ่มคำศัพท์</h2>
@@ -428,17 +472,6 @@
       <div id="awRows"></div>
     </div>
     <div class="btns" style="margin-top:18px"><button class="btn primary" id="awSaveBtn">💾 บันทึก</button></div>
-  </section>
-
-  <section id="gameChooser" class="card" hidden>
-    <button class="back-btn" id="gcBackBtn">← กลับ</button>
-    <div class="games-grid-4">
-      <button class="game-card gc-match" data-game="match"><span class="gc-icon">🃏</span><span class="gc-name">จับคู่คำศัพท์</span></button>
-      <button class="game-card gc-choice" data-game="choice"><span class="gc-icon">❓</span><span class="gc-name">ทายคำ 4 ตัวเลือก</span></button>
-      <button class="game-card gc-shoot" data-game="shoot"><span class="gc-icon">🎯</span><span class="gc-name">ปาเป้าคำศัพท์</span></button>
-      <button class="game-card gc-mosquito" data-game="mosquito"><span class="gc-icon">🦟</span><span class="gc-name">ตบยุง</span></button>
-      <button class="game-card gc-speak" data-game="speak"><span class="gc-icon">🎤</span><span class="gc-name">พูดให้ถูกคำ</span></button>
-    </div>
   </section>
 
   <section id="quiz" class="card" hidden>
@@ -1990,12 +2023,27 @@ function parseWords(raw){
 }
 const POOLS = {};
 for(const k in RAW) POOLS[k] = parseWords(RAW[k]);
+
+// --- สร้าง Pool รวมทั้งหมด ---
+POOLS.all = [];
+const allEnSet = new Set();
+for(const k in POOLS){
+    if(k === 'all') continue;
+    POOLS[k].forEach(w => {
+        if(!allEnSet.has(w.en)){
+            allEnSet.add(w.en);
+            POOLS.all.push(w);
+        }
+    });
+}
+
 const DUP_TH = {};
 for(const k in POOLS){
   const cnt = {};
   POOLS[k].forEach(w => cnt[w.th] = (cnt[w.th]||0)+1);
   DUP_TH[k] = new Set(Object.keys(cnt).filter(t => cnt[t] > 1));
 }
+
 const GRADES = [
   {id:'p1',name:'ป.1',cls:'g1'},{id:'p2',name:'ป.2',cls:'g2'},{id:'p3',name:'ป.3',cls:'g3'},
   {id:'p4',name:'ป.4',cls:'g4'},{id:'p5',name:'ป.5',cls:'g5'},{id:'p6',name:'ป.6',cls:'g6'},
@@ -2023,6 +2071,22 @@ function rebuildExtraPool(){
   const cnt = {};
   POOLS.extra.forEach(w => cnt[w.th] = (cnt[w.th]||0)+1);
   DUP_TH.extra = new Set(Object.keys(cnt).filter(t => cnt[t] > 1));
+  
+  // Rebuild all pool
+  POOLS.all = [];
+  const allEnSet = new Set();
+  for(const k in POOLS){
+      if(k === 'all') continue;
+      POOLS[k].forEach(w => {
+          if(!allEnSet.has(w.en)){
+              allEnSet.add(w.en);
+              POOLS.all.push(w);
+          }
+      });
+  }
+  const cntAll = {};
+  POOLS.all.forEach(w => cntAll[w.th] = (cntAll[w.th] || 0) + 1);
+  DUP_TH.all = new Set(Object.keys(cntAll).filter(t => cntAll[t] > 1));
 }
 
 /* ===== Audio ===== */
@@ -2133,8 +2197,25 @@ const speakGameEl=$('speakGame'),speakResultEl=$('speakResult');
 let state={gradeId:null,questions:[],idx:0,score:0,wrongList:[],locked:false};
 const custom={gradeId:null,selectedEn:new Set(),gameType:null};
 
+// ---- Navigation & Grade Selection ----
+function goToGrades() {
+    sfxClick();
+    showScreen('gradeMenu');
+}
+
 function renderGrades(){
   const wrap=$('gradeList'); wrap.innerHTML='';
+  
+  // Row 0: All
+  const row0 = document.createElement('div'); row0.className = 'grade-row';
+  const allBtn = document.createElement('button');
+  allBtn.className = 'grade g-all';
+  allBtn.innerHTML = `<div class="g-name">🌟 รวมทั้งหมด</div><div class="g-count">${POOLS.all.length} คำ</div>`;
+  allBtn.onclick = () => { sfxClick(); selectGrade('all'); };
+  row0.appendChild(allBtn);
+  wrap.appendChild(row0);
+
+  // Row 1 & 2: p1-p6, extra
   const row1=document.createElement('div'); row1.className='grade-row';
   const row2=document.createElement('div'); row2.className='grade-row';
   GRADES.forEach((g,i)=>{
@@ -2142,21 +2223,32 @@ function renderGrades(){
     b.className='grade '+g.cls;
     const count=POOLS[g.id].length;
     b.innerHTML=`<div class="g-name">${g.name}</div><div class="g-count">${count} คำ</div>`;
-    b.onclick=()=>{ sfxClick(); showGradeMenu(g.id); };
+    b.onclick=()=>{ sfxClick(); selectGrade(g.id); };
     if(i<4) row1.appendChild(b); else row2.appendChild(b);
   });
   wrap.appendChild(row1); wrap.appendChild(row2);
 }
+
+function selectGrade(gradeId){
+    custom.gradeId = gradeId;
+    // Auto-select all words for this grade to make it convenient
+    custom.selectedEn = new Set(POOLS[gradeId].map(w => w.en));
+    // *** เปลี่ยนจากการไปหน้า GameChooser เป็นไปหน้า WordPicker ตามที่ผู้ใช้ต้องการ ***
+    showWordPicker(gradeId, true);
+}
+
 function showGradeMenu(gradeId){
   state.gradeId=gradeId;
-  const grade=GRADES.find(g=>g.id===gradeId);
+  const grade=GRADES.find(g=>g.id===gradeId) || {name:'รวมทั้งหมด'};
   $('gmTitle').textContent=grade.name;
   showScreen('gradeMenu');
 }
+// ------------------------------------
+
 function showWordPicker(gradeId,preserveSelection){
   custom.gradeId=gradeId;
   if(!preserveSelection) custom.selectedEn=new Set();
-  const grade=GRADES.find(g=>g.id===gradeId);
+  const grade=GRADES.find(g=>g.id===gradeId) || {name:'รวมทั้งหมด'};
   const pool=POOLS[gradeId];
   $('wpTitle').textContent=grade.name;
   $('wpSub').textContent=`เลือกอย่างน้อย 4 คำ · ทั้งหมด ${pool.length} คำ`;
@@ -2208,7 +2300,11 @@ function updateWPUI(){
   cnt.className='wp-count'+(n<4?' warn':'');
   $('wpNextBtn').disabled=n<4;
 }
-function showGameChooser(){ showScreen('gameChooser'); }
+function showGameChooser(){ 
+    const grade = GRADES.find(g => g.id === custom.gradeId) || {name:'รวมทั้งหมด'};
+    $('gcSub').textContent = `ระดับชั้น: ${grade.name} (${custom.selectedEn.size} คำ)`;
+    showScreen('gameChooser'); 
+}
 function getSelectedWords(){ const pool=POOLS[custom.gradeId]; return pool.filter(w=>custom.selectedEn.has(w.en)); }
 function confirmDeleteWord(en){
   if(!confirm(`ลบคำศัพท์ "${en}" ออกจากรายการของคุณหรือไม่?`)) return;
@@ -2297,7 +2393,7 @@ function openTimePicker(title,sub,options,defaultSec,callback){
 }
 $('timeStartBtn').onclick=()=>{ sfxClick(); const cb=timePickerCallback; $('timePicker').hidden=true; timePickerCallback=null; if(cb) cb(selectedTimeSec); };
 
-/* QUIZ */
+/* QUIZ (Old Mode - Kept but hidden from main UI) */
 let quizPaused=false;
 function startMergedQuiz(gradeId){
   sfxClick(); if('speechSynthesis' in window) speechSynthesis.cancel();
@@ -2938,10 +3034,7 @@ function showMosquitoResult(deathPhrase){
 /* ============================================================
    SPEAK GAME — with full synonym dictionary + strict roots
    ============================================================ */
-
-/* ===== พจนานุกรมคำพ้องความหมาย ===== */
 const SPEAK_SYNONYMS = {
-  /* ===== Strict words (ต้องมี ≥2 ราก) ===== */
   'arrange':['จัด','จัดเตรียม','เตรียม','เตรียมการ','จัดเรียง','จัดแจง','จัดระเบียบ','เรียบเรียง','วางแผน','จัดการ','ปรับแต่ง','จัดให้เป็นระเบียบ','วางแผนจัดการ'],
   'organize':['จัด','จัดระเบียบ','จัดตั้ง','จัดระบบ','จัดให้เป็นระบบ','จัดให้เป็นระเบียบ','รวบรวม','ทำให้เป็นระบบ','จัดการ'],
   'classify':['จำแนก','จำแนกประเภท','แยกประเภท','แยกชนิด','แยกหมวดหมู่','จัดกลุ่ม','จัดประเภท','จัดหมวดหมู่','แบ่งประเภท','แบ่งชั้น','แบ่งพวก','แยกแยะ','คัดแยก','จัดเข้าประเภท','แบ่งแยกตามประเภท'],
@@ -2951,12 +3044,9 @@ const SPEAK_SYNONYMS = {
   'rank':['จัดอันดับ','จัดตำแหน่ง','จัดลำดับ','จัดระดับ','จัดชั้น','จัดเกรด','อันดับ','ระดับ','ชั้น'],
   'order':['สั่ง','คำสั่ง','ลำดับ','จัดเรียง','เรียงลำดับ','จัด','จัดระเบียบ','เรียบเรียง'],
   'list':['รายการ','รายชื่อ','บัญชี','จัดทำรายการ','ลงรายการ','บันทึก','จัดเรียง'],
-
-  /* ===== Lenient words ===== */
   'group':['กลุ่ม','พวก','หมู่','คณะ','ฝ่าย','เหล่า','ชุด','ฝูง','จัดกลุ่ม','รวมกลุ่ม','แบ่งกลุ่ม','จัดหมู่','จัดพวก','จัดเข้าหมู่'],
   'divide':['แบ่ง','แยก','แบ่งแยก','แยกเป็นสองส่วน','แบ่งสรร','ปันส่วน','แบ่งปัน','แบ่งออก','แยกออก','หาร','แบ่งสัน'],
   'separate':['แยก','แบ่ง','แยกออก','แบ่งแยก','แยกจาก','แยกกัน','จับแยก','แยกออกจากกัน'],
-
   'bus':['รถบัส','รถเมล์','รถเมย์','รถโดยสาร','รถประจำทาง','บัส','รถทัวร์','รถบขส','รถสองแถว'],
   'car':['รถยนต์','รถเก๋ง','รถ','รถส่วนตัว','รถสี่ล้อ'],
   'apple':['แอปเปิ้ล','แอปเปิล','แอ๊ปเปิ้ล','แอบเปิ้ล','ผลแอปเปิ้ล'],
@@ -3042,8 +3132,6 @@ const SPEAK_SYNONYMS = {
   'grey':['เทา','สีเทา'],
   'gray':['เทา','สีเทา'],
 };
-
-/* ===== กฎ Strict vs Lenient ===== */
 const STRICT_WORDS = ['arrange','organize','classify','categorize','sort','label','rank','order','list'];
 const STRICT_ROOTS = {
   'arrange':   { roots:['จัด','เตรียม','เรียง','ระเบียบ','แผน','จัดการ'], minRoots:2 },
@@ -3064,8 +3152,6 @@ function spkCheckStrictRoots(saidLoose, enWord){
   for(const root of rule.roots){ if(saidLoose.includes(root)) matchCount++; }
   return matchCount >= rule.minRoots;
 }
-
-/* ===== Thai-aware normalize ===== */
 function spkNormalize(s){
   return String(s||'').toLowerCase()
     .replace(/[.,!?;:"'`""''()\[\]{}\/\-–—_*#@&+]/g,' ')
@@ -3099,11 +3185,8 @@ function spkEditDistance(a, b){
   }
   return dp[n];
 }
-
 const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
 const speechSupported = !!SpeechRec;
-
-/* state */
 const spkState = {
   running:false, paused:false, flipped:false,
   pool:[], queue:[], queueIdx:0,
@@ -3115,7 +3198,6 @@ const spkState = {
   rec:null, listening:false, recLang:'en-US',
   restartTimeout:null, _restartTimer:null, _lastRestartAt:0,
 };
-
 function spkShowToast(msg, ms){
   const t = $('toast');
   t.textContent = msg;
@@ -3206,7 +3288,6 @@ function startSpeakGame(){
   startBGM();
   sfxMicOn();
 }
-
 function spkNextQuestion(){
   if(!spkState.running) return;
   spkState.paused = false;
@@ -3236,10 +3317,8 @@ function spkNextQuestion(){
     promptEl.className = 'spk-prompt th';
     sideEl.textContent = 'จงพูดคำภาษาอังกฤษ';
   }
-
   spkRestartRecognition();
 }
-
 function spkRestartRecognition(){
   if(spkState._restartTimer){ clearTimeout(spkState._restartTimer); spkState._restartTimer = null; }
   spkState._lastRestartAt = Date.now();
@@ -3339,32 +3418,22 @@ function updateMicStatus(){
   if(spkState.listening){ mic.className = 'spk-mic'; txt.textContent = 'กำลังฟัง...'; }
   else { mic.className = 'spk-mic paused'; txt.textContent = 'รอสัญญาณไมค์...'; }
 }
-
-/* ===== Answer checking ===== */
 function spkCheckAnswer(said, target){
   const rawSaid = String(said||'').trim();
   if(!rawSaid) return false;
-
   const normSaid = spkNormalize(rawSaid);
   const looseSaid = spkNormalizeLoose(rawSaid);
   if(!normSaid) return false;
-
   const answers = String(target).split(',').map(s => s.trim()).filter(Boolean);
   const enWord = spkState.current ? spkState.current.word.en.toLowerCase() : '';
   const isStrict = spkIsStrictWord(enWord);
   const strictPass = () => !isStrict || spkCheckStrictRoots(looseSaid, enWord);
-
-  // 1) ตรวจกับคำตอบหลัก
   for(const ans of answers){
     const normAns = spkNormalize(ans);
     const looseAns = spkNormalizeLoose(ans);
     if(!normAns) continue;
-
-    // exact / loose exact → ผ่านเสมอ
     if(normSaid === normAns) return true;
     if(looseSaid && looseAns && looseSaid === looseAns) return true;
-
-    // containment → strict ต้องผ่าน root check
     if(normSaid.includes(normAns) || looseSaid.includes(looseAns)){
       if(strictPass()) return true;
     }
@@ -3374,8 +3443,6 @@ function spkCheckAnswer(said, target){
     if(looseAns.includes(looseSaid) && looseSaid.length >= 2){
       if(strictPass()) return true;
     }
-
-    // Levenshtein
     if(looseSaid.length >= 4 && looseAns.length >= 4){
       const maxLen = Math.max(looseSaid.length, looseAns.length);
       const d = spkEditDistance(looseSaid, looseAns);
@@ -3385,8 +3452,6 @@ function spkCheckAnswer(said, target){
       }
     }
   }
-
-  // 2) ตรวจกับ synonyms
   if(spkState.current){
     const syns = SPEAK_SYNONYMS[enWord];
     if(syns){
@@ -3394,7 +3459,6 @@ function spkCheckAnswer(said, target){
         const normSyn = spkNormalize(syn);
         const looseSyn = spkNormalizeLoose(syn);
         if(!normSyn) continue;
-
         if(normSaid === normSyn) return true;
         if(looseSaid && looseSyn && looseSaid === looseSyn) return true;
         if(normSaid.includes(normSyn) || looseSaid.includes(looseSyn)){
@@ -3406,7 +3470,6 @@ function spkCheckAnswer(said, target){
         if(looseSyn.includes(looseSaid) && looseSaid.length >= 2){
           if(strictPass()) return true;
         }
-        // fuzzy
         if(looseSaid.length >= 4 && looseSyn.length >= 4){
           const maxLen = Math.max(looseSaid.length, looseSyn.length);
           const d = spkEditDistance(looseSaid, looseSyn);
@@ -3418,11 +3481,8 @@ function spkCheckAnswer(said, target){
       }
     }
   }
-
   return false;
 }
-
-/* Handle answer */
 function handleSpokenAnswer(said){
   if(!spkState.running || spkState.paused || spkState.flipped) return;
   if(!spkState.current) return;
@@ -3430,7 +3490,6 @@ function handleSpokenAnswer(said){
   const side = spkState.current.side;
   const target = (side === 'en') ? w.th : w.en;
   const ok = spkCheckAnswer(said, target);
-
   if(ok){
     sfxSpeakCorrect();
     const tr = spkTracker(w);
@@ -3467,7 +3526,6 @@ function flipToAnswer(answerText, side){
   $('spkNextBtn').hidden = false;
   $('spkSkipBtn').hidden = true;
 }
-
 function spkSkipWord(){
   if(!spkState.running || spkState.paused || spkState.flipped) return;
   if(!spkState.current) return;
@@ -3480,7 +3538,6 @@ function spkSkipWord(){
   spkShowToast(`⏭️ ข้าม "${w.en}" (ครั้งที่ ${tr.skips}) จะวนกลับมาถามใหม่`);
   spkNextQuestion();
 }
-
 function finishSpeakGame(){
   if(spkState.current && !spkState.flipped){
     // ปล่อยให้ tracker เก็บข้อมูลที่มีอยู่แล้ว
@@ -3491,11 +3548,9 @@ function finishSpeakGame(){
   if(spkState.timerId){ clearInterval(spkState.timerId); spkState.timerId = null; }
   stopBGM();
   if('speechSynthesis' in window) speechSynthesis.cancel();
-
   const totalSec = Math.floor((Date.now() - spkState.startTime)/1000);
   const m = Math.floor(totalSec/60);
   const s = totalSec % 60;
-
   let correctQ = 0, wrongQ = 0;
   spkState.wordOrder.forEach(en => {
     const tr = spkState.wordTracker[en];
@@ -3504,12 +3559,10 @@ function finishSpeakGame(){
     else if(tr.skips > 0 && tr.attempts.length === 0) { /* ข้ามล้วน ไม่นับ */ }
     else wrongQ++;
   });
-
   $('sprCorrect').textContent = String(correctQ);
   $('sprWrong').textContent = String(wrongQ);
   $('sprSkip').textContent = String(spkState.totalSkips);
   $('sprTime').textContent = `${m}:${String(s).padStart(2,'0')}`;
-
   const list = $('sprList');
   if(spkState.wordOrder.length === 0){
     list.innerHTML = '<div style="text-align:center;color:#6b7280;font-weight:700;padding:14px">ยังไม่ได้เล่นข้อไหนเลย</div>';
@@ -3544,7 +3597,6 @@ function finishSpeakGame(){
       </div>`;
     }).join('');
   }
-
   sfxFinish();
   showScreen('speakResult');
 }
@@ -3666,17 +3718,17 @@ function showHome(){ quizPaused = false; stopBGM(); showScreen('home'); }
 
 /* Events */
 $('gmBackBtn').onclick = () => { sfxClick(); showHome(); };
-$('gmQuizBtn').onclick = () => { startMergedQuiz(state.gradeId); };
-$('gmCustomBtn').onclick = () => { sfxClick(); showWordPicker(state.gradeId); };
-$('quizBackBtn').onclick = () => { sfxClick(); stopBGM(); quizPaused = false; showGradeMenu(state.gradeId); };
+$('gcBackBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId, true); }; // กลับไปหน้าเลือกคำศัพท์
+$('gcCustomBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId, true); };
+
+$('quizBackBtn').onclick = () => { sfxClick(); stopBGM(); quizPaused = false; showScreen('gradeMenu'); };
 $('againBtn').onclick = () => { sfxClick(); startMergedQuiz(state.gradeId); };
 $('chooseSetBtn').onclick = () => { sfxClick(); showHome(); };
-$('wpBackBtn').onclick = () => { sfxClick(); showGradeMenu(custom.gradeId); };
+$('wpBackBtn').onclick = () => { sfxClick(); showScreen('gradeMenu'); }; // กลับไปหน้าเลือกระดับชั้น
 $('wpNextBtn').onclick = () => { if(custom.selectedEn.size < 4) return; sfxClick(); showGameChooser(); };
 $('wpAddWordBtn').onclick = () => { sfxClick(); showAddWords(); };
 $('awBackBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId, true); };
 $('awSaveBtn').onclick = () => { sfxClick(); saveAwWords(); };
-$('gcBackBtn').onclick = () => { sfxClick(); showWordPicker(custom.gradeId, true); };
 $('mgBackBtn').onclick = () => { sfxClick(); showGameChooser(); };
 $('cgBackBtn2').onclick = () => { sfxClick(); stopBGM(); showGameChooser(); };
 $('shBackBtn').onclick = () => { sfxClick(); showGameChooser(); };
