@@ -2456,7 +2456,7 @@ const VOCAB_DATA = `
 **ร้านค้า – เธอซื้อชุดจากร้านค้า**
 
 201. shopping mall – We spent the whole day at the shopping mall.
-**ห้างสรรพสินค้า – เราใช้เวลาทั้งวันที่ห้างสรรพสินค้า**
+**ห้างสรรพสินค้า – เราใช้เวลาทั้งวันของห้างสรรพสินค้า**
 
 202. sick – He stayed home because he was sick.
 **ป่วย – เขาอยู่บ้านเพราะป่วย**
@@ -5059,32 +5059,65 @@ function initBgFloaters() {
 }
 
 // ============================================================
-//  FULLSCREEN TOGGLE
+//  FULLSCREEN TOGGLE + AUTO FULLSCREEN
 // ============================================================
 const fsToggle = document.getElementById('fsToggle');
+
+let fsUserOptOut = false;   // ผู้ใช้กด "ออกจากเต็มจอ" เอง → อย่าไปดึงกลับ
+
 function isFullscreen() {
   return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+}
+function requestFS() {
+  const el = document.documentElement;
+  try{
+    if (el.requestFullscreen)       return el.requestFullscreen();
+    if (el.webkitRequestFullscreen) return Promise.resolve(el.webkitRequestFullscreen());
+    if (el.msRequestFullscreen)     return Promise.resolve(el.msRequestFullscreen());
+  }catch(e){}
+  return Promise.resolve();
+}
+function exitFS() {
+  try{
+    if (document.exitFullscreen)        return document.exitFullscreen();
+    if (document.webkitExitFullscreen)  return Promise.resolve(document.webkitExitFullscreen());
+    if (document.msExitFullscreen)      return Promise.resolve(document.msExitFullscreen());
+  }catch(e){}
+  return Promise.resolve();
 }
 function updateFsIcon() {
   if (isFullscreen()) fsToggle.classList.add('is-fullscreen');
   else fsToggle.classList.remove('is-fullscreen');
 }
+function tryAutoFullscreen() {
+  if (fsUserOptOut || isFullscreen()) return;
+  requestFS().catch(()=>{});
+}
+
+/* --- ปุ่มเต็มจอ --- */
 fsToggle.addEventListener('click', () => {
-  const el = document.documentElement;
-  if (!isFullscreen()) {
-    if (el.requestFullscreen) el.requestFullscreen().catch(()=>{});
-    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-    else if (el.msRequestFullscreen) el.msRequestFullscreen();
+  if (isFullscreen()) {
+    fsUserOptOut = true;          // ผู้ใช้ตั้งใจออกเอง → หยุด auto
+    exitFS().catch(()=>{});
   } else {
-    if (document.exitFullscreen) document.exitFullscreen();
-    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-    else if (document.msExitFullscreen) document.msExitFullscreen();
+    fsUserOptOut = false;
+    requestFS().catch(()=>{});
   }
 });
+
+/* --- ติดตามสถานะ fullscreen --- */
 ['fullscreenchange','webkitfullscreenchange','msfullscreenchange'].forEach(evt => {
   document.addEventListener(evt, updateFsIcon);
 });
 updateFsIcon();
+
+/* --- ลองเข้าเต็มจอทันทีตอนโหลด (บาง environment ทำได้) --- */
+tryAutoFullscreen();
+
+/* --- ถ้ายังไม่เต็มจอ → ดึงเข้าเต็มจอทันทีที่มี gesture แรก --- */
+['click','touchstart','keydown','pointerdown'].forEach(ev => {
+  document.addEventListener(ev, tryAutoFullscreen, {passive:true});
+});
 
 // ============================================================
 //  INIT
