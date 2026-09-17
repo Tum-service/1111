@@ -67,23 +67,36 @@
     animation:spiderBob 3.2s ease-in-out infinite;filter:drop-shadow(0 2px 4px rgba(0,0,0,.8))}
   @keyframes spiderBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(8px) rotate(3deg)}}
 
-  /* ===== FULLSCREEN TOGGLE (macOS style) ===== */
-  .fs-toggle{position:fixed;top:14px;left:14px;z-index:99999;
-    width:42px;height:42px;border-radius:50%;
-    background:rgba(20,10,40,.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  /* ===== BOTTOM-LEFT CORNER BUTTONS (hover only) ===== */
+  .corner-btns{position:fixed;bottom:14px;left:14px;z-index:99999;
+    display:flex;gap:10px;align-items:center;
+    opacity:0;transform:translateY(10px);
+    transition:opacity .25s ease, transform .25s ease;
+    pointer-events:none}
+  .corner-btns.show{opacity:1;transform:translateY(0);pointer-events:auto}
+  .corner-btn{width:44px;height:44px;border-radius:50%;
+    background:rgba(20,10,40,.82);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
     border:1.5px solid rgba(249,115,22,.6);color:#fb923c;cursor:pointer;
     display:flex;align-items:center;justify-content:center;
-    transition:all .2s;box-shadow:0 4px 14px rgba(0,0,0,.55),0 0 0 0 rgba(249,115,22,.4);
-    -webkit-tap-highlight-color:transparent;padding:0}
-  .fs-toggle:hover{background:rgba(249,115,22,.3);color:#ffedd5;transform:scale(1.08);
+    transition:all .2s;box-shadow:0 4px 14px rgba(0,0,0,.55);
+    -webkit-tap-highlight-color:transparent;padding:0;
+    text-decoration:none;font-family:inherit}
+  .corner-btn:hover{background:rgba(249,115,22,.3);color:#ffedd5;
+    transform:scale(1.1);
     box-shadow:0 6px 20px rgba(249,115,22,.55),0 0 0 4px rgba(249,115,22,.18)}
-  .fs-toggle:active{transform:scale(.94)}
-  .fs-toggle svg{width:20px;height:20px;transition:transform .3s}
-  .fs-toggle .fs-icon-contract{display:none}
-  .fs-toggle.is-fullscreen .fs-icon-expand{display:none}
-  .fs-toggle.is-fullscreen .fs-icon-contract{display:block}
-  .fs-toggle.is-fullscreen{border-color:rgba(168,85,247,.7);color:#c4b5fd}
-  .fs-toggle.is-fullscreen:hover{background:rgba(168,85,247,.32);color:#e9d5ff}
+  .corner-btn:active{transform:scale(.94)}
+  .corner-btn svg{width:20px;height:20px;transition:transform .3s}
+  .corner-btn .fs-icon-contract{display:none}
+  .corner-btn.is-fullscreen .fs-icon-expand{display:none}
+  .corner-btn.is-fullscreen .fs-icon-contract{display:block}
+  .corner-btn.is-fullscreen{border-color:rgba(168,85,247,.7);color:#c4b5fd}
+  .corner-btn.is-fullscreen:hover{background:rgba(168,85,247,.32);color:#e9d5ff}
+  /* บนอุปกรณ์ทัช: โชว์จางๆ เพื่อให้ผู้ใช้รู้ว่ามีปุ่ม */
+  @media (hover:none){
+    .corner-btns{opacity:.32;transform:translateY(0);pointer-events:auto}
+    .corner-btns.show{opacity:1}
+  }
 
   #app{width:100%;max-width:860px;position:relative;z-index:1}
   .card{background:linear-gradient(180deg,rgba(30,15,55,.88),rgba(15,7,30,.94));
@@ -293,20 +306,37 @@
   .spk-perm-box{position:relative}
   .spk-perm-title{color:#fb923c;font-size:1.15rem;font-weight:800;text-align:center;margin-bottom:14px}
   
-  /* ===== GAME CARDS (Halloween themed) ===== */
-  .games-grid-4{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;padding:6px}
-  .game-card{border:none;border-radius:50% 50% 46% 46% / 42% 42% 30% 30%;padding:34px 18px 24px;cursor:pointer;
-    color:#fff;font-weight:800;font-size:1.1rem;font-family:inherit;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;gap:12px;transition:.2s;text-align:center;position:relative;
-    overflow:visible;box-shadow:0 12px 28px -10px rgba(0,0,0,.65),inset 0 -5px 0 rgba(0,0,0,.25),
-      inset 0 1px 0 rgba(255,200,120,.4);aspect-ratio:1.05}
-  .game-card::before{content:"";position:absolute;top:-14px;left:50%;transform:translateX(-50%);
-    width:16px;height:12px;background:linear-gradient(180deg,#22c55e,#15803d);border-radius:5px 7px 3px 3px;
-    box-shadow:0 2px 5px rgba(0,0,0,.5)}
+  /* ===== GAME CARDS (Halloween themed) — 5 in a row on desktop, vertical on mobile ===== */
+  .games-grid-4{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:12px;margin-top:8px;padding:6px}
+  .game-card{border:none;
+    border-radius:50% 50% 46% 46% / 42% 42% 30% 30%;
+    padding:24px 8px 16px;cursor:pointer;
+    color:#fff;font-weight:800;font-size:.95rem;font-family:inherit;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:8px;transition:.2s;text-align:center;position:relative;overflow:visible;
+    box-shadow:0 12px 28px -10px rgba(0,0,0,.65),
+      inset 0 -5px 0 rgba(0,0,0,.25),inset 0 1px 0 rgba(255,200,120,.4);
+    aspect-ratio:1.05}
+  .game-card::before{content:"";position:absolute;top:-12px;left:50%;
+    transform:translateX(-50%);width:14px;height:11px;
+    background:linear-gradient(180deg,#22c55e,#15803d);
+    border-radius:5px 7px 3px 3px;box-shadow:0 2px 5px rgba(0,0,0,.5)}
   .game-card:hover{transform:translateY(-5px) scale(1.03)}
   .game-card:active{transform:scale(.97)}
-  .game-card .gc-icon{font-size:3.4rem;line-height:1;filter:drop-shadow(0 4px 10px rgba(0,0,0,.6))}
-  .game-card .gc-name{font-size:1.05rem;letter-spacing:.3px;text-shadow:0 2px 4px rgba(0,0,0,.5)}
+  .game-card .gc-icon{font-size:2.3rem;line-height:1;
+    filter:drop-shadow(0 4px 10px rgba(0,0,0,.6))}
+  .game-card .gc-name{font-size:.82rem;letter-spacing:.2px;
+    text-shadow:0 2px 4px rgba(0,0,0,.5);line-height:1.2}
+  /* มือถือ/แท็บเล็ต: เรียงแนวตั้ง 5 อัน แบบการ์ดแถวสั้น กระชับ */
+  @media (max-width:760px){
+    .games-grid-4{grid-template-columns:1fr;gap:12px;padding:6px 2px}
+    .game-card{aspect-ratio:auto;flex-direction:row;justify-content:flex-start;
+      padding:16px 20px;min-height:72px;gap:16px;border-radius:22px}
+    .game-card::before{display:none}
+    .game-card .gc-icon{font-size:1.9rem}
+    .game-card .gc-name{font-size:1rem}
+  }
   .gc-match{background:radial-gradient(ellipse at 30% 22%,#67e8f9,#0891b2 45%,#164e63 100%)}
   .gc-choice{background:radial-gradient(ellipse at 30% 22%,#c4b5fd,#7c3aed 45%,#3b0764 100%)}
   .gc-shoot{background:radial-gradient(ellipse at 30% 22%,#fdba74,#ea580c 45%,#7c2d12 100%)}
@@ -775,21 +805,37 @@
   <div id="hlBats"></div>
 </div>
 
-<!-- Fullscreen Toggle (macOS style) -->
-<button class="fs-toggle" id="fsToggle" aria-label="Toggle fullscreen" title="เต็มหน้าจอ / ออก">
-  <svg class="fs-icon-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
-    <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
-    <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
-    <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
-  </svg>
-  <svg class="fs-icon-contract" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M8 3v3a2 2 0 0 1-2 2H3"/>
-    <path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
-    <path d="M16 21v-3a2 2 0 0 1 2-2h3"/>
-    <path d="M3 16h3a2 2 0 0 1 2 2v3"/>
-  </svg>
-</button>
+<!-- Bottom-left corner buttons: back + fullscreen (hover only) -->
+<div class="corner-btns" id="cornerBtns">
+  <a class="corner-btn" id="backToHome"
+     href="https://tum-service.github.io/1111/"
+     title="กลับหน้าหลัก" aria-label="กลับหน้าหลัก">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5"/>
+      <path d="M12 19l-7-7 7-7"/>
+    </svg>
+  </a>
+  <button class="corner-btn" id="fsToggle"
+          aria-label="Toggle fullscreen" title="เต็มหน้าจอ / ออก">
+    <svg class="fs-icon-expand" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2.2"
+         stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
+      <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+      <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
+      <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+    </svg>
+    <svg class="fs-icon-contract" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2.2"
+         stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 3v3a2 2 0 0 1-2 2H3"/>
+      <path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
+      <path d="M16 21v-3a2 2 0 0 1 2-2h3"/>
+      <path d="M3 16h3a2 2 0 0 1 2 2v3"/>
+    </svg>
+  </button>
+</div>
 
 <div id="app">
 
@@ -2585,16 +2631,13 @@ function ghostWail(start, dur, vol){
 /* ===== HALLOWEEN SFX ===== */
 function sfxCorrect(){
   initAudio();
-  // Pipe organ up 4 notes + ghost laugh
   [261.63, 329.63, 392.00, 523.25].forEach((f,i)=> organ(f, i*0.10, 0.55, 0.16));
   ghostLaugh(0.55, 0.14);
 }
 function sfxWrong(){
   initAudio();
-  // Low organ down + low breath
   organ(196.00, 0, 0.45, 0.18);
   organ(130.81, 0.22, 0.55, 0.18);
-  // Low puff
   const t0 = actx.currentTime + 0.1;
   const bufSize = actx.sampleRate * 0.55;
   const buf = actx.createBuffer(1, bufSize, actx.sampleRate);
@@ -2613,7 +2656,6 @@ function sfxWrong(){
 }
 function sfxClick(){
   initAudio();
-  // "กริ๊ก" door latch (short click + creak)
   if(!actx) return;
   const t0 = actx.currentTime;
   const o = actx.createOscillator(); const g = actx.createGain();
@@ -2624,7 +2666,6 @@ function sfxClick(){
   g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.06);
   o.connect(g); g.connect(actx.destination);
   o.start(t0); o.stop(t0 + 0.08);
-  // Creak
   const o2 = actx.createOscillator(); const g2 = actx.createGain();
   o2.type = 'sawtooth';
   o2.frequency.setValueAtTime(180, t0 + 0.02);
@@ -2637,35 +2678,26 @@ function sfxClick(){
 }
 function sfxFinish(){
   initAudio();
-  // 5 note organ up + thunder
   [261.63, 329.63, 392.00, 523.25, 659.25].forEach((f,i)=> organ(f, i*0.13, 0.65, 0.18));
   thunder(0.55, 0.30);
   ghostLaugh(0.9, 0.12);
 }
-function sfxOops(){
-  initAudio();
-  // Short ghost wail
-  ghostWail(0, 0.42, 0.18);
-}
+function sfxOops(){ initAudio(); ghostWail(0, 0.42, 0.18); }
 function sfxDartStick(){
   initAudio();
-  // Ghost bell ding
   bell(880, 0, 0.55, 0.16);
   bell(1174.66, 0.02, 0.40, 0.10);
 }
 function sfxDartBounce(){
   initAudio();
-  // 3-tier ghost bells
   bell(660, 0, 0.35, 0.13);
   bell(880, 0.05, 0.32, 0.11);
   bell(1100, 0.10, 0.30, 0.09);
 }
 function sfxFlip(){
   initAudio();
-  // "แครง" ancient door
   if(!actx) return;
   const t0 = actx.currentTime;
-  // Metal "clank"
   const o = actx.createOscillator(); const g = actx.createGain();
   o.type = 'triangle';
   o.frequency.setValueAtTime(520, t0);
@@ -2674,7 +2706,6 @@ function sfxFlip(){
   g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.18);
   o.connect(g); g.connect(actx.destination);
   o.start(t0); o.stop(t0 + 0.20);
-  // Creak tail
   const o2 = actx.createOscillator(); const g2 = actx.createGain();
   o2.type = 'sawtooth';
   o2.frequency.setValueAtTime(150, t0 + 0.04);
@@ -2687,19 +2718,13 @@ function sfxFlip(){
 }
 function sfxMatch(){
   initAudio();
-  // Ghost bell + organ
   bell(1046.50, 0, 0.55, 0.14);
   bell(1318.51, 0.06, 0.50, 0.11);
   organ(261.63, 0.12, 0.55, 0.13);
 }
-function sfxMiss(){
-  initAudio();
-  // Short ghost whistle
-  ghostWail(0, 0.30, 0.13);
-}
+function sfxMiss(){ initAudio(); ghostWail(0, 0.30, 0.13); }
 function sfxSwat(){
   initAudio();
-  // "แปะ" hand slap
   if(!actx) return;
   const t0 = actx.currentTime;
   const bufSize = actx.sampleRate * 0.14;
@@ -2715,14 +2740,9 @@ function sfxSwat(){
   src.connect(bp); bp.connect(g); g.connect(actx.destination);
   src.start(t0); src.stop(t0 + 0.15);
 }
-function sfxMosquitoDie(){
-  initAudio();
-  sfxSwat();
-  ghostWail(0.05, 0.30, 0.10);
-}
+function sfxMosquitoDie(){ initAudio(); sfxSwat(); ghostWail(0.05, 0.30, 0.10); }
 function sfxOuch(){
   initAudio();
-  // Short "ow"
   if(!actx) return;
   const t0 = actx.currentTime;
   [520, 460, 400].forEach((f,i)=>{
@@ -2735,51 +2755,28 @@ function sfxOuch(){
     o.start(t0 + i*0.06); o.stop(t0 + i*0.06 + 0.15);
   });
 }
-function sfxMicOn(){
-  initAudio();
-  [659.25, 880].forEach((f,i)=> bell(f, i*0.10, 0.30, 0.14));
-}
-function sfxMicOff(){
-  initAudio();
-  bell(587.33, 0, 0.30, 0.13);
-  bell(392.00, 0.10, 0.32, 0.12);
-}
-function sfxHeard(){
-  initAudio();
-  tone(1046.50, 0, 0.06, 'sine', 0.10);
-}
+function sfxMicOn(){ initAudio(); [659.25, 880].forEach((f,i)=> bell(f, i*0.10, 0.30, 0.14)); }
+function sfxMicOff(){ initAudio(); bell(587.33, 0, 0.30, 0.13); bell(392.00, 0.10, 0.32, 0.12); }
+function sfxHeard(){ initAudio(); tone(1046.50, 0, 0.06, 'sine', 0.10); }
 function sfxSpeakCorrect(){
   initAudio();
-  // 4-note organ + ghost chime
   [392.00, 523.25, 659.25, 783.99].forEach((f,i)=> organ(f, i*0.10, 0.55, 0.16));
   bell(1046.50, 0.42, 0.50, 0.12);
 }
-function sfxSpeakWrong(){
-  initAudio();
-  organ(220, 0, 0.30, 0.16);
-  organ(164.81, 0.20, 0.42, 0.16);
-}
-function sfxSkip(){
-  initAudio();
-  bell(880, 0, 0.30, 0.13);
-  bell(659.25, 0.10, 0.30, 0.12);
-}
+function sfxSpeakWrong(){ initAudio(); organ(220, 0, 0.30, 0.16); organ(164.81, 0.20, 0.42, 0.16); }
+function sfxSkip(){ initAudio(); bell(880, 0, 0.30, 0.13); bell(659.25, 0.10, 0.30, 0.12); }
 
 /* ============================================================
    🎵 GLOBAL HALLOWEEN AMBIENT BGM — Dies Irae (A minor)
    ============================================================ */
-// Dies Irae melody in A minor (32 notes) — traditional Gregorian chant
-// Frequencies: A4=440, G4=392, F4=349.23, E4=329.63, D4=293.66, C4=261.63, B3=246.94, A3=220
 const BGM_TUNE = [
-  440.00, 392.00, 440.00, 349.23, 329.63, 349.23, 392.00, 440.00,   // Re Re Re Do Re Mi Fa Re
-  392.00, 349.23, 329.63, 293.66, 329.63, 349.23, 329.63, 293.66,   // Do Re Mi Fa Mi Re Do Ti
-  261.63, 293.66, 329.63, 349.23, 329.63, 293.66, 261.63, 246.94,   // Do Re Mi Fa Mi Re Do Ti
-  220.00, 246.94, 261.63, 293.66, 329.63, 293.66, 261.63, 246.94    // La Ti Do Re Mi Re Do Ti
+  440.00, 392.00, 440.00, 349.23, 329.63, 349.23, 392.00, 440.00,
+  392.00, 349.23, 329.63, 293.66, 329.63, 349.23, 329.63, 293.66,
+  261.63, 293.66, 329.63, 349.23, 329.63, 293.66, 261.63, 246.94,
+  220.00, 246.94, 261.63, 293.66, 329.63, 293.66, 261.63, 246.94
 ];
-// Haunting A minor drone bass: A2 - F2 - G2 - E2
 const BGM_BASS = [110.00, 87.31, 98.00, 82.41];
-
-const BGM_BEAT_MS = 380; // Slow, ominous
+const BGM_BEAT_MS = 380;
 let bgmNodes = null;
 let bgmTimer = null;
 let bgmStep = 0;
@@ -2789,7 +2786,6 @@ let bgmSuspendedByTab = false;
 function playBGMOrgan(freq, time, dur, gainVal){
   if(!actx || !bgmNodes) return;
   try{
-    // Multi-harmonic organ
     [1, 2, 3, 4].forEach((mult, i) => {
       const o = actx.createOscillator();
       o.type = 'sine';
@@ -2803,7 +2799,6 @@ function playBGMOrgan(freq, time, dur, gainVal){
       o.connect(g); g.connect(bgmNodes.master);
       o.start(time); o.stop(time + dur + 0.05);
     });
-    // Slight detune shimmer for creepiness
     const o2 = actx.createOscillator();
     o2.type = 'sine';
     o2.frequency.value = freq * 1.005;
@@ -2827,7 +2822,6 @@ function playBGMBass(freq, time, dur, gainVal){
     g.gain.exponentialRampToValueAtTime(0.0001, time + dur);
     o.connect(g); g.connect(bgmNodes.master);
     o.start(time); o.stop(time + dur + 0.05);
-    // Sub bass
     const o2 = actx.createOscillator();
     o2.type = 'sine';
     o2.frequency.value = freq * 0.5;
@@ -2849,7 +2843,6 @@ function bgmTick(){
       const bass = BGM_BASS[(Math.floor(bgmStep / 8)) % BGM_BASS.length];
       playBGMBass(bass, t, 3.0, 0.09);
     }
-    // Occasional eerie wind chime
     if(bgmStep % 16 === 7){
       bell(1567.98, t + 0.15, 0.9, 0.045);
     }
@@ -2874,11 +2867,9 @@ function startGlobalBGM(){
     bgmStarted = false;
   }
 }
-// Compat shims — always route to global
 function startBGM(){ startGlobalBGM(); }
-function stopBGM(){ /* intentionally no-op: global ambient keeps playing */ }
+function stopBGM(){ /* intentionally no-op */ }
 
-// Global BGM lifecycle: start on first interaction, pause on tab hide
 function globalBgmEnsure(){
   initAudio();
   if(!bgmStarted) startGlobalBGM();
@@ -2899,7 +2890,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 /* ============================================================
-   MOSQUITO BUZZ (unchanged)
+   MOSQUITO BUZZ
    ============================================================ */
 let buzzNodes = null;
 let buzzStopTimeout = null;
@@ -4411,9 +4402,6 @@ function spkSkipWord(){
   spkNextQuestion();
 }
 function finishSpeakGame(){
-  if(spkState.current && !spkState.flipped){
-    // tracker holds data already
-  }
   spkState.current = null;
   spkState.running = false;
   spkStopRecognition(true);
@@ -4628,31 +4616,101 @@ function initBats(){
   container.innerHTML = html;
 }
 
-/* ===== FULLSCREEN TOGGLE ===== */
-const fsToggle = document.getElementById('fsToggle');
+/* ===== CORNER BUTTONS + AUTO FULLSCREEN ===== */
+const fsToggle    = document.getElementById('fsToggle');
+const cornerBtns  = document.getElementById('cornerBtns');
+const backToHome  = document.getElementById('backToHome');
+
+let fsUserOptOut = false;   // ผู้ใช้กด "ออกจากเต็มจอ" เอง → อย่าไปดึงกลับ
+let cornerHideTimer = null;
+
 function isFullscreen(){
-  return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+  return !!(document.fullscreenElement ||
+            document.webkitFullscreenElement ||
+            document.msFullscreenElement);
+}
+function requestFS(){
+  const el = document.documentElement;
+  try{
+    if(el.requestFullscreen)      return el.requestFullscreen();
+    if(el.webkitRequestFullscreen) return Promise.resolve(el.webkitRequestFullscreen());
+    if(el.msRequestFullscreen)     return Promise.resolve(el.msRequestFullscreen());
+  }catch(e){}
+  return Promise.resolve();
+}
+function exitFS(){
+  try{
+    if(document.exitFullscreen)        return document.exitFullscreen();
+    if(document.webkitExitFullscreen)  return Promise.resolve(document.webkitExitFullscreen());
+    if(document.msExitFullscreen)      return Promise.resolve(document.msExitFullscreen());
+  }catch(e){}
+  return Promise.resolve();
 }
 function updateFsIcon(){
-  if(isFullscreen()) fsToggle.classList.add('is-fullscreen');
-  else fsToggle.classList.remove('is-fullscreen');
+  fsToggle.classList.toggle('is-fullscreen', isFullscreen());
 }
-fsToggle.addEventListener('click', () => {
-  const el = document.documentElement;
-  if(!isFullscreen()){
-    if(el.requestFullscreen) el.requestFullscreen().catch(()=>{});
-    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-    else if(el.msRequestFullscreen) el.msRequestFullscreen();
+function tryAutoFullscreen(){
+  if(fsUserOptOut || isFullscreen()) return;
+  requestFS().catch(()=>{});
+}
+
+/* --- ปุ่มเต็มจอ --- */
+fsToggle.addEventListener('click', (e) => {
+  e.stopPropagation();
+  if(isFullscreen()){
+    fsUserOptOut = true;      // ผู้ใช้ตั้งใจออกเอง → หยุด auto
+    exitFS().catch(()=>{});
   } else {
-    if(document.exitFullscreen) document.exitFullscreen();
-    else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
-    else if(document.msExitFullscreen) document.msExitFullscreen();
+    fsUserOptOut = false;
+    requestFS().catch(()=>{});
   }
 });
+
+/* --- ปุ่มย้อนกลับ: ไปลิงก์หลัก --- */
+backToHome.addEventListener('click', (e) => {
+  // ปล่อยให้ <a> navigate ตามปกติ (เบราว์เซอร์จะออกจาก fullscreen ให้เอง)
+});
+
+/* --- ติดตามสถานะ fullscreen --- */
 ['fullscreenchange','webkitfullscreenchange','msfullscreenchange'].forEach(evt => {
   document.addEventListener(evt, updateFsIcon);
 });
 updateFsIcon();
+
+/* --- ลองเข้าเต็มจอทันที (บาง environment/kiosk ทำได้) --- */
+tryAutoFullscreen();
+
+/* --- ถ้ายังไม่เต็มจอ → ดึงเข้าเต็มจอทันทีที่มี gesture แรก --- */
+['click','touchstart','keydown','pointerdown'].forEach(ev => {
+  document.addEventListener(ev, tryAutoFullscreen, {passive:true});
+});
+
+/* ===== แสดงปุ่มมุมซ้ายล่างเมื่อเมาส์เข้าใกล้ ===== */
+document.addEventListener('mousemove', (e) => {
+  const near = e.clientX < 170 && e.clientY > (window.innerHeight - 110);
+  if(near){
+    clearTimeout(cornerHideTimer);
+    cornerBtns.classList.add('show');
+  } else {
+    clearTimeout(cornerHideTimer);
+    cornerHideTimer = setTimeout(() => cornerBtns.classList.remove('show'), 450);
+  }
+}, {passive:true});
+document.addEventListener('mouseleave', () => {
+  cornerBtns.classList.remove('show');
+});
+
+/* ===== บนอุปกรณ์ทัช: แตะมุมล่างซ้ายเพื่อโชว์ปุ่มชั่วคราว ===== */
+document.addEventListener('touchstart', (e) => {
+  const t = e.touches && e.touches[0];
+  if(!t) return;
+  const near = t.clientX < 170 && t.clientY > (window.innerHeight - 110);
+  if(near){
+    cornerBtns.classList.add('show');
+    clearTimeout(cornerHideTimer);
+    cornerHideTimer = setTimeout(() => cornerBtns.classList.remove('show'), 3000);
+  }
+}, {passive:true});
 
 /* ===== INIT ===== */
 loadCustomWords();
@@ -4660,7 +4718,7 @@ rebuildExtraPool();
 renderGrades();
 initBats();
 
-// Kick off global ambient BGM on first user interaction
+/* Kick off global ambient BGM on first user interaction */
 function bootAudioOnFirstTouch(){
   initAudio();
   startGlobalBGM();
