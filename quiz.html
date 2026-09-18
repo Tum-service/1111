@@ -23,7 +23,6 @@
     background-attachment:fixed;display:flex;align-items:center;justify-content:center;
     padding:14px;color:var(--ink);min-height:100dvh;overflow-x:hidden;position:relative}
 
-  /* ===== HALLOWEEN BG: MOON, BATS, FOG ===== */
   .hl-bg{position:fixed;inset:0;z-index:-3;pointer-events:none;overflow:hidden}
   .hl-moon{position:absolute;top:5%;right:9%;width:110px;height:110px;border-radius:50%;
     background:radial-gradient(circle at 35% 32%,#fffbe6 0%,#f5e6a0 55%,#d4b95e 100%);
@@ -67,7 +66,6 @@
     animation:spiderBob 3.2s ease-in-out infinite;filter:drop-shadow(0 2px 4px rgba(0,0,0,.8))}
   @keyframes spiderBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(8px) rotate(3deg)}}
 
-  /* ===== BOTTOM-LEFT CORNER BUTTONS (hover only) ===== */
   .corner-btns{position:fixed;bottom:14px;left:14px;z-index:99999;
     display:flex;gap:10px;align-items:center;
     opacity:0;transform:translateY(10px);
@@ -92,7 +90,6 @@
   .corner-btn.is-fullscreen .fs-icon-contract{display:block}
   .corner-btn.is-fullscreen{border-color:rgba(168,85,247,.7);color:#c4b5fd}
   .corner-btn.is-fullscreen:hover{background:rgba(168,85,247,.32);color:#e9d5ff}
-  /* บนอุปกรณ์ทัช: โชว์จางๆ เพื่อให้ผู้ใช้รู้ว่ามีปุ่ม */
   @media (hover:none){
     .corner-btns{opacity:.32;transform:translateY(0);pointer-events:auto}
     .corner-btns.show{opacity:1}
@@ -124,8 +121,7 @@
     font-family:inherit;margin-bottom:14px;transition:.18s;border:1.5px solid rgba(168,85,247,.5);
     box-shadow:0 2px 8px rgba(0,0,0,.35)}
   .back-btn:hover{background:linear-gradient(180deg,rgba(249,115,22,.4),rgba(194,65,12,.55));transform:translateY(-1px);border-color:rgba(249,115,22,.7)}
-  
-  /* ===== PUMPKIN BUTTONS (grades) ===== */
+
   .grades{display:flex;flex-direction:column;gap:14px;margin-top:6px}
   .grade-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
   .grade{flex:0 0 178px;width:178px;min-height:110px;border-radius:50% 50% 46% 46% / 42% 42% 30% 30%;
@@ -155,7 +151,6 @@
   .g-count{font-size:.78rem;font-weight:700;opacity:.95;align-self:center;
     background:rgba(0,0,0,.35);padding:3px 12px;border-radius:999px;
     backdrop-filter:blur(4px);border:1px solid rgba(255,200,120,.3);position:relative;z-index:1;color:#ffedd5}
-  /* Each grade retains its hue but as pumpkin variants */
   .g1{background:radial-gradient(ellipse at 30% 22%,#fdba74,#ea580c 45%,#7c2d12 100%)!important}
   .g2{background:radial-gradient(ellipse at 30% 22%,#86efac,#16a34a 45%,#14532d 100%)!important}
   .g3{background:radial-gradient(ellipse at 30% 22%,#fde047,#eab308 45%,#854d0e 100%)!important}
@@ -170,7 +165,6 @@
     .g-name{font-size:1.15rem}.g-count{font-size:.7rem}.g-all{flex:0 0 100%;width:100%}
   }
 
-  /* ===== HOME (main menu) ===== */
   .main-menu-btn{background:radial-gradient(ellipse at 30% 22%, #fb923c 0%, #ea580c 50%, #7c2d12 100%);
     padding:40px 56px;border-radius:50% 50% 46% 46% / 42% 42% 30% 30%;
     font-size:3.8rem;display:flex;flex-direction:column;align-items:center;gap:15px;
@@ -202,7 +196,7 @@
   #gradeMenu h2{color:#ffedd5;text-shadow:0 2px 12px rgba(249,115,22,.6)}
   #gradeMenu .back-btn{background:rgba(168,85,247,.3);color:#f5e6d3;border:1.5px solid rgba(168,85,247,.55)}
   #gradeMenu .back-btn:hover{background:rgba(249,115,22,.4)}
-  
+
   .wp-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:18px;padding:6px 4px;align-items:center;justify-content:center}
   .wp-chip{min-width:58px;height:58px;border-radius:50%;border:none;cursor:pointer;font-family:inherit;
     font-weight:900;font-size:1.35rem;color:#fff;display:flex;align-items:center;justify-content:center;
@@ -305,8 +299,7 @@
   .modal-close-btn:active{transform:scale(.95)}
   .spk-perm-box{position:relative}
   .spk-perm-title{color:#fb923c;font-size:1.15rem;font-weight:800;text-align:center;margin-bottom:14px}
-  
-  /* ===== GAME CARDS (Halloween themed) — 5 in a row on desktop, vertical on mobile ===== */
+
   .games-grid-4{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
     gap:12px;margin-top:8px;padding:6px}
   .game-card{border:none;
@@ -328,7 +321,6 @@
     filter:drop-shadow(0 4px 10px rgba(0,0,0,.6))}
   .game-card .gc-name{font-size:.82rem;letter-spacing:.2px;
     text-shadow:0 2px 4px rgba(0,0,0,.5);line-height:1.2}
-  /* มือถือ/แท็บเล็ต: เรียงแนวตั้ง 5 อัน แบบการ์ดแถวสั้น กระชับ */
   @media (max-width:760px){
     .games-grid-4{grid-template-columns:1fr;gap:12px;padding:6px 2px}
     .game-card{aspect-ratio:auto;flex-direction:row;justify-content:flex-start;
@@ -342,7 +334,7 @@
   .gc-shoot{background:radial-gradient(ellipse at 30% 22%,#fdba74,#ea580c 45%,#7c2d12 100%)}
   .gc-mosquito{background:radial-gradient(ellipse at 30% 22%,#86efac,#16a34a 45%,#14532d 100%)}
   .gc-speak{background:radial-gradient(ellipse at 30% 22%,#f9a8d4,#db2777 45%,#831843 100%)}
-  
+
   .match-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
   .match-timer{font-weight:800;color:#fb923c;font-size:.95rem;background:rgba(249,115,22,.2);
     padding:7px 14px;border-radius:999px;border:1.5px solid rgba(249,115,22,.4)}
@@ -390,7 +382,7 @@
     text-align:center;border-radius:26px;z-index:50;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
   .match-overlay h3{color:#fb923c;font-size:1.5rem;font-weight:900;text-shadow:0 4px 12px rgba(249,115,22,.6)}
   .match-overlay p{color:#e0e7ff;font-size:1rem;font-weight:700}
-  
+
   .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
   .pill{background:rgba(107,33,168,.4);border-radius:999px;padding:7px 14px;font-weight:800;font-size:.82rem;
     color:#c4b5fd;white-space:nowrap;border:1px solid rgba(168,85,247,.4)}
@@ -793,7 +785,6 @@
 </head>
 <body>
 
-<!-- Halloween Background Decorations -->
 <div class="hl-bg" aria-hidden="true">
   <div class="hl-moon"></div>
   <div class="hl-fog"></div>
@@ -805,7 +796,6 @@
   <div id="hlBats"></div>
 </div>
 
-<!-- Bottom-left corner buttons: back + fullscreen (hover only) -->
 <div class="corner-btns" id="cornerBtns">
   <a class="corner-btn" id="backToHome"
      href="https://tum-service.github.io/1111/"
@@ -839,7 +829,6 @@
 
 <div id="app">
 
-  <!-- Home -->
   <section id="home" class="card">
     <h1>🎃 ระบบเกมคำศัพท์ฮาโลวีน 🦇</h1>
     <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:20px;">
@@ -854,14 +843,12 @@
     </div>
   </section>
 
-  <!-- Grade Menu -->
   <section id="gradeMenu" class="card" hidden>
     <button class="back-btn" id="gmBackBtn">← กลับ</button>
     <h2 id="gmTitle" style="margin-bottom:18px">🍎 เลือกระดับชั้น</h2>
     <div class="grades" id="gradeList"></div>
   </section>
 
-  <!-- Word Picker -->
   <section id="wordPicker" class="card" hidden>
     <button class="back-btn" id="wpBackBtn">← กลับ</button>
     <h2 id="wpTitle" style="margin-bottom:10px"></h2>
@@ -875,7 +862,6 @@
     </div>
   </section>
 
-  <!-- Game Chooser -->
   <section id="gameChooser" class="card" hidden>
     <button class="back-btn" id="gcBackBtn">← กลับ</button>
     <h2 style="text-align:center;margin-bottom:6px">🎮 เลือกเกม</h2>
@@ -1103,7 +1089,7 @@
 
 <script>
 /* ============================================================
-   VOCAB POOLS
+   VOCAB POOLS (เหมือนเดิมทุกอย่าง)
    ============================================================ */
 const RAW = {
 p1:`ant|มด
@@ -2455,7 +2441,6 @@ function parseWords(raw){
 const POOLS = {};
 for(const k in RAW) POOLS[k] = parseWords(RAW[k]);
 
-// Build "all" pool
 POOLS.all = [];
 const allEnSet = new Set();
 for(const k in POOLS){
@@ -2481,7 +2466,6 @@ const GRADES = [
   {id:'extra',name:'หมวดพิเศษ',cls:'g7'}
 ];
 
-/* ===== Custom Vocab ===== */
 const CUSTOM_KEY = 'vocab_custom_v1';
 let customWords = [];
 function loadCustomWords(){
@@ -2502,7 +2486,7 @@ function rebuildExtraPool(){
   const cnt = {};
   POOLS.extra.forEach(w => cnt[w.th] = (cnt[w.th]||0)+1);
   DUP_TH.extra = new Set(Object.keys(cnt).filter(t => cnt[t] > 1));
-  
+
   POOLS.all = [];
   const allEnSet2 = new Set();
   for(const k in POOLS){
@@ -2520,7 +2504,7 @@ function rebuildExtraPool(){
 }
 
 /* ============================================================
-   AUDIO CONTEXT
+   AUDIO CONTEXT (ส่วนนี้ไม่เปลี่ยน)
    ============================================================ */
 let actx = null;
 function initAudio(){
@@ -2542,7 +2526,6 @@ function tone(freq, start, dur, type, vol, freqEnd){
   o.connect(g); g.connect(actx.destination);
   o.start(t0); o.stop(t0 + dur + 0.05);
 }
-// Pipe organ tone (multiple harmonics)
 function organ(freq, start, dur, vol){
   if(!actx) return;
   const t0 = actx.currentTime + start;
@@ -2559,7 +2542,6 @@ function organ(freq, start, dur, vol){
     o.start(t0); o.stop(t0 + dur + 0.05);
   });
 }
-// Ghost laugh
 function ghostLaugh(start, vol){
   if(!actx) return;
   const t0 = actx.currentTime + (start||0);
@@ -2576,7 +2558,6 @@ function ghostLaugh(start, vol){
     o.start(t0 + i*0.11); o.stop(t0 + i*0.11 + 0.18);
   }
 }
-// Thunder
 function thunder(start, vol){
   if(!actx) return;
   const t0 = actx.currentTime + (start||0);
@@ -2597,7 +2578,6 @@ function thunder(start, vol){
   src.connect(lp); lp.connect(g); g.connect(actx.destination);
   src.start(t0); src.stop(t0 + 1.7);
 }
-// Bell (ghost chime)
 function bell(freq, start, dur, vol){
   if(!actx) return;
   const t0 = actx.currentTime + (start||0);
@@ -2613,7 +2593,6 @@ function bell(freq, start, dur, vol){
     o.start(t0); o.stop(t0 + dur + 0.05);
   });
 }
-// Whistle (ghost wail)
 function ghostWail(start, dur, vol){
   if(!actx) return;
   const t0 = actx.currentTime + (start||0);
@@ -2628,35 +2607,22 @@ function ghostWail(start, dur, vol){
   o.start(t0); o.stop(t0 + (dur||0.5) + 0.05);
 }
 
-/* ===== HALLOWEEN SFX ===== */
-function sfxCorrect(){
-  initAudio();
-  [261.63, 329.63, 392.00, 523.25].forEach((f,i)=> organ(f, i*0.10, 0.55, 0.16));
-  ghostLaugh(0.55, 0.14);
-}
-function sfxWrong(){
-  initAudio();
-  organ(196.00, 0, 0.45, 0.18);
-  organ(130.81, 0.22, 0.55, 0.18);
+function sfxCorrect(){ initAudio(); [261.63, 329.63, 392.00, 523.25].forEach((f,i)=> organ(f, i*0.10, 0.55, 0.16)); ghostLaugh(0.55, 0.14); }
+function sfxWrong(){ initAudio(); organ(196.00, 0, 0.45, 0.18); organ(130.81, 0.22, 0.55, 0.18);
   const t0 = actx.currentTime + 0.1;
   const bufSize = actx.sampleRate * 0.55;
   const buf = actx.createBuffer(1, bufSize, actx.sampleRate);
   const data = buf.getChannelData(0);
   for(let i=0;i<bufSize;i++) data[i] = (Math.random()*2-1) * Math.pow(1-i/bufSize, 1.4);
-  const src = actx.createBufferSource();
-  src.buffer = buf;
-  const lp = actx.createBiquadFilter();
-  lp.type = 'lowpass';
-  lp.frequency.value = 400;
+  const src = actx.createBufferSource(); src.buffer = buf;
+  const lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 400;
   const g = actx.createGain();
   g.gain.setValueAtTime(0.20, t0);
   g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.5);
   src.connect(lp); lp.connect(g); g.connect(actx.destination);
   src.start(t0); src.stop(t0 + 0.6);
 }
-function sfxClick(){
-  initAudio();
-  if(!actx) return;
+function sfxClick(){ initAudio(); if(!actx) return;
   const t0 = actx.currentTime;
   const o = actx.createOscillator(); const g = actx.createGain();
   o.type = 'square';
@@ -2666,37 +2632,12 @@ function sfxClick(){
   g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.06);
   o.connect(g); g.connect(actx.destination);
   o.start(t0); o.stop(t0 + 0.08);
-  const o2 = actx.createOscillator(); const g2 = actx.createGain();
-  o2.type = 'sawtooth';
-  o2.frequency.setValueAtTime(180, t0 + 0.02);
-  o2.frequency.linearRampToValueAtTime(230, t0 + 0.14);
-  g2.gain.setValueAtTime(0.0001, t0 + 0.02);
-  g2.gain.exponentialRampToValueAtTime(0.08, t0 + 0.05);
-  g2.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.16);
-  o2.connect(g2); g2.connect(actx.destination);
-  o2.start(t0 + 0.02); o2.stop(t0 + 0.18);
 }
-function sfxFinish(){
-  initAudio();
-  [261.63, 329.63, 392.00, 523.25, 659.25].forEach((f,i)=> organ(f, i*0.13, 0.65, 0.18));
-  thunder(0.55, 0.30);
-  ghostLaugh(0.9, 0.12);
-}
+function sfxFinish(){ initAudio(); [261.63, 329.63, 392.00, 523.25, 659.25].forEach((f,i)=> organ(f, i*0.13, 0.65, 0.18)); thunder(0.55, 0.30); ghostLaugh(0.9, 0.12); }
 function sfxOops(){ initAudio(); ghostWail(0, 0.42, 0.18); }
-function sfxDartStick(){
-  initAudio();
-  bell(880, 0, 0.55, 0.16);
-  bell(1174.66, 0.02, 0.40, 0.10);
-}
-function sfxDartBounce(){
-  initAudio();
-  bell(660, 0, 0.35, 0.13);
-  bell(880, 0.05, 0.32, 0.11);
-  bell(1100, 0.10, 0.30, 0.09);
-}
-function sfxFlip(){
-  initAudio();
-  if(!actx) return;
+function sfxDartStick(){ initAudio(); bell(880, 0, 0.55, 0.16); bell(1174.66, 0.02, 0.40, 0.10); }
+function sfxDartBounce(){ initAudio(); bell(660, 0, 0.35, 0.13); bell(880, 0.05, 0.32, 0.11); bell(1100, 0.10, 0.30, 0.09); }
+function sfxFlip(){ initAudio(); if(!actx) return;
   const t0 = actx.currentTime;
   const o = actx.createOscillator(); const g = actx.createGain();
   o.type = 'triangle';
@@ -2706,26 +2647,10 @@ function sfxFlip(){
   g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.18);
   o.connect(g); g.connect(actx.destination);
   o.start(t0); o.stop(t0 + 0.20);
-  const o2 = actx.createOscillator(); const g2 = actx.createGain();
-  o2.type = 'sawtooth';
-  o2.frequency.setValueAtTime(150, t0 + 0.04);
-  o2.frequency.linearRampToValueAtTime(190, t0 + 0.20);
-  g2.gain.setValueAtTime(0.0001, t0 + 0.04);
-  g2.gain.exponentialRampToValueAtTime(0.06, t0 + 0.06);
-  g2.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.22);
-  o2.connect(g2); g2.connect(actx.destination);
-  o2.start(t0 + 0.04); o2.stop(t0 + 0.24);
 }
-function sfxMatch(){
-  initAudio();
-  bell(1046.50, 0, 0.55, 0.14);
-  bell(1318.51, 0.06, 0.50, 0.11);
-  organ(261.63, 0.12, 0.55, 0.13);
-}
+function sfxMatch(){ initAudio(); bell(1046.50, 0, 0.55, 0.14); bell(1318.51, 0.06, 0.50, 0.11); organ(261.63, 0.12, 0.55, 0.13); }
 function sfxMiss(){ initAudio(); ghostWail(0, 0.30, 0.13); }
-function sfxSwat(){
-  initAudio();
-  if(!actx) return;
+function sfxSwat(){ initAudio(); if(!actx) return;
   const t0 = actx.currentTime;
   const bufSize = actx.sampleRate * 0.14;
   const buf = actx.createBuffer(1, bufSize, actx.sampleRate);
@@ -2741,9 +2666,7 @@ function sfxSwat(){
   src.start(t0); src.stop(t0 + 0.15);
 }
 function sfxMosquitoDie(){ initAudio(); sfxSwat(); ghostWail(0.05, 0.30, 0.10); }
-function sfxOuch(){
-  initAudio();
-  if(!actx) return;
+function sfxOuch(){ initAudio(); if(!actx) return;
   const t0 = actx.currentTime;
   [520, 460, 400].forEach((f,i)=>{
     const o = actx.createOscillator(); const g = actx.createGain();
@@ -2758,16 +2681,12 @@ function sfxOuch(){
 function sfxMicOn(){ initAudio(); [659.25, 880].forEach((f,i)=> bell(f, i*0.10, 0.30, 0.14)); }
 function sfxMicOff(){ initAudio(); bell(587.33, 0, 0.30, 0.13); bell(392.00, 0.10, 0.32, 0.12); }
 function sfxHeard(){ initAudio(); tone(1046.50, 0, 0.06, 'sine', 0.10); }
-function sfxSpeakCorrect(){
-  initAudio();
-  [392.00, 523.25, 659.25, 783.99].forEach((f,i)=> organ(f, i*0.10, 0.55, 0.16));
-  bell(1046.50, 0.42, 0.50, 0.12);
-}
+function sfxSpeakCorrect(){ initAudio(); [392.00, 523.25, 659.25, 783.99].forEach((f,i)=> organ(f, i*0.10, 0.55, 0.16)); bell(1046.50, 0.42, 0.50, 0.12); }
 function sfxSpeakWrong(){ initAudio(); organ(220, 0, 0.30, 0.16); organ(164.81, 0.20, 0.42, 0.16); }
 function sfxSkip(){ initAudio(); bell(880, 0, 0.30, 0.13); bell(659.25, 0.10, 0.30, 0.12); }
 
 /* ============================================================
-   🎵 GLOBAL HALLOWEEN AMBIENT BGM — Dies Irae (A minor)
+   GLOBAL BGM
    ============================================================ */
 const BGM_TUNE = [
   440.00, 392.00, 440.00, 349.23, 329.63, 349.23, 392.00, 440.00,
@@ -2799,15 +2718,6 @@ function playBGMOrgan(freq, time, dur, gainVal){
       o.connect(g); g.connect(bgmNodes.master);
       o.start(time); o.stop(time + dur + 0.05);
     });
-    const o2 = actx.createOscillator();
-    o2.type = 'sine';
-    o2.frequency.value = freq * 1.005;
-    const g2 = actx.createGain();
-    g2.gain.setValueAtTime(0.0001, time);
-    g2.gain.exponentialRampToValueAtTime(gainVal * 0.25, time + 0.05);
-    g2.gain.exponentialRampToValueAtTime(0.0001, time + dur * 0.75);
-    o2.connect(g2); g2.connect(bgmNodes.master);
-    o2.start(time); o2.stop(time + dur + 0.05);
   }catch(e){}
 }
 function playBGMBass(freq, time, dur, gainVal){
@@ -2822,15 +2732,6 @@ function playBGMBass(freq, time, dur, gainVal){
     g.gain.exponentialRampToValueAtTime(0.0001, time + dur);
     o.connect(g); g.connect(bgmNodes.master);
     o.start(time); o.stop(time + dur + 0.05);
-    const o2 = actx.createOscillator();
-    o2.type = 'sine';
-    o2.frequency.value = freq * 0.5;
-    const g2 = actx.createGain();
-    g2.gain.setValueAtTime(0.0001, time);
-    g2.gain.exponentialRampToValueAtTime(gainVal * 0.4, time + 0.12);
-    g2.gain.exponentialRampToValueAtTime(0.0001, time + dur);
-    o2.connect(g2); g2.connect(bgmNodes.master);
-    o2.start(time); o2.stop(time + dur + 0.05);
   }catch(e){}
 }
 function bgmTick(){
@@ -2842,9 +2743,6 @@ function bgmTick(){
     if(bgmStep % 8 === 0){
       const bass = BGM_BASS[(Math.floor(bgmStep / 8)) % BGM_BASS.length];
       playBGMBass(bass, t, 3.0, 0.09);
-    }
-    if(bgmStep % 16 === 7){
-      bell(1567.98, t + 0.15, 0.9, 0.045);
     }
     bgmStep++;
   }catch(e){}
@@ -2862,13 +2760,10 @@ function startGlobalBGM(){
     bgmStep = 0;
     bgmTimer = setInterval(bgmTick, BGM_BEAT_MS);
     bgmTick();
-  }catch(e){
-    bgmNodes = null;
-    bgmStarted = false;
-  }
+  }catch(e){ bgmNodes = null; bgmStarted = false; }
 }
 function startBGM(){ startGlobalBGM(); }
-function stopBGM(){ /* intentionally no-op */ }
+function stopBGM(){}
 
 function globalBgmEnsure(){
   initAudio();
@@ -2890,7 +2785,7 @@ document.addEventListener('visibilitychange', () => {
 });
 
 /* ============================================================
-   MOSQUITO BUZZ
+   MOSQUITO BUZZ (ส่วนนี้ไม่เปลี่ยน)
    ============================================================ */
 let buzzNodes = null;
 let buzzStopTimeout = null;
@@ -2918,9 +2813,6 @@ function stopBuzzSound(){ if(!buzzNodes||!actx){ buzzNodes=null; return; } const
     buzzStopTimeout=setTimeout(()=>{ buzzStopTimeout=null;
       try{ nodes.osc1.stop(); }catch(e){} try{ nodes.osc2.stop(); }catch(e){}
       try{ nodes.amLfo.stop(); }catch(e){} try{ nodes.vibLfo.stop(); }catch(e){}
-      try{ nodes.osc1.disconnect(); nodes.osc2.disconnect(); nodes.osc2Gain.disconnect(); nodes.bp.disconnect();
-        nodes.lp.disconnect(); nodes.amLfo.disconnect(); nodes.amDepth.disconnect(); nodes.amGain.disconnect();
-        nodes.vibLfo.disconnect(); nodes.vibDepth.disconnect(); nodes.outGain.disconnect(); }catch(e){}
     },300); }catch(e){} }
 function updateBuzzSound(){ if(!mosquito.running||mosquito.paused){ stopBuzzSound(); return; }
   const flyingCount=mosquito.mosquitoes.filter(m=>m.alive&&m.state==='flying').length;
@@ -2998,7 +2890,6 @@ const speakGameEl=$('speakGame'),speakResultEl=$('speakResult');
 let state={gradeId:null,questions:[],idx:0,score:0,wrongList:[],locked:false};
 const custom={gradeId:null,selectedEn:new Set(),gameType:null};
 
-/* ===== Navigation & Grade ===== */
 function goToGrades(){ sfxClick(); showScreen('gradeMenu'); }
 function renderGrades(){
   const wrap=$('gradeList'); wrap.innerHTML='';
@@ -3183,7 +3074,7 @@ function openTimePicker(title,sub,options,defaultSec,callback){
 }
 $('timeStartBtn').onclick=()=>{ sfxClick(); const cb=timePickerCallback; $('timePicker').hidden=true; timePickerCallback=null; if(cb) cb(selectedTimeSec); };
 
-/* ===== QUIZ (legacy) ===== */
+/* ===== QUIZ ===== */
 let quizPaused=false;
 function startMergedQuiz(gradeId){
   sfxClick(); if('speechSynthesis' in window) speechSynthesis.cancel();
@@ -3897,7 +3788,7 @@ function showMosquitoResult(deathPhrase){
 }
 
 /* ============================================================
-   SPEAK GAME
+   ✨ SPEAK GAME ✨
    ============================================================ */
 const SPEAK_SYNONYMS = {
   'arrange':['จัด','จัดเตรียม','เตรียม','เตรียมการ','จัดเรียง','จัดแจง','จัดระเบียบ','เรียบเรียง','วางแผน','จัดการ','ปรับแต่ง','จัดให้เป็นระเบียบ','วางแผนจัดการ'],
@@ -4050,8 +3941,34 @@ function spkEditDistance(a, b){
   }
   return dp[n];
 }
-const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+/* ============================================================
+   🎤 MIC FIX — ตรวจสอบ environment ก่อน
+   ============================================================ */
+const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition || null;
 const speechSupported = !!SpeechRec;
+const getUserMediaSupported = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+
+function micIsSecure(){
+  if(window.isSecureContext === true) return true;
+  const p = location.protocol, h = location.hostname;
+  return p === 'https:' || p === 'file:' || h === 'localhost' || h === '127.0.0.1';
+}
+function micIsIOS(){
+  const ua = navigator.userAgent || '';
+  if(/iPad|iPhone|iPod/.test(ua)) return true;
+  // iPadOS 13+ แสดงตัวเป็น Mac — เช็ค maxTouchPoints
+  if(navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) return true;
+  return false;
+}
+function micIsSafari(){
+  const ua = navigator.userAgent || '';
+  return /Safari/.test(ua) && !/Chrome|Chromium|CriOS|Edg|OPR/.test(ua);
+}
+function micIsFirefox(){
+  return /Firefox|FxiOS/.test(navigator.userAgent || '');
+}
+
 const spkState = {
   running:false, paused:false, flipped:false,
   pool:[], queue:[], queueIdx:0,
@@ -4063,6 +3980,7 @@ const spkState = {
   rec:null, listening:false, recLang:'en-US',
   restartTimeout:null, _restartTimer:null, _lastRestartAt:0,
 };
+
 function spkShowToast(msg, ms){
   const t = $('toast');
   t.textContent = msg;
@@ -4090,21 +4008,42 @@ function spkTracker(w){
   }
   return spkState.wordTracker[w.en];
 }
+
+/* === Modal อนุญาตไมค์ — ตรวจ condition ละเอียด === */
 function openSpeakPermModal(){
   const warn = $('spkPermWarn');
   const allowBtn = $('spkPermAllow');
-  if(!speechSupported){
+  const msgs = [];
+  let blocked = false;
+
+  if(!micIsSecure()){
+    msgs.push('🔒 ต้องเปิดเว็บผ่าน <b>HTTPS</b> (หรือ localhost) เท่านั้น จึงจะใช้ไมโครโฟนได้');
+    blocked = true;
+  }
+  if(micIsFirefox()){
+    msgs.push('🦊 <b>Firefox</b> ไม่รองรับ Web Speech API กรุณาใช้ <b>Chrome, Edge, หรือ Safari</b> แทน');
+    blocked = true;
+  } else if(!speechSupported){
+    msgs.push('⚠️ เบราว์เซอร์นี้ไม่รองรับ Speech Recognition กรุณาใช้ Chrome, Edge หรือ Safari');
+    blocked = true;
+  }
+  if(!getUserMediaSupported){
+    msgs.push('⚠️ เบราว์เซอร์ไม่รองรับการเข้าถึงไมโครโฟน');
+    blocked = true;
+  }
+  if(micIsIOS()){
+    msgs.push('ℹ️ บน iOS/iPadOS แนะนำให้ใช้ <b>Safari</b> เท่านั้น');
+  }
+
+  if(msgs.length){
     warn.hidden = false;
-    warn.textContent = '⚠️ เบราว์เซอร์นี้ไม่รองรับ Speech Recognition (เช่น Firefox) กรุณาใช้ Chrome, Edge หรือ Safari บน HTTPS';
-    allowBtn.disabled = true;
-    allowBtn.style.opacity = '.5';
-    allowBtn.style.cursor = 'not-allowed';
+    warn.innerHTML = msgs.map(m => `<div style="margin-bottom:6px">${m}</div>`).join('');
   } else {
     warn.hidden = true;
-    allowBtn.disabled = false;
-    allowBtn.style.opacity = '1';
-    allowBtn.style.cursor = 'pointer';
   }
+  allowBtn.disabled = blocked;
+  allowBtn.style.opacity = blocked ? '.5' : '1';
+  allowBtn.style.cursor = blocked ? 'not-allowed' : 'pointer';
   $('speakPermModal').hidden = false;
 }
 function closeSpeakPermModal(){ $('speakPermModal').hidden = true; }
@@ -4175,52 +4114,91 @@ function spkNextQuestion(){
     promptEl.textContent = w.en;
     promptEl.className = 'spk-prompt';
     sideEl.textContent = 'จงพูดคำแปลภาษาไทย';
+    spkState.recLang = 'th-TH';
   } else {
     promptEl.textContent = w.th;
     promptEl.className = 'spk-prompt th';
     sideEl.textContent = 'จงพูดคำภาษาอังกฤษ';
+    spkState.recLang = 'en-US';
   }
   spkRestartRecognition();
 }
-function spkRestartRecognition(){
-  if(spkState._restartTimer){ clearTimeout(spkState._restartTimer); spkState._restartTimer = null; }
-  spkState._lastRestartAt = Date.now();
-  try{ if(spkState.rec) spkState.rec.abort(); }catch(e){}
+
+/* ==== Recognition Lifecycle (แก้ใหม่ทั้งหมด) ==== */
+function spkAbortRecognition(){
   spkState.listening = false;
-  const side = spkState.current ? spkState.current.side : 'en';
-  spkState.recLang = (side === 'en') ? 'th-TH' : 'en-US';
-  spkState._restartTimer = setTimeout(() => {
-    spkState._restartTimer = null;
-    if(!spkState.running || spkState.paused || spkState.flipped) return;
-    spkStartRecognition();
-  }, 150);
+  const rec = spkState.rec;
+  spkState.rec = null;
+  if(rec){
+    // ล้าง handler ทั้งหมดก่อน abort เพื่อไม่ให้ onend/onerror ยิงซ้ำ
+    try{ rec.onstart  = null; }catch(e){}
+    try{ rec.onresult = null; }catch(e){}
+    try{ rec.onerror  = null; }catch(e){}
+    try{ rec.onend    = null; }catch(e){}
+    try{ rec.abort();         }catch(e){}
+  }
 }
+
 function spkStartRecognition(){
-  if(!speechSupported || !spkState.running || spkState.paused || spkState.flipped) return;
+  if(!speechSupported) return;
+  if(!spkState.running || spkState.paused || spkState.flipped) return;
+  if(spkState.rec) return; // กำลังทำงานอยู่แล้ว
+
+  let rec;
   try{
-    if(!spkState.rec){
-      const rec = new SpeechRec();
-      rec.continuous = true;
-      rec.interimResults = false;
-      rec.maxAlternatives = 3;
-      rec.onresult = spkOnResult;
-      rec.onerror = spkOnError;
-      rec.onend = spkOnEnd;
-      spkState.rec = rec;
-    }
-    spkState.rec.lang = spkState.recLang;
-    spkState.rec.start();
+    rec = new SpeechRec();
+  }catch(e){
+    console.warn('Cannot create SpeechRecognition:', e);
+    return;
+  }
+
+  // iOS ไม่รองรับ continuous → ต้องปิด (จะ auto-restart ผ่าน onend แทน)
+  try{ rec.continuous = !micIsIOS(); }catch(e){}
+  try{ rec.interimResults = false; }catch(e){}
+  try{ rec.maxAlternatives = 5; }catch(e){}
+  try{ rec.lang = spkState.recLang; }catch(e){}
+
+  rec.onstart = function(){
     spkState.listening = true;
     updateMicStatus();
-  }catch(e){}
+  };
+  rec.onresult = spkOnResult;
+  rec.onerror  = spkOnError;
+  rec.onend    = spkOnEnd;
+
+  spkState.rec = rec;
+  try{
+    rec.start();
+  }catch(e){
+    console.warn('rec.start() failed:', e);
+    spkState.rec = null;
+    // retry แบบนุ่มนวล (Chrome บางทีต้องรอสักพัก)
+    if(spkState._restartTimer) clearTimeout(spkState._restartTimer);
+    spkState._restartTimer = setTimeout(() => {
+      spkState._restartTimer = null;
+      if(spkState.running && !spkState.paused && !spkState.flipped) spkStartRecognition();
+    }, 700);
+  }
 }
-function spkStopRecognition(silent){
+
+function spkRestartRecognition(){
+  if(spkState.restartTimeout){ clearTimeout(spkState.restartTimeout); spkState.restartTimeout = null; }
   if(spkState._restartTimer){ clearTimeout(spkState._restartTimer); spkState._restartTimer = null; }
+  spkAbortRecognition();
   spkState._lastRestartAt = Date.now();
-  try{ if(spkState.rec) spkState.rec.abort(); }catch(e){}
-  spkState.listening = false;
+  spkState._restartTimer = setTimeout(() => {
+    spkState._restartTimer = null;
+    if(spkState.running && !spkState.paused && !spkState.flipped) spkStartRecognition();
+  }, 200);
+}
+
+function spkStopRecognition(silent){
+  if(spkState.restartTimeout){ clearTimeout(spkState.restartTimeout); spkState.restartTimeout = null; }
+  if(spkState._restartTimer){ clearTimeout(spkState._restartTimer); spkState._restartTimer = null; }
+  spkAbortRecognition();
   if(!silent && spkState.running) sfxMicOff();
 }
+
 function spkOnResult(e){
   if(!spkState.running || spkState.paused || spkState.flipped) return;
   for(let i = e.resultIndex; i < e.results.length; i++){
@@ -4243,37 +4221,56 @@ function spkCheckSpoken(said){
   const target = (side === 'en') ? w.th : w.en;
   return spkCheckAnswer(said, target);
 }
+
+function spkOnEnd(){
+  spkState.listening = false;
+  spkState.rec = null;
+  updateMicStatus();
+  if(!spkState.running || spkState.paused || spkState.flipped) return;
+  // Chrome/Safari หยุดเองหลัง 1 utterance → auto restart
+  if(spkState._restartTimer) clearTimeout(spkState._restartTimer);
+  spkState._restartTimer = setTimeout(() => {
+    spkState._restartTimer = null;
+    if(spkState.running && !spkState.paused && !spkState.flipped) spkStartRecognition();
+  }, 250);
+}
+
 function spkOnError(e){
-  const err = e && e.error;
+  const err = (e && e.error) || '';
+  console.warn('[SpeechRecognition error]', err);
+
+  // ไม่ต้องทำอะไร — onend จะ restart เอง
+  if(err === 'no-speech' || err === 'aborted') return;
+
+  if(err === 'audio-capture'){
+    spkShowToast('🎤 ไม่พบไมโครโฟนหรือถูกใช้งานอยู่', 4000);
+    return;
+  }
+  if(err === 'not-allowed' || err === 'service-not-allowed'){
+    spkShowToast('🚫 ไม่ได้รับอนุญาตให้ใช้ไมโครโฟน กรุณาอนุญาตในเบราว์เซอร์แล้วลองใหม่', 4500);
+    spkState.running = false;
+    spkAbortRecognition();
+    return;
+  }
   if(err === 'language-not-supported'){
     if(spkState.recLang === 'th-TH'){
       spkShowToast('⚠️ เบราว์เซอร์ไม่รองรับภาษาไทย → ใช้ en-US แทน', 3500);
       spkState.recLang = 'en-US';
+      // restart ใหม่
+      if(spkState._restartTimer) clearTimeout(spkState._restartTimer);
       spkState._restartTimer = setTimeout(() => {
         spkState._restartTimer = null;
         if(spkState.running && !spkState.paused && !spkState.flipped) spkStartRecognition();
-      }, 200);
-      return;
+      }, 250);
     }
+    return;
   }
-  if(err === 'not-allowed' || err === 'service-not-allowed'){
-    spkShowToast('⚠️ ไม่ได้รับอนุญาตให้ใช้ไมค์', 3500);
-    spkState.running = false;
-    spkStopRecognition(true);
+  if(err === 'network'){
+    spkShowToast('⚠️ เครือข่ายขัดข้องระหว่างรู้จำเสียง', 3500);
     return;
   }
 }
-function spkOnEnd(){
-  spkState.listening = false;
-  updateMicStatus();
-  if(!spkState.running || spkState.paused || spkState.flipped) return;
-  if(Date.now() - spkState._lastRestartAt < 400) return;
-  if(spkState.restartTimeout) clearTimeout(spkState.restartTimeout);
-  spkState.restartTimeout = setTimeout(() => {
-    spkState.restartTimeout = null;
-    if(spkState.running && !spkState.paused && !spkState.flipped) spkStartRecognition();
-  }, 200);
-}
+
 function updateMicStatus(){
   const mic = $('spkMic');
   const txt = $('spkMicText');
@@ -4281,6 +4278,7 @@ function updateMicStatus(){
   if(spkState.listening){ mic.className = 'spk-mic'; txt.textContent = 'กำลังฟัง...'; }
   else { mic.className = 'spk-mic paused'; txt.textContent = 'รอสัญญาณไมค์...'; }
 }
+
 function spkCheckAnswer(said, target){
   const rawSaid = String(said||'').trim();
   if(!rawSaid) return false;
@@ -4462,21 +4460,52 @@ function finishSpeakGame(){
 
 /* ===== SPEAK EVENT HANDLERS ===== */
 $('spkPermClose').onclick = () => { sfxClick(); closeSpeakPermModal(); };
+
 $('spkPermAllow').onclick = async () => {
+  if(!speechSupported || !getUserMediaSupported){
+    spkShowToast('⚠️ เบราว์เซอร์นี้ไม่รองรับไมโครโฟน'); return;
+  }
+  if(!micIsSecure()){
+    alert('🔒 ต้องเปิดเว็บผ่าน HTTPS เท่านั้น จึงจะใช้ไมโครโฟนได้');
+    return;
+  }
   sfxClick();
-  if(!speechSupported){ spkShowToast('⚠️ เบราว์เซอร์นี้ไม่รองรับ Speech Recognition'); return; }
+  let stream = null;
   try{
-    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      stream.getTracks().forEach(t => t.stop());
-    }
+    // ขอ permission ไมค์
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }
+    });
+    const tracks = stream.getAudioTracks();
+    if(!tracks.length) throw new Error('no audio track');
+    // ปล่อยไมค์ให้ SpeechRecognition ยึดต่อ
+    tracks.forEach(t => { try{ t.stop(); }catch(e){} });
+    stream = null;
+    // รอ OS ปล่อย resource สักครู่ (สำคัญกับ iOS/Android)
+    await new Promise(r => setTimeout(r, 150));
   }catch(e){
-    alert('ไม่ได้รับอนุญาตให้ใช้ไมค์ กรุณาอนุญาตในเบราว์เซอร์แล้วลองใหม่');
+    if(stream){ try{ stream.getTracks().forEach(t=>t.stop()); }catch(_){} }
+    const name = (e && e.name) || '';
+    let msg = '⚠️ ไม่สามารถเข้าถึงไมโครโฟนได้';
+    if(name === 'NotAllowedError' || name === 'PermissionDeniedError'){
+      msg = '🚫 คุณปฏิเสธการใช้ไมโครโฟน กรุณาอนุญาตในเบราว์เซอร์แล้วลองใหม่\n\n' +
+            '(Chrome: กดไอคอน 🔒 ที่ address bar → Site settings → Microphone → Allow)\n' +
+            '(Safari: Settings → Safari → Microphone → Allow)';
+    } else if(name === 'NotFoundError' || name === 'DevicesNotFoundError'){
+      msg = '🎤 ไม่พบไมโครโฟนในอุปกรณ์นี้';
+    } else if(name === 'NotReadableError' || name === 'TrackStartError'){
+      msg = '⚠️ ไมโครโฟนถูกใช้งานโดยแอปอื่นอยู่ กรุณาปิดแอปนั้นแล้วลองใหม่';
+    } else if(name === 'SecurityError'){
+      msg = '🔒 ต้องเปิดเว็บผ่าน HTTPS จึงจะใช้ไมโครโฟนได้';
+    }
+    alert(msg);
     return;
   }
   closeSpeakPermModal();
+  // *** สำคัญ: เรียกทันทีใน call stack เดียวกัน (iOS ต้องการ user gesture) ***
   startSpeakGame();
 };
+
 $('spkNextBtn').onclick = () => { sfxClick(); if(!spkState.running) return; spkNextQuestion(); };
 $('spkSkipBtn').onclick = () => { spkSkipWord(); };
 $('spkEndBtn').onclick = () => {
@@ -4621,7 +4650,7 @@ const fsToggle    = document.getElementById('fsToggle');
 const cornerBtns  = document.getElementById('cornerBtns');
 const backToHome  = document.getElementById('backToHome');
 
-let fsUserOptOut = false;   // ผู้ใช้กด "ออกจากเต็มจอ" เอง → อย่าไปดึงกลับ
+let fsUserOptOut = false;
 let cornerHideTimer = null;
 
 function isFullscreen(){
@@ -4653,39 +4682,25 @@ function tryAutoFullscreen(){
   if(fsUserOptOut || isFullscreen()) return;
   requestFS().catch(()=>{});
 }
-
-/* --- ปุ่มเต็มจอ --- */
 fsToggle.addEventListener('click', (e) => {
   e.stopPropagation();
   if(isFullscreen()){
-    fsUserOptOut = true;      // ผู้ใช้ตั้งใจออกเอง → หยุด auto
+    fsUserOptOut = true;
     exitFS().catch(()=>{});
   } else {
     fsUserOptOut = false;
     requestFS().catch(()=>{});
   }
 });
-
-/* --- ปุ่มย้อนกลับ: ไปลิงก์หลัก --- */
-backToHome.addEventListener('click', (e) => {
-  // ปล่อยให้ <a> navigate ตามปกติ (เบราว์เซอร์จะออกจาก fullscreen ให้เอง)
-});
-
-/* --- ติดตามสถานะ fullscreen --- */
+backToHome.addEventListener('click', (e) => {});
 ['fullscreenchange','webkitfullscreenchange','msfullscreenchange'].forEach(evt => {
   document.addEventListener(evt, updateFsIcon);
 });
 updateFsIcon();
-
-/* --- ลองเข้าเต็มจอทันที (บาง environment/kiosk ทำได้) --- */
 tryAutoFullscreen();
-
-/* --- ถ้ายังไม่เต็มจอ → ดึงเข้าเต็มจอทันทีที่มี gesture แรก --- */
 ['click','touchstart','keydown','pointerdown'].forEach(ev => {
   document.addEventListener(ev, tryAutoFullscreen, {passive:true});
 });
-
-/* ===== แสดงปุ่มมุมซ้ายล่างเมื่อเมาส์เข้าใกล้ ===== */
 document.addEventListener('mousemove', (e) => {
   const near = e.clientX < 170 && e.clientY > (window.innerHeight - 110);
   if(near){
@@ -4699,8 +4714,6 @@ document.addEventListener('mousemove', (e) => {
 document.addEventListener('mouseleave', () => {
   cornerBtns.classList.remove('show');
 });
-
-/* ===== บนอุปกรณ์ทัช: แตะมุมล่างซ้ายเพื่อโชว์ปุ่มชั่วคราว ===== */
 document.addEventListener('touchstart', (e) => {
   const t = e.touches && e.touches[0];
   if(!t) return;
@@ -4718,7 +4731,6 @@ rebuildExtraPool();
 renderGrades();
 initBats();
 
-/* Kick off global ambient BGM on first user interaction */
 function bootAudioOnFirstTouch(){
   initAudio();
   startGlobalBGM();
@@ -4727,7 +4739,7 @@ document.addEventListener('touchstart', bootAudioOnFirstTouch, {once:true, passi
 document.addEventListener('click', bootAudioOnFirstTouch, {once:true});
 document.addEventListener('keydown', bootAudioOnFirstTouch, {once:true});
 
-console.log('🎃 Halloween Vocabulary Games loaded · Dies Irae ambient BGM ready');
+console.log('🎃 Halloween Vocabulary Games loaded · Mic fixed for macOS/iOS/iPadOS/Android · Chrome/Safari/Edge');
 </script>
 </body>
 </html>
