@@ -11,8 +11,6 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background:#0a0612;min-height:100vh;padding:16px;color:#f5e6d3;position:relative;overflow-x:hidden}
-
-/* ===== HALLOWEEN BACKGROUND ===== */
 .bg-animated{position:fixed;inset:0;z-index:-3;background:
   radial-gradient(circle at 82% 12%, rgba(255,200,120,.18) 0%, transparent 22%),
   radial-gradient(circle at 50% 55%, rgba(107,33,168,.30), transparent 65%),
@@ -20,28 +18,21 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
   linear-gradient(180deg,#0a0612 0%,#1a0b2e 45%,#2d1b4e 100%);
   background-size:200% 200%;animation:gradientFlow 22s ease infinite}
 @keyframes gradientFlow{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
-
-/* Full moon */
 .moon{position:fixed;top:6%;right:10%;width:110px;height:110px;border-radius:50%;z-index:-2;
   background:radial-gradient(circle at 35% 32%,#fffbe6 0%,#f5e6a0 55%,#d4b95e 100%);
-  box-shadow:0 0 70px 25px rgba(255,230,150,.40),0 0 140px 60px rgba(255,200,100,.22),
-             0 0 200px 100px rgba(168,85,247,.15);
+  box-shadow:0 0 70px 25px rgba(255,230,150,.40),0 0 140px 60px rgba(255,200,100,.22),0 0 200px 100px rgba(168,85,247,.15);
   animation:moonGlow 6s ease-in-out infinite}
 @keyframes moonGlow{0%,100%{box-shadow:0 0 70px 25px rgba(255,230,150,.40),0 0 140px 60px rgba(255,200,100,.22),0 0 200px 100px rgba(168,85,247,.15)}
   50%{box-shadow:0 0 90px 35px rgba(255,230,150,.55),0 0 170px 80px rgba(255,200,100,.30),0 0 240px 120px rgba(168,85,247,.22)}}
 .moon::before,.moon::after{content:"";position:absolute;border-radius:50%;background:rgba(180,150,80,.30)}
 .moon::before{width:26px;height:26px;top:24%;left:22%}
 .moon::after{width:16px;height:16px;bottom:28%;right:24%}
-
-/* Fog */
 .fog{position:fixed;left:0;right:0;bottom:0;height:45%;z-index:-2;pointer-events:none;
   background:linear-gradient(180deg,transparent 0%,rgba(150,100,200,.12) 40%,rgba(100,60,150,.28) 100%);
   filter:blur(24px);animation:fogMove 26s ease-in-out infinite alternate}
 @keyframes fogMove{0%{transform:translateX(-6%);opacity:.65}100%{transform:translateX(6%);opacity:1}}
 .fog.fog2{bottom:5%;height:35%;animation-duration:38s;animation-direction:alternate-reverse;opacity:.7;
   background:linear-gradient(180deg,transparent 0%,rgba(249,115,22,.10) 50%,rgba(107,33,168,.22) 100%)}
-
-/* Blobs (spooky purple glow) */
 .bg-blobs{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
 .bg-blobs .blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.45;will-change:transform}
 .bg-blobs .blob:nth-child(1){width:340px;height:340px;background:#a855f7;top:-90px;left:-70px;animation:blobFloat1 15s ease-in-out infinite}
@@ -52,8 +43,6 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
 @keyframes blobFloat1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,80px) scale(1.15)}}
 @keyframes blobFloat2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-70px,50px) scale(1.1)}}
 @keyframes blobFloat3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(50px,-60px) scale(1.2)}}
-
-/* Bats */
 .bats{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
 .bats .bat{position:absolute;width:44px;height:24px;color:#1a0b2e;
   filter:drop-shadow(0 0 8px rgba(168,85,247,.65)) drop-shadow(0 2px 4px rgba(0,0,0,.9));
@@ -67,15 +56,12 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
   50%{transform:translate(-64vw,5vh) rotate(-3deg) scale(.95);opacity:.85}
   75%{transform:translate(-30vw,-3vh) rotate(5deg) scale(1.02);opacity:1}
   100%{transform:translate(0,0) rotate(-4deg) scale(1);opacity:.9}}
-
-/* Spiders / cobweb corner */
 .spider-web{position:fixed;top:0;left:0;width:180px;height:180px;z-index:0;pointer-events:none;opacity:.55;
   background:
     radial-gradient(circle at 0% 0%, transparent 55%, rgba(200,200,220,.14) 56%, transparent 58%),
     radial-gradient(circle at 0% 0%, transparent 35%, rgba(200,200,220,.14) 36%, transparent 38%),
     radial-gradient(circle at 0% 0%, transparent 18%, rgba(200,200,220,.14) 19%, transparent 21%);
-  background-size:180px 180px;
-  animation:webPulse 5s ease-in-out infinite}
+  background-size:180px 180px;animation:webPulse 5s ease-in-out infinite}
 .spider-web::before,.spider-web::after{content:"";position:absolute;top:0;left:0;height:180px;width:2px;
   background:linear-gradient(180deg,rgba(200,200,220,.20),transparent);transform-origin:top left}
 .spider-web::before{transform:rotate(30deg)}
@@ -84,15 +70,11 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
 .spider{position:fixed;top:14px;left:14px;width:26px;height:26px;z-index:1;pointer-events:none;
   animation:spiderBob 3.2s ease-in-out infinite;filter:drop-shadow(0 2px 4px rgba(0,0,0,.8))}
 @keyframes spiderBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(8px) rotate(3deg)}}
-
-/* Floating skull/emoji */
 .bg-floaters{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
 .bg-floaters span{position:absolute;bottom:-60px;font-size:22px;opacity:0;
   animation-name:floatUp;animation-timing-function:ease-in;animation-iteration-count:infinite;
   filter:drop-shadow(0 0 6px rgba(168,85,247,.5))}
 @keyframes floatUp{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.85}90%{opacity:.55}100%{transform:translateY(-115vh) rotate(360deg);opacity:0}}
-
-/* ===== FULLSCREEN TOGGLE (macOS style) ===== */
 .fs-toggle{position:fixed;top:14px;left:14px;z-index:9999;
   width:42px;height:42px;border-radius:50%;
   background:rgba(20,10,40,.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
@@ -109,10 +91,7 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
 .fs-toggle.is-fullscreen .fs-icon-contract{display:block}
 .fs-toggle.is-fullscreen{border-color:rgba(168,85,247,.65);color:#c4b5fd}
 .fs-toggle.is-fullscreen:hover{background:rgba(168,85,247,.3);color:#e9d5ff}
-
 .app{max-width:1200px;margin:0 auto;position:relative;z-index:1;padding-left:0}
-
-/* ===== HEADER (Pumpkin) ===== */
 .header{text-align:center;padding:30px 24px 34px;position:relative;margin-bottom:28px;
   background:
     radial-gradient(ellipse at 30% 15%, rgba(255,200,120,.35), transparent 45%),
@@ -144,8 +123,6 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
 .header .badge{display:inline-block;background:rgba(10,6,18,.55);backdrop-filter:blur(8px);
   padding:9px 22px;border-radius:50px;font-size:15px;margin-top:14px;font-weight:700;color:#ffedd5;
   border:1.5px solid rgba(255,200,120,.45);box-shadow:0 0 20px rgba(249,115,22,.35)}
-
-/* ===== CONTROLS ===== */
 .controls{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px;align-items:center;
   background:rgba(20,10,40,.70);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   padding:16px 20px;border-radius:30px;
@@ -165,8 +142,6 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
 .controls .stats{font-size:16px;color:#c4b5fd;margin-left:auto;white-space:nowrap;
   background:rgba(107,33,168,.40);padding:6px 16px;border-radius:30px;border:1px solid rgba(168,85,247,.35)}
 .controls .stats strong{color:#fb923c;font-size:20px;text-shadow:0 0 10px rgba(251,146,60,.7)}
-
-/* ===== GRADE TABS ===== */
 .grade-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;justify-content:center}
 .grade-tabs button{padding:9px 20px;border:2px solid rgba(168,85,247,.40);border-radius:40px;
   background:rgba(20,10,40,.65);font-size:15px;font-weight:700;color:#c4b5fd;cursor:pointer;
@@ -175,8 +150,6 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
 .grade-tabs button.active{background:radial-gradient(ellipse at 30% 25%,#fb923c,#f97316 45%,#ea580c 100%);
   color:#0a0612;border-color:#fb923c;font-weight:800;
   box-shadow:0 6px 20px rgba(249,115,22,.6),inset 0 -3px 0 rgba(0,0,0,.25),inset 0 3px 6px rgba(255,255,255,.25)}
-
-/* ===== GAME BUTTON ===== */
 .grade-tabs a.game-btn{padding:9px 20px;border:2px solid rgba(34,197,94,.55);border-radius:40px;
   background:linear-gradient(135deg,rgba(34,197,94,.28),rgba(21,128,61,.4));
   font-size:15px;font-weight:800;color:#bbf7d0;cursor:pointer;
@@ -189,8 +162,6 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
 .grade-tabs a.game-btn:active{transform:scale(.96)}
 .grade-tabs a.game-btn .game-pulse{display:inline-block;animation:gamePulse 1.6s ease-in-out infinite}
 @keyframes gamePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
-
-/* ===== VOCAB GRID ===== */
 .vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px}
 .card{background:linear-gradient(180deg,rgba(30,15,55,.9),rgba(15,7,30,.95));
   border-radius:28px;padding:16px 16px 14px;
@@ -220,11 +191,27 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
   border-radius:18px;background:radial-gradient(circle at 50% 40%,#2a1240,#0f0518);
   font-size:74px;font-weight:900;line-height:1;color:#fb923c;user-select:none;
   text-shadow:0 0 20px rgba(249,115,22,.8),0 4px 0 rgba(0,0,0,.4)}
+.card .pixabay-img{position:relative;z-index:1;width:100%;height:100%;
+  object-fit:cover;border-radius:18px;display:none;
+  background:radial-gradient(circle at 50% 40%,#2a1240,#0f0518)}
+.card .pixabay-img.loaded{display:block}
+.card .img-frame .card-emoji.hidden,
+.card .img-frame .card-svg.hidden,
+.card .img-frame .card-letter.hidden{display:none}
+.card .img-frame.loading::after{content:"";position:absolute;inset:4px;border-radius:18px;
+  background:linear-gradient(90deg,rgba(168,85,247,.1),rgba(249,115,22,.2),rgba(168,85,247,.1));
+  background-size:200% 100%;animation:shimmer 1.2s linear infinite;z-index:0}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .card .en{font-size:27px;font-weight:800;color:#ffedd5;line-height:1.3;
   text-shadow:0 0 12px rgba(255,200,120,.4),0 2px 4px rgba(0,0,0,.6)}
 .card .th{font-size:17px;font-weight:600;color:#c4b5fd;margin-top:2px}
 .card .pos{font-size:12px;font-weight:700;color:#a78bfa;background:rgba(107,33,168,.35);
   padding:2px 14px;border-radius:30px;margin-top:6px;display:inline-block;border:1px solid rgba(168,85,247,.4)}
+.card .syn{font-size:12px;font-weight:600;color:#86efac;
+  background:rgba(34,197,94,.15);padding:3px 10px;border-radius:30px;margin-top:6px;
+  display:inline-block;border:1px solid rgba(34,197,94,.35);max-width:100%;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card .syn::before{content:"≈ "}
 .card .speak-icon{position:absolute;top:12px;right:14px;font-size:18px;opacity:.4;transition:.2s;z-index:2;filter:drop-shadow(0 0 4px rgba(249,115,22,.6))}
 .card:hover .speak-icon{opacity:1}
 .card.speaking{border-color:#f97316;background:linear-gradient(180deg,rgba(50,25,80,.95),rgba(30,15,55,.98));
@@ -243,7 +230,6 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
 .card.mic-fail{animation:cardShake .45s ease}
 @keyframes cardGoodFlash{0%{box-shadow:0 0 0 0 rgba(34,197,94,.6)}60%{box-shadow:0 0 0 14px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
 @keyframes cardShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-
 .sticker-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:30}
 .sticker-pop{text-align:center;animation:stickerPop 1.7s ease forwards;filter:drop-shadow(0 6px 12px rgba(249,115,22,.6))}
 .sticker-pop .sticker-emoji{font-size:58px;display:block}
@@ -253,8 +239,6 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
 .sticker-pop.big .sticker-emoji{font-size:92px}
 .sticker-pop.big .sticker-text{font-size:20px;padding:5px 20px}
 @keyframes stickerPop{0%{transform:scale(0) rotate(-20deg);opacity:0}15%{transform:scale(1.35) rotate(10deg);opacity:1}30%{transform:scale(.92) rotate(-6deg)}45%{transform:scale(1.08) rotate(3deg)}60%{transform:scale(1) rotate(0)}82%{opacity:1}100%{opacity:0;transform:scale(1) translateY(-14px)}}
-
-/* ===== MODAL ===== */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,2,15,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:1000;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
 .modal{background:linear-gradient(180deg,#1e0f38,#0f0518);border-radius:40px;max-width:720px;width:100%;
@@ -282,11 +266,19 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
 .modal .modal-letter{position:relative;z-index:1;width:100%;height:100%;border-radius:26px;
   background:radial-gradient(circle at 50% 40%,#2a1240,#0f0518);display:flex;align-items:center;justify-content:center;
   font-size:92px;font-weight:900;color:#fb923c;user-select:none;text-shadow:0 0 30px rgba(249,115,22,.9)}
+.modal .modal-pixabay-img{position:absolute;inset:5px;width:calc(100% - 10px);height:calc(100% - 10px);
+  object-fit:cover;border-radius:26px;z-index:2;display:none}
 .modal .modal-word{font-size:44px;font-weight:800;color:#ffedd5;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
   text-shadow:0 0 14px rgba(255,200,120,.4)}
 .modal .modal-word .modal-pos{font-size:16px;font-weight:700;color:#a78bfa;background:rgba(107,33,168,.35);
   padding:4px 18px;border-radius:40px;border:1px solid rgba(168,85,247,.4)}
 .modal .modal-th{font-size:25px;font-weight:600;color:#c4b5fd;margin-top:4px}
+.modal .modal-syn{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.modal .modal-syn .label{font-size:14px;color:#86efac;font-weight:600}
+.modal .modal-syn .word{font-size:15px;font-weight:700;color:#bbf7d0;
+  background:rgba(34,197,94,.15);padding:4px 14px;border-radius:30px;
+  border:1px solid rgba(34,197,94,.4);cursor:pointer;transition:.2s}
+.modal .modal-syn .word:hover{background:rgba(34,197,94,.35);transform:scale(1.05);color:#f0fdf4}
 .modal .modal-divider{height:2px;background:linear-gradient(90deg,transparent,rgba(168,85,247,.5),transparent);margin:20px 0 22px}
 .modal .sentences-title{font-size:16px;font-weight:600;color:#fb923c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
 .modal .sentence-item{background:rgba(30,15,55,.75);padding:14px 18px;border-radius:18px;margin-bottom:12px;
@@ -313,13 +305,11 @@ body{font-family:'Kanit','Itim','Segoe UI',sans-serif;font-weight:500;background
 .modal-mic-feedback.good{color:#4ade80}
 .modal-mic-feedback.bad{color:#fb923c}
 .modal-mic-feedback.err{color:#f87171}
-
 .empty-state{text-align:center;padding:60px 20px;color:#a78bfa}
 .empty-state .big-icon{font-size:64px;margin-bottom:12px;filter:drop-shadow(0 0 12px rgba(249,115,22,.5))}
 .empty-state h3{font-size:24px;color:#c4b5fd}
 .footer{text-align:center;padding:30px 0 10px;font-size:15px;color:#7c6fa8;
   text-shadow:0 0 8px rgba(168,85,247,.3)}
-
 @media (max-width:640px){
 body{padding:10px}
 .moon{width:80px;height:80px;top:4%;right:6%}
@@ -351,7 +341,6 @@ body{padding:10px}
 </head>
 <body>
 
-<!-- Background decorations -->
 <div class="bg-animated" aria-hidden="true"></div>
 <div class="moon" aria-hidden="true"></div>
 <div class="fog" aria-hidden="true"></div>
@@ -366,19 +355,14 @@ body{padding:10px}
 <div class="bats" id="bats" aria-hidden="true"></div>
 <div class="bg-floaters" id="bgFloaters" aria-hidden="true"></div>
 
-<!-- Fullscreen toggle (macOS style) -->
 <button class="fs-toggle" id="fsToggle" aria-label="Toggle fullscreen" title="เต็มหน้าจอ / ออก">
   <svg class="fs-icon-expand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M8 3H5a2 2 0 0 0-2 2v3"/>
-    <path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
-    <path d="M16 21h3a2 2 0 0 0 2-2v-3"/>
-    <path d="M3 16v3a2 2 0 0 0 2 2h3"/>
+    <path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/>
+    <path d="M16 21h3a2 2 0 0 0 2-2v-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/>
   </svg>
   <svg class="fs-icon-contract" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M8 3v3a2 2 0 0 1-2 2H3"/>
-    <path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
-    <path d="M16 21v-3a2 2 0 0 1 2-2h3"/>
-    <path d="M3 16h3a2 2 0 0 1 2 2v3"/>
+    <path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
+    <path d="M16 21v-3a2 2 0 0 1 2-2h3"/><path d="M3 16h3a2 2 0 0 1 2 2v3"/>
   </svg>
 </button>
 
@@ -390,7 +374,7 @@ body{padding:10px}
 <h1>🎃 คลังคำศัพท์ภาษาอังกฤษ 🦇</h1>
 <p>ประถมศึกษาปีที่ 1 – 6 • มีรูปประกอบทุกคำ • ฟังเสียง</p>
 <p class="school-line">🏫 โรงเรียนบ้านถิ่นสำราญ</p>
-<div class="badge">👆 คลิกที่คำ = ฟัง · คลิก 2 ครั้ง = ดูประโยค + รูปใหญ่ · 🎤 ลองพูดดูสิ!</div>
+<div class="badge">👆 คลิก = ฟัง · ดับเบิลคลิก = ดูประโยค + รูปใหญ่ + คำพ้อง · 🎤 ลองพูดดูสิ!</div>
 </div>
 </div>
 </header>
@@ -407,7 +391,7 @@ body{padding:10px}
 
 <div class="grade-tabs" id="gradeTabs"></div>
 <div id="vocabGrid" class="vocab-grid"></div>
-<div class="footer">🎧 เสียงผู้ชายอเมริกัน · 🎨 รูปเป็นอีโมจิ + SVG ที่ตรงกับคำศัพท์ · 🎃 Happy Halloween!</div>
+<div class="footer">🎧 เสียงผู้ชายอเมริกัน · 🖼️ รูปจาก Pixabay + อีโมจิ · 🎃 Happy Halloween!</div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay">
@@ -425,6 +409,7 @@ body{padding:10px}
 <span class="modal-pos" id="modalPos"></span>
 </div>
 <div class="modal-th" id="modalTh"></div>
+<div id="modalSyn"></div>
 </div>
 </div>
 <div class="modal-divider"></div>
@@ -440,7 +425,12 @@ body{padding:10px}
 
 <script>
 // ============================================================
-//  VOCAB_DATA — ข้อมูลคำศัพท์
+//  🔑 PIXABAY API KEY — ฝังไว้ในโค้ดแล้ว
+// ============================================================
+const PIXABAY_KEY = '57649556-308a8ae941a8a3cd2a7fbe745';
+
+// ============================================================
+//  VOCAB_DATA
 // ============================================================
 const VOCAB_DATA = `
 ## 📘 ป.1 — คำศัพท์พื้นฐาน
@@ -4443,7 +4433,7 @@ const VOCAB_DATA = `
 `;
 
 // ============================================================
-//  EMOJI_MAP (ใช้เมื่ออีโมจิตรงกับคำศัพท์)
+//  EMOJI_MAP
 // ============================================================
 const EMOJI_MAP = {
 'ant':'🐜','bat':'🦇','bear':'🐻','bee':'🐝','bird':'🐦','cat':'🐱','dog':'🐶','fish':'🐟','fox':'🦊','giraffe':'🦒','goat':'🐐','lion':'🦁','monkey':'🐵','owl':'🦉','panda':'🐼','rabbit':'🐰','sheep':'🐑','snake':'🐍','tiger':'🐯','zebra':'🦓','cow':'🐮','pig':'🐷','horse':'🐴','duck':'🦆','chicken':'🐔','hen':'🐔','elephant':'🐘','frog':'🐸','butterfly':'🦋','snail':'🐌','turtle':'🐢','tortoise':'🐢','dolphin':'🐬','whale':'🐳','shark':'🦈','octopus':'🐙','crocodile':'🐊','dinosaur':'🦕','koala':'🐨','kangaroo':'🦘','penguin':'🐧','parrot':'🦜','peacock':'🦚','ostrich':'🦤','rhino':'🦏','hippo':'🦛','camel':'🐪','donkey':'🫏','wolf':'🐺','dove':'🕊️','sparrow':'🐦','dragonfly':'🪰','worm':'🪱','shrimp':'🦐','prawn':'🦐','seal':'🦭','goldfish':'🐠','goose':'🦢','ox':'🐂','buffalo':'🐃','insect':'🐛','bug':'🐛','monster':'👹','ghost':'👻','spider':'🕷️','kitten':'🐱','puppy':'🐶','turkey':'🦃','animal':'🐾','pet':'🐾','mosquito':'🦟','rat':'🐀',
@@ -4460,12 +4450,11 @@ const EMOJI_MAP = {
 'one':'1️⃣','two':'2️⃣','three':'3️⃣','four':'4️⃣','five':'5️⃣','six':'6️⃣','seven':'7️⃣','eight':'8️⃣','nine':'9️⃣','ten':'🔟','eleven':'1️⃣1️⃣','twelve':'1️⃣2️⃣','thirteen':'1️⃣3️⃣','fourteen':'1️⃣4️⃣','fifteen':'1️⃣5️⃣','sixteen':'1️⃣6️⃣','seventeen':'1️⃣7️⃣','eighteen':'1️⃣8️⃣','nineteen':'1️⃣9️⃣','twenty':'2️⃣0️⃣','thirty':'3️⃣0️⃣','forty':'4️⃣0️⃣','fifty':'5️⃣0️⃣','sixty':'6️⃣0️⃣','seventy':'7️⃣0️⃣','eighty':'8️⃣0️⃣','ninety':'9️⃣0️⃣','one hundred':'💯','one thousand':'🔢','first':'🥇','second':'🥈','third':'🥉','fourth':'4️⃣','fifth':'5️⃣','sixth':'6️⃣','seventh':'7️⃣','eighth':'8️⃣','ninth':'9️⃣','tenth':'🔟','eleventh':'1️⃣1️⃣','twelfth':'1️⃣2️⃣','thirteenth':'1️⃣3️⃣','fourteenth':'1️⃣4️⃣','fifteenth':'1️⃣5️⃣','sixteenth':'1️⃣6️⃣','seventeenth':'1️⃣7️⃣','eighteenth':'1️⃣8️⃣','nineteenth':'1️⃣9️⃣','twentieth':'2️⃣0️⃣','thirtieth':'3️⃣0️⃣','fortieth':'4️⃣0️⃣','fiftieth':'5️⃣0️⃣','sixtieth':'6️⃣0️⃣','seventieth':'7️⃣0️⃣','eightieth':'8️⃣0️⃣','ninetieth':'9️⃣0️⃣','one hundredth':'💯','one thousandth':'🔢',
 'afraid':'😨','angry':'😠','awake':'👀','beautiful':'🌸','big':'🐘','bored':'😑','brave':'🦁','brilliant':'💡','busy':'😰','careful':'⚠️','careless':'😬','charming':'😊','cheap':'💰','clear':'✨','clever':'🧠','cold':'🥶','confident':'💪','cool':'😎','correct':'✅','cruel':'😈','curly':'🌀','cute':'🥰','dangerous':'⚠️','dark':'🌑','deep':'🌊','delicious':'😋','different':'🔀','difficult':'😣','dirty':'🧦','dry':'🌵','easy':'😌','excellent':'🌟','exciting':'🎢','expensive':'💎','famous':'🌟','fantastic':'🎉','far':'🛣️','fat':'🐷','favorite':'❤️','fine':'👌','fluent':'🗣️','fresh':'🌿','frightening':'😱','fun':'🎉','funny':'😂','good':'👍','great':'👏','handsome':'😎','happy':'😊','harmful':'⚠️','healthy':'💚','heavy':'🏋️','helpful':'🤝','hot':'🔥','hungry':'🤤','important':'❗','intelligent':'🧠','kind':'💗','lazy':'😴','long':'📏','loud':'📢','lucky':'🍀','messy':'🌀','modern':'🏙️','narrow':'🛤️','neat':'✨','new':'🆕','nice':'😊','old':'👴','perfect':'💯','polite':'🙇','poor':'💸','popular':'🔥','pretty':'🌺','quick':'⚡','quiet':'🤫','rich':'💰','safe':'🛡️','sad':'😢','shallow':'💧','sharp':'🔪','short':'📏','sick':'🤒','silent':'🤫','silly':'🤪','single':'👤','slow':'🐢','small':'🐜','smart':'🧠','smooth':'🧈','soft':'🧸','sore':'🤕','sour':'🍋','special':'✨','spicy':'🌶️','strong':'💪','sunny':'☀️','sure':'👌','tall':'🦒','thick':'📚','thin':'📄','thirsty':'🥤','tidy':'🧹','true':'✅','ugly':'👹','upset':'😢','useful':'🔧','valuable':'💎','warm':'🌡️','weak':'🥺','wet':'💦','wide':'🌊','wonderful':'🌟','wrong':'❌','yummy':'😋','terrible':'😱','tired':'😴','scared':'😨','wise':'🦉','foolish':'🤪','rude':'😠',
 'afternoon':'🌇','autumn':'🍂','century':'💯','day':'☀️','evening':'🌆','morning':'🌅','midnight':'🌃','minute':'⏱️','month':'📅','noon':'☀️','now':'⏰','past':'⏪','season':'🍂','spring':'🌸','summer':'☀️','time':'⏰','today':'📅','tomorrow':'🌅','tonight':'🌙','week':'📅','weekend':'🎉','winter':'❄️','year':'📅','yesterday':'⏪','holiday':'🏖️','vacation':'🏖️','birthday':'🎂','festival':'🎉','schedule':'📅','moment':'⏱️','hour':'⏰','period':'⏱️','future':'🔮',
-'adventure':'🗺️','advertisement':'📺','alphabet':'🔤','ancient':'🏛️','area':'🗺️','art':'🎨','attraction':'🎡','author':'✍️','autograph':'✍️','balloon':'🎈','barbecue':'🍖','basketball':'🏀','bicycle':'🚲','bike':'🚲','bill':'🧾','biography':'📖','boat':'⛵','boots':'👢','bridge':'🌉','business':'💼','canal':'🚣','capital':'🏛️','caramel':'🍮','career':'💼','cash':'💵','celebrate':'🎉','cell':'🔒','cell phone':'📱','center':'🏛️','ceremony':'🎊','chance':'🎲','character':'🎭','charity':'💝','chip':'🍟','crisps':'🥔','class':'🏫','classify':'📊','coffee':'☕','column':'📊','community':'🏘️','company':'🏢','competition':'🏆','complain':'😤','concert':'🎤','consist of':'📦','contact':'📞','container':'📦','control':'🎮','conversation':'💬','copy':'📄','costume':'👗','cough':'😷','craft':'🎨','creative':'🎨','crosswalk':'🚶','crowd':'👥','culture':'🌍','cycling':'🚴','damage':'💥','dare':'😏','daughter':'👧','dear':'💕','death':'💀','debate':'🗣️','decorate':'🎨','democracy':'🗳️','depart':'🚂','describe':'💬','detective':'🕵️','diagram':'📊','diarrhea':'🤢','digital':'📱','direction':'🧭','discuss':'💬','distance':'📏','divorce':'💔','dollar':'💵','earache':'🤕','education':'🎓','effect':'✨','electricity':'⚡','energy':'⚡','engine':'⚙️','English':'🇬🇧','entertain':'🎭','entrance':'🚪','environment':'🌍','escape':'🏃','exact':'🎯','exam':'📝','example':'📋','exhibition':'🖼️','exit':'🚪','expect':'🤔','explode':'💥','fashion':'👗','female':'♀️','ferry':'⛴️','fever':'🤒','figure':'🧍','film':'🎬','fireworks':'🎆','fish sauce':'🥫','fishing':'🎣','fitness':'💪','flood':'🌊','forecast':'🌤️','friendship':'🤝','galaxy':'🌌','game':'🎮','garbage':'🗑️','geography':'🌍','golf':'⛳','grain':'🌾','grocery':'🛒','gymnastic':'🤸','habit':'🔄','haircut':'💇','half':'➗','health':'💚','helicopter':'🚁','highway':'🛣️','hiking':'🥾','history':'📜','hobby':'🎨','hole':'🕳️','homework':'📝','honor':'🏅','hope':'🌈','horoscope':'♈','ice':'🧊','idea':'💡','immediately':'⚡','improve':'📈','information':'ℹ️','ingredient':'🥘','ink':'🖋️','instruction':'📋','instrument':'🎵','internet':'🌐','interview':'💼','introduce':'🤝','invent':'💡','itch':'😣','jasmine':'🌼','journey':'🚗','kayak':'🛶','kilo':'⚖️','kingdom':'👑','knowledge':'🧠','label':'🏷️','labor':'👷','language':'🗣️','laundry':'👕','law':'⚖️','leather':'🐄','length':'📏','lesson':'📚','letter':'✉️','life':'💫','liquid':'💧','litter':'🗑️','location':'📍','lottery':'🎰','luck':'🍀','luggage':'🧳','magic':'✨','mail':'📧','male':'♂️','marble':'🔮','mark':'📝','match':'✅','material':'🧵','math':'➗','meaning':'💬','measure':'📏','medicine':'💊','member':'👥','menu':'📋','message':'💬','metal':'🔩','meter':'📏','microwave':'🍲','military':'🎖️','mistake':'❌','money':'💰','monument':'🗿','movie':'🎬','music':'🎵','nationality':'🌍','news':'📰','noise':'📢','note':'📝','notice':'👀','novel':'📖','nut':'🥜','oil':'🛢️','online':'🌐','opinion':'💭','opposite':'↔️','order':'📋','origin':'🌍','package':'📦','painting':'🎨','parade':'🎊','paragraph':'📝','part':'🧩','party':'🎉','pass':'✅','passport':'🛂','path':'🛤️','pattern':'🔷','peace':'☮️','percent':'％','personality':'💭','phone':'📱','picnic':'🧺','place':'📍','plan':'📋','planet':'🪐','plastic':'♻️','pleasure':'😊','poem':'📜','point':'⭐','poison':'☠️','pollution':'🏭','portfolio':'📁','position':'📍','post':'📮','powder':'🧂','power':'⚡','present':'🎁','price':'💵','prize':'🏆','problem':'❓','product':'📦','professional':'👔','program':'📺','promise':'🤝','pronounce':'🗣️','publish':'📚','pumpkin':'🎃','purpose':'🎯','puzzle':'🧩','quality':'⭐','quantity':'📊','quarter':'🪙','question':'❓','queue':'🚶','quiz':'📝','race':'🏁','railway':'🚂','raincoat':'🧥','reason':'💭','receipt':'🧾','recipe':'📖','recommend':'👍','recycle':'♻️','reduce':'⬇️','refuse':'🙅','region':'🗺️','regular':'🔄','relative':'👨‍👩‍👧','religion':'🕊️','rent':'🏠','research':'🔬','respect':'🙇','result':'📊','reuse':'♻️','review':'📝','reward':'🏆','role':'🎭','roof':'🏠','room':'🚪','route':'🗺️','routine':'📅','rubbish':'🗑️','rugby':'🏉','rule':'📏','salary':'💵','sale':'🏷️','science':'🔬','score':'⭐','sculpture':'🗿','seat':'🪑','secret':'🤫','section':'📑','sentence':'📝','series':'📺','service':'🛎️','share':'🤝','shell':'🐚','shore':'🏖️','shower':'🚿','sign':'🪧','signal':'🚦','sink':'🚰','situation':'🎭','size':'📏','skill':'🎯','slice':'🍰','smoke':'💨','sneeze':'🤧','soccer':'⚽','social':'👥','software':'💻','solve':'🧩','song':'🎵','sound':'🔊','souvenir':'🎁','space':'🚀','spaceship':'🚀','speaker':'🔊','speech':'🗣️','speed':'⚡','sport':'⚽','spot':'🔴','stage':'🎭','stairs':'🪜','stamp':'📮','statue':'🗿','step':'👣','stick':'🪵','story':'📖','straight':'📏','strange':'❓','stress':'😰','style':'🎨','subject':'📚','suit':'👔','support':'🤝','surprise':'🎉','survey':'📊','sweep':'🧹','swimming':'🏊','swing':'🛝','system':'⚙️','tablet':'💊','talent':'🌟','target':'🎯','task':'📋','taste':'👅','taxi':'🚕','team':'👥','tear':'💧','technology':'💻','temperature':'🌡️','tennis':'🎾','term':'📅','test':'📝','text':'💬','thank you':'🙏','theme':'🎨','theory':'💡','thought':'💭','thread':'🧵','tie':'👔','tiny':'🐜','tip':'💡','title':'📖','together':'👫','toilet':'🚽','tool':'🔧','top':'🌀','track':'🛤️','tradition':'🎎','traffic':'🚦','train':'🚂','training':'💪','transport':'🚌','travel':'✈️','treasure':'💰','treat':'🎁','trip':'🧳','trouble':'⚠️','trousers':'👖','trust':'🤝','truth':'💯','tunnel':'🚇','type':'⌨️','universe':'🌌','useless':'🚫','vehicle':'🚗','victory':'🏆','view':'👀','visa':'🛂','visit':'👋','vitamin':'💊','voice':'🗣️','volleyball':'🏐','vowel':'🔤','wall':'🧱','war':'⚔️','wardrobe':'🚪','waste':'🗑️','way':'🛤️','wealth':'💰','weapon':'⚔️','website':'🌐','wedding':'💒','weight':'⚖️','welcome':'🙏','well':'👍','west':'⬅️','wheat':'🌾','whistle':'📢','wild':'🌲','wine':'🍷','wire':'🔌','wool':'🧶','word':'🔤','work':'💼','worth':'💎','wound':'🩹','yard':'🏡','zone':'📍',
-'calf':'🐄','cheerful':'😊','curious':'🧐','determined':'💪','diligent':'💪','dizzy':'😵','drowsy':'😴','eager':'🤩','elegant':'🦢','energetic':'⚡','enormous':'🦣','envious':'😒','excited':'🤩','exhausted':'😩','fabulous':'💖','faithful':'🐕','fancy':'✨','farewell':'👋','fashionable':'👗','fearful':'😨','filthy':'🧦','fluffy':'☁️','forgetful':'🤦','fortunate':'🍀','fragile':'🥚','frequent':'🔁','frightened':'😱','frozen':'🧊','furious':'😡','gentle':'🕊️','giant':'🦣','gifted':'🎁','glad':'😊','gloomy':'☁️','gorgeous':'💖','graceful':'🦢','grateful':'🙏','greedy':'🤑','grieving':'😭','grumpy':'😤','guilty':'😔','handy':'🔧','harsh':'🗡️','hasty':'🏃','heavenly':'☁️','heroic':'🦸','hilarious':'😂','honest':'💯','hopeful':'🌈','horrible':'😱','hospitable':'🤗','huge':'🦣','humble':'🙇','humid':'💦','hurt':'🩹','identical':'🟰','idle':'😴','ignorant':'🙈','ill':'🤒','imaginary':'💭','immediate':'⚡','impatient':'⏳','impolite':'😠','impressive':'👏','incredible':'🤩','independent':'🕊️','innocent':'😇','interested':'🤔','internal':'⬛','invisible':'👻','itchy':'😣','jealous':'😒','jolly':'🎅','joyful':'😄','jumbo':'🦣','keen':'🦅','lame':'🦯','large':'🐘','late':'⏰','lean':'🪶','legal':'⚖️','lengthy':'📏','likely':'🎯','limited':'🔒','little':'🐜','lively':'💃','lonely':'🥺','loose':'🧣','lovely':'💕','loyal':'🐕','mad':'😡','magnificent':'👑','main':'⭐','major':'⭐','married':'💍','mean':'😠','medical':'💊','medium':'🟡','merry':'🎄','mighty':'💪','mild':'🌤️','minor':'🔸','moist':'💧','mysterious':'🕵️','naive':'😇','nasty':'😖','naughty':'😈','nearly':'⏳','needy':'🥺','nervous':'😰','noisy':'📢','normal':'👌','nosy':'👃','numerous':'🔢','obedient':'🐕','obese':'🐷','odd':'❓','old-fashioned':'🏛️','ordinary':'⚪','outstanding':'⭐','painful':'🤕','pale':'😐','patient':'⏳','permanent':'♾️','positive':'➕','possible':'✅','powerful':'💪','practical':'🔧','precious':'💎','previous':'⬅️','private':'🔒','proper':'👌','proud':'😌','public':'🌍','punctual':'⏰','pure':'💧','puzzled':'😕','rapid':'⚡','rare':'🦄','raw':'🍣','ready':'👍','real':'✅','reasonable':'⚖️','reliable':'🛡️','religious':'🕊️','remarkable':'⭐','responsible':'💼','right':'✅','ripe':'🍑','risky':'⚠️','rough':'🧱','round':'⚪','rusty':'🔩','sacred':'🙏','salty':'🧂','same':'🟰','sandy':'🏖️','satisfied':'😌','scarce':'💎','scary':'😱','selfish':'🤑','sensible':'🧠','sensitive':'🥺','serious':'😐','severe':'⚠️','shiny':'✨','shocked':'😱','shy':'😳','similar':'🟰','simple':'👌','sincere':'💗','skinny':'🥢','sleepy':'😴','slim':'🥢','slippery':'💧','smelly':'💨','smiling':'😊','solid':'🧱','sorry':'🙏','sparkling':'✨','spotless':'✨','stable':'🏛️','steady':'⚖️','steep':'⛰️','sticky':'🍯','stiff':'🧱','still':'🤫','stormy':'⛈️','strict':'📏','stubborn':'🐴','stupid':'🤪','successful':'🏆','sudden':'⚡','super':'🦸','superb':'🌟','supreme':'👑','surprised':'😲','suspicious':'🕵️','swift':'⚡','talented':'🌟','tame':'🐕','tasty':'😋','tender':'💗','terrific':'🎉','thoughtful':'💭','tight':'🤏','tough':'💪','tranquil':'🕊️','tremendous':'🦣','tricky':'🎩','trustworthy':'🛡️','twin':'👯','typical':'⭐','unable':'🚫','unaware':'🙈','unbelievable':'🤯','uncertain':'❓','uncomfortable':'😖','unconscious':'😵','unfair':'⚖️','unfortunate':'😢','unhappy':'😢','unique':'🦄','united':'🤝','unknown':'❓','unlucky':'😞','unusual':'❓','urban':'🏙️','urgent':'🚨','usual':'🔄','vacant':'🚪','vague':'💭','valid':'✅','various':'🌈','vast':'🌊','verbal':'💬','vertical':'⬆️','vibrant':'🌈','victorious':'🏆','vigorous':'💪','violent':'💥','virtual':'💻','visible':'👀','vital':'💚','vivid':'🌈','vocal':'🎤','voluntary':'🤝','vulnerable':'🥺','wasteful':'🗑️','watchful':'👀','wealthy':'💰','weary':'😩','whole':'⚪','willing':'🤝','witty':'😂','wooden':'🪵','worried':'😟','worthless':'🚫','worthy':'⭐','zealous':'🔥'
+'adventure':'🗺️','advertisement':'📺','alphabet':'🔤','ancient':'🏛️','area':'🗺️','art':'🎨','attraction':'🎡','author':'✍️','autograph':'✍️','balloon':'🎈','barbecue':'🍖','basketball':'🏀','bicycle':'🚲','bike':'🚲','bill':'🧾','biography':'📖','boat':'⛵','boots':'👢','bridge':'🌉','business':'💼','canal':'🚣','capital':'🏛️','caramel':'🍮','career':'💼','cash':'💵','celebrate':'🎉','cell':'🔒','cell phone':'📱','center':'🏛️','ceremony':'🎊','chance':'🎲','character':'🎭','charity':'💝','chip':'🍟','crisps':'🥔','class':'🏫','classify':'📊','coffee':'☕','column':'📊','community':'🏘️','company':'🏢','competition':'🏆','complain':'😤','concert':'🎤','consist of':'📦','contact':'📞','container':'📦','control':'🎮','conversation':'💬','copy':'📄','costume':'👗','cough':'😷','craft':'🎨','creative':'🎨','crosswalk':'🚶','crowd':'👥','culture':'🌍','cycling':'🚴','damage':'💥','dare':'😏','daughter':'👧','dear':'💕','death':'💀','debate':'🗣️','decorate':'🎨','democracy':'🗳️','depart':'🚂','describe':'💬','detective':'🕵️','diagram':'📊','diarrhea':'🤢','digital':'📱','direction':'🧭','discuss':'💬','distance':'📏','divorce':'💔','dollar':'💵','earache':'🤕','education':'🎓','effect':'✨','electricity':'⚡','energy':'⚡','engine':'⚙️','English':'🇬🇧','entertain':'🎭','entrance':'🚪','environment':'🌍','escape':'🏃','exact':'🎯','exam':'📝','example':'📋','exhibition':'🖼️','exit':'🚪','expect':'🤔','explode':'💥','fashion':'👗','female':'♀️','ferry':'⛴️','fever':'🤒','figure':'🧍','film':'🎬','fireworks':'🎆','fish sauce':'🥫','fishing':'🎣','fitness':'💪','flood':'🌊','forecast':'🌤️','friendship':'🤝','galaxy':'🌌','game':'🎮','garbage':'🗑️','geography':'🌍','golf':'⛳','grain':'🌾','grocery':'🛒','gymnastic':'🤸','habit':'🔄','haircut':'💇','half':'➗','health':'💚','helicopter':'🚁','highway':'🛣️','hiking':'🥾','history':'📜','hobby':'🎨','hole':'🕳️','homework':'📝','honor':'🏅','hope':'🌈','horoscope':'♈','ice':'🧊','idea':'💡','immediately':'⚡','improve':'📈','information':'ℹ️','ingredient':'🥘','ink':'🖋️','instruction':'📋','instrument':'🎵','internet':'🌐','interview':'💼','introduce':'🤝','invent':'💡','itch':'😣','jasmine':'🌼','journey':'🚗','kayak':'🛶','kilo':'⚖️','kingdom':'👑','knowledge':'🧠','label':'🏷️','labor':'👷','language':'🗣️','laundry':'👕','law':'⚖️','leather':'🐄','length':'📏','lesson':'📚','letter':'✉️','life':'💫','liquid':'💧','litter':'🗑️','location':'📍','lottery':'🎰','luck':'🍀','luggage':'🧳','magic':'✨','mail':'📧','male':'♂️','marble':'🔮','mark':'📝','match':'✅','material':'🧵','math':'➗','meaning':'💬','measure':'📏','medicine':'💊','member':'👥','menu':'📋','message':'💬','metal':'🔩','meter':'📏','microwave':'🍲','military':'🎖️','mistake':'❌','money':'💰','monument':'🗿','movie':'🎬','music':'🎵','nationality':'🌍','news':'📰','noise':'📢','note':'📝','notice':'👀','novel':'📖','nut':'🥜','oil':'🛢️','online':'🌐','opinion':'💭','opposite':'↔️','order':'📋','origin':'🌍','package':'📦','painting':'🎨','parade':'🎊','paragraph':'📝','part':'🧩','party':'🎉','pass':'✅','passport':'🛂','path':'🛤️','pattern':'🔷','peace':'☮️','percent':'％','personality':'💭','phone':'📱','picnic':'🧺','place':'📍','plan':'📋','planet':'🪐','plastic':'♻️','pleasure':'😊','poem':'📜','point':'⭐','poison':'☠️','pollution':'🏭','portfolio':'📁','position':'📍','post':'📮','powder':'🧂','power':'⚡','present':'🎁','price':'💵','prize':'🏆','problem':'❓','product':'📦','professional':'👔','program':'📺','promise':'🤝','pronounce':'🗣️','publish':'📚','pumpkin':'🎃','purpose':'🎯','puzzle':'🧩','quality':'⭐','quantity':'📊','quarter':'🪙','question':'❓','queue':'🚶','quiz':'📝','race':'🏁','railway':'🚂','raincoat':'🧥','reason':'💭','receipt':'🧾','recipe':'📖','recommend':'👍','recycle':'♻️','reduce':'⬇️','refuse':'🙅','region':'🗺️','regular':'🔄','relative':'👨‍👩‍👧','religion':'🕊️','rent':'🏠','research':'🔬','respect':'🙇','result':'📊','reuse':'♻️','review':'📝','reward':'🏆','role':'🎭','roof':'🏠','room':'🚪','route':'🗺️','routine':'📅','rubbish':'🗑️','rugby':'🏉','rule':'📏','salary':'💵','sale':'🏷️','science':'🔬','score':'⭐','sculpture':'🗿','seat':'🪑','secret':'🤫','section':'📑','sentence':'📝','series':'📺','service':'🛎️','share':'🤝','shell':'🐚','shore':'🏖️','shower':'🚿','sign':'🪧','signal':'🚦','sink':'🚰','situation':'🎭','size':'📏','skill':'🎯','slice':'🍰','smoke':'💨','sneeze':'🤧','soccer':'⚽','social':'👥','software':'💻','solve':'🧩','song':'🎵','sound':'🔊','souvenir':'🎁','space':'🚀','spaceship':'🚀','speaker':'🔊','speech':'🗣️','speed':'⚡','sport':'⚽','spot':'🔴','stage':'🎭','stairs':'🪜','stamp':'📮','statue':'🗿','step':'👣','stick':'🪵','story':'📖','straight':'📏','strange':'❓','stress':'😰','style':'🎨','subject':'📚','suit':'👔','support':'🤝','surprise':'🎉','survey':'📊','sweep':'🧹','swimming':'🏊','swing':'🛝','system':'⚙️','tablet':'💊','talent':'🌟','target':'🎯','task':'📋','taste':'👅','taxi':'🚕','team':'👥','tear':'💧','technology':'💻','temperature':'🌡️','tennis':'🎾','term':'📅','test':'📝','text':'💬','thank you':'🙏','theme':'🎨','theory':'💡','thought':'💭','thread':'🧵','tie':'👔','tiny':'🐜','tip':'💡','title':'📖','together':'👫','toilet':'🚽','tool':'🔧','top':'🌀','track':'🛤️','tradition':'🎎','traffic':'🚦','train':'🚂','training':'💪','transport':'🚌','travel':'✈️','treasure':'💰','treat':'🎁','trip':'🧳','trouble':'⚠️','trousers':'👖','trust':'🤝','truth':'💯','tunnel':'🚇','type':'⌨️','universe':'🌌','useless':'🚫','vehicle':'🚗','victory':'🏆','view':'👀','visa':'🛂','visit':'👋','vitamin':'💊','voice':'🗣️','volleyball':'🏐','vowel':'🔤','wall':'🧱','war':'⚔️','wardrobe':'🚪','waste':'🗑️','way':'🛤️','wealth':'💰','weapon':'⚔️','website':'🌐','wedding':'💒','weight':'⚖️','welcome':'🙏','well':'👍','west':'⬅️','wheat':'🌾','whistle':'📢','wild':'🌲','wine':'🍷','wire':'🔌','wool':'🧶','word':'🔤','work':'💼','worth':'💎','wound':'🩹','yard':'🏡','zone':'📍'
 };
 
 // ============================================================
-//  🎨 SVG_MAP — วาด SVG เฉพาะคำที่อีโมจิไม่ตรง/ไม่มี
+//  SVG_MAP (fallback)
 // ============================================================
 const SVG_MAP = {
 'longan':'<svg viewBox="0 0 100 100"><circle cx="50" cy="58" r="28" fill="#8B6F47"/><circle cx="42" cy="50" r="4" fill="#5C4A2F"/><circle cx="58" cy="54" r="4" fill="#5C4A2F"/><circle cx="50" cy="66" r="4" fill="#5C4A2F"/><path d="M50 30 Q52 18 56 12" stroke="#4A7C2F" stroke-width="3" fill="none" stroke-linecap="round"/></svg>',
@@ -4485,8 +4474,6 @@ const SVG_MAP = {
 'space ship':'<svg viewBox="0 0 100 100"><path d="M50 14 Q66 44 66 70 L34 70 Q34 44 50 14 Z" fill="#ECF0F1" stroke="#95A5A6" stroke-width="2"/><path d="M34 70 L22 86 L50 80 L78 86 L66 70 Z" fill="#E74C3C"/><circle cx="50" cy="42" r="7" fill="#3498DB" stroke="#95A5A6" stroke-width="1.5"/><path d="M50 82 Q50 90 50 96" stroke="#F1C40F" stroke-width="3" stroke-linecap="round"/></svg>',
 'table tennis':'<svg viewBox="0 0 100 100"><ellipse cx="34" cy="42" rx="22" ry="28" fill="#E74C3C" transform="rotate(-20 34 42)"/><ellipse cx="34" cy="42" rx="22" ry="28" fill="none" stroke="#C0392B" stroke-width="1.5" transform="rotate(-20 34 42)"/><path d="M36 72 L42 88" stroke="#8B6F47" stroke-width="6" stroke-linecap="round"/><circle cx="72" cy="36" r="11" fill="#FFF" stroke="#95A5A6" stroke-width="1.5"/></svg>',
 'P.E.':'<svg viewBox="0 0 100 100"><circle cx="38" cy="58" r="24" fill="#E74C3C"/><circle cx="38" cy="58" r="10" fill="#FFF"/><rect x="56" y="50" width="28" height="16" rx="3" fill="#C0392B"/><path d="M28 32 Q38 24 48 32" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/><circle cx="52" cy="24" r="3" fill="#333"/></svg>',
-'textbook':'<svg viewBox="0 0 100 100"><path d="M12 24 Q30 20 50 24 Q70 20 88 24 L88 82 Q70 78 50 82 Q30 78 12 82 Z" fill="#3498DB"/><path d="M12 24 L50 24 L50 82 L12 82 Z" fill="#2980B9"/><path d="M20 36 L44 36 M20 46 L44 46 M20 56 L40 56" stroke="#ECF0F1" stroke-width="2" stroke-linecap="round"/><path d="M56 36 L80 36 M56 46 L80 46 M56 56 L76 56" stroke="#ECF0F1" stroke-width="2" stroke-linecap="round"/></svg>',
-'schoolbag':'<svg viewBox="0 0 100 100"><path d="M24 40 Q24 28 36 28 L64 28 Q76 28 76 40 L80 86 L20 86 Z" fill="#E67E22"/><path d="M24 52 L76 52" stroke="#B85C10" stroke-width="2.5"/><rect x="34" y="58" width="32" height="22" rx="3" fill="#B85C10"/><path d="M40 28 Q40 20 50 20 Q60 20 60 28" stroke="#8B6F47" stroke-width="2.5" fill="none"/></svg>',
 'comb':'<svg viewBox="0 0 100 100"><rect x="18" y="30" width="64" height="40" rx="4" fill="#E74C3C"/><path d="M22 68 L26 82 M32 68 L36 82 M42 68 L46 82 M52 68 L56 82 M62 68 L66 82 M72 68 L76 82" stroke="#C0392B" stroke-width="3.5" stroke-linecap="round"/></svg>',
 'hairdryer':'<svg viewBox="0 0 100 100"><path d="M22 42 Q22 30 34 30 L58 30 Q70 30 70 42 L70 58 Q70 70 58 70 L34 70 Q22 70 22 58 Z" fill="#E74C3C"/><rect x="14" y="46" width="12" height="12" fill="#C0392B"/><circle cx="46" cy="50" r="8" fill="#C0392B"/><path d="M76 42 L86 36 M76 50 L88 50 M76 58 L86 64" stroke="#3498DB" stroke-width="2.5" stroke-linecap="round"/></svg>',
 'sink':'<svg viewBox="0 0 100 100"><path d="M15 50 L85 50 L82 78 Q82 84 76 84 L24 84 Q18 84 18 78 Z" fill="#ECF0F1" stroke="#95A5A6" stroke-width="2"/><path d="M30 50 L30 40 Q30 30 40 30 L60 30 Q70 30 70 40 L70 50" fill="none" stroke="#95A5A6" stroke-width="3"/><circle cx="50" cy="45" r="2" fill="#95A5A6"/></svg>',
@@ -4499,22 +4486,15 @@ const SVG_MAP = {
 'cell':'<svg viewBox="0 0 100 100"><rect x="18" y="20" width="64" height="60" rx="4" fill="#4A4A4A"/><path d="M18 32 L82 32 M18 44 L82 44 M18 56 L82 56 M18 68 L82 68" stroke="#2C2C2C" stroke-width="2"/><path d="M32 20 L32 80 M50 20 L50 80 M68 20 L68 80" stroke="#2C2C2C" stroke-width="2"/><circle cx="72" cy="26" r="3" fill="#8B6F47"/></svg>',
 'point':'<svg viewBox="0 0 100 100"><path d="M50 14 L58 40 L86 40 L64 56 L72 84 L50 68 L28 84 L36 56 L14 40 L42 40 Z" fill="#F1C40F" stroke="#E67E22" stroke-width="2.5" stroke-linejoin="round"/></svg>',
 'score':'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="34" fill="#F1C40F" stroke="#E67E22" stroke-width="3"/><text x="50" y="68" text-anchor="middle" font-size="46" font-weight="900" fill="#E67E22" font-family="Arial">10</text></svg>',
-'gold':'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="#F1C40F" stroke="#B8860B" stroke-width="3"/><circle cx="42" cy="42" r="8" fill="#FCF3CF"/><text x="50" y="62" text-anchor="middle" font-size="22" font-weight="900" fill="#B8860B" font-family="Arial">Au</text></svg>',
-'silver':'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="#D5DBDB" stroke="#7F8C8D" stroke-width="3"/><circle cx="42" cy="42" r="8" fill="#F4F6F7"/><text x="50" y="62" text-anchor="middle" font-size="22" font-weight="900" fill="#5D6D7E" font-family="Arial">Ag</text></svg>',
 'match':'<svg viewBox="0 0 100 100"><path d="M20 50 Q20 34 36 34 Q50 34 50 50 Q50 66 36 66 Q20 66 20 50 Z" fill="#27AE60"/><path d="M50 50 Q50 34 64 34 Q80 34 80 50 Q80 66 64 66 Q50 66 50 50 Z" fill="#27AE60"/><path d="M42 44 L42 56 M38 50 L46 50" stroke="#FFF" stroke-width="2.5" stroke-linecap="round"/></svg>',
 'single':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="16" fill="#F5C6A0"/><circle cx="44" cy="32" r="2" fill="#333"/><circle cx="56" cy="32" r="2" fill="#333"/><path d="M44 40 Q50 44 56 40" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#9B59B6"/></svg>',
-'poor':'<svg viewBox="0 0 100 100"><path d="M30 30 Q30 22 38 22 L62 22 Q70 22 70 30 L72 80 L28 80 Z" fill="#95A5A6"/><path d="M30 40 L70 40 M30 50 L70 50" stroke="#7F8C8D" stroke-width="2" stroke-dasharray="4 4"/><path d="M60 60 L70 70 L65 72 L68 80" stroke="#7F8C8D" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="42" cy="60" r="4" fill="#7F8C8D"/><circle cx="50" cy="66" r="3" fill="#7F8C8D"/></svg>',
+'poor':'<svg viewBox="0 0 100 100"><path d="M30 30 Q30 22 38 22 L62 22 Q70 22 70 30 L72 80 L28 80 Z" fill="#95A5A6"/><path d="M30 40 L70 40 M30 50 L70 50" stroke="#7F8C8D" stroke-width="2" stroke-dasharray="4 4"/><circle cx="42" cy="60" r="4" fill="#7F8C8D"/><circle cx="50" cy="66" r="3" fill="#7F8C8D"/></svg>',
 'hungry':'<svg viewBox="0 0 100 100"><circle cx="50" cy="46" r="26" fill="#F5C6A0"/><circle cx="42" cy="42" r="3" fill="#333"/><circle cx="58" cy="42" r="3" fill="#333"/><ellipse cx="50" cy="60" rx="10" ry="8" fill="#4A3728"/><path d="M40 60 Q50 54 60 60" stroke="#333" stroke-width="1.5" fill="none"/></svg>',
-'handsome':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M30 30 Q50 12 70 30 L70 22 Q50 8 30 22 Z" fill="#4A3728"/><rect x="34" y="30" width="14" height="8" rx="4" fill="#2C3E50"/><rect x="52" y="30" width="14" height="8" rx="4" fill="#2C3E50"/><path d="M48 32 L52 32" stroke="#2C3E50" stroke-width="2"/><path d="M44 48 Q50 52 56 48" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M22 88 Q22 58 50 58 Q78 58 78 88 Z" fill="#2C3E50"/><path d="M50 58 L50 88" stroke="#FFF" stroke-width="1.5"/></svg>',
-'understand':'<svg viewBox="0 0 100 100"><path d="M50 22 Q34 22 30 40 Q26 54 36 62 L36 74 L64 74 L64 62 Q74 54 70 40 Q66 22 50 22 Z" fill="#F5B7E0"/><circle cx="50" cy="46" r="6" fill="#FCF3CF"/><path d="M50 40 L50 46 L54 50" stroke="#E67E22" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
+'handsome':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M30 30 Q50 12 70 30 L70 22 Q50 8 30 22 Z" fill="#4A3728"/><rect x="34" y="30" width="14" height="8" rx="4" fill="#2C3E50"/><rect x="52" y="30" width="14" height="8" rx="4" fill="#2C3E50"/><path d="M48 32 L52 32" stroke="#2C3E50" stroke-width="2"/><path d="M44 48 Q50 52 56 48" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M22 88 Q22 58 50 58 Q78 58 78 88 Z" fill="#2C3E50"/></svg>',
 'know':'<svg viewBox="0 0 100 100"><path d="M50 18 Q30 18 26 42 Q24 60 38 70 L38 82 L62 82 L62 70 Q76 60 74 42 Q70 18 50 18 Z" fill="#F5B7E0"/><path d="M36 42 L44 50 L64 30" stroke="#27AE60" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 'chin':'<svg viewBox="0 0 100 100"><circle cx="50" cy="40" r="24" fill="#F5C6A0"/><circle cx="42" cy="36" r="2.5" fill="#333"/><circle cx="58" cy="36" r="2.5" fill="#333"/><path d="M42 46 Q50 52 58 46" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M40 56 Q50 66 60 56" stroke="#C77DC0" stroke-width="3" fill="none" stroke-linecap="round"/></svg>',
 'hip':'<svg viewBox="0 0 100 100"><circle cx="50" cy="24" r="14" fill="#F5C6A0"/><path d="M30 52 Q30 40 50 40 Q70 40 70 52 L68 82 L32 82 Z" fill="#3498DB"/><path d="M30 60 Q50 66 70 60" stroke="#2980B9" stroke-width="2" fill="none" stroke-dasharray="3 3"/></svg>',
-'waist':'<svg viewBox="0 0 100 100"><circle cx="50" cy="20" r="12" fill="#F5C6A0"/><path d="M32 44 Q32 34 50 34 Q68 34 68 44 L66 80 L34 80 Z" fill="#3498DB"/><path d="M32 56 Q50 62 68 56" stroke="#E74C3C" stroke-width="4" fill="none"/></svg>',
-'wrist':'<svg viewBox="0 0 100 100"><path d="M22 46 Q22 30 40 30 L58 30 Q74 30 74 44 L74 56 Q74 70 58 70 L40 70 Q22 70 22 56 Z" fill="#F5C6A0"/><path d="M50 30 L50 70" stroke="#E0A880" stroke-width="2" stroke-dasharray="4 3"/><rect x="62" y="42" width="18" height="16" rx="2" fill="#F1C40F"/></svg>',
-'forehead':'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="28" fill="#F5C6A0"/><path d="M24 40 Q50 22 76 40" stroke="#4A3728" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="42" cy="52" r="2.5" fill="#333"/><circle cx="58" cy="52" r="2.5" fill="#333"/><path d="M42 64 Q50 68 58 64" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M32 38 L68 38" stroke="#C77DC0" stroke-width="2" stroke-dasharray="4 3"/></svg>',
-'throat':'<svg viewBox="0 0 100 100"><circle cx="50" cy="28" r="14" fill="#F5C6A0"/><circle cx="44" cy="26" r="2" fill="#333"/><circle cx="56" cy="26" r="2" fill="#333"/><path d="M40 40 L40 60 L60 60 L60 40" fill="#F5C6A0"/><path d="M44 44 Q50 60 56 44" stroke="#E0A880" stroke-width="2" fill="none"/><path d="M28 90 Q28 64 50 64 Q72 64 72 90 Z" fill="#3498DB"/></svg>',
-'stomach':'<svg viewBox="0 0 100 100"><circle cx="50" cy="22" r="10" fill="#F5C6A0"/><path d="M30 42 Q30 34 50 34 Q70 34 70 42 L72 66 Q72 78 60 80 L40 80 Q28 78 28 66 Z" fill="#3498DB"/><ellipse cx="50" cy="58" rx="16" ry="14" fill="#2980B9"/><circle cx="50" cy="58" r="5" fill="#F5C6A0"/></svg>',
+'forehead':'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="28" fill="#F5C6A0"/><path d="M24 40 Q50 22 76 40" stroke="#4A3728" stroke-width="6" fill="none" stroke-linecap="round"/><circle cx="42" cy="52" r="2.5" fill="#333"/><circle cx="58" cy="52" r="2.5" fill="#333"/><path d="M42 64 Q50 68 58 64" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>',
 'nail':'<svg viewBox="0 0 100 100"><path d="M30 70 L30 30 Q30 22 38 22 L46 22 Q54 22 54 30 L54 70 Q54 82 42 82 Q30 82 30 70 Z" fill="#F5C6A0"/><ellipse cx="42" cy="32" rx="6" ry="4" fill="#FCE4E4" stroke="#E0A880" stroke-width="1.5"/></svg>',
 'democracy':'<svg viewBox="0 0 100 100"><rect x="30" y="30" width="40" height="50" rx="2" fill="#ECF0F1" stroke="#95A5A6" stroke-width="2"/><rect x="36" y="36" width="28" height="6" fill="#BDC3C7"/><rect x="36" y="46" width="28" height="6" fill="#BDC3C7"/><path d="M30 30 L42 20 L58 20 L70 30" stroke="#95A5A6" stroke-width="2" fill="none"/><path d="M42 60 L48 68 L62 50" stroke="#27AE60" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 'friendship':'<svg viewBox="0 0 100 100"><path d="M50 80 Q22 62 22 42 Q22 28 38 28 Q50 28 50 42 Q50 28 62 28 Q78 28 78 42 Q78 62 50 80 Z" fill="#E74C3C" stroke="#C0392B" stroke-width="2" stroke-linejoin="round"/><path d="M42 42 Q50 48 58 42" stroke="#FFF" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
@@ -4545,7 +4525,6 @@ const SVG_MAP = {
 'company':'<svg viewBox="0 0 100 100"><rect x="30" y="26" width="40" height="60" fill="#3498DB"/><rect x="14" y="46" width="20" height="40" fill="#2980B9"/><rect x="66" y="46" width="20" height="40" fill="#2980B9"/><path d="M38 38 L42 38 M50 38 L54 38 M62 38 L66 38 M38 50 L42 50 M50 50 L54 50 M62 50 L66 50 M38 62 L42 62 M50 62 L54 62 M62 62 L66 62" stroke="#FFF" stroke-width="2"/></svg>',
 'career':'<svg viewBox="0 0 100 100"><path d="M36 86 L36 30 L44 30 L44 86 M28 86 L52 86" stroke="#8B6F47" stroke-width="5" stroke-linecap="round"/><path d="M44 50 L58 50 L58 58 L44 58 M44 70 L62 70 L62 78 L44 78 M44 30 L54 30 L54 38 L44 38" stroke="#8B6F47" stroke-width="4" fill="none" stroke-linejoin="round"/></svg>',
 'family':'<svg viewBox="0 0 100 100"><circle cx="30" cy="38" r="10" fill="#F5C6A0"/><circle cx="70" cy="38" r="10" fill="#F5C6A0"/><circle cx="50" cy="56" r="8" fill="#F5C6A0"/><path d="M14 82 Q14 58 30 58 Q38 58 42 64 Q48 56 58 64 Q62 58 70 58 Q86 58 86 82 Z" fill="#3498DB"/></svg>',
-'marriage':'<svg viewBox="0 0 100 100"><circle cx="38" cy="56" r="20" fill="none" stroke="#F1C40F" stroke-width="6"/><circle cx="62" cy="56" r="20" fill="none" stroke="#F1C40F" stroke-width="6"/><path d="M32 22 L38 14 L44 22 Z" fill="#E74C3C"/><path d="M56 22 L62 14 L68 22 Z" fill="#E74C3C"/></svg>',
 'divorce':'<svg viewBox="0 0 100 100"><circle cx="50" cy="56" r="24" fill="none" stroke="#95A5A6" stroke-width="6"/><path d="M36 42 L64 70 M64 42 L36 70" stroke="#E74C3C" stroke-width="6" stroke-linecap="round"/></svg>',
 'death':'<svg viewBox="0 0 100 100"><rect x="40" y="50" width="20" height="40" fill="#F5E6D3"/><rect x="36" y="46" width="28" height="6" fill="#8B6F47"/><path d="M50 46 Q46 30 50 20" stroke="#95A5A6" stroke-width="2" fill="none"/><path d="M50 46 Q54 30 50 20" stroke="#BDC3C7" stroke-width="2" fill="none"/></svg>',
 'health':'<svg viewBox="0 0 100 100"><path d="M50 80 Q22 62 22 42 Q22 28 38 28 Q50 28 50 42 Q50 28 62 28 Q78 28 78 42 Q78 62 50 80 Z" fill="#E74C3C"/><path d="M30 50 L42 50 L46 42 L52 58 L58 50 L70 50" stroke="#FFF" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -4559,43 +4538,696 @@ const SVG_MAP = {
 'rude':'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="26" fill="#E74C3C"/><circle cx="42" cy="44" r="3" fill="#FFF"/><circle cx="58" cy="44" r="3" fill="#FFF"/><path d="M40 64 L60 60" stroke="#FFF" stroke-width="2.5" stroke-linecap="round"/></svg>',
 'rich':'<svg viewBox="0 0 100 100"><rect x="24" y="40" width="52" height="44" rx="8" fill="#8B6F47"/><path d="M36 40 Q36 22 50 22 Q64 22 64 40" stroke="#5C4A2F" stroke-width="4" fill="none"/><circle cx="50" cy="62" r="10" fill="#F1C40F"/><text x="50" y="68" text-anchor="middle" font-size="14" font-weight="900" fill="#B8860B" font-family="Arial">$</text></svg>',
 'strong':'<svg viewBox="0 0 100 100"><path d="M20 58 Q20 34 40 34 Q48 30 54 34 Q66 30 72 42 Q82 44 82 58 Q82 74 66 74 L34 74 Q20 74 20 58 Z" fill="#F5C6A0"/><path d="M30 50 Q34 44 40 46 M62 46 Q68 44 72 50" stroke="#E0A880" stroke-width="2" fill="none"/></svg>',
-'weak':'<svg viewBox="0 0 100 100"><path d="M22 62 Q22 42 40 42 Q48 38 54 42 Q66 42 70 54 Q78 58 78 68 Q78 82 64 82 L36 82 Q22 82 22 62 Z" fill="#F5C6A0" opacity="0.7"/><path d="M34 58 Q40 54 44 58 M56 58 Q60 54 66 58" stroke="#E0A880" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
-'fast':'<svg viewBox="0 0 100 100"><path d="M56 12 L28 54 L48 54 L40 88 L72 42 L52 42 Z" fill="#F1C40F" stroke="#E67E22" stroke-width="2" stroke-linejoin="round"/></svg>',
+'weak':'<svg viewBox="0 0 100 100"><path d="M22 62 Q22 42 40 42 Q48 38 54 42 Q66 42 70 54 Q78 58 78 68 Q78 82 64 82 L36 82 Q22 82 22 62 Z" fill="#F5C6A0" opacity="0.7"/></svg>',
 'hot':'<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="18" fill="#F1C40F"/><path d="M50 14 L50 22 M50 78 L50 86 M14 50 L22 50 M78 50 L86 50 M24 24 L30 30 M70 70 L76 76 M76 24 L70 30 M30 70 L24 76" stroke="#E67E22" stroke-width="4" stroke-linecap="round"/></svg>',
 'cold':'<svg viewBox="0 0 100 100"><path d="M50 18 L50 82 M20 34 L80 66 M20 66 L80 34" stroke="#3498DB" stroke-width="4" stroke-linecap="round"/><path d="M42 26 L50 18 L58 26 M42 74 L50 82 L58 74 M28 40 L20 34 L28 28 M72 40 L80 34 L72 28 M28 60 L20 66 L28 72 M72 60 L80 66 L72 72" stroke="#3498DB" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-'heavy':'<svg viewBox="0 0 100 100"><path d="M24 30 L40 30 L44 42 L56 42 L60 30 L76 30 L70 80 L30 80 Z" fill="#2C3E50"/><path d="M44 42 L56 42" stroke="#FFF" stroke-width="2"/><text x="50" y="70" text-anchor="middle" font-size="18" font-weight="900" fill="#F1C40F" font-family="Arial">kg</text></svg>',
+'heavy':'<svg viewBox="0 0 100 100"><path d="M24 30 L40 30 L44 42 L56 42 L60 30 L76 30 L70 80 L30 80 Z" fill="#2C3E50"/><text x="50" y="70" text-anchor="middle" font-size="18" font-weight="900" fill="#F1C40F" font-family="Arial">kg</text></svg>',
 'light':'<svg viewBox="0 0 100 100"><path d="M50 20 Q44 20 42 34 L38 46 Q32 54 32 62 Q32 76 46 78 L54 78 Q68 76 68 62 Q68 54 62 46 L58 34 Q56 20 50 20 Z" fill="#F5E6D3" stroke="#BDC3C7" stroke-width="2"/><path d="M42 62 Q50 56 58 62" stroke="#BDC3C7" stroke-width="2" fill="none"/></svg>',
-'godmother':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><circle cx="44" cy="32" r="2.5" fill="#333"/><circle cx="56" cy="32" r="2.5" fill="#333"/><path d="M44 40 Q50 44 56 40" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M28 30 Q50 14 72 30 L72 44 Q50 30 28 44 Z" fill="#F5E6A8" opacity="0.7"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#9B59B6"/></svg>',
-'godfather':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><circle cx="44" cy="32" r="2.5" fill="#333"/><circle cx="56" cy="32" r="2.5" fill="#333"/><path d="M44 40 Q50 44 56 40" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M28 30 Q50 14 72 30 L72 44 Q50 30 28 44 Z" fill="#F5E6A8" opacity="0.7"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#2C3E50"/></svg>',
-'brother in law':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><circle cx="44" cy="32" r="2.5" fill="#333"/><circle cx="56" cy="32" r="2.5" fill="#333"/><path d="M44 40 Q50 44 56 40" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#3498DB"/><circle cx="75" cy="45" r="10" fill="#F1C40F"/><text x="75" y="50" text-anchor="middle" font-size="12" font-weight="900" fill="#B8860B" font-family="Arial">IN</text></svg>',
-'sister in law':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M32 34 Q32 18 50 18 Q68 18 68 34 L68 48 Q60 40 50 42 Q40 40 32 48 Z" fill="#4A3728"/><circle cx="44" cy="34" r="2.5" fill="#333"/><circle cx="56" cy="34" r="2.5" fill="#333"/><path d="M44 42 Q50 46 56 42" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#EC7063"/><circle cx="75" cy="45" r="10" fill="#F1C40F"/><text x="75" y="50" text-anchor="middle" font-size="12" font-weight="900" fill="#B8860B" font-family="Arial">IN</text></svg>',
-'father in law':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M32 30 Q50 14 68 30 L68 22 Q50 8 32 22 Z" fill="#95A5A6"/><circle cx="44" cy="32" r="2.5" fill="#333"/><circle cx="56" cy="32" r="2.5" fill="#333"/><path d="M44 40 Q50 44 56 40" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#5D6D7E"/><circle cx="75" cy="45" r="10" fill="#F1C40F"/><text x="75" y="50" text-anchor="middle" font-size="12" font-weight="900" fill="#B8860B" font-family="Arial">IN</text></svg>',
-'mother in law':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M30 34 Q30 16 50 16 Q70 16 70 34 L70 32 Q58 22 42 22 Q30 26 30 34 Z" fill="#95A5A6"/><circle cx="44" cy="32" r="2.5" fill="#333"/><circle cx="56" cy="32" r="2.5" fill="#333"/><path d="M44 40 Q50 44 56 40" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#9B59B6"/><circle cx="75" cy="45" r="10" fill="#F1C40F"/><text x="75" y="50" text-anchor="middle" font-size="12" font-weight="900" fill="#B8860B" font-family="Arial">IN</text></svg>',
-'stepfather':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><circle cx="44" cy="32" r="2.5" fill="#333"/><circle cx="56" cy="32" r="2.5" fill="#333"/><path d="M44 40 Q50 44 56 40" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#2C3E50"/><circle cx="75" cy="45" r="11" fill="#27AE60"/><text x="75" y="52" text-anchor="middle" font-size="18" font-weight="900" fill="#FFF" font-family="Arial">+</text></svg>',
-'stepmother':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M32 34 Q32 18 50 18 Q68 18 68 34 L68 46 Q60 40 50 42 Q40 40 32 46 Z" fill="#4A3728"/><circle cx="44" cy="34" r="2.5" fill="#333"/><circle cx="56" cy="34" r="2.5" fill="#333"/><path d="M44 42 Q50 46 56 42" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#EC7063"/><circle cx="75" cy="45" r="11" fill="#27AE60"/><text x="75" y="52" text-anchor="middle" font-size="18" font-weight="900" fill="#FFF" font-family="Arial">+</text></svg>',
-'elder brother':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M32 32 Q50 22 68 32 L68 22 Q50 14 32 22 Z" fill="#4A3728"/><circle cx="44" cy="34" r="2" fill="#333"/><circle cx="56" cy="34" r="2" fill="#333"/><path d="M44 42 Q50 46 56 42" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#3498DB"/><text x="50" y="80" text-anchor="middle" font-size="14" font-weight="900" fill="#FFF" font-family="Arial">1</text></svg>',
-'elder sister':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M32 34 Q32 18 50 18 Q68 18 68 34 L68 48 Q60 40 50 42 Q40 40 32 48 Z" fill="#4A3728"/><circle cx="44" cy="34" r="2" fill="#333"/><circle cx="56" cy="34" r="2" fill="#333"/><path d="M44 42 Q50 46 56 42" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#EC7063"/><text x="50" y="80" text-anchor="middle" font-size="14" font-weight="900" fill="#FFF" font-family="Arial">1</text></svg>',
-'younger brother':'<svg viewBox="0 0 100 100"><circle cx="50" cy="38" r="14" fill="#F5C6A0"/><circle cx="46" cy="36" r="2" fill="#333"/><circle cx="54" cy="36" r="2" fill="#333"/><path d="M46 42 Q50 46 54 42" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M28 88 Q28 62 50 62 Q72 62 72 88 Z" fill="#27AE60"/><text x="50" y="84" text-anchor="middle" font-size="14" font-weight="900" fill="#FFF" font-family="Arial">2</text></svg>',
-'younger sister':'<svg viewBox="0 0 100 100"><circle cx="50" cy="38" r="14" fill="#F5C6A0"/><path d="M38 36 Q38 24 50 24 Q62 24 62 36 L62 44 Q56 38 50 40 Q44 38 38 44 Z" fill="#4A3728"/><circle cx="46" cy="37" r="2" fill="#333"/><circle cx="54" cy="37" r="2" fill="#333"/><path d="M46 43 Q50 47 54 43" stroke="#333" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M28 88 Q28 62 50 62 Q72 62 72 88 Z" fill="#F39C12"/><text x="50" y="84" text-anchor="middle" font-size="14" font-weight="900" fill="#FFF" font-family="Arial">2</text></svg>',
+'godmother':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M28 30 Q50 14 72 30 L72 44 Q50 30 28 44 Z" fill="#F5E6A8" opacity="0.7"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#9B59B6"/></svg>',
+'godfather':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M28 30 Q50 14 72 30 L72 44 Q50 30 28 44 Z" fill="#F5E6A8" opacity="0.7"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#2C3E50"/></svg>',
+'brother in law':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#3498DB"/><circle cx="75" cy="45" r="10" fill="#F1C40F"/><text x="75" y="50" text-anchor="middle" font-size="12" font-weight="900" fill="#B8860B" font-family="Arial">IN</text></svg>',
+'sister in law':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M32 34 Q32 18 50 18 Q68 18 68 34 L68 48 Q60 40 50 42 Q40 40 32 48 Z" fill="#4A3728"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#EC7063"/><circle cx="75" cy="45" r="10" fill="#F1C40F"/><text x="75" y="50" text-anchor="middle" font-size="12" font-weight="900" fill="#B8860B" font-family="Arial">IN</text></svg>',
+'father in law':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M32 30 Q50 14 68 30 L68 22 Q50 8 32 22 Z" fill="#95A5A6"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#5D6D7E"/><circle cx="75" cy="45" r="10" fill="#F1C40F"/><text x="75" y="50" text-anchor="middle" font-size="12" font-weight="900" fill="#B8860B" font-family="Arial">IN</text></svg>',
+'mother in law':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M30 34 Q30 16 50 16 Q70 16 70 34 Z" fill="#95A5A6"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#9B59B6"/><circle cx="75" cy="45" r="10" fill="#F1C40F"/><text x="75" y="50" text-anchor="middle" font-size="12" font-weight="900" fill="#B8860B" font-family="Arial">IN</text></svg>',
+'stepfather':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#2C3E50"/><circle cx="75" cy="45" r="11" fill="#27AE60"/><text x="75" y="52" text-anchor="middle" font-size="18" font-weight="900" fill="#FFF" font-family="Arial">+</text></svg>',
+'stepmother':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M32 34 Q32 18 50 18 Q68 18 68 34 L68 46 Q60 40 50 42 Q40 40 32 46 Z" fill="#4A3728"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#EC7063"/><circle cx="75" cy="45" r="11" fill="#27AE60"/><text x="75" y="52" text-anchor="middle" font-size="18" font-weight="900" fill="#FFF" font-family="Arial">+</text></svg>',
+'elder brother':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M32 32 Q50 22 68 32 L68 22 Q50 14 32 22 Z" fill="#4A3728"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#3498DB"/><text x="50" y="80" text-anchor="middle" font-size="14" font-weight="900" fill="#FFF" font-family="Arial">1</text></svg>',
+'elder sister':'<svg viewBox="0 0 100 100"><circle cx="50" cy="34" r="18" fill="#F5C6A0"/><path d="M32 34 Q32 18 50 18 Q68 18 68 34 L68 48 Q60 40 50 42 Q40 40 32 48 Z" fill="#4A3728"/><path d="M24 88 Q24 58 50 58 Q76 58 76 88 Z" fill="#EC7063"/><text x="50" y="80" text-anchor="middle" font-size="14" font-weight="900" fill="#FFF" font-family="Arial">1</text></svg>',
+'younger brother':'<svg viewBox="0 0 100 100"><circle cx="50" cy="38" r="14" fill="#F5C6A0"/><path d="M28 88 Q28 62 50 62 Q72 62 72 88 Z" fill="#27AE60"/><text x="50" y="84" text-anchor="middle" font-size="14" font-weight="900" fill="#FFF" font-family="Arial">2</text></svg>',
+'younger sister':'<svg viewBox="0 0 100 100"><circle cx="50" cy="38" r="14" fill="#F5C6A0"/><path d="M38 36 Q38 24 50 24 Q62 24 62 36 L62 44 Q56 38 50 40 Q44 38 38 44 Z" fill="#4A3728"/><path d="M28 88 Q28 62 50 62 Q72 62 72 88 Z" fill="#F39C12"/><text x="50" y="84" text-anchor="middle" font-size="14" font-weight="900" fill="#FFF" font-family="Arial">2</text></svg>',
 'head':'<svg viewBox="0 0 100 100"><path d="M50 18 Q34 18 30 36 Q26 50 34 60 L34 74 L66 74 L66 60 Q74 50 70 36 Q66 18 50 18 Z" fill="#F5C6A0"/><path d="M40 42 Q44 36 50 40 Q56 36 60 42" stroke="#333" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
-'pumpkin':'<svg viewBox="0 0 100 100"><ellipse cx="50" cy="58" rx="34" ry="30" fill="#EA580C"/><ellipse cx="50" cy="58" rx="34" ry="30" fill="none" stroke="#7C2D12" stroke-width="2"/><ellipse cx="50" cy="58" rx="20" ry="30" fill="none" stroke="#7C2D12" stroke-width="1.5" opacity="0.5"/><ellipse cx="50" cy="58" rx="9" ry="30" fill="none" stroke="#7C2D12" stroke-width="1.5" opacity="0.5"/><path d="M50 28 L50 18" stroke="#15803D" stroke-width="4" stroke-linecap="round"/><path d="M40 50 L46 50 M54 50 L60 50" stroke="#000" stroke-width="3" stroke-linecap="round"/><path d="M42 68 L50 76 L58 68" stroke="#000" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+'pumpkin':'<svg viewBox="0 0 100 100"><ellipse cx="50" cy="58" rx="34" ry="30" fill="#EA580C"/><ellipse cx="50" cy="58" rx="34" ry="30" fill="none" stroke="#7C2D12" stroke-width="2"/><path d="M50 28 L50 18" stroke="#15803D" stroke-width="4" stroke-linecap="round"/><path d="M40 50 L46 50 M54 50 L60 50" stroke="#000" stroke-width="3" stroke-linecap="round"/><path d="M42 68 L50 76 L58 68" stroke="#000" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 };
 
 // ============================================================
-//  getImage — เลือกใช้ Emoji > SVG > Letter
+//  SYNONYM_MAP
+// ============================================================
+const SYNONYM_MAP = {
+'ant':['insect','bug'],'apple':['fruit'],'bag':['sack','tote'],'ball':['sphere','globe'],
+'banana':['fruit'],'bat':['flying mammal'],'bean':['seed','legume'],'bear':['bruin'],
+'bee':['honeybee','insect'],'big':['large','huge','enormous'],'bin':['trash can','wastebasket'],
+'bird':['fowl','avian'],'birthday':['anniversary','celebration'],'book':['volume','text'],
+'box':['carton','case'],'boy':['lad','youngster'],'bread':['loaf','toast'],'broom':['brush','sweeper'],
+'brother':['sibling'],'bus':['coach','vehicle'],'cake':['pastry','dessert'],'candle':['taper','light'],
+'car':['automobile','vehicle'],'cat':['kitten','feline'],'chair':['seat','stool'],
+'class':['course','lesson'],'close':['shut','seal'],'count':['calculate','number'],
+'cry':['weep','sob'],'crayon':['pencil','pastel'],'cup':['mug','glass'],
+'cut':['slice','chop'],'dad':['father','papa'],'dance':['move','groove'],
+'desk':['table','workstation'],'dog':['puppy','canine'],'door':['gateway','entrance'],
+'dot':['point','spot'],'ear':['hearing organ'],'egg':['ovum'],'eraser':['rubber','cleaner'],
+'eye':['sight organ'],'face':['visage','countenance'],'fan':['ventilator'],
+'farm':['ranch','homestead'],'farmer':['grower','peasant'],'father':['dad','papa'],
+'fish':['seafood'],'flower':['blossom','bloom'],'food':['meal','nourishment'],
+'foot':['feet'],'fox':['vixen','reynard'],'fruit':['produce'],'fun':['enjoyment','pleasure'],
+'giraffe':['long-necked animal'],'girl':['lass','young lady'],'glass':['tumbler','cup'],
+'go':['move','proceed'],'goat':['billy','nanny'],'good':['fine','great','excellent'],
+'goodbye':['farewell','bye'],'hair':['locks','mane'],'ham':['pork'],'happy':['joyful','cheerful','glad'],
+'head':['skull'],'hello':['hi','greetings'],'house':['home','residence'],
+'ice':['frozen water'],'ice cream':['gelato','sorbet'],'jar':['container','pot'],
+'key':['opener'],'kick':['boot','punt'],'king':['monarch','ruler'],'kid':['child','youngster'],
+'leg':['limb'],'lemon':['citrus'],'line':['row','queue'],'lion':['king of beasts'],
+'listen':['hear','attend'],'long':['lengthy','extended'],'look':['see','view','gaze'],
+'love':['adore','cherish'],'meet':['encounter','greet'],'man':['male','gentleman'],
+'map':['chart','atlas'],'milk':['dairy'],'mom':['mother','mama'],
+'monkey':['primate','ape'],'moon':['luna','satellite'],'mother':['mom','mama'],
+'mouth':['oral cavity'],'name':['title','label'],'nose':['snout'],
+'open':['unlock','unseal'],'orange':['citrus'],'owl':['night bird'],
+'pan':['skillet','frying pan'],'panda':['bamboo bear'],'papaya':['pawpaw'],
+'park':['playground','recreation area'],'pear':['fruit'],'pen':['ballpoint','writer'],
+'pencil':['writing tool'],'pet':['companion animal'],'play':['have fun','enjoy'],
+'point':['score','mark'],'pool':['swimming pool','pond'],'queen':['monarch','royalty'],
+'rabbit':['bunny','hare'],'rat':['rodent','mouse'],'ring':['band','circle'],
+'roof':['top','ceiling'],'room':['chamber','space'],'ruler':['measure','straightedge'],
+'sad':['unhappy','sorrowful'],'salad':['greens'],'say':['speak','utter'],
+'school':['academy','institution'],'see':['view','observe','notice'],
+'sheep':['lamb','ewe'],'ship':['vessel','boat'],'short':['brief','small'],
+'show':['display','present'],'sing':['chant','vocalize'],'sister':['sibling'],
+'sit':['be seated','perch'],'small':['little','tiny','mini'],'smell':['scent','odor'],
+'snake':['serpent','viper'],'song':['tune','melody'],'stand':['rise','get up'],
+'star':['celestial body'],'start':['begin','commence'],'stop':['halt','cease'],
+'student':['pupil','learner'],'sun':['solar body'],'swim':['bathe','paddle'],
+'T.V.':['television','TV'],'table':['desk','board'],'tall':['high','lofty'],
+'tea':['beverage','brew'],'teacher':['instructor','educator'],'thank you':['thanks','gratitude'],
+'tomato':['fruit'],'top':['spinning top','peak'],'toy':['plaything'],
+'tree':['plant','timber'],'ugly':['unattractive','homely'],'van':['vehicle','truck'],
+'walk':['stroll','wander'],'water':['liquid','H2O'],'wig':['hairpiece','toupee'],
+'woman':['female','lady'],'zebra':['striped horse'],'zoo':['zoological garden'],
+'again':['once more','anew'],'alphabet':['letters','ABCs'],'animal':['creature','beast'],
+'answer':['reply','response'],'arm':['limb'],'artist':['painter','creator'],
+'ask':['question','inquire'],'aunt':['relative'],'bakery':['bakeshop'],
+'balloon':['inflatable'],'bank':['financial institution'],'bed':['cot','bunk'],
+'board':['blackboard','panel'],'boat':['vessel','ship'],'boots':['footwear'],
+'bottle':['container','flask'],'bowl':['dish','basin'],'butterfly':['flutterer'],
+'can':['be able to','may'],'candy':['sweet','confection'],'cap':['hat','headwear'],
+'card':['note','greeting'],'chant':['sing','recite'],'chat':['talk','converse'],
+'check':['verify','examine'],'cheese':['dairy'],'cherry':['fruit'],
+'chicken':['poultry','hen'],'children':['kids','youngsters'],'chilli':['pepper','spice'],
+'chip':['crisp','fry'],'circle':['ring','loop'],'clap':['applaud','cheer'],
+'clean':['tidy','spotless'],'clock':['timepiece','watch'],'cook':['chef','prepare'],
+'cookie':['biscuit','baked good'],'cool':['chilly','refreshing'],'cow':['cattle'],
+'dish':['plate','course'],'donkey':['ass','burro'],'elephant':['pachyderm'],
+'enjoy':['like','appreciate'],'family':['relatives','kin'],'far':['distant','remote'],
+'fat':['plump','chubby'],'favorite':['preferred','beloved'],'fin':['flipper'],
+'fine':['okay','well'],'finish':['complete','end'],'floor':['ground','surface'],
+'fly':['soar','glide'],'friend':['buddy','pal','companion'],'frog':['toad','amphibian'],
+'gate':['door','entrance'],'get up':['rise','wake up'],'gloves':['mittens'],
+'glue':['adhesive','paste'],'grandma':['grandmother','granny'],'grandpa':['grandfather','gramps'],
+'grape':['fruit'],'group':['team','cluster'],'gum':['chewing gum'],
+'hand':['palm'],'hat':['cap','headwear'],'help':['assist','aid'],
+'hen':['chicken','fowl'],'hide':['conceal','cover'],'hot':['warm','heated'],
+'hot dog':['frankfurter','sausage'],'hungry':['famished','starving'],
+'idea':['thought','concept'],'jam':['jelly','preserve'],'job':['work','occupation'],
+'jug':['pitcher','container'],'kite':['flying toy'],'knee':['joint'],
+'knife':['blade','cutter'],'lady':['woman','female'],'left':['left side'],
+'letter':['message','note'],'like':['enjoy','prefer'],'magic':['sorcery','wizardry'],
+'make':['create','build'],'mango':['fruit'],'match':['pair','fit'],
+'music':['melody','tune'],'new':['fresh','recent'],'notebook':['journal','pad'],
+'number':['digit','figure'],'old':['ancient','aged'],'page':['sheet','leaf'],
+'paint':['draw','color'],'paper':['sheet'],'pea':['legume'],
+'peach':['fruit'],'pencil case':['pencil box'],'people':['persons','humans'],
+'person':['individual','human'],'pick':['choose','select'],'picture':['image','photo'],
+'pig':['swine','hog'],'pillow':['cushion'],'pineapple':['fruit'],
+'place':['location','spot'],'puppy':['pup','young dog'],'put':['place','set'],
+'quiet':['silent','hushed'],'race':['competition','contest'],'radio':['receiver'],
+'rain':['precipitation','shower'],'ready':['prepared','set'],'relax':['rest','unwind'],
+'replace':['substitute','swap'],'rice':['grain'],'right':['correct','true'],
+'robot':['machine','automaton'],'rock':['stone','boulder'],'rope':['cord','cable'],
+'round':['circular','spherical'],'run':['jog','sprint'],'sandals':['flip-flops','footwear'],
+'sandwich':['sub','hoagie'],'scooter':['motor scooter'],'shark':['predator'],
+'shirt':['top','blouse'],'shoes':['footwear','sneakers'],'sit down':['be seated'],
+'skirt':['dress'],'socks':['footwear'],'sorry':['apologetic','regretful'],
+'spell':['write','orthographize'],'stamp':['postage','seal'],'stand up':['rise','get up'],
+'store':['shop','market'],'story':['tale','narrative'],'strawberry':['berry'],
+'subject':['topic','course'],'tell':['say','narrate'],'tennis':['sport'],
+'thumb':['digit'],'today':['this day'],'toe':['digit'],
+'touch':['feel','contact'],'town':['city','municipality'],'T-shirt':['tee','top'],
+'umbrella':['parasol','rain shield'],'uncle':['relative'],'video':['clip','recording'],
+'watermelon':['melon'],'week':['7 days'],'weekend':['Saturday and Sunday'],
+'welcome':['greeting'],'whale':['cetacean'],'window':['pane','opening'],
+'worm':['earthworm'],'young':['youthful','juvenile'],'yourself':['oneself'],
+'act':['perform','behave'],'air':['atmosphere','oxygen'],'airplane':['plane','aircraft'],
+'around':['about','nearby'],'art':['craft','creativity'],'basket':['container','hamper'],
+'bathroom':['restroom','toilet'],'beautiful':['pretty','lovely','gorgeous'],
+'bedroom':['chamber'],'beef':['meat'],'bell':['chime','ringer'],
+'bicycle':['bike','cycle'],'bike':['bicycle','cycle'],'blackboard':['chalkboard','board'],
+'blank':['empty','vacant'],'body':['physique','figure'],'bookcase':['bookshelf','shelf'],
+'borrow':['take','loan'],'bottom':['base','lower part'],'breakfast':['morning meal'],
+'bug':['insect','creature'],'buy':['purchase','acquire'],'cabbage':['vegetable'],
+'carrot':['vegetable'],'castle':['fortress','palace'],'chalk':['writing stick'],
+'chance':['opportunity','possibility'],'change':['alter','modify'],
+'classroom':['room','schoolroom'],'coffee':['beverage','brew'],
+'computer':['PC','machine'],'correct':['right','accurate'],'cross':['go across','traverse'],
+'cucumber':['vegetable'],'daughter':['female child'],'dice':['die','cube'],
+'dinner':['supper','evening meal'],'dirty':['filthy','unclean'],'doctor':['physician','medic'],
+'double':['twofold','paired'],'drink':['beverage','sip'],'drum':['percussion instrument'],
+'duck':['waterfowl'],'durian':['fruit'],'eat':['consume','devour'],
+'English':['language'],'false':['untrue','incorrect'],'finger':['digit'],
+'fishing':['angling'],'flag':['banner','ensign'],'garden':['yard','plot'],
+'give':['provide','offer'],'goldfish':['fish'],'golf':['sport'],
+'goose':['waterfowl'],'grandfather':['grandpa'],'grandmother':['grandma'],
+'grass':['lawn','turf'],'great':['excellent','wonderful'],'guitar':['instrument'],
+'gun':['weapon','firearm'],'hippo':['hippopotamus'],'hit':['strike','punch'],
+'hold':['grip','grasp'],'homework':['assignment'],'honey':['nectar','sweetener'],
+'hop':['jump','skip'],'horse':['steed','equine'],'hut':['cabin','shack'],
+'ink':['pigment','fluid'],'jacket':['coat','outerwear'],'jeans':['denim','pants'],
+'join':['participate','enter'],'juice':['beverage','nectar'],'keep':['retain','hold'],
+'kitten':['kitty','young cat'],'living-room':['lounge','sitting room'],
+'lock':['secure','fasten'],'log':['timber','wood'],'lunch':['midday meal'],
+'math':['mathematics'],'meat':['flesh','protein'],'mirror':['looking glass'],
+'month':['30 days'],'mop':['cleaner'],'move':['shift','relocate'],
+'musician':['performer','artist'],'neck':['throat'],'nest':['home','den'],
+'noodle':['pasta'],'noon':['midday','12 PM'],'nurse':['caregiver','medic'],
+'ox':['bull','cattle'],'pair':['couple','duo'],'parrot':['bird'],
+'path':['trail','way'],'penguin':['bird'],'photo':['picture','image'],
+'piano':['keyboard instrument'],'pie':['pastry','tart'],'pizza':['pie','Italian dish'],
+'plastic':['synthetic'],'pomelo':['citrus'],'pork':['meat'],
+'postman':['mail carrier'],'potato':['tuber','vegetable'],'question':['query','inquiry'],
+'rainy':['wet','showery'],'reach':['extend','arrive'],'read':['peruse','study'],
+'river':['stream','waterway'],'salt':['seasoning','sodium'],'sand':['grit','beach'],
+'sauce':['dressing','gravy'],'sausage':['meat'],'seal':['marine mammal'],
+'shampoo':['cleanser'],'sharpener':['pencil sharpener'],'shorts':['short pants'],
+'shoulder':['joint'],'skate':['glide'],'sleep':['rest','slumber'],
+'slide':['slip','glide'],'smile':['grin','beam'],'snail':['mollusk'],
+'soap':['cleanser','detergent'],'sofa':['couch','settee'],
+'soldier':['warrior','trooper'],'son':['male child'],'soup':['broth','stew'],
+'speak':['talk','utter'],'stick':['branch','rod'],'study':['learn','review'],
+'sweet':['sugary','candied'],'swing':['sway','rock'],'telephone':['phone','handset'],
+'thirsty':['parched','dry'],'tiger':['big cat'],'toothbrush':['dental tool'],
+'toothpaste':['dental cream'],'tortoise':['turtle'],'truck':['lorry','van'],
+'true':['correct','accurate'],'turtle':['tortoise'],'use':['utilize','employ'],
+'violin':['fiddle','instrument'],'want':['desire','wish'],'wash':['clean','rinse'],
+'watch':['timepiece','observe'],'wing':['limb'],'wolf':['canine'],
+'wood':['timber','lumber'],'write':['scribble','record'],'wrong':['incorrect','mistaken'],
+'ache':['pain','soreness'],'afternoon':['PM','post meridiem'],
+'airport':['aerodrome'],'autumn':['fall'],'awake':['alert','conscious'],
+'baht':['Thai currency'],'bamboo':['cane'],'barbecue':['BBQ','grill'],
+'beak':['bill'],'beverage':['drink','refreshment'],'bomb':['explosive'],
+'blanket':['cover','quilt'],'blind':['sightless'],'blouse':['top','shirt'],
+'bone':['skeleton part'],'bored':['uninterested','tired'],
+'boxing':['pugilism'],'branch':['bough','limb'],'brush':['broom'],
+'buffalo':['bison'],'butter':['dairy'],'camel':['dromedary'],
+'camp':['campsite','encampment'],'canteen':['cafeteria','dining hall'],
+'careless':['reckless','negligent'],'centimeter':['cm'],
+'cheap':['inexpensive','affordable'],'chin':['jaw'],'chocolate':['cocoa','candy'],
+'choose':['select','pick'],'cinema':['movie theater'],'clear':['transparent','obvious'],
+'clever':['smart','intelligent','bright'],'climb':['scale','ascend'],
+'closet':['wardrobe','cupboard'],'clothes':['garments','apparel'],
+'cloudy':['overcast','gloomy'],'clown':['jester','comedian'],
+'club':['organization','group'],'coat':['jacket','overcoat'],
+'coconut':['palm fruit'],'coin':['money'],'cold':['chilly','frigid'],
+'comb':['hair tool'],'copy':['duplicate','replicate'],'cousin':['relative'],
+'cover':['conceal','wrap'],'crossword':['puzzle'],'cupcake':['small cake'],
+'dark':['dim','gloomy'],'deep':['profound','bottomless'],'dentist':['dental doctor'],
+'desert':['wasteland'],'divide':['split','separate'],'diary':['journal','log'],
+'dictionary':['lexicon','wordbook'],'dolphin':['porpoise'],'doughnut':['donut'],
+'drive':['operate','steer'],'dry':['arid','parched'],'dust':['dirt','particles'],
+'earring':['jewelry'],'earth':['world','planet'],'easy':['simple','effortless'],
+'entertain':['amuse','delight'],'evening':['nightfall','dusk'],
+'example':['instance','sample'],'exercise':['workout','practice'],
+'expensive':['costly','pricey'],'fall':['drop','tumble'],'feed':['nourish','give food'],
+'feel':['sense','perceive'],'female':['woman'],'fence':['barrier','railing'],
+'festival':['celebration','carnival'],'file':['folder','document'],'fill':['load','stuff'],
+'film':['movie','motion picture'],'find':['discover','locate'],
+'fish sauce':['condiment'],'flash':['sparkle','gleam'],
+'flour':['powder','meal'],'flute':['instrument','pipe'],
+'foggy':['misty','hazy'],'forecast':['prediction','projection'],
+'fork':['utensil'],'funny':['amusing','hilarious','comical'],
+'game':['sport','match'],'garage':['carport'],'ghost':['spirit','phantom'],
+'gift':['present','donation'],'glasses':['spectacles','eyewear'],
+'grocery':['market','food store'],'grow':['develop','increase'],
+'gym':['gymnasium','fitness center'],'hall':['corridor','auditorium'],
+'health':['wellness','fitness'],'healthy':['fit','well'],
+'heart':['organ'],'hill':['mound','knoll'],'hip':['pelvis'],
+'holiday':['vacation','break'],'hospital':['medical center'],
+'hotel':['inn','lodging'],'husband':['spouse','mate'],
+'internet':['web','net'],'insect':['bug','pest'],'jelly':['jam','preserve'],
+'jungle':['rainforest','wilderness'],'kangaroo':['marsupial'],
+'kayak':['canoe'],'kilo':['kilogram'],'kitchen':['cookroom'],
+'know':['understand','recognize'],'lab':['laboratory'],
+'leaf':['foliage'],'lemonade':['citrus drink'],'lettuce':['salad green'],
+'library':['bookroom'],'life':['existence','being'],'lips':['mouth'],
+'litter':['trash','rubbish'],'longan':['fruit'],'lotus':['water lily'],
+'male':['man','masculine'],'mall':['shopping center'],
+'mangosteen':['fruit'],'market':['bazaar','marketplace'],
+'medicine':['medication','drug'],'melon':['fruit'],
+'member':['participant'],'midnight':['12 AM'],'monk':['religious'],
+'monster':['beast','creature'],'morning':['dawn','AM'],
+'mountain':['peak','summit'],'movie':['film','picture'],
+'mug':['cup','tankard'],'nail':['fingernail'],'nationality':['citizenship'],
+'nephew':['relative'],'nice':['pleasant','kind'],'niece':['relative'],
+'night':['evening','darkness'],'note':['message','memo'],
+'now':['presently','currently'],'nun':['religious'],
+'octopus':['cephalopod'],'office':['workplace','bureau'],
+'omelet':['egg dish'],'onion':['vegetable'],'orchid':['flower'],
+'P.E.':['physical education','gym'],'pants':['trousers'],
+'parents':['mother and father'],'pass':['hand','transfer'],
+'paste':['glue','adhesive'],'pepper':['spice'],'pill':['tablet','capsule'],
+'planet':['celestial body'],'plant':['vegetation','flora'],
+'playground':['play area'],'plum':['fruit'],'plumber':['pipe fitter'],
+'pocket':['pouch'],'poem':['verse','rhyme'],'poll':['survey'],
+'porridge':['oatmeal','gruel'],'powder':['dust','granules'],
+'practice':['rehearse','train'],'prawn':['shrimp'],
+'present':['gift'],'pretty':['beautiful','attractive'],
+'price':['cost','value'],'print':['publish','impress'],
+'pull':['drag','tug'],'push':['shove','press'],
+'quick':['fast','rapid','swift'],'rainbow':['arc'],
+'repeat':['redo','echo'],'rescue':['save','deliver'],
+'restaurant':['diner','eatery'],'ride':['travel','journey'],
+'road':['street','highway'],'rob':['steal','burgle'],
+'rocket':['missile','spacecraft'],'root':['base','foundation'],
+'rose':['flower'],'routine':['habit','schedule'],
+'satellite':['spacecraft'],'scarf':['shawl','muffler'],
+'science':['study'],'sea':['ocean'],'seed':['pip','kernel'],
+'sell':['trade','vend'],'send':['dispatch','mail'],
+'sew':['stitch','mend'],'shake':['tremble','shudder'],
+'shelf':['ledge','rack'],'shop':['store','boutique'],
+'shopping mall':['mall','plaza'],'sick':['ill','unwell'],
+'ski':['glide'],'slow':['sluggish','leisurely'],
+'smoke':['fume','vapor'],'snack':['nibble','refreshment'],
+'snowy':['snow-covered'],'social':['friendly','outgoing'],
+'soda':['soft drink','pop'],'sore':['painful','tender'],
+'sour':['tart','tangy'],'space':['universe','cosmos'],
+'space ship':['spacecraft','rocket'],'special':['unique','distinctive'],
+'spend':['use','expend'],'spicy':['hot','piquant'],
+'spoon':['utensil'],'spring':['season'],'square':['quadrilateral'],
+'station':['depot','terminal'],'stem':['stalk','trunk'],
+'straw':['tube','pipe'],'street':['road','avenue'],
+'sugar':['sweetener'],'summer':['warm season'],
+'sunny':['bright','sunlit'],'sweater':['pullover','jumper'],
+'syrup':['sweetener','molasses'],'tail':['rear','appendage'],
+'talk':['speak','chat'],'teach':['instruct','educate'],
+'team':['group','squad'],'theater':['playhouse','cinema'],
+'thin':['slim','slender'],'ticket':['pass','voucher'],
+'time':['period','duration'],'tofu':['bean curd'],
+'tomorrow':['next day'],'tonight':['this evening'],
+'tour':['trip','excursion'],'underline':['emphasize','mark'],
+'uniform':['outfit','attire'],'vegetable':['veggie','produce'],
+'wear':['don','put on'],'weather':['climate','conditions'],
+'wet':['damp','moist'],'wife':['spouse','partner'],
+'windy':['breezy','blustery'],'winter':['cold season'],
+'work':['labor','toil'],'year':['12 months'],
+'yesterday':['previous day'],'yogurt':['yoghurt'],
+'yolk':['egg yellow'],'yummy':['delicious','tasty'],
+'accountant':['bookkeeper','auditor'],'actor':['performer','player'],
+'actress':['performer','player'],'adventure':['journey','quest'],
+'appear':['emerge','surface'],'area':['region','zone'],
+'author':['writer','creator'],'behind':['at the back','rear'],
+'blow':['gust','puff'],'bridge':['span','overpass'],
+'buddy':['friend','pal'],'build':['construct','erect'],
+'burn':['scorch','singe'],'busy':['occupied','engaged'],
+'button':['fastener','knob'],'calculator':['adding machine'],
+'calendar':['schedule','planner'],'camera':['photographic device'],
+'canal':['channel','waterway'],'caramel':['candy'],
+'career':['profession','vocation'],'carpet':['rug','mat'],
+'carry':['transport','haul'],'CD player':['disc player'],
+'cell':['room','compartment'],'center':['middle','core'],
+'cereal':['grain'],'chopsticks':['eating sticks'],
+'clinic':['medical office'],'coconut milk':['coconut cream'],
+'collect':['gather','accumulate'],'company':['business','firm'],
+'complete':['finish','conclude'],'container':['vessel','receptacle'],
+'control':['manage','command'],'conversation':['talk','discussion'],
+'country':['nation','state'],'craft':['handicraft','art'],
+'crisps':['chips','potato chips'],'crocodile':['alligator'],
+'curly':['wavy','frizzy'],'curry':['spiced dish'],
+'curtain':['drape','blind'],'cycling':['biking'],
+'dangerous':['hazardous','risky'],'dare':['challenge','defy'],
+'dear':['beloved','cherished'],'delicious':['tasty','yummy'],
+'dialogue':['conversation','talk'],'diet':['nutrition','regimen'],
+'different':['distinct','diverse'],'dining room':['dining hall'],
+'dinosaur':['prehistoric reptile'],'director':['manager','chief'],
+'dove':['pigeon'],'down town':['city center'],
+'downstairs':['lower floor'],'dream':['vision','aspiration'],
+'dress up':['costume','attire'],'driver':['chauffeur','operator'],
+'eggplant':['aubergine'],'elder brother':['older brother'],
+'elder sister':['older sister'],'end':['finish','conclusion'],
+'envelop':['wrap','cover'],'factory':['plant','mill'],
+'fair':['carnival','expo'],'famous':['renowned','celebrated'],
+'fire fighter':['fireman','firefighter'],'fitness':['health','wellness'],
+'float':['drift','hover'],'follow':['pursue','trail'],
+'food court':['dining area'],'forest':['woods','woodland'],
+'frightening':['scary','terrifying'],'fur':['hair','coat'],
+'guava':['fruit'],'guide':['leader','escort'],
+'gymnastic':['acrobatic'],'habit':['custom','routine'],
+'haircut':['trim','barbering'],'half':['50%','moiety'],
+'hang glider':['glider'],'happen':['occur','transpire'],
+'hear':['listen','perceive'],'heavy':['weighty','hefty'],
+'hero':['champion','idol'],'hiking':['trekking','walking'],
+'history':['past','chronicle'],'hobby':['pastime','interest'],
+'hole':['opening','gap'],'horn':['honker'],
+'house ware':['household goods'],'iron':['pressing iron'],
+'itch':['scratch','tingle'],'jackfruit':['fruit'],
+'jasmine':['flower'],'jewelry':['jewels','adornments'],
+'kind':['nice','caring'],'kiwi':['fruit'],
+'knock':['rap','tap'],'koala':['marsupial'],
+'lake':['pond','water body'],'laugh':['giggle','chuckle'],
+'law':['rule','regulation'],'learn':['study','acquire'],
+'leave':['depart','exit'],'lend':['loan','advance'],
+'light':['lamp','illumination'],'magazine':['periodical','journal'],
+'mail carrier':['postman'],'marker':['pen','felt-tip'],
+'marry':['wed','espouse'],'meal':['repast','dining'],
+'menu':['list','bill of fare'],'meter':['measure','gauge'],
+'microwave':['microwave oven'],'minute':['60 seconds'],
+'miss':['long for','yearn'],'mix':['blend','combine'],
+'model':['mannequin','example'],'money':['currency','cash'],
+'mosquito':['gnat'],'museum':['gallery','exhibition hall'],
+'napkin':['serviette'],'neat':['tidy','orderly'],
+'necklace':['chain','pendant'],'newspaper':['paper','journal'],
+'noise':['sound','din'],'occupation':['job','profession'],
+'ocean':['sea'],'operator':['controller','handler'],
+'order':['command','request'],'ostrich':['flightless bird'],
+'oven':['stove','cooker'],'pajamas':['sleepwear','nightclothes'],
+'paper clip':['fastener','clip'],'parade':['procession','march'],
+'part':['portion','section'],'past':['previous','bygone'],
+'pay':['compensate','remunerate'],'peak':['summit','top'],
+'peacock':['peafowl'],'pharmacy':['drugstore','chemist'],
+'picnic':['outing','excursion'],'pilot':['aviator','flyer'],
+'plan':['scheme','strategy'],'plate':['dish','platter'],
+'plug':['connector','stopper'],'pole':['post','rod'],
+'poor':['needy','impoverished'],'popular':['well-liked','favored'],
+'portfolio':['collection','file'],'poster':['placard','bill'],
+'pour':['decant','spill'],'power':['energy','force'],
+'pray':['beseech','worship'],'punch':['strike','beverage'],
+'purse':['handbag','pocketbook'],'quarter':['25%','fourth'],
+'queue':['line','row'],'rent':['lease','hire'],
+'reporter':['journalist','correspondent'],'rest':['relax','repose'],
+'return':['give back','come back'],'rhino':['rhinoceros'],
+'ribbon':['band','bow'],'rich':['wealthy','affluent'],
+'roll':['rotate','tumble'],'rubber band':['elastic band'],
+'rug':['carpet','mat'],'safe':['secure','protected'],
+'sailor':['seaman','mariner'],'salon':['beauty parlor'],
+'scare':['frighten','terrify'],'season':['period','time of year'],
+'seat':['chair','place'],'secretary':['assistant','administrator'],
+'set':['place','arrange'],'shallow':['superficial','not deep'],
+'sharp':['keen','pointed'],'shout':['yell','scream'],
+'shrimp':['prawn'],'silent':['quiet','noiseless'],
+'single':['unmarried','sole'],'sink':['basin','washbasin'],
+'skip':['hop','jump'],'slippers':['house shoes'],
+'slippery':['slick','greasy'],'smart':['clever','intelligent'],
+'sound':['noise','audio'],'staff':['employees','workers'],
+'staple':['fastener','clip'],'stapler':['fastening tool'],
+'steal':['rob','thieve'],'sticker':['label','decal'],
+'stir':['mix','agitate'],'storm':['tempest','gale'],
+'stone':['rock','pebble'],'stove':['cooker','range'],
+'strange':['odd','peculiar','weird'],'strong':['powerful','sturdy'],
+'stripe':['band','line'],'suit':['outfit','ensemble'],
+'sunflower':['helianthus'],'sure':['certain','confident'],
+'surname':['last name','family name'],'surprise':['astonish','amaze'],
+'sweep':['brush','clean'],'table tennis':['ping-pong'],
+'take':['grab','seize'],'tape':['adhesive','strip'],
+'television':['TV','telly'],'tent':['shelter','canopy'],
+'term':['semester','period'],'theme':['topic','subject'],
+'thick':['dense','chunky'],'think':['ponder','contemplate'],
+'tissue':['paper','napkin'],'towel':['cloth','drying cloth'],
+'trash':['garbage','rubbish'],'trip':['journey','voyage'],
+'trouble':['difficulty','problem'],'turn off':['switch off','shut down'],
+'turn on':['switch on','activate'],'upstairs':['upper floor'],
+'vacation':['holiday','break'],'value':['worth','importance'],
+'vet':['veterinarian','animal doctor'],'visit':['call on','see'],
+'vocabulary':['lexicon','word list'],'voice':['sound','speech'],
+'vowel':['vowel sound'],'wait':['linger','pause'],
+'waiter':['server','attendant'],'waitress':['server','attendant'],
+'wallet':['billfold','purse'],'wand':['stick','rod'],
+'wave':['surge','ripple'],'wavy':['curly','undulating'],
+'weight':['mass','heaviness'],'win':['triumph','succeed'],
+'wheel':['tire','circular frame'],'worksheet':['handout','exercise sheet'],
+'world':['earth','globe'],'yawn':['gape','open wide'],
+'younger brother':['little brother'],'younger sister':['little sister'],
+'youth':['young people','adolescents'],
+'advertisement':['ad','commercial'],'aeroplane':['airplane','plane'],
+'afraid':['scared','frightened'],'ahead':['forward','in front'],
+'amusement':['entertainment','fun'],'ancient':['old','antique'],
+'animate':['enliven','bring to life'],'aquarium':['fish tank','marine park'],
+'architect':['designer','builder'],'arrange':['organize','order'],
+'arrive':['reach','come'],'astronaut':['spaceman','cosmonaut'],
+'astronomy':['study of stars'],'attraction':['draw','allure'],
+'autograph':['signature','sign'],'backpack':['rucksack','knapsack'],
+'beat':['defeat','conquer'],'bill':['invoice','check'],
+'biography':['life story'],'bleed':['hemorrhage'],
+'bracelet':['bangle','wristband'],'brain':['mind','intellect'],
+'brave':['courageous','fearless'],'breath':['respiration','gasp'],
+'bride':['newlywed'],'brilliant':['excellent','outstanding'],
+'brother in law':['relative'],'Buddhist':['follower of Buddha'],
+'business':['commerce','trade'],'cafeteria':['canteen','diner'],
+'capital':['chief city'],'cash':['money','currency'],
+'catch':['capture','grab'],'celebrate':['commemorate','observe'],
+'cell phone':['mobile phone'],'century':['100 years'],
+'ceremony':['ritual','celebration'],'character':['personality','role'],
+'charity':['donation','benevolence'],'charming':['delightful','captivating'],
+'chemist':['pharmacist','scientist'],'classify':['categorize','sort'],
+'classmate':['peer','schoolmate'],'clear':['obvious','evident'],
+'column':['pillar','section'],'community':['neighborhood','society'],
+'competition':['contest','tournament'],'complain':['grumble','protest'],
+'concert':['performance','show'],'confident':['assured','self-assured'],
+'congratulations':['kudos','felicitations'],'consist of':['comprise','include'],
+'contact':['reach','communicate'],'coral reef':['reef'],
+'costume':['outfit','attire'],'cough':['hack'],'creative':['inventive','imaginative'],
+'crosswalk':['pedestrian crossing'],'crowd':['throng','multitude'],
+'crown':['tiara','coronet'],'cruel':['brutal','harsh'],
+'culture':['civilization','heritage'],'damage':['harm','destruction'],
+'deaf':['hard of hearing'],'death':['demise','passing'],
+'debate':['discussion','argument'],'decide':['determine','choose'],
+'decorate':['adorn','embellish'],'democracy':['self-government'],
+'depart':['leave','go'],'describe':['depict','portray'],
+'dessert':['sweet','pudding'],'detective':['investigator','sleuth'],
+'diagram':['chart','sketch'],'diarrhea':['loose bowels'],
+'difficult':['hard','challenging'],'digital':['electronic'],
+'direction':['way','route'],'discuss':['talk over','debate'],
+'distance':['space','interval'],'divorce':['separation','dissolution'],
+'dollar':['currency'],'donate':['give','contribute'],
+'dragonfly':['insect'],'dustbin':['trash can','garbage bin'],
+'earache':['ear pain'],'education':['learning','schooling'],
+'effect':['result','consequence'],'electricity':['power','current'],
+'energy':['power','vigor'],'engineer':['builder','designer'],
+'entrance':['entry','doorway'],'environment':['surroundings','nature'],
+'escape':['flee','run away'],'exact':['precise','accurate'],
+'excellent':['outstanding','superb'],'exciting':['thrilling','stimulating'],
+'exhibition':['display','show'],'exit':['way out','door'],
+'expect':['anticipate','await'],'explode':['blow up','burst'],
+'explore':['discover','investigate'],'fantastic':['wonderful','great'],
+'fashion':['style','trend'],'father in law':['relative'],
+'feather':['plume'],'ferry':['boat','ship'],
+'fever':['high temperature'],'figure':['shape','form'],
+'flight attendant':['steward','cabin crew'],'flood':['deluge','inundation'],
+'florist':['flower seller'],'fluent':['articulate','smooth'],
+'forehead':['brow'],'freeze':['chill','solidify'],
+'fresh':['new','recent'],'friendship':['companionship','bond'],
+'gallery':['exhibition hall'],'garbage':['trash','waste'],
+'garlic':['bulb','seasoning'],'gentleman':['sir','nobleman'],
+'geography':['earth science'],'grain':['cereal','seed'],
+'groom':['bridegroom'],'guard':['protect','defend'],
+'habitat':['home','environment'],'hairdryer':['blow dryer'],
+'handkerchief':['hanky'],'handsome':['attractive','good-looking'],
+'harmful':['damaging','injurious'],'helmet':['headgear'],
+'helpful':['useful','assisting'],'honor':['respect','esteem'],
+'horoscope':['astrology chart'],'immediately':['at once','instantly'],
+'important':['significant','crucial'],'improve':['enhance','better'],
+'information':['data','facts'],'ingredient':['component','element'],
+'instruction':['direction','guide'],'intelligent':['smart','bright'],
+'interview':['meeting','Q&A'],'introduce':['present','acquaint'],
+'invent':['create','originate'],'invite':['ask','summon'],
+'jail':['prison','penitentiary'],'journey':['trip','voyage'],
+'kingdom':['realm','domain'],'knowledge':['wisdom','understanding'],
+'label':['tag','sticker'],'labor':['work','toil'],
+'language':['tongue','speech'],'laundry':['washing'],
+'leather':['hide','skin'],'length':['extent','measurement'],
+'liquid':['fluid'],'location':['place','site'],
+'lottery':['raffle','draw'],'marble':['glass ball'],
+'message':['note','communication'],'messy':['untidy','cluttered'],
+'mistake':['error','blunder'],'modern':['contemporary','current'],
+'monument':['memorial','statue'],'mother in law':['relative'],
+'narrow':['thin','tight'],'neighbor':['resident','local'],
+'notice':['observe','spot'],'observe':['watch','study'],
+'opinion':['view','belief'],'opposite':['facing','reverse'],
+'palace':['mansion','castle'],'paragraph':['passage','section'],
+'passport':['travel document'],'peace':['harmony','tranquility'],
+'period':['era','time'],'personality':['character','nature'],
+'photographer':['cameraman','shutterbug'],'planetarium':['observatory'],
+'plump':['chubby','round'],'poison':['toxin','venom'],
+'polite':['courteous','well-mannered'],'pollution':['contamination'],
+'predict':['forecast','foresee'],'president':['leader','head of state'],
+'prince':['royal son'],'princess':['royal daughter'],
+'prize':['award','reward'],'problem':['issue','difficulty'],
+'professional':['expert','skilled'],'pronounce':['articulate','say'],
+'publish':['print','release'],'quiz':['test','exam'],
+'reason':['cause','motive'],'recipe':['instructions','formula'],
+'reduce':['decrease','lessen'],'refrigerator':['fridge','cooler'],
+'refuse':['decline','reject'],'region':['area','zone'],
+'regular':['routine','usual'],'relative':['family member','kin'],
+'remember':['recall','recollect'],'reuse':['recycle','repurpose'],
+'review':['go over','examine'],'route':['path','course'],
+'rubbish':['trash','garbage'],'rule':['regulation','law'],
+'save':['conserve','rescue'],'scream':['shout','yell'],
+'search':['look for','seek'],'semester':['term'],
+'shore':['coast','beach'],'silly':['foolish','goofy'],
+'sister in law':['relative'],'situation':['circumstance','condition'],
+'smooth':['even','sleek'],'sneakers':['athletic shoes','trainers'],
+'sneeze':['sniffle'],'soft':['gentle','tender'],
+'soil':['dirt','earth'],'solve':['resolve','figure out'],
+'souvenir':['keepsake','memento'],'sparrow':['small bird'],
+'sponge':['absorber'],'stepfather':['adoptive father'],
+'stepmother':['adoptive mother'],'string':['cord','twine'],
+'survey':['poll','questionnaire'],'teaspoon':['small spoon'],
+'thief':['robber','burglar'],'tidy':['neat','orderly'],
+'timetable':['schedule'],'tongue':['organ'],
+'tourist':['traveler','visitor'],'traffic':['vehicles','congestion'],
+'transport':['conveyance','vehicle'],'upset':['distressed','troubled'],
+'useful':['helpful','beneficial'],'valuable':['precious','costly'],
+'vehicle':['car','conveyance'],'vision':['sight','foresight'],
+'vocation':['calling','profession'],'volcano':['mountain'],
+'whisper':['murmur','mutter'],'wide':['broad','spacious'],
+'wonderful':['amazing','marvelous'],'worry':['fret','be anxious'],
+'navy-blue':['dark blue'],'white':['pale','snowy color'],
+'green':['verdant'],'indigo':['deep blue'],'pink':['rosy','blush'],
+'black':['dark','ebony'],'red':['crimson','scarlet'],
+'grey':['gray','silver'],'dark grey':['charcoal'],
+'blue':['azure','cobalt'],'brown':['tan','chocolate'],
+'sky blue':['azure','light blue'],'violet':['purple','lavender'],
+'orange':['amber','tangerine'],'yellow':['golden','amber'],
+'triangle':['three-sided shape'],'rectangle':['oblong'],
+'pentagon':['five-sided shape'],'hexagon':['six-sided shape'],
+'oval':['ellipse'],'cube':['block'],
+'cone':['tapered shape'],'crescent':['half-moon'],
+'diamond':['rhombus','gem'],
+'Sunday':['Sun','Sabbath'],'Monday':['Mon'],
+'Tuesday':['Tue'],'Wednesday':['Wed'],
+'Thursday':['Thu'],'Friday':['Fri'],
+'Saturday':['Sat'],'January':['Jan'],
+'February':['Feb'],'March':['Mar'],
+'April':['Apr'],'May':['month of May'],
+'June':['Jun'],'July':['Jul'],
+'August':['Aug'],'September':['Sep'],
+'October':['Oct'],'November':['Nov'],
+'December':['Dec'],
+'one':['1','single'],'two':['2','pair'],
+'three':['3','triple'],'four':['4'],
+'five':['5'],'six':['6'],
+'seven':['7'],'eight':['8'],
+'nine':['9'],'ten':['10'],
+'eleven':['11'],'twelve':['12','dozen'],
+'thirteen':['13'],'fourteen':['14'],
+'fifteen':['15'],'sixteen':['16'],
+'seventeen':['17'],'eighteen':['18'],
+'nineteen':['19'],'twenty':['20','score'],
+'thirty':['30'],'forty':['40'],
+'fifty':['50'],'sixty':['60'],
+'seventy':['70'],'eighty':['80'],
+'ninety':['90'],'one hundred':['100','century'],
+'one thousand':['1000','K'],'first':['1st','primary'],
+'second':['2nd'],'third':['3rd'],
+'fourth':['4th'],'fifth':['5th'],
+'sixth':['6th'],'seventh':['7th'],
+'eighth':['8th'],'ninth':['9th'],
+'tenth':['10th'],'eleventh':['11th'],
+'twelfth':['12th'],'thirteenth':['13th'],
+'fourteenth':['14th'],'fifteenth':['15th'],
+'sixteenth':['16th'],'seventeenth':['17th'],
+'eighteenth':['18th'],'nineteenth':['19th'],
+'twentieth':['20th'],'thirtieth':['30th'],
+'fortieth':['40th'],'fiftieth':['50th'],
+'sixtieth':['60th'],'seventieth':['70th'],
+'eightieth':['80th'],'ninetieth':['90th'],
+'one hundredth':['100th'],'one thousandth':['1000th']
+};
+
+function getSynonyms(word) {
+  const w = (word || '').toLowerCase().trim();
+  return SYNONYM_MAP[w] || SYNONYM_MAP[w.split(/\s+/)[0]] || [];
+}
+
+// ============================================================
+//  PIXABAY SYSTEM
+// ============================================================
+const PIXABAY_CACHE_KEY = 'pixabay_img_cache_v2';
+let pixabayCache = {};
+try { pixabayCache = JSON.parse(localStorage.getItem(PIXABAY_CACHE_KEY) || '{}'); }
+catch(e) { pixabayCache = {}; }
+
+function savePixabayCache() {
+  try { localStorage.setItem(PIXABAY_CACHE_KEY, JSON.stringify(pixabayCache)); }
+  catch(e) {}
+}
+
+async function fetchPixabayImage(word) {
+  const key = word.toLowerCase().trim();
+  if (pixabayCache[key] !== undefined) return pixabayCache[key];
+  try {
+    const q = encodeURIComponent(key);
+    const url = `https://pixabay.com/api/?key=${PIXABAY_KEY}&q=${q}&image_type=photo&per_page=3&safesearch=true&orientation=horizontal`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    let imgUrl = null;
+    if (data.hits && data.hits.length > 0) {
+      imgUrl = data.hits[0].webformatURL || data.hits[0].previewURL || null;
+    }
+    pixabayCache[key] = imgUrl;
+    savePixabayCache();
+    return imgUrl;
+  } catch (err) {
+    console.warn('Pixabay fetch error for', word, err);
+    return null;
+  }
+}
+
+async function loadPixabayImagesForCards() {
+  const cards = document.querySelectorAll('.card');
+  const CONCURRENCY = 4;
+  const queue = Array.from(cards);
+  async function worker() {
+    while (queue.length) {
+      const card = queue.shift();
+      if (!card) break;
+      const word = card.dataset.en;
+      const imgEl = card.querySelector('.pixabay-img');
+      const frame = card.querySelector('.img-frame');
+      if (!imgEl || !frame) continue;
+      const url = await fetchPixabayImage(word);
+      if (url) {
+        const img = new Image();
+        img.onload = () => {
+          imgEl.src = url;
+          imgEl.classList.add('loaded');
+          frame.querySelectorAll('.card-emoji,.card-svg,.card-letter')
+            .forEach(el => el.classList.add('hidden'));
+          frame.classList.remove('loading');
+        };
+        img.onerror = () => { frame.classList.remove('loading'); };
+        img.src = url;
+      } else {
+        frame.classList.remove('loading');
+      }
+    }
+  }
+  await Promise.all(Array.from({length: CONCURRENCY}, worker));
+}
+
+async function loadPixabayImageForModal(word, container) {
+  const imgEl = container.querySelector('.modal-pixabay-img');
+  const url = await fetchPixabayImage(word);
+  if (url && imgEl) {
+    const img = new Image();
+    img.onload = () => {
+      imgEl.src = url;
+      imgEl.style.display = 'block';
+      container.querySelectorAll('.modal-emoji,.modal-svg,.modal-letter')
+        .forEach(el => el.style.display = 'none');
+    };
+    img.src = url;
+  }
+}
+
+// ============================================================
+//  getImage
 // ============================================================
 function getImage(word, big) {
   const w = (word || '').toLowerCase().trim();
-  if (!w) return '<span class="card-letter">?</span>';
+  if (!w) return `<span class="${big ? 'modal' : 'card'}-letter">?</span>`;
   const sizeClass = big ? 'modal' : 'card';
-  // 1. Emoji
   if (EMOJI_MAP[w]) return `<span class="${sizeClass}-emoji">${EMOJI_MAP[w]}</span>`;
   const first = w.split(/\s+/)[0];
   if (EMOJI_MAP[first]) return `<span class="${sizeClass}-emoji">${EMOJI_MAP[first]}</span>`;
-  // 2. SVG
   if (SVG_MAP[w]) return `<div class="${sizeClass}-svg">${SVG_MAP[w]}</div>`;
   if (SVG_MAP[first]) return `<div class="${sizeClass}-svg">${SVG_MAP[first]}</div>`;
-  // 3. Fallback letter
   const letter = w.charAt(0).toUpperCase();
   const colors = ['#f97316','#ef4444','#a855f7','#06b6d4','#10b981','#eab308','#ec4899'];
   const color = colors[letter.charCodeAt(0) % colors.length];
@@ -4658,7 +5290,7 @@ function parseVocabData(raw) {
 }
 
 // ============================================================
-//  SPEECH SYNTHESIS
+//  SPEECH
 // ============================================================
 let bestVoice = null;
 function loadBestEnglishVoice() {
@@ -4795,7 +5427,7 @@ function startPracticeOnCard(card, micIcon, word) {
 }
 
 // ============================================================
-//  APP STATE
+//  STATE
 // ============================================================
 let allWords = [];
 let filteredWords = [];
@@ -4813,10 +5445,10 @@ const modalCloseBtn = document.getElementById('modalCloseBtn');
 const modalEn = document.getElementById('modalEn');
 const modalPos = document.getElementById('modalPos');
 const modalTh = document.getElementById('modalTh');
-const modalImageContent = document.getElementById('modalImageContent');
-const modalImageOuter = document.getElementById('modalImageOuter');
 const modalSentences = document.getElementById('modalSentences');
 const modalSpeakBtn = document.getElementById('modalSpeakBtn');
+const modalImageOuter = document.getElementById('modalImageOuter');
+const modalImageWrap = document.getElementById('modalImageWrap');
 let currentModalWord = null;
 
 // ============================================================
@@ -4830,17 +5462,33 @@ function render() {
   if (query) words = words.filter(w => w.en.toLowerCase().includes(query) || w.th.toLowerCase().includes(query));
   filteredWords = words;
   totalCount.textContent = words.length;
+
   if (words.length === 0) {
     grid.innerHTML = `<div class="empty-state"><div class="big-icon">🎃</div><h3>ไม่พบคำศัพท์</h3><p>ลองเปลี่ยนระดับชั้น หรือค้นหาด้วยคำอื่น</p></div>`;
     return;
   }
+
   let html = '';
   for (const w of words) {
     const posDisplay = w.pos || '';
-    const imgHTML = getImage(w.en, false);
-    html += `<div class="card" data-en="${w.en}" data-th="${w.th}" data-pos="${w.pos}" data-grade="${w.grade}" data-index="${allWords.indexOf(w)}"><div class="img-frame">${imgHTML}</div><span class="speak-icon">🔊</span><span class="mic-icon" title="ลองพูดคำนี้">🎤</span><div class="en">${w.en}</div><div class="th">${w.th}</div>${posDisplay ? `<span class="pos">${posDisplay}</span>` : ''}</div>`;
+    const fallbackHTML = getImage(w.en, false);
+    const syns = getSynonyms(w.en);
+    const synHTML = syns.length ? `<span class="syn">${syns.slice(0,3).join(', ')}</span>` : '';
+    html += `<div class="card" data-en="${w.en}" data-th="${w.th}" data-pos="${w.pos}" data-grade="${w.grade}" data-index="${allWords.indexOf(w)}">
+      <div class="img-frame loading">
+        ${fallbackHTML}
+        <img class="pixabay-img" loading="lazy" alt="${w.en}">
+      </div>
+      <span class="speak-icon">🔊</span>
+      <span class="mic-icon" title="ลองพูดคำนี้">🎤</span>
+      <div class="en">${w.en}</div>
+      <div class="th">${w.th}</div>
+      ${posDisplay ? `<span class="pos">${posDisplay}</span>` : ''}
+      ${synHTML}
+    </div>`;
   }
   grid.innerHTML = html;
+
   document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', handleCardClick);
     card.addEventListener('dblclick', handleCardDoubleClick);
@@ -4862,6 +5510,8 @@ function render() {
       }
     }, { passive: true });
   });
+
+  loadPixabayImagesForCards();
 }
 function getWordData(card) {
   const idx = parseInt(card.dataset.index);
@@ -4891,11 +5541,24 @@ function showModal(data) {
   modalEn.textContent = data.en;
   modalPos.textContent = data.pos || '';
   modalTh.textContent = data.th;
-  modalImageContent.outerHTML = getImage(data.en, true).replace('modal-emoji', 'modal-emoji').replace('modal-svg', 'modal-svg').replace('modal-letter', 'modal-letter');
-  const wrap = document.getElementById('modalImageWrap');
-  const lastChild = wrap.lastElementChild;
-  lastChild.id = 'modalImageContent';
-  window._modalImgContent = lastChild;
+
+  const syns = getSynonyms(data.en);
+  const synContainer = document.getElementById('modalSyn');
+  if (syns.length) {
+    synContainer.innerHTML = `<div class="modal-syn"><span class="label">≈ คำพ้อง:</span>${
+      syns.map(s => `<span class="word" data-syn="${s}">${s}</span>`).join('')
+    }</div>`;
+    synContainer.querySelectorAll('.word').forEach(el => {
+      el.addEventListener('click', (e) => { e.stopPropagation(); speakEnglish(el.dataset.syn); });
+    });
+  } else {
+    synContainer.innerHTML = '';
+  }
+
+  const fallbackHTML = getImage(data.en, true);
+  modalImageWrap.innerHTML = `${fallbackHTML}<img class="modal-pixabay-img" style="display:none;" alt="${data.en}">`;
+  loadPixabayImageForModal(data.en, modalImageWrap);
+
   let html = '';
   if (data.sentenceEn) {
     html = `<div class="sentence-item"><div><div class="s-en">${data.sentenceEn}</div><div class="s-th">${data.sentenceTh || data.th}</div></div><button class="speak-sentence-btn" data-sentence="${data.sentenceEn}">🔊</button></div>`;
@@ -5007,7 +5670,6 @@ function populateGradeSelect() {
     });
     gradeTabs.appendChild(btn);
   }
-  // 🎮 ปุ่มเล่นเกม (ลิงก์ถัดจากปุ่ม "พิเศษ")
   const gameBtn = document.createElement('a');
   gameBtn.className = 'game-btn';
   gameBtn.href = 'https://tum-service.github.io/1111/quiz.html';
@@ -5025,7 +5687,7 @@ gradeSelect.addEventListener('change', (e) => {
 searchInput.addEventListener('input', (e) => { searchQuery = e.target.value; render(); });
 
 // ============================================================
-//  BACKGROUND BATS + FLOATERS
+//  BATS + FLOATERS
 // ============================================================
 const BAT_SVG = `<svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg"><path class="bat-wing" d="M30 12 Q18 2 8 6 Q14 12 6 18 Q16 20 22 16 Q26 20 30 20 Q34 20 38 16 Q44 20 54 18 Q46 12 52 6 Q42 2 30 12 Z" fill="#1a0b2e" stroke="#a855f7" stroke-width="0.6" opacity="0.9"/><circle cx="27" cy="12" r="1" fill="#f97316"/><circle cx="33" cy="12" r="1" fill="#f97316"/></svg>`;
 function initBats() {
@@ -5059,12 +5721,10 @@ function initBgFloaters() {
 }
 
 // ============================================================
-//  FULLSCREEN TOGGLE + AUTO FULLSCREEN
+//  FULLSCREEN
 // ============================================================
 const fsToggle = document.getElementById('fsToggle');
-
-let fsUserOptOut = false;   // ผู้ใช้กด "ออกจากเต็มจอ" เอง → อย่าไปดึงกลับ
-
+let fsUserOptOut = false;
 function isFullscreen() {
   return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
 }
@@ -5093,28 +5753,20 @@ function tryAutoFullscreen() {
   if (fsUserOptOut || isFullscreen()) return;
   requestFS().catch(()=>{});
 }
-
-/* --- ปุ่มเต็มจอ --- */
 fsToggle.addEventListener('click', () => {
   if (isFullscreen()) {
-    fsUserOptOut = true;          // ผู้ใช้ตั้งใจออกเอง → หยุด auto
+    fsUserOptOut = true;
     exitFS().catch(()=>{});
   } else {
     fsUserOptOut = false;
     requestFS().catch(()=>{});
   }
 });
-
-/* --- ติดตามสถานะ fullscreen --- */
 ['fullscreenchange','webkitfullscreenchange','msfullscreenchange'].forEach(evt => {
   document.addEventListener(evt, updateFsIcon);
 });
 updateFsIcon();
-
-/* --- ลองเข้าเต็มจอทันทีตอนโหลด (บาง environment ทำได้) --- */
 tryAutoFullscreen();
-
-/* --- ถ้ายังไม่เต็มจอ → ดึงเข้าเต็มจอทันทีที่มี gesture แรก --- */
 ['click','touchstart','keydown','pointerdown'].forEach(ev => {
   document.addEventListener(ev, tryAutoFullscreen, {passive:true});
 });
