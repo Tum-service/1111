@@ -363,8 +363,8 @@ canvas.game-canvas{position:absolute;top:42px;left:0;right:0;bottom:0;width:100%
 <div class="screen" id="scGameHost">
   <div class="game-topbar">
     <div style="display:flex;gap:4px">
-      <div class="tb-team tb-blue">🔵 <span id="hostBlueScore">0/5</span></div>
-      <div class="tb-team tb-red">🔴 <span id="hostRedScore">0/5</span></div>
+      <div class="tb-team tb-blue">🔵 <span id="hostBlueScore">🏰 4500</span></div>
+      <div class="tb-team tb-red">🔴 <span id="hostRedScore">🏰 4500</span></div>
     </div>
     <div class="tb-timer" id="hostTimer">8:00</div>
     <div style="width:36px"></div>
@@ -381,7 +381,7 @@ canvas.game-canvas{position:absolute;top:42px;left:0;right:0;bottom:0;width:100%
 <div class="screen" id="scGamePlayer">
   <div class="game-topbar">
     <div style="display:flex;gap:4px">
-      <div class="tb-team tb-blue" id="pMyTeam">🔵 <span id="pTeamKills">0/5</span></div>
+      <div class="tb-team tb-blue" id="pMyTeam">🔵 <span id="pTeamKills">🏰 4500</span></div>
     </div>
     <div class="tb-timer" id="pTimer">8:00</div>
     <div style="width:36px"></div>
@@ -389,7 +389,7 @@ canvas.game-canvas{position:absolute;top:42px;left:0;right:0;bottom:0;width:100%
   <canvas id="gameCanvasPlayer" class="game-canvas"></canvas>
   <div class="killfeed-hud" id="killFeedHud"></div>
   <div class="minimap" id="minimapWrap">
-    <div class="minimap-label">MAP · แตะเดิน</div>
+    <div class="minimap-label">MAP · แตะเดิน · 🏰 เป้าหมาย</div>
     <canvas id="minimapCanvas"></canvas>
   </div>
   <div class="canvas-btns">
@@ -415,7 +415,7 @@ canvas.game-canvas{position:absolute;top:42px;left:0;right:0;bottom:0;width:100%
     </div>
     <div class="q-panel" id="questionPanel">
       <div class="q-timer" id="qTimer" style="width:100%"></div>
-      <div class="q-text" id="qText">แตะแมพเพื่อเดิน · แตะศัตรูเพื่อโจมตี</div>
+      <div class="q-text" id="qText">แตะแมพเพื่อเดิน · แตะปราสาทเพื่อโจมตี</div>
       <div class="q-sub" id="qSub">—</div>
       <div class="q-answers" id="qAnswers"></div>
     </div>
@@ -1106,8 +1106,8 @@ const SET_SIZE=20;
 /* ═══ MAP ═══ */
 const WORLD={w:1800,h:1000};
 const MAP={
-  blueNexus:{x:120,y:500,id:'bn',r:320},
-  redNexus:{x:1680,y:500,id:'rn',r:320},
+  blueCastle:{x:120,y:500,id:'bn',r:320},
+  redCastle:{x:1680,y:500,id:'rn',r:320},
   blueTowers:[
     {x:360,y:500,id:'bt1',idx:1,r:180},
     {x:560,y:280,id:'bt2',idx:2,r:180},
@@ -1123,10 +1123,12 @@ const MAP={
     {x:1040,y:820,id:'rt5',idx:5,r:180}
   ],
   smallTowerHp:700,
-  nexusHp:5000,
+  castleHp:4500,
   towerAtkDmg:35,
-  nexusAtkDmg:55,
-  nexusHealRate:4
+  castleAtkDmg:55,
+  castleHealRate:0,
+  castleRange:300,
+  towerRange:180
 };
 
 /* ═══ STATE ═══ */
@@ -1485,7 +1487,7 @@ function onGameStart(d){
     id:G.myPlayerId,name:G.myName,emoji:G.myHero.emoji,
     heroId:hd.id,team:G.myTeam,
     x:blue?250:1550,y:500,
-    hp:hd.hp,maxHp:hd.hp,mp:500,maxMp:500,lv:1,xp:0,gold:200,combo:0,
+    hp:hd.hp,maxHp:hd.hp,mp:500,maxMp:500,lv:1,xp:0,gold:200,combo:0,attackCharge:0,castleDamage:0,
     skillCd:{q:0,w:0,e:0,r:0},ultReady:false,dead:false,
     color:hd.color,speed:hd.speed,range:hd.range,projectile:hd.projectile,
     atk:hd.atk,def:hd.def,
@@ -1575,7 +1577,7 @@ function setupPlayerView(hd){
   $('hbAvatar').textContent=G.myHero.emoji;
   $('hbName').textContent=G.myName;
   $('hbLv').textContent='1';
-  $('pMyTeam').innerHTML=(G.myTeam==='blue'?'🔵':'🔴')+' <span id="pTeamKills">0/5</span>';
+  $('pMyTeam').innerHTML=(G.myTeam==='blue'?'🔵':'🔴')+' <span id="pTeamKills">🏰 4500</span>';
   renderSkillBar(hd);
   const q=hd.skills.q;
   $('powerIco').textContent=q.emoji;
@@ -1793,23 +1795,29 @@ function handleTap(wx,wy){
   const st=G.currentState;if(!st)return;
   G.clickMarker={x:wx,y:wy,t:Date.now()};
   let target=null;
-  // Enemy hero?
+  // Castle has priority: Battle Attack is about destroying the enemy castle.
+  const eN=G.myTeam==='blue'?MAP.redCastle:MAP.blueCastle;
+  const enemyTeam=G.myTeam==='blue'?'red':'blue';
+  const eState=st.teams?.[enemyTeam];
+  if(eState?.castle?.hp>0 && dist({x:wx,y:wy},eN)<130){
+    target={type:'enemyCastle',id:eN.id};
+  }
+  // Enemy hero (secondary target)
   const heroList=heroesArr(st.heroes);
-  for(const h of heroList){
+  if(!target)for(const h of heroList){
     if(h.dead||h.team===G.myTeam||h.team==='spec')continue;
     if(dist({x:wx,y:wy},{x:h.x,y:h.y})<70){target={type:'enemyHero',id:h.id};break}
   }
   // Enemy tower?
   if(!target){
     const eT=G.myTeam==='blue'?MAP.redTowers:MAP.blueTowers;
-    const eN=G.myTeam==='blue'?MAP.redNexus:MAP.blueNexus;
     const tstate=st.teams?st.teams[G.myTeam==='blue'?'red':'blue']:null;
     if(tstate){
       for(let i=0;i<eT.length;i++){
         const tk=tstate['tower'+(i+1)];
         if(tk&&tk.hp>0&&dist({x:wx,y:wy},eT[i])<70){target={type:'enemyTower',id:eT[i].id};break}
       }
-      if(!target&&tstate.nexus.hp>0&&dist({x:wx,y:wy},eN)<95)target={type:'enemyNexus',id:eN.id};
+      if(!target&&tstate.castle.hp>0&&dist({x:wx,y:wy},eN)<95)target={type:'enemyCastle',id:eN.id};
     }
   }
   const msg=target?{targetId:target.id,type:target.type}:{x:wx,y:wy,type:'move'};
@@ -1875,8 +1883,8 @@ function renderHost(){
     const bT=st.teams.blue,rT=st.teams.red;
     let bD=0,rD=0;
     for(let i=1;i<=5;i++){if(bT['tower'+i].hp<=0)bD++;if(rT['tower'+i].hp<=0)rD++}
-    $('hostBlueScore').textContent=bD+'/5';
-    $('hostRedScore').textContent=rD+'/5';
+    $('hostBlueScore').textContent='🏰 '+Math.round(bT.castle.hp);
+    $('hostRedScore').textContent='🏰 '+Math.round(rT.castle.hp);
   }
   const remain=Math.max(0,st.duration-st.time);
   $('hostTimer').textContent=fmtTime(remain);
@@ -1944,14 +1952,14 @@ function drawWorld(ctx,st,isHost){
   // Range circles
   const bT=st.teams?.blue,rT=st.teams?.red;
   if(bT&&rT){
-    drawTowerRange(ctx,MAP.blueNexus,'blue',bT.nexus,MAP.nexusRange,isHost);
+    drawTowerRange(ctx,MAP.blueCastle,'blue',bT.castle,MAP.castleRange,isHost);
     MAP.blueTowers.forEach((t,i)=>{const tk=bT['tower'+(i+1)];if(tk&&tk.hp>0)drawTowerRange(ctx,t,'blue',tk,MAP.towerRange,isHost)});
-    drawTowerRange(ctx,MAP.redNexus,'red',rT.nexus,MAP.nexusRange,isHost);
+    drawTowerRange(ctx,MAP.redCastle,'red',rT.castle,MAP.castleRange,isHost);
     MAP.redTowers.forEach((t,i)=>{const tk=rT['tower'+(i+1)];if(tk&&tk.hp>0)drawTowerRange(ctx,t,'red',tk,MAP.towerRange,isHost)});
     // Structures
-    drawNexus(ctx,MAP.blueNexus,bT.nexus,'blue',bT);
+    drawCastle(ctx,MAP.blueCastle,bT.castle,'blue',bT);
     MAP.blueTowers.forEach((t,i)=>{const tk=bT['tower'+(i+1)];if(tk)drawTower(ctx,t,tk,'blue')});
-    drawNexus(ctx,MAP.redNexus,rT.nexus,'red',rT);
+    drawCastle(ctx,MAP.redCastle,rT.castle,'red',rT);
     MAP.redTowers.forEach((t,i)=>{const tk=rT['tower'+(i+1)];if(tk)drawTower(ctx,t,tk,'red')});
   }
   // Minions
@@ -2219,7 +2227,7 @@ function drawTower(ctx,t,obj,team){
   }
   ctx.restore();
 }
-function drawNexus(ctx,n,obj,team,teamState){
+function drawCastle(ctx,n,obj,team,teamState){
   const dead=obj.hp<=0;
   const hpPct=Math.max(0,obj.hp/obj.max);
   const baseColor=team==='blue'?'#3b82f6':'#ef4444';
@@ -2232,10 +2240,6 @@ function drawNexus(ctx,n,obj,team,teamState){
     ctx.globalAlpha=0.8;
     ctx.fillText('💥',n.x,n.y);
     ctx.restore();return;
-  }
-  let protectedStatus=false;
-  if(teamState){
-    for(let i=1;i<=5;i++)if(teamState['tower'+i].hp>0){protectedStatus=true;break}
   }
   ctx.beginPath();ctx.ellipse(n.x,n.y+38,55,16,0,0,Math.PI*2);
   ctx.fillStyle='rgba(0,0,0,.4)';ctx.fill();
@@ -2271,15 +2275,11 @@ function drawNexus(ctx,n,obj,team,teamState){
   ctx.fillRect(n.x-w/2,n.y-96,w*hpPct,10);
   ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1.5;
   ctx.strokeRect(n.x-w/2,n.y-96,w,10);
-  if(protectedStatus&&hpPct<1){
-    ctx.fillStyle='rgba(0,0,0,.85)';
-    const pw=100,ph=22;
-    ctx.fillRect(n.x-pw/2,n.y-128,pw,ph);
-    ctx.strokeStyle='#fbbf24';ctx.lineWidth=2;
-    ctx.strokeRect(n.x-pw/2,n.y-128,pw,ph);
-    ctx.font='bold 11px Kanit';ctx.fillStyle='#fbbf24';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('🔒 PROTECTED',n.x,n.y-117);
-  }
+  ctx.save();
+  ctx.font='bold 13px Kanit, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.fillStyle='rgba(0,0,0,.82)';ctx.fillRect(n.x-58,n.y+48,116,22);
+  ctx.fillStyle=baseColor;ctx.fillText('🏰 CASTLE',n.x,n.y+59);
+  ctx.restore();
   if(hpPct<0.5){
     ctx.font='22px sans-serif';
     ctx.globalAlpha=0.7+0.3*Math.sin(Date.now()/200);
@@ -2304,8 +2304,8 @@ function renderMinimap(){
   if(st.teams){
     MAP.blueTowers.forEach((t,i)=>{const tk=st.teams.blue['tower'+(i+1)];if(tk&&tk.hp>0){ctx.fillStyle='#3b82f6';ctx.fillRect(t.x*sx-2,t.y*sy-2,4,4)}});
     MAP.redTowers.forEach((t,i)=>{const tk=st.teams.red['tower'+(i+1)];if(tk&&tk.hp>0){ctx.fillStyle='#ef4444';ctx.fillRect(t.x*sx-2,t.y*sy-2,4,4)}});
-    ctx.fillStyle=st.teams.blue.nexus.hp>0?'#3b82f6':'#333';ctx.fillRect(MAP.blueNexus.x*sx-4,MAP.blueNexus.y*sy-4,8,8);
-    ctx.fillStyle=st.teams.red.nexus.hp>0?'#ef4444':'#333';ctx.fillRect(MAP.redNexus.x*sx-4,MAP.redNexus.y*sy-4,8,8);
+    ctx.fillStyle=st.teams.blue.castle.hp>0?'#3b82f6':'#333';ctx.fillRect(MAP.blueCastle.x*sx-4,MAP.blueCastle.y*sy-4,8,8);
+    ctx.fillStyle=st.teams.red.castle.hp>0?'#ef4444':'#333';ctx.fillRect(MAP.redCastle.x*sx-4,MAP.redCastle.y*sy-4,8,8);
   }
   heroesArr(st.heroes).forEach(h=>{
     if(h.team==='spec')return;
@@ -2351,8 +2351,7 @@ function updatePlayerHud(){
     $('pTimer').classList.toggle('warn',(st.duration-st.time)<=60);
     if(st.teams){
       const eT=G.myTeam==='blue'?st.teams.red:st.teams.blue;
-      let k=0;for(let i=1;i<=5;i++)if(eT['tower'+i].hp<=0)k++;
-      const el=$('pTeamKills');if(el)el.textContent=k+'/5';
+      const el=$('pTeamKills');if(el)el.textContent='🏰 '+Math.round(eT.castle.hp);
     }
   }
 }
@@ -2471,7 +2470,7 @@ const Server={
         lv:1,xp:0,gold:200,
         atk:hd.atk,def:hd.def,speed:hd.speed,range:hd.range,projectile:hd.projectile,
         dead:false,respawnT:0,
-        combo:0,bestCombo:0,kills:0,deaths:0,
+        combo:0,bestCombo:0,kills:0,deaths:0,attackCharge:0,castleDamage:0,
         skillCd:{q:0,w:0,e:0,r:0},
         ultReady:false,
         isAI:!!p.isAI,color:hd.color,
@@ -2491,7 +2490,7 @@ const Server={
   },
   mkTeam(){
     return{
-      nexus:{hp:MAP.nexusHp,max:MAP.nexusHp},
+      castle:{hp:MAP.castleHp,max:MAP.castleHp},
       tower1:{hp:MAP.smallTowerHp,max:MAP.smallTowerHp},
       tower2:{hp:MAP.smallTowerHp,max:MAP.smallTowerHp},
       tower3:{hp:MAP.smallTowerHp,max:MAP.smallTowerHp},
@@ -2548,12 +2547,6 @@ const Server={
     const st=this.state;if(!st||st.ended||st.paused)return;
     st.time=(Date.now()-st.startTime)/1000;
     if(st.time>=st.duration){this.endGame();return}
-    ['blue','red'].forEach(team=>{
-      const n=this.towersAlive(team);
-      if(n>0){
-        st.teams[team].nexus.hp=Math.min(st.teams[team].nexus.max,st.teams[team].nexus.hp+n*MAP.nexusHealRate*0.06);
-      }
-    });
     Object.values(st.heroes).forEach(h=>{
       if(h.dead){
         h.respawnT-=0.06;
@@ -2614,18 +2607,19 @@ const Server={
           }
         }else{h.targetId=null;h.targetType=null}
       }
-      // Attack nexus
-      if(h.targetType==='nexus'&&h.targetId){
-        const pos=this.getNexusPos(h.targetId);
-        const obj=this.getNexusObj(h.targetId);
+      // Attack castle
+      if(h.targetType==='castle'&&h.targetId){
+        const pos=this.getCastlePos(h.targetId);
+        const obj=this.getCastleObj(h.targetId);
         if(pos&&obj&&obj.hp>0){
           const d=dist(h,pos);
           if(d<=h.range+40){
-            if(!h.atkTimer||h.atkTimer<=0){
-              this.damageNexus(h,h.targetId);
+            if((h.attackCharge||0)>0 && (!h.atkTimer||h.atkTimer<=0)){
+              this.damageCastle(h,h.targetId);
               this.fireProjectile(h,pos);
-              h.atkTimer=1.2;
-            }else h.atkTimer-=0.06;
+              h.attackCharge=Math.max(0,(h.attackCharge||0)-1);
+              h.atkTimer=1.0;
+            }else h.atkTimer=Math.max(0,(h.atkTimer||0)-0.06);
           }else if(!h.moving){
             h.tx=pos.x;h.ty=pos.y;h.moving=true;
           }
@@ -2658,8 +2652,8 @@ const Server={
       }
     });
     st.units=st.units.filter(u=>u.hp>0);
-    if(st.teams.blue.nexus.hp<=0)this.endGame('red');
-    else if(st.teams.red.nexus.hp<=0)this.endGame('blue');
+    if(st.teams.blue.castle.hp<=0)this.endGame('red');
+    else if(st.teams.red.castle.hp<=0)this.endGame('blue');
   },
   towerTick(){
     const st=this.state;if(!st||st.ended||st.paused)return;
@@ -2683,8 +2677,8 @@ const Server={
     };
     doTowers(MAP.blueTowers,st.teams.blue,'blue');
     doTowers(MAP.redTowers,st.teams.red,'red');
-    const doNexus=(n,teamState,team)=>{
-      if(teamState.nexus.hp<=0)return;
+    const doCastle=(n,teamState,team)=>{
+      if(teamState.castle.hp<=0)return;
       let target=null,minD=320;
       Object.values(st.heroes).forEach(h=>{
         if(h.dead||h.team===team||h.team==='spec')return;
@@ -2692,14 +2686,14 @@ const Server={
         if(d<minD){minD=d;target=h}
       });
       if(target){
-        target.hp-=MAP.nexusAtkDmg;
+        target.hp-=MAP.castleAtkDmg;
         st.projectiles.push({team:team,fromX:n.x,fromY:n.y,toX:target.x,toY:target.y,emoji:'⚡',dur:500,t:Date.now()});
-        G.dmgFloats.push({x:target.x,y:target.y-30,amt:MAP.nexusAtkDmg,crit:false,t:Date.now(),color:team==='blue'?'#93c5fd':'#fca5a5'});
+        G.dmgFloats.push({x:target.x,y:target.y-30,amt:MAP.castleAtkDmg,crit:false,t:Date.now(),color:team==='blue'?'#93c5fd':'#fca5a5'});
         if(target.hp<=0)this.killHero(target,null);
       }
     };
-    doNexus(MAP.blueNexus,st.teams.blue,'blue');
-    doNexus(MAP.redNexus,st.teams.red,'red');
+    doCastle(MAP.blueCastle,st.teams.blue,'blue');
+    doCastle(MAP.redCastle,st.teams.red,'red');
   },
   aiTick(){
     const st=this.state;if(!st||st.ended||st.paused)return;
@@ -2716,20 +2710,17 @@ const Server={
         const enemyTeam=h.team==='blue'?'red':'blue';
         const enemyTowers=MAP[enemyTeam+'Towers'];
         const et=st.teams[enemyTeam];
-        let candidate=null;
-        let nd=600;
-        Object.values(st.heroes).forEach(t=>{
-          if(t.team===h.team||t.dead||t.team==='spec')return;
-          const d=dist(h,t);
-          if(d<nd){nd=d;candidate={type:'hero',id:t.id}}
-        });
+        let candidate={type:'castle',id:h.team==='blue'?'rn':'bn'};
+        const castleObj=st.teams[enemyTeam].castle;
+        if(castleObj.hp<=0)candidate=null;
+        // AI may still fight nearby heroes while moving, but its primary objective is the castle.
         if(!candidate){
-          for(let i=0;i<enemyTowers.length;i++){
-            if(et['tower'+(i+1)].hp>0){candidate={type:'tower',id:enemyTowers[i].id};break}
-          }
-        }
-        if(!candidate&&this.towersAlive(enemyTeam)===0){
-          candidate={type:'nexus',id:h.team==='blue'?'rn':'bn'};
+          let nd=600;
+          Object.values(st.heroes).forEach(t=>{
+            if(t.team===h.team||t.dead||t.team==='spec')return;
+            const d=dist(h,t);
+            if(d<nd){nd=d;candidate={type:'hero',id:t.id}}
+          });
         }
         if(candidate){
           if(candidate.type==='hero'){
@@ -2739,9 +2730,9 @@ const Server={
           }else if(candidate.type==='tower'){
             const pos=this.getTowerPos(candidate.id);
             if(pos){h.targetId=candidate.id;h.targetType='tower';h.tx=pos.x;h.ty=pos.y;h.moving=true}
-          }else if(candidate.type==='nexus'){
-            const pos=this.getNexusPos(candidate.id);
-            if(pos){h.targetId=candidate.id;h.targetType='nexus';h.tx=pos.x;h.ty=pos.y;h.moving=true}
+          }else if(candidate.type==='castle'){
+            const pos=this.getCastlePos(candidate.id);
+            if(pos){h.targetId=candidate.id;h.targetType='castle';h.tx=pos.x;h.ty=pos.y;h.moving=true}
           }
         }
       }
@@ -2765,11 +2756,11 @@ const Server={
         h.targetId=msg.targetId;h.targetType='tower';
         h.tx=pos.x;h.ty=pos.y;h.moving=true;
       }
-    }else if(msg.type==='enemyNexus'){
-      const pos=this.getNexusPos(msg.targetId);
-      const obj=this.getNexusObj(msg.targetId);
+    }else if(msg.type==='enemyCastle'){
+      const pos=this.getCastlePos(msg.targetId);
+      const obj=this.getCastleObj(msg.targetId);
       if(pos&&obj&&obj.hp>0){
-        h.targetId=msg.targetId;h.targetType='nexus';
+        h.targetId=msg.targetId;h.targetType='castle';
         h.tx=pos.x;h.ty=pos.y;h.moving=true;
       }
     }
@@ -2782,7 +2773,7 @@ const Server={
     if(this.state.projectiles.length>60)this.state.projectiles.shift();
   },
   getTowerPos(id){return (id.startsWith('b')?MAP.blueTowers:MAP.redTowers).find(t=>t.id===id)},
-  getNexusPos(id){return id==='bn'?MAP.blueNexus:MAP.redNexus},
+  getCastlePos(id){return id==='bn'?MAP.blueCastle:MAP.redCastle},
   getTowerObj(id){
     const st=this.state;
     const team=id.startsWith('b')?'blue':'red';
@@ -2791,7 +2782,7 @@ const Server={
     if(!t)return null;
     return st.teams[team]['tower'+t.idx];
   },
-  getNexusObj(id){return this.state.teams[id==='bn'?'blue':'red'].nexus},
+  getCastleObj(id){return this.state.teams[id==='bn'?'blue':'red'].castle},
   damageTower(h,id){
     const obj=this.getTowerObj(id);if(!obj||obj.hp<=0)return;
     let dmg=40+h.atk*0.5+h.combo*6;
@@ -2808,29 +2799,35 @@ const Server={
       this.bcAnnounce(`${h.name} DESTROYED TOWER!`);
       if(this.towersAlive(enemyTeam)===0){
         this.addKill(`🔓 ป้อมใหญ่ ${eName} เปิด!`,'gold');
-        this.bcAnnounce('NEXUS VULNERABLE!');
+        this.bcAnnounce('CASTLE VULNERABLE!');
       }
     }
   },
-  damageNexus(h,id){
+  damageCastle(h,id){
     const team=id==='bn'?'blue':'red';
-    const n=this.towersAlive(team);
-    if(n>0){
-      const pos=this.getNexusPos(id);
-      if(pos)G.dmgFloats.push({x:pos.x,y:pos.y-30,amt:'🔒',crit:false,t:Date.now(),color:'#fbbf24'});
-      return;
-    }
-    const obj=this.getNexusObj(id);if(!obj||obj.hp<=0)return;
-    let dmg=40+h.atk*0.5+h.combo*6;
+    const obj=this.getCastleObj(id);if(!obj||obj.hp<=0)return;
+    let dmg=55+h.atk*0.55+h.combo*8;
     const hd=HEROES.find(x=>x.id===h.heroId);
     if(hd.id==='mage')dmg*=1.3;
+    if(hd.id==='marksman')dmg*=1.15;
+    if(hd.id==='tank')dmg*=0.85;
     if(hd.id==='assassin'&&h.combo>=3)dmg*=1.6;
+    const crit=h.combo>=5;
+    if(crit)dmg*=1.25;
+    dmg=Math.round(dmg);
     obj.hp=Math.max(0,obj.hp-dmg);
-    const pos=this.getNexusPos(id);
-    if(pos)G.dmgFloats.push({x:pos.x,y:pos.y-30,amt:Math.round(dmg),crit:h.combo>=5,t:Date.now()});
+    h.castleDamage=(h.castleDamage||0)+dmg;
+    const pos=this.getCastlePos(id);
+    if(pos)G.dmgFloats.push({x:pos.x,y:pos.y-45,amt:dmg,crit,t:Date.now(),color:team==='blue'?'#60a5fa':'#f87171'});
+    if(crit)this.bcAnnounce('💥 CRITICAL CASTLE HIT!');
     if(obj.hp<=0){
       const eName=team==='blue'?'🔵':'🔴';
-      this.addKill(`🏰 ${h.name} ทำลาย NEXUS ${eName}!`,'gold');
+      this.addKill(`💥 🏰 ${h.name} ทำลาย CASTLE ${eName}!`,'gold');
+      this.bcAnnounce('🏰 CASTLE DESTROYED!');
+    }else if(obj.hp/obj.max<0.3){
+      this.bcAnnounce('⚠️ CASTLE CRITICAL!');
+    }else{
+      this.bcAnnounce('🏰 CASTLE HIT!');
     }
   },
   applyAnswer(pid,d){
@@ -2838,7 +2835,18 @@ const Server={
     const h=st.heroes[pid];if(!h)return;
     if(d.correct){
       h.combo++;if(h.combo>h.bestCombo)h.bestCombo=h.combo;
+      h.attackCharge=(h.attackCharge||0)+1;
       h.gold+=25+h.combo*5;h.xp+=25;
+      // Every correct answer arms one Castle Attack. If no target is selected, lock onto the enemy castle.
+      if(!h.targetId||h.targetType!=='castle'){
+        const enemyId=h.team==='blue'?'rn':'bn';
+        const pos=this.getCastlePos(enemyId);
+        const castle=this.getCastleObj(enemyId);
+        if(pos&&castle&&castle.hp>0){
+          h.targetId=enemyId;h.targetType='castle';h.tx=pos.x;h.ty=pos.y;h.moving=true;
+        }
+      }
+      this.addKill(`⚔️ ${h.name} เตรียมยิงปราสาท! COMBO x${h.combo}`,h.team);
       while(h.xp>=h.lv*100){
         h.xp-=h.lv*100;h.lv++;h.maxHp+=100;h.hp+=100;h.atk+=5;h.def+=2;h.maxMp+=50;
         this.addKill(`⭐ ${h.name} Lv.${h.lv}`,h.team);
@@ -2886,7 +2894,7 @@ const Server={
     else if(key==='r')dmg=h.atk*8;
     if(h.targetId||h.targetType){
       if(h.targetType==='tower')this.damageTower(h,h.targetId);
-      else if(h.targetType==='nexus')this.damageNexus(h,h.targetId);
+      else if(h.targetType==='castle')this.damageCastle(h,h.targetId);
       else{
         const t=st.heroes[h.targetId];
         if(t&&!t.dead){
@@ -2927,7 +2935,7 @@ const Server={
     const t={};
     ['blue','red'].forEach(tid=>{
       t[tid]={};
-      ['nexus','tower1','tower2','tower3','tower4','tower5'].forEach(k=>{
+      ['castle','tower1','tower2','tower3','tower4','tower5'].forEach(k=>{
         t[tid][k]={hp:st.teams[tid][k].hp,max:st.teams[tid][k].max};
       });
     });
@@ -2938,7 +2946,7 @@ const Server={
         id:h.id,name:h.name,emoji:h.emoji,heroId:h.heroId,team:h.team,
         x:Math.round(h.x),y:Math.round(h.y),
         hp:Math.round(h.hp),maxHp:h.maxHp,mp:Math.round(h.mp),maxMp:h.maxMp,
-        lv:h.lv,xp:h.xp,gold:h.gold,combo:h.combo,kills:h.kills,deaths:h.deaths,
+        lv:h.lv,xp:h.xp,gold:h.gold,combo:h.combo,kills:h.kills,deaths:h.deaths,attackCharge:h.attackCharge||0,castleDamage:Math.round(h.castleDamage||0),
         dead:h.dead,respawnT:Math.max(0,h.respawnT),ultReady:h.ultReady,
         skillCd:h.skillCd,color:h.color,
         moving:h.moving,targetId:h.targetId,targetType:h.targetType,
@@ -2959,15 +2967,14 @@ const Server={
     this.state.ended=true;
     this.stop();
     if(!winner){
-      const bHp=this.state.teams.blue.nexus.hp,rHp=this.state.teams.red.nexus.hp;
+      const bHp=this.state.teams.blue.castle.hp,rHp=this.state.teams.red.castle.hp;
       const bT=this.towersAlive('blue'),rT=this.towersAlive('red');
       if(bHp!==rHp)winner=bHp>rHp?'blue':'red';
-      else if(bT!==rT)winner=bT>rT?'blue':'red';
       else winner='blue';
     }
     const result={winner,heroes:Object.values(this.state.heroes).map(h=>({
       id:h.id,name:h.name,emoji:h.emoji,team:h.team,heroId:h.heroId,
-      score:h.gold,kills:h.kills,deaths:h.deaths,lv:h.lv,combo:h.bestCombo
+      score:h.gold,kills:h.kills,deaths:h.deaths,lv:h.lv,combo:h.bestCombo,castleDamage:Math.round(h.castleDamage||0)
     }))};
     if(G.role==='host')hostBc({type:'end',result});
     setTimeout(()=>showVictory(result),600);
@@ -2995,13 +3002,13 @@ function showVictory(result){
   const myWin=result.winner===G.myTeam;
   $('victoryTitle').textContent=myWin?'🏆 VICTORY!':'💔 DEFEAT';
   $('victoryTitle').style.color=myWin?'#fbbf24':'#f87171';
-  $('victorySub').textContent=result.winner==='blue'?'🔵 ทีมน้ำเงินชนะ!':'🔴 ทีมแดงชนะ!';
-  const sorted=[...result.heroes].sort((a,b)=>b.score-a.score);
+  $('victorySub').textContent=result.winner==='blue'?'🔵 ทีมน้ำเงินทำลายปราสาทแดง!':'🔴 ทีมแดงทำลายปราสาทน้ำเงิน!';
+  const sorted=[...result.heroes].sort((a,b)=>b.castleDamage-a.castleDamage);
   const t3=sorted.slice(0,3);
   const ord=[1,0,2],cl=['p2','p1','p3'],md=['2','1','3'];
   $('podiumStage').innerHTML=ord.map((idx,i)=>{
     const p=t3[idx];if(!p)return '';
-    return `<div class="podium-place ${cl[i]}"><span class="podium-avatar">${esc(p.emoji||'🧙')}</span><div class="podium-name">${esc(p.name)}</div><div class="podium-score">${p.score}g</div><div class="podium-base">${md[i]}</div></div>`;
+    return `<div class="podium-place ${cl[i]}"><span class="podium-avatar">${esc(p.emoji||'🧙')}</span><div class="podium-name">${esc(p.name)}</div><div class="podium-score">🏰 ${p.castleDamage||0}</div><div class="podium-base">${md[i]}</div></div>`;
   }).join('');
   if(myWin)sWin();else sLose();
   setTimeout(()=>go('scVictory'),800);
