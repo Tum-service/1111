@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>⚔️ Vocab Clash Arena v3.2</title>
+<title>⚔️ Vocab Clash Arena v3.3</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;700;800;900&family=Creepster&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -218,7 +218,7 @@ canvas.game-canvas{position:absolute;top:42px;left:0;right:0;bottom:0;width:100%
 <div class="screen active" id="scLanding">
   <div class="landing">
     <h1>⚔️ VOCAB CLASH ⚔️</h1>
-    <p style="color:#fb923c;font-weight:900;font-size:.95rem;text-align:center">Arena v3.2</p>
+    <p style="color:#fb923c;font-weight:900;font-size:.95rem;text-align:center">Arena v3.3</p>
     <p style="color:#7c6fa8;font-size:.78rem;text-align:center;margin-bottom:12px">RoV Style · Real Heroes · Touch Move</p>
     <div class="card">
       <button class="btn btn-p" onclick="startHostFlow()">🎤 Host</button>
@@ -313,7 +313,7 @@ canvas.game-canvas{position:absolute;top:42px;left:0;right:0;bottom:0;width:100%
   </div>
 </div>
 
-<!-- PLAYER JOIN (single page: name + hero) -->
+<!-- PLAYER JOIN -->
 <div class="screen" id="scPlayerJoin">
   <div class="wrap" style="max-width:900px">
     <button class="btn-sm btn-s" onclick="go('scLanding')">← กลับ</button>
@@ -1120,7 +1120,6 @@ const G={
   hostFocusPlayer:null,
   pCanvas:null,hCanvas:null,pCtx:null,hCtx:null,
   cam:{x:900,y:500,zoom:0.6,follow:true},
-  // Tap detection
   touchStartX:0,touchStartY:0,touchStartTime:0,touchMoved:false,
   isPanning:false,camStartX:0,camStartY:0,
   clickMarker:null,
@@ -1138,7 +1137,11 @@ function shuf(a){const r=a.slice();for(let i=r.length-1;i>0;i--){const j=Math.fl
 function fmtTime(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function gCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let r='';for(let i=0;i<4;i++)r+=c[Math.floor(Math.random()*c.length)];return r}
 function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
-function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+// ✅ FIX 1: clamp() ปลอดภัยเมื่อ a > b (เช่น หน้าจอเล็กกว่า world) ให้คืนกึ่งกลาง
+function clamp(v,a,b){
+  if(a>b)return (a+b)/2;
+  return Math.max(a,Math.min(b,v));
+}
 function heroesArr(h){return Array.isArray(h)?h:Object.values(h||{})}
 
 /* ═══ SOUND ═══ */
@@ -1238,7 +1241,6 @@ function startHostFlow(){G.role='host';go('scGradeSelect')}
 function startSoloFlow(){G.role='solo';go('scGradeSelect')}
 function startPlayerFlow(){
   G.role='player';
-  // Check URL for code
   const p=new URLSearchParams(location.search);
   const c=p.get('code');
   if(c&&c.length===4){
@@ -1248,7 +1250,6 @@ function startPlayerFlow(){
     go('scPlayerJoin');
   }
 }
-
 function proceedFromConfig(){
   if(G.role==='solo'){
     $('heroBackBtn').onclick=()=>go('scGameConfig');
@@ -1287,11 +1288,8 @@ function selectHero(id,listId){
   G.myHero=HEROES.find(h=>h.id===id);
   const list=$(listId);
   if(list)list.querySelectorAll('.hero-card').forEach(c=>c.classList.toggle('selected',c.dataset.id===id));
-  // Enable appropriate button
   if(listId==='heroList'){
     $('heroNextBtn').disabled=false;
-  }else if(listId==='playerHeroList'){
-    // Enable join button
   }
 }
 function proceedFromHero(){
@@ -1507,6 +1505,7 @@ function hostStartGame(){
   initHostCanvas();
   showCountdown('เริ่มเกม!',()=>{
     Server.start();
+    G.currentState=Server.getStateSnapshot();  // ✅ FIX 5
     startHostRender();
   });
 }
@@ -1539,6 +1538,7 @@ function startSoloGame(){
   initPlayerCanvas();
   showCountdown('เริ่มเกม!',()=>{
     Server.start();
+    G.currentState=Server.getStateSnapshot();   // ✅ FIX 5
     startPlayerRender();
   });
 }
@@ -1592,7 +1592,6 @@ function initHostCanvas(){resizeCanvas()}
 function initPlayerCanvas(){
   resizeCanvas();
   const c=$('gameCanvasPlayer');if(!c)return;
-  // Simplified: use touch + mouse events directly
   c.addEventListener('touchstart',onTouchStart,{passive:false});
   c.addEventListener('touchmove',onTouchMove,{passive:false});
   c.addEventListener('touchend',onTouchEnd,{passive:false});
@@ -1601,7 +1600,6 @@ function initPlayerCanvas(){
   c.addEventListener('mousemove',onMouseMove);
   c.addEventListener('mouseup',onMouseUp);
   c.addEventListener('mouseleave',onMouseUp);
-  // Minimap
   const mm=$('minimapCanvas');
   if(mm){
     mm.addEventListener('click',onMinimapClick);
@@ -1643,31 +1641,34 @@ function onMouseUp(e){
 }
 function startPointer(x,y){
   G.touchStartX=x;G.touchStartY=y;
-  G.lastPointerX=x;G.lastPointerY=y;
   G.touchStartTime=Date.now();
   G.touchMoved=false;
-  G.isPanning=false;
+  G.isPanning=true;
+  G.camStartX=G.cam.x;G.camStartY=G.cam.y;
 }
+// ✅ FIX 2: เพิ่ม threshold เป็น 18px กันนิ้วสั่น
 function movePointer(x,y){
-  if(!G.touchStartTime)return;
-  G.lastPointerX=x;G.lastPointerY=y;
+  if(!G.isPanning)return;
   const dx=x-G.touchStartX,dy=y-G.touchStartY;
-  const total=Math.hypot(dx,dy);
-  if(total>12)G.touchMoved=true;
-}
-function endPointer(){
-  if(!G.touchStartTime)return;
-  const elapsed=Date.now()-G.touchStartTime;
-  const dx=G.lastPointerX-G.touchStartX;
-  const dy=G.lastPointerY-G.touchStartY;
-  const totalMove=Math.hypot(dx,dy);
-  // The game uses tap-to-move. A drag is also treated as a move command
-  // instead of panning the camera, which previously swallowed the input.
-  if(elapsed<800 || totalMove>=12){
-    handleTapAtScreen(G.lastPointerX,G.lastPointerY);
+  const total=Math.abs(dx)+Math.abs(dy);
+  if(!G.touchMoved && total>18){G.touchMoved=true;}
+  if(G.touchMoved){
+    G.cam.x=G.camStartX-dx/G.cam.zoom;
+    G.cam.y=G.camStartY-dy/G.cam.zoom;
+    G.cam.follow=false;
   }
+}
+// ✅ FIX 3: endPointer ตัดสิน tap จาก "นิ้วไม่ bouge + กดสั้น" เท่านั้น
+// ไม่พึ่งพาการเลื่อนของกล้อง (ซึ่งผิดพลาดเวลา follow mode กล้องขยับตามฮีโร่)
+function endPointer(){
+  if(!G.touchStartTime){G.isPanning=false;return}
+  const elapsed=Date.now()-G.touchStartTime;
+  const isTap=!G.touchMoved && elapsed<800;
   G.touchStartTime=0;
   G.isPanning=false;
+  if(isTap){
+    handleTapAtScreen(G.touchStartX,G.touchStartY);
+  }
 }
 function handleTapAtScreen(screenX,screenY){
   if(!G.pCanvas)return;
@@ -1693,13 +1694,11 @@ function handleTap(wx,wy){
   const st=G.currentState;if(!st)return;
   G.clickMarker={x:wx,y:wy,t:Date.now()};
   let target=null;
-  // Enemy hero?
   const heroList=heroesArr(st.heroes);
   for(const h of heroList){
     if(h.dead||h.team===G.myTeam||h.team==='spec')continue;
     if(dist({x:wx,y:wy},{x:h.x,y:h.y})<70){target={type:'enemyHero',id:h.id};break}
   }
-  // Enemy tower?
   if(!target){
     const eT=G.myTeam==='blue'?MAP.redTowers:MAP.blueTowers;
     const eN=G.myTeam==='blue'?MAP.redNexus:MAP.blueNexus;
@@ -1797,7 +1796,6 @@ function renderPlayer(){
   ctx.translate(-G.cam.x,-G.cam.y);
   drawWorld(ctx,st,false);
   ctx.restore();
-  // Off-screen target arrow
   const me=G.myHeroState;
   if(me&&me.targetId){
     const heroList=heroesArr(st.heroes);
@@ -1817,44 +1815,36 @@ function renderPlayer(){
   }
 }
 function drawWorld(ctx,st,isHost){
-  // Ground
   const grd=ctx.createLinearGradient(0,0,0,WORLD.h);
   grd.addColorStop(0,'#1a3520');
   grd.addColorStop(0.5,'#1e4028');
   grd.addColorStop(1,'#1a3520');
   ctx.fillStyle=grd;
   ctx.fillRect(0,0,WORLD.w,WORLD.h);
-  // Zones
   ctx.fillStyle='rgba(37,99,235,.12)';
   ctx.fillRect(0,0,WORLD.w/2,WORLD.h);
   ctx.fillStyle='rgba(220,38,38,.12)';
   ctx.fillRect(WORLD.w/2,0,WORLD.w/2,WORLD.h);
-  // Middle divider
   ctx.strokeStyle='rgba(251,191,36,.4)';
   ctx.lineWidth=4;ctx.setLineDash([20,15]);
   ctx.beginPath();ctx.moveTo(WORLD.w/2,0);ctx.lineTo(WORLD.w/2,WORLD.h);ctx.stroke();
   ctx.setLineDash([]);
-  // Grid
   ctx.strokeStyle='rgba(107,33,168,.08)';ctx.lineWidth=1;
   for(let x=0;x<=WORLD.w;x+=100){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,WORLD.h);ctx.stroke()}
   for(let y=0;y<=WORLD.h;y+=100){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(WORLD.w,y);ctx.stroke()}
-  // Border
   ctx.strokeStyle='rgba(168,85,247,.45)';ctx.lineWidth=6;
   ctx.strokeRect(3,3,WORLD.w-6,WORLD.h-6);
-  // Range circles
   const bT=st.teams?.blue,rT=st.teams?.red;
   if(bT&&rT){
     drawTowerRange(ctx,MAP.blueNexus,'blue',bT.nexus,MAP.nexusRange,isHost);
     MAP.blueTowers.forEach((t,i)=>{const tk=bT['tower'+(i+1)];if(tk&&tk.hp>0)drawTowerRange(ctx,t,'blue',tk,MAP.towerRange,isHost)});
     drawTowerRange(ctx,MAP.redNexus,'red',rT.nexus,MAP.nexusRange,isHost);
     MAP.redTowers.forEach((t,i)=>{const tk=rT['tower'+(i+1)];if(tk&&tk.hp>0)drawTowerRange(ctx,t,'red',tk,MAP.towerRange,isHost)});
-    // Structures
     drawNexus(ctx,MAP.blueNexus,bT.nexus,'blue',bT);
     MAP.blueTowers.forEach((t,i)=>{const tk=bT['tower'+(i+1)];if(tk)drawTower(ctx,t,tk,'blue')});
     drawNexus(ctx,MAP.redNexus,rT.nexus,'red',rT);
     MAP.redTowers.forEach((t,i)=>{const tk=rT['tower'+(i+1)];if(tk)drawTower(ctx,t,tk,'red')});
   }
-  // Minions
   if(st.units)st.units.forEach(u=>{
     if(u.dead||u.hp<=0)return;
     ctx.save();
@@ -1870,12 +1860,10 @@ function drawWorld(ctx,st,isHost){
     ctx.fillRect(u.x-10,u.y-16,20*hp,3);
     ctx.restore();
   });
-  // Heroes (BIG)
   heroesArr(st.heroes).forEach(h=>{
     if(h.team==='spec')return;
     drawHero(ctx,h,isHost);
   });
-  // Projectiles
   if(st.projectiles)st.projectiles.forEach(p=>{
     const age=(Date.now()-p.t)/(p.dur||350);
     if(age>1)return;
@@ -1893,7 +1881,6 @@ function drawWorld(ctx,st,isHost){
     ctx.fillText(p.emoji||'⚔',x,y);
     ctx.restore();
   });
-  // Click marker
   if(G.clickMarker){
     const age=(Date.now()-G.clickMarker.t)/700;
     if(age<1){
@@ -1906,7 +1893,6 @@ function drawWorld(ctx,st,isHost){
       ctx.restore();
     }else G.clickMarker=null;
   }
-  // Damage floats
   G.dmgFloats=G.dmgFloats.filter(d=>{
     const age=(Date.now()-d.t)/900;
     if(age>1)return false;
@@ -1921,7 +1907,6 @@ function drawWorld(ctx,st,isHost){
     ctx.restore();
     return true;
   });
-  // Aim line
   if(!isHost&&G.myHeroState&&G.myHeroState.targetId){
     const heroList=heroesArr(st.heroes);
     const t=heroList.find(x=>x.id===G.myHeroState.targetId);
@@ -1938,7 +1923,6 @@ function drawWorld(ctx,st,isHost){
       ctx.restore();
     }
   }
-  // Own range indicator
   if(!isHost&&G.myHeroState&&!G.myHeroState.dead){
     const me=G.myHeroState;
     ctx.save();
@@ -1955,21 +1939,18 @@ function drawHero(ctx,h,isHost){
   const hpPct=Math.max(0,h.hp/h.maxHp);
   const teamColor=h.team==='blue'?'#3b82f6':'#ef4444';
   const ringColor=h.color||teamColor;
-  // Shadow
   ctx.save();
   ctx.beginPath();
   ctx.ellipse(h.x,h.y+30,28,10,0,0,Math.PI*2);
   ctx.fillStyle='rgba(0,0,0,.4)';
   ctx.fill();
   ctx.restore();
-  // Focus
   if(isFocused){
     ctx.save();
     ctx.strokeStyle='#fbbf24';ctx.lineWidth=3;ctx.setLineDash([6,4]);
     ctx.beginPath();ctx.arc(h.x,h.y,52,0,Math.PI*2);ctx.stroke();
     ctx.restore();
   }
-  // Own marker (pulsing)
   if(isMe){
     ctx.save();
     const pulse=Math.sin(Date.now()/300)*3;
@@ -1977,7 +1958,6 @@ function drawHero(ctx,h,isHost){
     ctx.beginPath();ctx.arc(h.x,h.y,40+pulse,0,Math.PI*2);ctx.stroke();
     ctx.restore();
   }
-  // Team ring
   ctx.save();
   ctx.beginPath();ctx.arc(h.x,h.y,32,0,Math.PI*2);
   ctx.fillStyle='rgba(0,0,0,.55)';ctx.fill();
@@ -1986,14 +1966,12 @@ function drawHero(ctx,h,isHost){
   ctx.shadowColor=ringColor;ctx.shadowBlur=18;
   ctx.stroke();
   ctx.restore();
-  // Emoji (BIG 52px)
   ctx.save();
   ctx.font='52px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.globalAlpha=h.dead?0.5:1;
   const emoji=h.emoji||(HEROES.find(x=>x.id===h.heroId)?.emoji)||'🧙';
   ctx.fillText(h.dead?'💀':emoji,h.x,h.y+2);
   ctx.restore();
-  // Level badge
   if(!h.dead){
     ctx.save();
     ctx.fillStyle='rgba(0,0,0,.9)';
@@ -2003,7 +1981,6 @@ function drawHero(ctx,h,isHost){
     ctx.fillText(h.lv,h.x+24,h.y+25);
     ctx.restore();
   }
-  // HP bar
   const hpW=70,hpY=h.y-62;
   ctx.save();
   ctx.fillStyle='rgba(0,0,0,.85)';
@@ -2013,7 +1990,6 @@ function drawHero(ctx,h,isHost){
   ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1.5;
   ctx.strokeRect(h.x-hpW/2,hpY,hpW,9);
   ctx.restore();
-  // Name
   ctx.save();
   ctx.font='bold 14px Kanit, sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';
   ctx.strokeStyle='rgba(0,0,0,.95)';ctx.lineWidth=4;
@@ -2021,7 +1997,6 @@ function drawHero(ctx,h,isHost){
   ctx.fillStyle=isMe?'#fbbf24':'#fff';
   ctx.fillText(h.name,h.x,hpY-4);
   ctx.restore();
-  // Combo
   if(h.combo>=3&&!h.dead){
     ctx.save();
     ctx.font='bold 14px monospace';ctx.textAlign='center';
@@ -2031,7 +2006,6 @@ function drawHero(ctx,h,isHost){
     ctx.fillText('🔥x'+h.combo,h.x,h.y+56);
     ctx.restore();
   }
-  // Dead countdown
   if(h.dead){
     ctx.save();
     ctx.font='bold 16px monospace';ctx.textAlign='center';
@@ -2468,7 +2442,6 @@ const Server={
       if(h.hp<h.maxHp)h.hp=Math.min(h.maxHp,h.hp+2);
       if(h.mp<h.maxMp)h.mp=Math.min(h.maxMp,h.mp+3);
       for(const k in h.skillCd){if(h.skillCd[k]>0)h.skillCd[k]=Math.max(0,h.skillCd[k]-0.06)}
-      // Move
       if(h.moving&&h.tx!==null&&h.ty!==null){
         const dx=h.tx-h.x,dy=h.ty-h.y;
         const d=Math.hypot(dx,dy);
@@ -2478,7 +2451,6 @@ const Server={
           h.x+=dx/d*sp;h.y+=dy/d*sp;
         }
       }
-      // Attack hero
       if(h.targetId&&!h.targetType){
         const t=st.heroes[h.targetId];
         if(t&&!t.dead&&t.team!==h.team){
@@ -2497,7 +2469,6 @@ const Server={
           }
         }else h.targetId=null;
       }
-      // Attack tower
       if(h.targetType==='tower'&&h.targetId){
         const pos=this.getTowerPos(h.targetId);
         const obj=this.getTowerObj(h.targetId);
@@ -2514,7 +2485,6 @@ const Server={
           }
         }else{h.targetId=null;h.targetType=null}
       }
-      // Attack nexus
       if(h.targetType==='nexus'&&h.targetId){
         const pos=this.getNexusPos(h.targetId);
         const obj=this.getNexusObj(h.targetId);
@@ -2532,7 +2502,6 @@ const Server={
         }else{h.targetId=null;h.targetType=null}
       }
     });
-    // Minions
     st.units.forEach(u=>{
       if(u.dead||u.hp<=0)return;
       const dh=Math.hypot(u.x-u.homeX,u.y-u.homeY);
@@ -2647,11 +2616,16 @@ const Server={
       }
     });
   },
+  // ✅ FIX 4: Validate พิกัด + clamp ให้อยู่ใน world
   playerAction(pid,msg){
     const st=this.state;if(!st)return;
     const h=st.heroes[pid];if(!h||h.dead)return;
+
     if(msg.type==='move'){
-      h.tx=msg.x;h.ty=msg.y;h.moving=true;h.targetId=null;h.targetType=null;
+      if(!isFinite(msg.x)||!isFinite(msg.y))return;
+      h.tx=Math.max(0,Math.min(WORLD.w,msg.x));
+      h.ty=Math.max(0,Math.min(WORLD.h,msg.y));
+      h.moving=true;h.targetId=null;h.targetType=null;
     }else if(msg.type==='enemyHero'){
       const t=st.heroes[msg.targetId];
       if(t&&!t.dead&&t.team!==h.team){
@@ -2929,7 +2903,7 @@ document.addEventListener('keydown',e=>{
   const k=e.key.toLowerCase();
   if(['q','w','e','r'].includes(k))useSkill(k);
 });
-console.log('⚔️ Vocab Clash Arena v3.2 · '+POOLS.all.length+' words · Ready');
+console.log('⚔️ Vocab Clash Arena v3.3 · '+POOLS.all.length+' words · Ready');
 </script>
 </body>
 </html>
