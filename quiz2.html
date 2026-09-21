@@ -70,8 +70,8 @@ label{display:block;color:#c4b5fd;font-size:1rem;margin-bottom:6px;font-weight:7
 .mode-card[data-mode="boss"]{background-image:linear-gradient(180deg,rgba(10,5,20,.05) 0%,rgba(10,5,20,.35) 55%,rgba(10,5,20,.85) 100%),url('https://tum-service.github.io/test1/boss%20battle%20game.jpg');background-size:cover,cover;background-position:center,center;background-repeat:no-repeat,no-repeat;border-color:rgba(220,38,38,.55)}
 .mode-card[data-mode="boss"]:hover{background-image:linear-gradient(180deg,rgba(220,38,38,.05) 0%,rgba(10,5,20,.35) 55%,rgba(10,5,20,.85) 100%),url('https://tum-service.github.io/test1/boss%20battle%20game.jpg');border-color:#dc2626;box-shadow:0 0 30px rgba(220,38,38,.55)}
 .mode-card[data-mode="boss"]::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at 50% 30%,transparent 40%,rgba(0,0,0,.2) 100%);z-index:1}
-.mode-card.locked[data-mode="attack"],.mode-card.locked[data-mode="boss"]{filter:brightness(.78)}
-.mode-card.locked[data-mode="attack"]:hover,.mode-card.locked[data-mode="boss"]:hover{filter:brightness(.95)}
+.mode-card.locked[data-mode="boss"]{filter:brightness(.78)}
+.mode-card.locked[data-mode="boss"]:hover{filter:brightness(.95)}
 
 .mode-banner{position:relative;border-radius:22px;min-height:180px;padding:20px;display:flex;align-items:flex-end;background-size:cover;background-position:center;background-repeat:no-repeat;border:1.5px solid rgba(249,115,22,.55);box-shadow:0 14px 32px -12px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.06);overflow:hidden;margin-bottom:16px;transition:background-image .3s ease}
 .mode-banner::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 0%,rgba(10,5,20,.35) 55%,rgba(10,5,20,.92) 100%);pointer-events:none;z-index:1}
@@ -515,7 +515,7 @@ label{display:block;color:#c4b5fd;font-size:1rem;margin-bottom:6px;font-weight:7
 <div class="screen active" id="scLanding">
   <div style="max-width:560px;margin:30px auto">
     <h1>🏆 Tournament of Champions 🏆</h1>
-    <p style="text-align:center;color:#fb923c;font-weight:900;font-size:1.2rem;margin-bottom:22px">Tournament v16.6.1 · Multi-Mode</p>
+    <p style="text-align:center;color:#fb923c;font-weight:900;font-size:1.2rem;margin-bottom:22px">Tournament v16.7 · Multi-Mode</p>
     <div class="card landing-card" style="margin-top:24px">
       <button class="btn btn-primary landing-btn" onclick="go('scGradeSelect')" style="margin-bottom:18px">🎤 Host</button>
       <button class="btn btn-success landing-btn" onclick="go('scPlayerJoin')">🎮 Player</button>
@@ -535,9 +535,9 @@ label{display:block;color:#c4b5fd;font-size:1rem;margin-bottom:6px;font-weight:7
           <div class="mode-name">Tug of War</div>
           <span class="mode-badge ready">Ready</span>
         </button>
-        <button class="mode-card locked" data-mode="attack" onclick="selectGameMode('attack')">
+        <button class="mode-card" data-mode="attack" onclick="openAttackGame()">
           <div class="mode-name">Attack & Defend</div>
-          <span class="mode-badge coming">🚧 Soon</span>
+          <span class="mode-badge ready">Ready</span>
         </button>
         <button class="mode-card locked" data-mode="boss" onclick="selectGameMode('boss')">
           <div class="mode-name">Boss Battle</div>
@@ -901,6 +901,14 @@ label{display:block;color:#c4b5fd;font-size:1rem;margin-bottom:6px;font-weight:7
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
+/* ⭐ NEW: Attack & Defend game redirect */
+const ATTACK_GAME_URL = 'https://tum-service.github.io/1111/attack.html';
+function openAttackGame(){
+  if(shouldPlayEffect())sc();
+  toast('⚔️ Loading Attack & Defend...',1500);
+  setTimeout(()=>{ window.location.href = ATTACK_GAME_URL; }, 400);
+}
+
 /* ═══ VOCAB ═══ */
 const VOCAB_DATA={
 p1:`ant|มด
@@ -2294,7 +2302,6 @@ const BT=[440,392,440,349.23,329.63,349.23,392,440,392,349.23,329.63,293.66,329.
 const BB=[110,87.31,98,82.41];
 let bgm=null,bgT=null,bgS=0,bgOn=false;
 function bgmTick(){if(!bgm||!ac)return;const t0=ac.currentTime+0.06;const n=BT[bgS%BT.length];[1,2,3,4].forEach((m,i)=>{const o=ac.createOscillator();o.type='sine';o.frequency.value=n*m;const g=ac.createGain();const v=0.06/(i+1.4);g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime(v,t0+0.06);g.gain.exponentialRampToValueAtTime(v*0.5,t0+0.375);g.gain.exponentialRampToValueAtTime(0.0001,t0+0.75);o.connect(g);g.connect(bgm.master);o.start(t0);o.stop(t0+0.8)});if(bgS%8===0){const b=BB[(Math.floor(bgS/8))%BB.length];const o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=b;g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime(0.05,t0+0.08);g.gain.exponentialRampToValueAtTime(0.0001,t0+3);o.connect(g);g.connect(bgm.master);o.start(t0);o.stop(t0+3.1)}bgS++;}
-/* ⭐ [FIXED] startBGM — works for both host and player */
 function startBGM(){
   if(!shouldPlayBGM())return;
   iA();
@@ -2325,7 +2332,7 @@ function toast(m,ms){const t=$('toast');t.textContent=m;t.classList.add('show');
 function gCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let r='';for(let i=0;i<4;i++)r+=c[Math.floor(Math.random()*c.length)];return r}
 function shuf(a){const r=a.slice();for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
 function fmtTime(sec){const m=Math.floor(sec/60),s=sec%60;return m+':'+String(s).padStart(2,'0')}
-function connectMQTT(onConnect,onFail){if(mqttClient){try{mqttClient.end(true)}catch(e){}}mqttHandlers={};mqttConnected=false;const broker=MQTT_BROKERS[currentBrokerIdx%MQTT_BROKERS.length];const cid='tug16_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);try{mqttClient=mqtt.connect(broker,{clientId:cid,clean:true,connectTimeout:20000,reconnectPeriod:2000,keepalive:30});}catch(e){tryNextBroker(onConnect,onFail);return;}let resolved=false;mqttClient.on('connect',()=>{resolved=true;mqttConnected=true;Object.keys(mqttHandlers).forEach(topic=>{mqttClient.subscribe(topic,{qos:1},()=>{});});if(onConnect)onConnect();});mqttClient.on('message',(topic,payload)=>{Object.keys(mqttHandlers).forEach(pattern=>{if(topicMatches(pattern,topic)){try{const d=JSON.parse(payload.toString());mqttHandlers[pattern](topic,d);}catch(e){}}});});mqttClient.on('error',()=>{});setTimeout(()=>{if(!resolved){try{mqttClient.end(true)}catch(e){}tryNextBroker(onConnect,onFail);}},20000);}
+function connectMQTT(onConnect,onFail){if(mqttClient){try{mqttClient.end(true)}catch(e){}}mqttHandlers={};mqttConnected=false;const broker=MQTT_BROKERS[currentBrokerIdx%MQTT_BROKERS.length];const cid='tug17_'+Date.now()+'_'+Math.random().toString(36).slice(2,8);try{mqttClient=mqtt.connect(broker,{clientId:cid,clean:true,connectTimeout:20000,reconnectPeriod:2000,keepalive:30});}catch(e){tryNextBroker(onConnect,onFail);return;}let resolved=false;mqttClient.on('connect',()=>{resolved=true;mqttConnected=true;Object.keys(mqttHandlers).forEach(topic=>{mqttClient.subscribe(topic,{qos:1},()=>{});});if(onConnect)onConnect();});mqttClient.on('message',(topic,payload)=>{Object.keys(mqttHandlers).forEach(pattern=>{if(topicMatches(pattern,topic)){try{const d=JSON.parse(payload.toString());mqttHandlers[pattern](topic,d);}catch(e){}}});});mqttClient.on('error',()=>{});setTimeout(()=>{if(!resolved){try{mqttClient.end(true)}catch(e){}tryNextBroker(onConnect,onFail);}},20000);}
 function tryNextBroker(onConnect,onFail){currentBrokerIdx++;if(currentBrokerIdx>=MQTT_BROKERS.length*2){if(onFail)onFail();return;}connectMQTT(onConnect,onFail);}
 function topicMatches(pattern,topic){if(pattern===topic)return true;if(pattern.endsWith('/#'))return topic.startsWith(pattern.slice(0,-1));return false;}
 function pub(topic,data,qos){if(!mqttClient||!mqttConnected){setTimeout(()=>{if(mqttConnected)pub(topic,data,qos)},500);return;}try{mqttClient.publish(topic,JSON.stringify(data),{qos:qos!==undefined?qos:1})}catch(e){}}
@@ -2376,7 +2383,7 @@ function broadcastSoundState(){hostBroadcast({type:'sound',playersEffectOn:G.pla
 const GR=[{id:'p1',name:'P.1',c:'g1'},{id:'p2',name:'P.2',c:'g2'},{id:'p3',name:'P.3',c:'g3'},{id:'p4',name:'P.4',c:'g4'},{id:'p5',name:'P.5',c:'g5'},{id:'p6',name:'P.6',c:'g6'},{id:'extra',name:'Extra',c:'g7'}];
 const GAME_MODES={
   tug:    {name:'Tug of War',       emoji:'🎯', ready:true,  desc:'Teams pull the rope of words'},
-  attack: {name:'Attack & Defend',  emoji:'🏰', ready:false, desc:'Attackers vs defenders'},
+  attack: {name:'Attack & Defend',  emoji:'🏰', ready:true,  desc:'Castle siege game'},
   boss:   {name:'Boss Battle',      emoji:'👹', ready:false, desc:'All teams vs the boss'},
   other:  {name:'Other',            emoji:'🎮', ready:false, desc:'More modes coming soon'}
 };
@@ -2545,7 +2552,6 @@ function pOnBroadcast(d){if(!d)return;switch(d.type){
   case 'sound':
     G.playersEffectOn=d.playersEffectOn!==false;
     G.playersBgmOn=d.playersBgmOn!==false;
-    /* ⭐ [NEW] React to host's sound toggle */
     if(!G.playersBgmOn) stopBGM();
     else if(G.myGameActive && !G.paused) startBGM();
     break;
@@ -2559,7 +2565,6 @@ function pOnBroadcast(d){if(!d)return;switch(d.type){
     G.myGameActive=true;G.paused=false;
     G.playersEffectOn=d.playersEffectOn!==false;G.playersBgmOn=d.playersBgmOn!==false;
     G.hint.points=3;applyTheme(d.theme||'halloween');$('pauseOverlay').classList.remove('on');
-    /* ⭐ [NEW] Start BGM on player side */
     iA();
     if(shouldPlayBGM()) startBGM();
     pCnt('Get ready...',()=>{go('scPlayerQ');$('pAnswersGrid').style.opacity='1';$('pAnswersGrid').style.pointerEvents='auto';TugArenaPlayer.init($('pArenaContainer'));pStartTimer();pQ();if(G.voiceEnabled)startVoiceRecognition();});
@@ -2568,7 +2573,6 @@ function pOnBroadcast(d){if(!d)return;switch(d.type){
     if(G.myJoinTimerId){clearTimeout(G.myJoinTimerId);G.myJoinTimerId=null;}
     G.tournament.activeTeamIds=[d.teamA.id,d.teamB.id];
     const isMyTeam=(d.teamA.id===G.myTeamId||d.teamB.id===G.myTeamId);
-    /* ⭐ [NEW] Ensure BGM runs for everyone in match_start */
     iA();
     if(d.playersBgmOn!==undefined) G.playersBgmOn=d.playersBgmOn!==false;
     if(shouldPlayBGM()) startBGM();
@@ -2609,7 +2613,6 @@ function pOnBroadcast(d){if(!d)return;switch(d.type){
         G.myQTimerId=setInterval(qTimerTick,200);
       }
       pStartTimer();
-      /* ⭐ [NEW] Resume BGM on player side */
       if(shouldPlayBGM()) startBGM();
       TugArenaPlayer.resume();
     }
@@ -2683,7 +2686,7 @@ document.addEventListener('touchstart',()=>{iA();},{once:true,passive:true});
 document.addEventListener('click',()=>{iA();},{once:true});
 (function(){const corner=$('hostBackCorner');if(!corner)return;corner.addEventListener('touchstart',function(e){if(e.target.tagName!=='BUTTON'){this.classList.add('show');setTimeout(()=>this.classList.remove('show'),4000);}},{passive:true});})();
 window.addEventListener('resize',()=>{const c=$('fireworksCanvas');if(c){c.width=window.innerWidth;c.height=window.innerHeight;}});
-console.log('🏆 Tournament of Champions · v16.6.1 · ' + POOLS.all.length + ' unique words · Player BGM fixed');
+console.log('🏆 Tournament of Champions · v16.7 · ' + POOLS.all.length + ' unique words · Attack&Defend UNLOCKED');
 </script>
 </body>
 </html>
