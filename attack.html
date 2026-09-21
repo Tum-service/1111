@@ -1643,32 +1643,28 @@ function onMouseUp(e){
 }
 function startPointer(x,y){
   G.touchStartX=x;G.touchStartY=y;
+  G.lastPointerX=x;G.lastPointerY=y;
   G.touchStartTime=Date.now();
   G.touchMoved=false;
-  G.isPanning=true;
-  G.camStartX=G.cam.x;G.camStartY=G.cam.y;
+  G.isPanning=false;
 }
 function movePointer(x,y){
-  if(!G.isPanning)return;
+  if(!G.touchStartTime)return;
+  G.lastPointerX=x;G.lastPointerY=y;
   const dx=x-G.touchStartX,dy=y-G.touchStartY;
-  const total=Math.abs(dx)+Math.abs(dy);
-  if(total>12){G.touchMoved=true;}
-  if(G.touchMoved){
-    // Pan camera
-    G.cam.x=G.camStartX-dx/G.cam.zoom;
-    G.cam.y=G.camStartY-dy/G.cam.zoom;
-    G.cam.follow=false;
-  }
+  const total=Math.hypot(dx,dy);
+  if(total>12)G.touchMoved=true;
 }
 function endPointer(){
   if(!G.touchStartTime)return;
   const elapsed=Date.now()-G.touchStartTime;
-  const dx=Math.abs(G.cam.x-G.camStartX)*G.cam.zoom;
-  const dy=Math.abs(G.cam.y-G.camStartY)*G.cam.zoom;
-  const totalMove=dx+dy;
-  // Tap = short press + minimal movement
-  if(elapsed<400 && totalMove<20 && !G.touchMoved){
-    handleTapAtScreen(G.touchStartX,G.touchStartY);
+  const dx=G.lastPointerX-G.touchStartX;
+  const dy=G.lastPointerY-G.touchStartY;
+  const totalMove=Math.hypot(dx,dy);
+  // The game uses tap-to-move. A drag is also treated as a move command
+  // instead of panning the camera, which previously swallowed the input.
+  if(elapsed<800 || totalMove>=12){
+    handleTapAtScreen(G.lastPointerX,G.lastPointerY);
   }
   G.touchStartTime=0;
   G.isPanning=false;
