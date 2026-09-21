@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>⚔️ Vocab Clash Arena v3.3</title>
+<title>⚔️ Vocab Clash Arena v3.2</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;700;800;900&family=Creepster&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -147,6 +147,21 @@ canvas.game-canvas{position:absolute;top:42px;left:0;right:0;bottom:0;width:100%
 .skill2.ultimate.ready{border-color:#fbbf24;background:linear-gradient(180deg,rgba(251,191,36,.35),rgba(234,88,12,.35));animation:ultPulse 1.2s infinite}
 @keyframes ultPulse{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.6)}50%{box-shadow:0 0 0 10px rgba(251,191,36,0)}}
 
+
+/* ROV-style mobile controls */
+.moba-controls{position:absolute;left:0;right:0;bottom:0;height:205px;z-index:95;pointer-events:none;touch-action:none}
+.moba-joystick{position:absolute;left:18px;bottom:18px;width:118px;height:118px;border-radius:50%;background:radial-gradient(circle at 50% 45%,rgba(255,255,255,.12),rgba(10,6,18,.78) 58%,rgba(10,6,18,.94) 100%);border:3px solid rgba(255,255,255,.25);box-shadow:0 8px 24px rgba(0,0,0,.55),inset 0 0 22px rgba(168,85,247,.18);pointer-events:auto;touch-action:none;user-select:none}
+.moba-joystick:before{content:'';position:absolute;inset:14px;border-radius:50%;border:1px solid rgba(255,255,255,.12)}
+.joy-stick{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffffffaa,#c4b5fd 22%,#6d28d9 68%,#2e1065 100%);border:3px solid rgba(255,255,255,.5);box-shadow:0 5px 14px rgba(0,0,0,.55);transform:translate(0,0);transition:transform .05s linear}
+.moba-power{position:absolute;right:22px;bottom:22px;width:82px;height:82px;border-radius:50%;border:3px solid #fbbf24;background:radial-gradient(circle at 35% 30%,#fff7c2,#f59e0b 35%,#b45309 75%,#451a03 100%);color:#fff;box-shadow:0 0 0 6px rgba(251,191,36,.12),0 8px 22px rgba(0,0,0,.6);pointer-events:auto;touch-action:manipulation;user-select:none;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:inherit;font-weight:900;text-shadow:0 2px 3px #000;cursor:pointer}
+.moba-power .power-ico{font-size:1.65rem;line-height:1}
+.moba-power .power-txt{font-size:.55rem;margin-top:2px}
+.moba-power:active{transform:scale(.9)}
+.moba-power.ready{animation:powerPulse 1s infinite}
+@keyframes powerPulse{0%,100%{box-shadow:0 0 0 5px rgba(251,191,36,.15),0 8px 22px rgba(0,0,0,.6)}50%{box-shadow:0 0 0 12px rgba(251,191,36,.02),0 0 28px rgba(251,191,36,.75)}}
+.moba-power .power-cd{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;font-size:1.05rem;color:#fbbf24}
+@media(max-width:430px){.moba-controls{height:185px}.moba-joystick{left:12px;bottom:12px;width:105px;height:105px}.joy-stick{width:52px;height:52px;margin:-26px}.moba-power{right:14px;bottom:16px;width:76px;height:76px}}
+
 .q-panel{background:linear-gradient(180deg,rgba(45,27,78,.95),rgba(20,10,40,.98));border-radius:11px;padding:8px;border:2px solid rgba(249,115,22,.5);box-shadow:0 0 18px rgba(249,115,22,.25);position:relative;overflow:hidden}
 .q-timer{position:absolute;top:0;left:0;height:3px;background:linear-gradient(90deg,#22c55e,#fbbf24,#dc2626);transition:width .2s linear}
 .q-text{font-size:.85rem;font-weight:900;color:#ffedd5;text-align:center;margin-bottom:5px;line-height:1.2;min-height:32px;display:flex;align-items:center;justify-content:center;padding:2px}
@@ -218,7 +233,7 @@ canvas.game-canvas{position:absolute;top:42px;left:0;right:0;bottom:0;width:100%
 <div class="screen active" id="scLanding">
   <div class="landing">
     <h1>⚔️ VOCAB CLASH ⚔️</h1>
-    <p style="color:#fb923c;font-weight:900;font-size:.95rem;text-align:center">Arena v3.3</p>
+    <p style="color:#fb923c;font-weight:900;font-size:.95rem;text-align:center">Arena v3.2</p>
     <p style="color:#7c6fa8;font-size:.78rem;text-align:center;margin-bottom:12px">RoV Style · Real Heroes · Touch Move</p>
     <div class="card">
       <button class="btn btn-p" onclick="startHostFlow()">🎤 Host</button>
@@ -313,7 +328,7 @@ canvas.game-canvas{position:absolute;top:42px;left:0;right:0;bottom:0;width:100%
   </div>
 </div>
 
-<!-- PLAYER JOIN -->
+<!-- PLAYER JOIN (single page: name + hero) -->
 <div class="screen" id="scPlayerJoin">
   <div class="wrap" style="max-width:900px">
     <button class="btn-sm btn-s" onclick="go('scLanding')">← กลับ</button>
@@ -409,6 +424,17 @@ canvas.game-canvas{position:absolute;top:42px;left:0;right:0;bottom:0;width:100%
       <div class="gc-box"><div class="lbl">💰 GOLD</div><div class="val" id="goldVal">0</div></div>
       <div class="gc-box combo-box" id="comboBox"><div class="lbl">🔥 COMBO</div><div class="val" id="comboVal">0</div></div>
     </div>
+  </div>
+
+  <div class="moba-controls" id="mobaControls">
+    <div class="moba-joystick" id="mobaJoystick" aria-label="จอยสติ๊กเดินตัวละคร">
+      <div class="joy-stick" id="joyStick"></div>
+    </div>
+    <button class="moba-power" id="mobaPower" type="button" onclick="mobaPower()" aria-label="ปล่อยพลัง">
+      <span class="power-ico" id="powerIco">🔥</span>
+      <span class="power-txt" id="powerTxt">พลัง</span>
+      <span class="power-cd" id="powerCd">0</span>
+    </button>
   </div>
   <div class="pause-overlay" id="pauseOverlay">
     <div class="ic">⏸️</div>
@@ -1120,12 +1146,14 @@ const G={
   hostFocusPlayer:null,
   pCanvas:null,hCanvas:null,pCtx:null,hCtx:null,
   cam:{x:900,y:500,zoom:0.6,follow:true},
+  // Tap detection
   touchStartX:0,touchStartY:0,touchStartTime:0,touchMoved:false,
   isPanning:false,camStartX:0,camStartY:0,
   clickMarker:null,
   dmgFloats:[],
   renderId:null,
-  lastKf:''
+  lastKf:'',
+  joystick:{active:false,pointerId:null,x:0,y:0,lastSend:0}
 };
 
 /* ═══ HELPERS ═══ */
@@ -1137,11 +1165,7 @@ function shuf(a){const r=a.slice();for(let i=r.length-1;i>0;i--){const j=Math.fl
 function fmtTime(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function gCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let r='';for(let i=0;i<4;i++)r+=c[Math.floor(Math.random()*c.length)];return r}
 function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y)}
-// ✅ FIX 1: clamp() ปลอดภัยเมื่อ a > b (เช่น หน้าจอเล็กกว่า world) ให้คืนกึ่งกลาง
-function clamp(v,a,b){
-  if(a>b)return (a+b)/2;
-  return Math.max(a,Math.min(b,v));
-}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function heroesArr(h){return Array.isArray(h)?h:Object.values(h||{})}
 
 /* ═══ SOUND ═══ */
@@ -1241,6 +1265,7 @@ function startHostFlow(){G.role='host';go('scGradeSelect')}
 function startSoloFlow(){G.role='solo';go('scGradeSelect')}
 function startPlayerFlow(){
   G.role='player';
+  // Check URL for code
   const p=new URLSearchParams(location.search);
   const c=p.get('code');
   if(c&&c.length===4){
@@ -1250,6 +1275,7 @@ function startPlayerFlow(){
     go('scPlayerJoin');
   }
 }
+
 function proceedFromConfig(){
   if(G.role==='solo'){
     $('heroBackBtn').onclick=()=>go('scGameConfig');
@@ -1288,8 +1314,11 @@ function selectHero(id,listId){
   G.myHero=HEROES.find(h=>h.id===id);
   const list=$(listId);
   if(list)list.querySelectorAll('.hero-card').forEach(c=>c.classList.toggle('selected',c.dataset.id===id));
+  // Enable appropriate button
   if(listId==='heroList'){
     $('heroNextBtn').disabled=false;
+  }else if(listId==='playerHeroList'){
+    // Enable join button
   }
 }
 function proceedFromHero(){
@@ -1505,7 +1534,6 @@ function hostStartGame(){
   initHostCanvas();
   showCountdown('เริ่มเกม!',()=>{
     Server.start();
-    G.currentState=Server.getStateSnapshot();  // ✅ FIX 5
     startHostRender();
   });
 }
@@ -1538,7 +1566,6 @@ function startSoloGame(){
   initPlayerCanvas();
   showCountdown('เริ่มเกม!',()=>{
     Server.start();
-    G.currentState=Server.getStateSnapshot();   // ✅ FIX 5
     startPlayerRender();
   });
 }
@@ -1550,6 +1577,10 @@ function setupPlayerView(hd){
   $('hbLv').textContent='1';
   $('pMyTeam').innerHTML=(G.myTeam==='blue'?'🔵':'🔴')+' <span id="pTeamKills">0/5</span>';
   renderSkillBar(hd);
+  const q=hd.skills.q;
+  $('powerIco').textContent=q.emoji;
+  $('powerTxt').textContent=q.name;
+  initMobaControls();
 }
 function renderSkillBar(hd){
   const keys=['q','w','e','r'];
@@ -1573,6 +1604,75 @@ function useSkill(k){
   else pub(`vc7/${G.roomCode}/p/${G.myPlayerId}/skill`,{key:k});
 }
 
+/* ═══ ROV-STYLE MOBILE CONTROLS ═══ */
+let mobaControlsReady=false;
+function initMobaControls(){
+  if(mobaControlsReady)return;
+  const joy=$('mobaJoystick');
+  if(!joy)return;
+  mobaControlsReady=true;
+  const end=()=>mobaJoyEnd();
+  joy.addEventListener('pointerdown',mobaJoyStart);
+  joy.addEventListener('pointermove',mobaJoyMove);
+  joy.addEventListener('pointerup',end);
+  joy.addEventListener('pointercancel',end);
+  joy.addEventListener('lostpointercapture',end);
+  document.addEventListener('pointerup',e=>{if(G.joystick.active&&e.pointerId===G.joystick.pointerId)mobaJoyEnd()});
+  setInterval(updateMobaPower,120);
+}
+function mobaJoyStart(e){
+  if(!G.myHeroState||G.myHeroState.dead)return;
+  e.preventDefault();
+  const joy=$('mobaJoystick');
+  G.joystick.active=true;G.joystick.pointerId=e.pointerId;
+  joy.setPointerCapture?.(e.pointerId);
+  mobaJoyMove(e);
+}
+function mobaJoyMove(e){
+  if(!G.joystick.active||e.pointerId!==G.joystick.pointerId)return;
+  e.preventDefault();
+  const joy=$('mobaJoystick'),stick=$('joyStick');
+  const r=joy.getBoundingClientRect();
+  const cx=r.left+r.width/2,cy=r.top+r.height/2;
+  let dx=e.clientX-cx,dy=e.clientY-cy;
+  const max=r.width*0.31;
+  const len=Math.hypot(dx,dy);
+  if(len>max){dx=dx/len*max;dy=dy/len*max}
+  stick.style.transform=`translate(${dx}px,${dy}px)`;
+  const nx=dx/max,ny=dy/max;
+  G.joystick.x=nx;G.joystick.y=ny;
+  const now=Date.now();
+  if(now-G.joystick.lastSend>70){sendJoystickMove();G.joystick.lastSend=now}
+}
+function sendJoystickMove(){
+  const h=G.myHeroState;
+  if(!h||h.dead)return;
+  const len=Math.hypot(G.joystick.x,G.joystick.y);
+  if(len<0.12)return;
+  const travel=260;
+  const wx=clamp(h.x+G.joystick.x*travel,30,WORLD.w-30);
+  const wy=clamp(h.y+G.joystick.y*travel,30,WORLD.h-30);
+  const msg={x:wx,y:wy,type:'move'};
+  if(G.role==='solo-client')Server.playerAction(G.myPlayerId,msg);
+  else pub(`vc7/${G.roomCode}/p/${G.myPlayerId}/click`,msg);
+}
+function mobaJoyEnd(){
+  if(!G.joystick.active)return;
+  G.joystick.active=false;G.joystick.x=0;G.joystick.y=0;G.joystick.pointerId=null;
+  const stick=$('joyStick');if(stick)stick.style.transform='translate(0,0)';
+}
+function mobaPower(){
+  if(!G.myHeroState||G.myHeroState.dead){toast('💀 รอเกิดใหม่',800);return}
+  useSkill('q');
+}
+function updateMobaPower(){
+  const h=G.myHeroState,b=$('mobaPower'),cd=$('powerCd');
+  if(!h||!b||!cd)return;
+  const left=Math.max(0,h.skillCd?.q||0);
+  if(left>0){cd.style.display='flex';cd.textContent=Math.ceil(left);b.classList.remove('ready')}
+  else{cd.style.display='none';b.classList.add('ready')}
+}
+
 /* ═══ CANVAS ═══ */
 function resizeCanvas(){
   [['gameCanvasHost','h'],['gameCanvasPlayer','p']].forEach(([cid,key])=>{
@@ -1592,6 +1692,7 @@ function initHostCanvas(){resizeCanvas()}
 function initPlayerCanvas(){
   resizeCanvas();
   const c=$('gameCanvasPlayer');if(!c)return;
+  // Simplified: use touch + mouse events directly
   c.addEventListener('touchstart',onTouchStart,{passive:false});
   c.addEventListener('touchmove',onTouchMove,{passive:false});
   c.addEventListener('touchend',onTouchEnd,{passive:false});
@@ -1600,6 +1701,7 @@ function initPlayerCanvas(){
   c.addEventListener('mousemove',onMouseMove);
   c.addEventListener('mouseup',onMouseUp);
   c.addEventListener('mouseleave',onMouseUp);
+  // Minimap
   const mm=$('minimapCanvas');
   if(mm){
     mm.addEventListener('click',onMinimapClick);
@@ -1641,34 +1743,31 @@ function onMouseUp(e){
 }
 function startPointer(x,y){
   G.touchStartX=x;G.touchStartY=y;
+  G.lastPointerX=x;G.lastPointerY=y;
   G.touchStartTime=Date.now();
   G.touchMoved=false;
-  G.isPanning=true;
-  G.camStartX=G.cam.x;G.camStartY=G.cam.y;
+  G.isPanning=false;
 }
-// ✅ FIX 2: เพิ่ม threshold เป็น 18px กันนิ้วสั่น
 function movePointer(x,y){
-  if(!G.isPanning)return;
+  if(!G.touchStartTime)return;
+  G.lastPointerX=x;G.lastPointerY=y;
   const dx=x-G.touchStartX,dy=y-G.touchStartY;
-  const total=Math.abs(dx)+Math.abs(dy);
-  if(!G.touchMoved && total>18){G.touchMoved=true;}
-  if(G.touchMoved){
-    G.cam.x=G.camStartX-dx/G.cam.zoom;
-    G.cam.y=G.camStartY-dy/G.cam.zoom;
-    G.cam.follow=false;
-  }
+  const total=Math.hypot(dx,dy);
+  if(total>12)G.touchMoved=true;
 }
-// ✅ FIX 3: endPointer ตัดสิน tap จาก "นิ้วไม่ bouge + กดสั้น" เท่านั้น
-// ไม่พึ่งพาการเลื่อนของกล้อง (ซึ่งผิดพลาดเวลา follow mode กล้องขยับตามฮีโร่)
 function endPointer(){
-  if(!G.touchStartTime){G.isPanning=false;return}
+  if(!G.touchStartTime)return;
   const elapsed=Date.now()-G.touchStartTime;
-  const isTap=!G.touchMoved && elapsed<800;
+  const dx=G.lastPointerX-G.touchStartX;
+  const dy=G.lastPointerY-G.touchStartY;
+  const totalMove=Math.hypot(dx,dy);
+  // The game uses tap-to-move. A drag is also treated as a move command
+  // instead of panning the camera, which previously swallowed the input.
+  if(elapsed<800 || totalMove>=12){
+    handleTapAtScreen(G.lastPointerX,G.lastPointerY);
+  }
   G.touchStartTime=0;
   G.isPanning=false;
-  if(isTap){
-    handleTapAtScreen(G.touchStartX,G.touchStartY);
-  }
 }
 function handleTapAtScreen(screenX,screenY){
   if(!G.pCanvas)return;
@@ -1694,11 +1793,13 @@ function handleTap(wx,wy){
   const st=G.currentState;if(!st)return;
   G.clickMarker={x:wx,y:wy,t:Date.now()};
   let target=null;
+  // Enemy hero?
   const heroList=heroesArr(st.heroes);
   for(const h of heroList){
     if(h.dead||h.team===G.myTeam||h.team==='spec')continue;
     if(dist({x:wx,y:wy},{x:h.x,y:h.y})<70){target={type:'enemyHero',id:h.id};break}
   }
+  // Enemy tower?
   if(!target){
     const eT=G.myTeam==='blue'?MAP.redTowers:MAP.blueTowers;
     const eN=G.myTeam==='blue'?MAP.redNexus:MAP.blueNexus;
@@ -1796,6 +1897,7 @@ function renderPlayer(){
   ctx.translate(-G.cam.x,-G.cam.y);
   drawWorld(ctx,st,false);
   ctx.restore();
+  // Off-screen target arrow
   const me=G.myHeroState;
   if(me&&me.targetId){
     const heroList=heroesArr(st.heroes);
@@ -1815,36 +1917,44 @@ function renderPlayer(){
   }
 }
 function drawWorld(ctx,st,isHost){
+  // Ground
   const grd=ctx.createLinearGradient(0,0,0,WORLD.h);
   grd.addColorStop(0,'#1a3520');
   grd.addColorStop(0.5,'#1e4028');
   grd.addColorStop(1,'#1a3520');
   ctx.fillStyle=grd;
   ctx.fillRect(0,0,WORLD.w,WORLD.h);
+  // Zones
   ctx.fillStyle='rgba(37,99,235,.12)';
   ctx.fillRect(0,0,WORLD.w/2,WORLD.h);
   ctx.fillStyle='rgba(220,38,38,.12)';
   ctx.fillRect(WORLD.w/2,0,WORLD.w/2,WORLD.h);
+  // Middle divider
   ctx.strokeStyle='rgba(251,191,36,.4)';
   ctx.lineWidth=4;ctx.setLineDash([20,15]);
   ctx.beginPath();ctx.moveTo(WORLD.w/2,0);ctx.lineTo(WORLD.w/2,WORLD.h);ctx.stroke();
   ctx.setLineDash([]);
+  // Grid
   ctx.strokeStyle='rgba(107,33,168,.08)';ctx.lineWidth=1;
   for(let x=0;x<=WORLD.w;x+=100){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,WORLD.h);ctx.stroke()}
   for(let y=0;y<=WORLD.h;y+=100){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(WORLD.w,y);ctx.stroke()}
+  // Border
   ctx.strokeStyle='rgba(168,85,247,.45)';ctx.lineWidth=6;
   ctx.strokeRect(3,3,WORLD.w-6,WORLD.h-6);
+  // Range circles
   const bT=st.teams?.blue,rT=st.teams?.red;
   if(bT&&rT){
     drawTowerRange(ctx,MAP.blueNexus,'blue',bT.nexus,MAP.nexusRange,isHost);
     MAP.blueTowers.forEach((t,i)=>{const tk=bT['tower'+(i+1)];if(tk&&tk.hp>0)drawTowerRange(ctx,t,'blue',tk,MAP.towerRange,isHost)});
     drawTowerRange(ctx,MAP.redNexus,'red',rT.nexus,MAP.nexusRange,isHost);
     MAP.redTowers.forEach((t,i)=>{const tk=rT['tower'+(i+1)];if(tk&&tk.hp>0)drawTowerRange(ctx,t,'red',tk,MAP.towerRange,isHost)});
+    // Structures
     drawNexus(ctx,MAP.blueNexus,bT.nexus,'blue',bT);
     MAP.blueTowers.forEach((t,i)=>{const tk=bT['tower'+(i+1)];if(tk)drawTower(ctx,t,tk,'blue')});
     drawNexus(ctx,MAP.redNexus,rT.nexus,'red',rT);
     MAP.redTowers.forEach((t,i)=>{const tk=rT['tower'+(i+1)];if(tk)drawTower(ctx,t,tk,'red')});
   }
+  // Minions
   if(st.units)st.units.forEach(u=>{
     if(u.dead||u.hp<=0)return;
     ctx.save();
@@ -1860,10 +1970,12 @@ function drawWorld(ctx,st,isHost){
     ctx.fillRect(u.x-10,u.y-16,20*hp,3);
     ctx.restore();
   });
+  // Heroes (BIG)
   heroesArr(st.heroes).forEach(h=>{
     if(h.team==='spec')return;
     drawHero(ctx,h,isHost);
   });
+  // Projectiles
   if(st.projectiles)st.projectiles.forEach(p=>{
     const age=(Date.now()-p.t)/(p.dur||350);
     if(age>1)return;
@@ -1881,6 +1993,7 @@ function drawWorld(ctx,st,isHost){
     ctx.fillText(p.emoji||'⚔',x,y);
     ctx.restore();
   });
+  // Click marker
   if(G.clickMarker){
     const age=(Date.now()-G.clickMarker.t)/700;
     if(age<1){
@@ -1893,6 +2006,7 @@ function drawWorld(ctx,st,isHost){
       ctx.restore();
     }else G.clickMarker=null;
   }
+  // Damage floats
   G.dmgFloats=G.dmgFloats.filter(d=>{
     const age=(Date.now()-d.t)/900;
     if(age>1)return false;
@@ -1907,6 +2021,7 @@ function drawWorld(ctx,st,isHost){
     ctx.restore();
     return true;
   });
+  // Aim line
   if(!isHost&&G.myHeroState&&G.myHeroState.targetId){
     const heroList=heroesArr(st.heroes);
     const t=heroList.find(x=>x.id===G.myHeroState.targetId);
@@ -1923,6 +2038,7 @@ function drawWorld(ctx,st,isHost){
       ctx.restore();
     }
   }
+  // Own range indicator
   if(!isHost&&G.myHeroState&&!G.myHeroState.dead){
     const me=G.myHeroState;
     ctx.save();
@@ -1939,18 +2055,21 @@ function drawHero(ctx,h,isHost){
   const hpPct=Math.max(0,h.hp/h.maxHp);
   const teamColor=h.team==='blue'?'#3b82f6':'#ef4444';
   const ringColor=h.color||teamColor;
+  // Shadow
   ctx.save();
   ctx.beginPath();
   ctx.ellipse(h.x,h.y+30,28,10,0,0,Math.PI*2);
   ctx.fillStyle='rgba(0,0,0,.4)';
   ctx.fill();
   ctx.restore();
+  // Focus
   if(isFocused){
     ctx.save();
     ctx.strokeStyle='#fbbf24';ctx.lineWidth=3;ctx.setLineDash([6,4]);
     ctx.beginPath();ctx.arc(h.x,h.y,52,0,Math.PI*2);ctx.stroke();
     ctx.restore();
   }
+  // Own marker (pulsing)
   if(isMe){
     ctx.save();
     const pulse=Math.sin(Date.now()/300)*3;
@@ -1958,6 +2077,7 @@ function drawHero(ctx,h,isHost){
     ctx.beginPath();ctx.arc(h.x,h.y,40+pulse,0,Math.PI*2);ctx.stroke();
     ctx.restore();
   }
+  // Team ring
   ctx.save();
   ctx.beginPath();ctx.arc(h.x,h.y,32,0,Math.PI*2);
   ctx.fillStyle='rgba(0,0,0,.55)';ctx.fill();
@@ -1966,12 +2086,14 @@ function drawHero(ctx,h,isHost){
   ctx.shadowColor=ringColor;ctx.shadowBlur=18;
   ctx.stroke();
   ctx.restore();
+  // Emoji (BIG 52px)
   ctx.save();
   ctx.font='52px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.globalAlpha=h.dead?0.5:1;
   const emoji=h.emoji||(HEROES.find(x=>x.id===h.heroId)?.emoji)||'🧙';
   ctx.fillText(h.dead?'💀':emoji,h.x,h.y+2);
   ctx.restore();
+  // Level badge
   if(!h.dead){
     ctx.save();
     ctx.fillStyle='rgba(0,0,0,.9)';
@@ -1981,6 +2103,7 @@ function drawHero(ctx,h,isHost){
     ctx.fillText(h.lv,h.x+24,h.y+25);
     ctx.restore();
   }
+  // HP bar
   const hpW=70,hpY=h.y-62;
   ctx.save();
   ctx.fillStyle='rgba(0,0,0,.85)';
@@ -1990,6 +2113,7 @@ function drawHero(ctx,h,isHost){
   ctx.strokeStyle='rgba(255,255,255,.5)';ctx.lineWidth=1.5;
   ctx.strokeRect(h.x-hpW/2,hpY,hpW,9);
   ctx.restore();
+  // Name
   ctx.save();
   ctx.font='bold 14px Kanit, sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';
   ctx.strokeStyle='rgba(0,0,0,.95)';ctx.lineWidth=4;
@@ -1997,6 +2121,7 @@ function drawHero(ctx,h,isHost){
   ctx.fillStyle=isMe?'#fbbf24':'#fff';
   ctx.fillText(h.name,h.x,hpY-4);
   ctx.restore();
+  // Combo
   if(h.combo>=3&&!h.dead){
     ctx.save();
     ctx.font='bold 14px monospace';ctx.textAlign='center';
@@ -2006,6 +2131,7 @@ function drawHero(ctx,h,isHost){
     ctx.fillText('🔥x'+h.combo,h.x,h.y+56);
     ctx.restore();
   }
+  // Dead countdown
   if(h.dead){
     ctx.save();
     ctx.font='bold 16px monospace';ctx.textAlign='center';
@@ -2442,6 +2568,7 @@ const Server={
       if(h.hp<h.maxHp)h.hp=Math.min(h.maxHp,h.hp+2);
       if(h.mp<h.maxMp)h.mp=Math.min(h.maxMp,h.mp+3);
       for(const k in h.skillCd){if(h.skillCd[k]>0)h.skillCd[k]=Math.max(0,h.skillCd[k]-0.06)}
+      // Move
       if(h.moving&&h.tx!==null&&h.ty!==null){
         const dx=h.tx-h.x,dy=h.ty-h.y;
         const d=Math.hypot(dx,dy);
@@ -2451,6 +2578,7 @@ const Server={
           h.x+=dx/d*sp;h.y+=dy/d*sp;
         }
       }
+      // Attack hero
       if(h.targetId&&!h.targetType){
         const t=st.heroes[h.targetId];
         if(t&&!t.dead&&t.team!==h.team){
@@ -2469,6 +2597,7 @@ const Server={
           }
         }else h.targetId=null;
       }
+      // Attack tower
       if(h.targetType==='tower'&&h.targetId){
         const pos=this.getTowerPos(h.targetId);
         const obj=this.getTowerObj(h.targetId);
@@ -2485,6 +2614,7 @@ const Server={
           }
         }else{h.targetId=null;h.targetType=null}
       }
+      // Attack nexus
       if(h.targetType==='nexus'&&h.targetId){
         const pos=this.getNexusPos(h.targetId);
         const obj=this.getNexusObj(h.targetId);
@@ -2502,6 +2632,7 @@ const Server={
         }else{h.targetId=null;h.targetType=null}
       }
     });
+    // Minions
     st.units.forEach(u=>{
       if(u.dead||u.hp<=0)return;
       const dh=Math.hypot(u.x-u.homeX,u.y-u.homeY);
@@ -2616,16 +2747,11 @@ const Server={
       }
     });
   },
-  // ✅ FIX 4: Validate พิกัด + clamp ให้อยู่ใน world
   playerAction(pid,msg){
     const st=this.state;if(!st)return;
     const h=st.heroes[pid];if(!h||h.dead)return;
-
     if(msg.type==='move'){
-      if(!isFinite(msg.x)||!isFinite(msg.y))return;
-      h.tx=Math.max(0,Math.min(WORLD.w,msg.x));
-      h.ty=Math.max(0,Math.min(WORLD.h,msg.y));
-      h.moving=true;h.targetId=null;h.targetType=null;
+      h.tx=msg.x;h.ty=msg.y;h.moving=true;h.targetId=null;h.targetType=null;
     }else if(msg.type==='enemyHero'){
       const t=st.heroes[msg.targetId];
       if(t&&!t.dead&&t.team!==h.team){
@@ -2903,7 +3029,7 @@ document.addEventListener('keydown',e=>{
   const k=e.key.toLowerCase();
   if(['q','w','e','r'].includes(k))useSkill(k);
 });
-console.log('⚔️ Vocab Clash Arena v3.3 · '+POOLS.all.length+' words · Ready');
+console.log('⚔️ Vocab Clash Arena v3.2 · '+POOLS.all.length+' words · Ready');
 </script>
 </body>
 </html>
