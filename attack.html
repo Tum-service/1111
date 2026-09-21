@@ -1621,6 +1621,14 @@ function initMobaControls(){
   joy.addEventListener('lostpointercapture',end);
   document.addEventListener('pointerup',e=>{if(G.joystick.active&&e.pointerId===G.joystick.pointerId)mobaJoyEnd()});
   setInterval(updateMobaPower,120);
+  /* ── Continuous movement loop ──────────────────────────────────────────
+     pointermove ไม่ยิงถ้านิ้วไม่ขยับ → loop นี้ส่ง move ทุก 70ms
+     ตราบที่ joystick ยังถูกกดค้างอยู่ ทำให้ hero เดินต่อเนื่องได้ */
+  setInterval(()=>{
+    if(!G.joystick.active)return;
+    const now=Date.now();
+    if(now-G.joystick.lastSend>=70){sendJoystickMove();G.joystick.lastSend=now}
+  },70);
 }
 function mobaJoyStart(e){
   if(!G.myHeroState||G.myHeroState.dead)return;
