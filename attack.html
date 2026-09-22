@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>💣 Vocab Bomb Arena v3.3</title>
+<title>💣 Vocab Bomb Arena v3.6</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;700;800;900&family=Creepster&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{height:100%;overflow:hidden;position:fixed;inset:0;width:100%}
-body{font-family:'Kanit',sans-serif;font-weight:600;background:#0a0612;color:#f5e6d3;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+body{font-family:'Kanit','Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;font-weight:600;background:#0a0612;color:#f5e6d3;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 .screen{display:none;position:fixed;inset:0;overflow-y:auto;padding:16px;background:radial-gradient(circle at 20% 20%,rgba(107,33,168,.4),transparent 55%),radial-gradient(circle at 80% 80%,rgba(220,38,38,.3),transparent 55%),linear-gradient(180deg,#0a0612,#1a0b2e 50%,#2d1b4e);z-index:1}
 .screen.active{display:block}
 #scBattle.active{display:flex;flex-direction:column;padding:0;overflow:hidden}
@@ -168,7 +168,6 @@ label{display:block;color:#c4b5fd;font-size:.85rem;margin-bottom:4px;font-weight
 .dead-sub b{color:#fbbf24;font-size:1.05rem}
 .dead-count{font-family:monospace;font-size:1.8rem;font-weight:900;color:#fbbf24;margin:8px 0;text-shadow:0 0 14px rgba(251,191,36,.7)}
 .dead-note{font-size:.72rem;color:#7c6fa8;margin-top:8px;font-weight:800}
-/* ═══ v3.3: SPECTATOR MODE ═══ */
 body.spectating .battle-bottom{display:none!important}
 body.spectating .dead-overlay{display:none!important}
 body.spectating .freeze-overlay{display:none!important}
@@ -177,7 +176,6 @@ body.spectating .freeze-overlay{display:none!important}
 @keyframes specPulse{0%,100%{opacity:1}50%{opacity:.72}}
 .spectator-info{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(10,6,18,.85);border:1.5px solid rgba(168,85,247,.5);border-radius:10px;padding:8px 14px;font-size:.78rem;font-weight:800;color:#c4b5fd;text-align:center;z-index:55;display:none;max-width:88vw}
 .spectator-banner.on ~ .spectator-info{display:block}
-/* ═══ v3.3: REVIVE MODAL ═══ */
 .revive-modal{position:fixed;inset:0;background:rgba(10,6,18,.92);z-index:9996;display:none;align-items:center;justify-content:center;padding:20px}
 .revive-modal.on{display:flex}
 .revive-box{background:linear-gradient(180deg,rgba(45,27,78,.95),rgba(20,10,40,.98));border:2px solid rgba(34,197,94,.6);border-radius:16px;padding:18px;max-width:400px;width:100%;box-shadow:0 0 50px rgba(34,197,94,.35);max-height:88vh;overflow-y:auto}
@@ -193,7 +191,33 @@ body.spectating .freeze-overlay{display:none!important}
 .revive-item .ri-deaths b{color:#f87171}
 .revive-item .ri-badge{font-size:1.1rem;flex-shrink:0}
 .revive-empty{text-align:center;color:#7c6fa8;font-weight:800;padding:20px;font-size:.9rem}
-/* RESULT */
+.word-count-badge{display:inline-block;font-family:monospace;font-size:.72rem;font-weight:900;color:#86efac;background:rgba(34,197,94,.18);padding:2px 8px;border-radius:6px;margin-left:6px;border:1px solid rgba(34,197,94,.4)}
+.word-selector-card{background:linear-gradient(180deg,rgba(30,15,55,.9),rgba(15,7,30,.95));border-radius:15px;padding:14px;border:1px solid rgba(168,85,247,.35);margin-bottom:10px}
+.word-selector-row{display:flex;align-items:center;gap:10px;padding:10px;background:rgba(45,27,78,.4);border-radius:11px}
+.word-selector-row .ws-info{flex:1;font-size:.82rem;color:#c4b5fd;font-weight:800;line-height:1.35}
+.word-selector-row .ws-info b{color:#fb923c;font-size:.95rem}
+.word-modal{position:fixed;inset:0;background:rgba(10,6,18,.96);z-index:9995;display:none;flex-direction:column;padding:12px;max-width:100vw}
+.word-modal.on{display:flex}
+.word-modal-head{display:flex;align-items:center;gap:8px;padding:8px 4px;flex-shrink:0}
+.word-modal-head .wm-title{font-family:'Creepster',cursive;font-size:1.4rem;color:#fb923c;letter-spacing:1px;text-shadow:0 0 16px rgba(249,115,22,.6);flex:1}
+.word-modal-head .wm-count{font-family:monospace;font-size:.85rem;font-weight:900;color:#fbbf24;background:rgba(251,191,36,.15);padding:4px 10px;border-radius:8px;border:1.5px solid rgba(251,191,36,.5)}
+.word-toolbar{display:flex;flex-wrap:wrap;gap:5px;padding:4px;flex-shrink:0}
+.word-toolbar .chip{flex:0 0 auto;min-width:auto;padding:8px 10px;font-size:.78rem}
+.word-search{width:100%;padding:10px;border-radius:10px;border:2px solid rgba(168,85,247,.4);background:rgba(10,6,18,.85);color:#f5e6d3;font-family:inherit;font-size:.95rem;outline:none;margin:6px 0;font-weight:700;flex-shrink:0}
+.word-search:focus{border-color:#f97316;box-shadow:0 0 0 3px rgba(249,115,22,.2)}
+.word-grid{flex:1;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;align-content:start}
+.word-item{display:flex;align-items:center;gap:8px;padding:9px 10px;background:rgba(45,27,78,.5);border:2px solid rgba(168,85,247,.3);border-radius:10px;cursor:pointer;transition:.12s;font-family:inherit;text-align:left;color:#f5e6d3;min-height:48px;font-size:.78rem}
+.word-item:hover{background:rgba(168,85,247,.2)}
+.word-item.sel{background:linear-gradient(135deg,rgba(34,197,94,.35),rgba(22,163,74,.5));border-color:#86efac;box-shadow:0 0 12px rgba(34,197,94,.4)}
+.word-item .wi-chk{width:22px;height:22px;flex-shrink:0;border-radius:6px;border:2px solid rgba(168,85,247,.5);background:rgba(10,6,18,.7);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:900;color:transparent;transition:.12s}
+.word-item.sel .wi-chk{background:#22c55e;border-color:#86efac;color:#fff}
+.word-item .wi-txt{flex:1;min-width:0;line-height:1.15}
+.word-item .wi-en{font-weight:900;color:#ffedd5;font-size:.88rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.word-item .wi-th{color:#c4b5fd;font-size:.72rem;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.word-modal-foot{display:flex;gap:6px;padding:8px 4px;flex-shrink:0}
+.word-modal-foot .btn-sm{flex:1;margin:0;padding:12px;font-size:.9rem}
+.word-warn{color:#fbbf24;font-size:.75rem;font-weight:900;text-align:center;padding:4px;flex-shrink:0;min-height:18px}
+.word-warn.err{color:#f87171}
 .result-hero{text-align:center;padding:20px 10px}
 .result-title{font-family:'Creepster',cursive;font-size:clamp(2rem,7vw,3.4rem);letter-spacing:3px;line-height:1;margin-bottom:6px}
 .result-title.win{color:#fbbf24;text-shadow:0 0 50px rgba(251,191,36,.9)}
@@ -235,6 +259,8 @@ body.spectating .freeze-overlay{display:none!important}
 .alive-tag{font-size:.58rem}
 .spectator-banner{font-size:.72rem;padding:8px 10px}
 .revive-title{font-size:1.3rem}
+.word-grid{grid-template-columns:1fr}
+.word-modal-head .wm-title{font-size:1.2rem}
 }
 @media(max-height:600px){
 .battle-canvas-wrap{min-height:100px}
@@ -246,11 +272,10 @@ body.spectating .freeze-overlay{display:none!important}
 </head>
 <body>
 
-<!-- ══ MENU ══ -->
 <div class="screen active" id="scMenu">
   <div class="wrap menu-wrap">
     <h1>💣 VOCAB BOMB 💣</h1>
-    <p class="tagline">Squad Survival · Boss Raid · v3.3</p>
+    <p class="tagline">Squad Survival · Boss Raid · v3.6</p>
     <div class="menu-btns">
       <button class="btn btn-b" onclick="goSetup('bot')">
         <span class="big-ico">🤖</span>
@@ -268,7 +293,6 @@ body.spectating .freeze-overlay{display:none!important}
   </div>
 </div>
 
-<!-- ══ SETUP ══ -->
 <div class="screen" id="scSetup">
   <div class="wrap">
     <button class="btn-sm btn-s" onclick="go('scMenu')">← กลับ</button>
@@ -281,6 +305,16 @@ body.spectating .freeze-overlay{display:none!important}
       </div>
     </div>
     <div class="card"><h3>📚 ระดับคำศัพท์</h3><div class="chips" id="gradeChips"></div></div>
+    <div class="word-selector-card">
+      <h3>📝 เลือกคำศัพท์ <span class="word-count-badge" id="wordCountBadge">-/-</span></h3>
+      <div class="word-selector-row">
+        <div class="ws-info">
+          <b id="wordCountText">โหลด...</b><br>
+          <span style="color:#7c6fa8;font-size:.72rem">แตะเพื่อเลือกคำที่ต้องการใช้ในเกม</span>
+        </div>
+        <button class="btn-sm btn-p" onclick="openWordSelectModal()" style="flex-shrink:0">ดู/แก้ไข</button>
+      </div>
+    </div>
     <div class="card" style="background:linear-gradient(180deg,rgba(220,38,38,.12),rgba(10,6,18,.9));border-color:rgba(220,38,38,.4)">
       <h3 style="color:#f87171">⚔️ กติกา Squad Survival + Boss Raid</h3>
       <p style="font-size:.78rem;color:#c4b5fd;font-weight:800;line-height:1.55">
@@ -314,7 +348,6 @@ body.spectating .freeze-overlay{display:none!important}
   </div>
 </div>
 
-<!-- ══ LOBBY ══ -->
 <div class="screen" id="scLobby">
   <div class="wrap">
     <h1>🎤 ห้องรอ</h1>
@@ -342,7 +375,6 @@ body.spectating .freeze-overlay{display:none!important}
   </div>
 </div>
 
-<!-- ══ JOIN ══ -->
 <div class="screen" id="scJoin">
   <div class="wrap">
     <button class="btn-sm btn-s" onclick="go('scMenu')">← กลับ</button>
@@ -363,7 +395,6 @@ body.spectating .freeze-overlay{display:none!important}
   </div>
 </div>
 
-<!-- ══ WAIT ══ -->
 <div class="screen" id="scWait">
   <div style="text-align:center;padding:70px 20px">
     <div class="spinner"></div>
@@ -375,7 +406,6 @@ body.spectating .freeze-overlay{display:none!important}
   </div>
 </div>
 
-<!-- ══ BATTLE ══ -->
 <div class="screen" id="scBattle">
   <div class="battle-hud-top">
     <div class="hp-side blue">
@@ -416,7 +446,6 @@ body.spectating .freeze-overlay{display:none!important}
         <div class="dead-note" id="deadNote"></div>
       </div>
     </div>
-    <!-- v3.3: Spectator -->
     <div class="spectator-banner" id="spectatorBanner">👁️ SPECTATOR MODE — ดูเพื่อนร่วมทีมกำลังต่อสู้</div>
     <div class="spectator-info" id="spectatorInfo">ทีมของคุณแพ้ PvP · ไม่สามารถเล่นได้ · กำลังรับชมทีมที่ชนะสู้บอส 🐉</div>
   </div>
@@ -445,7 +474,6 @@ body.spectating .freeze-overlay{display:none!important}
   </div>
 </div>
 
-<!-- ══ RESULT ══ -->
 <div class="screen" id="scResult">
   <div class="wrap">
     <div class="result-hero">
@@ -460,13 +488,32 @@ body.spectating .freeze-overlay{display:none!important}
   </div>
 </div>
 
-<!-- ══ v3.3: REVIVE MODAL ══ -->
 <div class="revive-modal" id="reviveModal">
   <div class="revive-box">
     <div class="revive-title">🕊️ เลือกเพื่อนที่จะชุบ</div>
     <div class="revive-sub">เลือก 1 คนจากรายชื่อด้านล่าง</div>
     <div class="revive-list" id="reviveList"></div>
     <button class="btn-sm btn-s" onclick="closeReviveModal()" style="width:100%;justify-content:center">❌ ยกเลิก</button>
+  </div>
+</div>
+
+<div class="word-modal" id="wordSelectModal">
+  <div class="word-modal-head">
+    <div class="wm-title">📝 เลือกคำศัพท์</div>
+    <div class="wm-count" id="wmCount">0/0</div>
+  </div>
+  <div class="word-toolbar">
+    <button class="chip" onclick="selectAllWords()">✅ ทั้งหมด</button>
+    <button class="chip" onclick="deselectAllWords()">❌ ไม่เลือก</button>
+    <button class="chip" onclick="randomSelectWords()">🎲 สุ่ม 10</button>
+    <button class="chip" onclick="resetWordsDefault()">🔄 ค่าเริ่มต้น</button>
+  </div>
+  <input type="text" class="word-search" id="wordSearch" placeholder="🔍 ค้นหาคำ..." oninput="filterWordGrid()" autocomplete="off">
+  <div class="word-warn" id="wordWarn"></div>
+  <div class="word-grid" id="wordGrid"></div>
+  <div class="word-modal-foot">
+    <button class="btn-sm btn-s" onclick="closeWordSelectModal()">❌ ยกเลิก</button>
+    <button class="btn-sm btn-g" id="wordConfirmBtn" onclick="confirmWordSelection()">✅ ยืนยัน</button>
   </div>
 </div>
 
@@ -1151,11 +1198,54 @@ const SKILL_KEYS=Object.keys(SKILLS);
 const MAX_SKILL_SLOTS=2;
 const AUTO_REVIVE_DELAYS=[10,30,60];
 
+const BOT_CONF={
+  easy:   { min:6200, max:9200, acc:0.50, speedMin:0.30, speedMax:0.70 },
+  medium: { min:4400, max:6800, acc:0.70, speedMin:0.50, speedMax:0.85 },
+  hard:   { min:1400, max:2600, acc:0.96, speedMin:0.75, speedMax:1.00 }
+};
+
+const DEFAULT_RANDOM_N = 10;
+const MIN_WORDS = 4;
+
+/* ═══════════════════════════════════════════════════════════════
+   v3.6: SAFARI EMOJI FIX — Pre-render emojis into offscreen canvases
+   ═══════════════════════════════════════════════════════════════ */
+const EMOJI_CACHE = Object.create(null);
+const EMOJI_BASE_SIZE = 64;
+const EMOJI_FONT_STACK = '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji","EmojiOne Color","Android Emoji",sans-serif';
+
+function getEmojiCanvas(emoji){
+  if(EMOJI_CACHE[emoji]) return EMOJI_CACHE[emoji];
+  const c = document.createElement('canvas');
+  const s = EMOJI_BASE_SIZE;
+  c.width = s; c.height = s;
+  const cx = c.getContext('2d');
+  cx.font = `${s-8}px ${EMOJI_FONT_STACK}`;
+  cx.textAlign = 'center';
+  cx.textBaseline = 'middle';
+  cx.fillText(emoji, s/2, s/2 + 2);
+  EMOJI_CACHE[emoji] = c;
+  return c;
+}
+function prewarmEmojiCache(){
+  const seen = new Set();
+  for(const id in G.players){
+    const av = G.players[id] && G.players[id].avatar;
+    if(av && !seen.has(av)){ seen.add(av); getEmojiCanvas(av); }
+  }
+  if(G.myAvatar) getEmojiCanvas(G.myAvatar);
+}
+function drawEmoji(ctx, emoji, x, y, size){
+  const cv = getEmojiCanvas(emoji);
+  ctx.drawImage(cv, x - size/2, y - size/2, size, size);
+}
+
 const $=id=>document.getElementById(id);
 const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
+function shuffle(a){const r=a.slice();for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
 function fmtTime(s){s=Math.max(0,Math.floor(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}
 function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let r='';for(let i=0;i<4;i++)r+=c[Math.floor(Math.random()*c.length)];return r}
 function shade(hex,amt){let c=hex.replace('#','');if(c.length===3)c=c.split('').map(x=>x+x).join('');const r=parseInt(c.slice(0,2),16),g=parseInt(c.slice(2,4),16),b=parseInt(c.slice(4,6),16);const f=v=>Math.max(0,Math.min(255,Math.round(v+255*amt)));return`rgb(${f(r)},${f(g)},${f(b)})`}
@@ -1184,43 +1274,32 @@ function sBossSpawn(){iA();if(!ac)return;const t0=ac.currentTime;
   [0,0.3,0.6].forEach((st,i)=>tone(80+i*40,st,0.4,0.1,'square'));}
 function sSelfBomb(){iA();if(!ac)return;const t0=ac.currentTime;const o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.setValueAtTime(80,t0);o.frequency.exponentialRampToValueAtTime(22,t0+1.2);g.gain.setValueAtTime(0.24,t0);g.gain.exponentialRampToValueAtTime(0.0001,t0+1.3);o.connect(g);g.connect(ac.destination);o.start(t0);o.stop(t0+1.4);[0,0.18,0.34,0.5].forEach((st,i)=>tone(180-i*20,st,0.15,0.09,'square'))}
 
-/* ═══════════════════════════════════════════════════════════════
-   GAME STATE
-   ═══════════════════════════════════════════════════════════════ */
 const G={
   role:null,isHost:false,roomCode:'',
-  config:{gradeId:'p1',teamSize:3,botDiff:'medium'},
+  config:{gradeId:'p1',teamSize:3,botDiff:'medium',selectedWords:[]},
   myId:'p_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),
   myName:'Player',myTeam:'blue',myAvatar:DEFAULT_AVATAR,
   players:{},teamOrder:{blue:[],red:[]},
   usedAvatars:new Set(),
   battle:{blueShield:0,redShield:0,time:0,running:false,ended:false},
-  /* v3.3: match state */
-  match:{
-    winnerTeam:null,      // team that survived PvP → fights boss
-    loserTeam:null,       // team that was wiped → spectator
-    isSpectator:false     // local player's flag
-  },
+  match:{winnerTeam:null,loserTeam:null,isSpectator:false},
   myCombo:0,myBestCombo:0,myCorrect:0,myWrong:0,myUlt:0,myUltsUsed:0,mySelfBombs:0,
   currentQ:null,qStartTs:0,
   bombs:[],explosions:[],particles:[],
   charAnim:{},shake:0,hitFlash:{blue:0,red:0},
   loopId:null,lastTs:0,
   botTimers:{},botCombo:{},botUlt:{},
+  botLastTarget:{},
   hostStateTimer:null,resultShown:false,
   wrongStreak:{},skills:{},
   effects:{blueFreeze:0,redFreeze:0,blueDouble:0,redDouble:0,blueSnipe:0,redSnipe:0},
   shotCount:{blue:0,red:0},
   skillDropTimer:null,
-  boss:{
-    active:false,hp:0,maxHp:0,
-    nextAttackAt:0,attackInterval:2500,
-    dmg:{blue:0,red:0},
-    cx:0,cy:0,radius:0,
-    hitFlash:0,spawnAt:0
-  },
+  boss:{active:false,hp:0,maxHp:0,nextAttackAt:0,attackInterval:3200,dmg:{blue:0,red:0},cx:0,cy:0,radius:0,hitFlash:0,spawnAt:0},
   bossKilled:false,
-  endedReason:null
+  endedReason:null,
+  wordSelTemp:null,
+  wordSelFilter:''
 };
 
 function randomAvatar(excludeSet){
@@ -1234,6 +1313,119 @@ function loadAvatarFromStorage(key){try{const v=localStorage.getItem(key);if(v&&
 function saveAvatar(key,v){try{localStorage.setItem(key,v)}catch(e){}}
 function refreshSetupAvatar(){const el=$('setupAvatar');if(el)el.textContent=G.myAvatar}
 
+/* ═══ WORD SELECTOR ═══ */
+function getWordsForGrade(gradeId){return POOLS[gradeId]||POOLS.all||[]}
+function wordsStorageKey(gradeId){return 'vba_words_'+gradeId}
+function loadSelectedWords(gradeId){
+  const all=getWordsForGrade(gradeId).map(w=>w.en.toLowerCase());
+  try{
+    const raw=localStorage.getItem(wordsStorageKey(gradeId));
+    if(raw){
+      const arr=JSON.parse(raw);
+      if(Array.isArray(arr)&&arr.length>0){
+        const valid=arr.filter(w=>all.includes(w));
+        if(valid.length>=MIN_WORDS)return valid;
+      }
+    }
+  }catch(e){}
+  return all.slice();
+}
+function saveSelectedWords(gradeId,arr){try{localStorage.setItem(wordsStorageKey(gradeId),JSON.stringify(arr))}catch(e){}}
+function updateWordCountBadge(){
+  const all=getWordsForGrade(G.config.gradeId);
+  const sel=G.config.selectedWords||[];
+  const badge=$('wordCountBadge');
+  const txt=$('wordCountText');
+  if(badge)badge.textContent=`${sel.length}/${all.length}`;
+  if(txt){
+    const grade=GRADES.find(g=>g.id===G.config.gradeId);
+    txt.textContent=`${grade?grade.name:''} · เลือก ${sel.length} จาก ${all.length} คำ`;
+  }
+}
+function openWordSelectModal(){
+  G.wordSelTemp=new Set(G.config.selectedWords||[]);
+  G.wordSelFilter='';
+  const s=$('wordSearch');if(s)s.value='';
+  renderWordSelector();
+  $('wordSelectModal').classList.add('on');
+}
+function closeWordSelectModal(){
+  $('wordSelectModal').classList.remove('on');
+  G.wordSelTemp=null;
+}
+function renderWordSelector(){
+  const grid=$('wordGrid');if(!grid)return;
+  const all=getWordsForGrade(G.config.gradeId);
+  const filter=(G.wordSelFilter||'').toLowerCase().trim();
+  const list=filter?all.filter(w=>(w.en.toLowerCase().includes(filter))||(w.th.includes(filter))):all;
+  if(!list.length){
+    grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:#7c6fa8;padding:20px;font-weight:800">🔍 ไม่พบคำที่ค้นหา</div>';
+  }else{
+    grid.innerHTML=list.map(w=>{
+      const en=w.en.toLowerCase();
+      const sel=G.wordSelTemp.has(en);
+      return `<button class="word-item ${sel?'sel':''}" onclick="toggleWord('${esc(en).replace(/'/g,"\\'")}')">
+        <span class="wi-chk">${sel?'✓':''}</span>
+        <span class="wi-txt">
+          <span class="wi-en">${esc(w.en)}</span>
+          <span class="wi-th">${esc(w.th)}</span>
+        </span>
+      </button>`;
+    }).join('');
+  }
+  updateWordModalCount();
+}
+function toggleWord(en){
+  if(!G.wordSelTemp)return;
+  if(G.wordSelTemp.has(en))G.wordSelTemp.delete(en);
+  else G.wordSelTemp.add(en);
+  const items=document.querySelectorAll('#wordGrid .word-item');
+  items.forEach(it=>{
+    const enEl=it.querySelector('.wi-en');
+    if(enEl&&enEl.textContent.toLowerCase()===en){
+      const isSel=G.wordSelTemp.has(en);
+      it.classList.toggle('sel',isSel);
+      const chk=it.querySelector('.wi-chk');
+      if(chk)chk.textContent=isSel?'✓':'';
+    }
+  });
+  updateWordModalCount();
+}
+function updateWordModalCount(){
+  const c=$('wmCount');const warn=$('wordWarn');const btn=$('wordConfirmBtn');
+  const n=G.wordSelTemp?G.wordSelTemp.size:0;
+  const total=getWordsForGrade(G.config.gradeId).length;
+  if(c)c.textContent=`${n}/${total}`;
+  if(warn){
+    if(n===0){warn.textContent='⚠️ ต้องเลือกอย่างน้อย '+MIN_WORDS+' คำ';warn.className='word-warn err';}
+    else if(n<MIN_WORDS){warn.textContent='⚠️ เลือกอีก '+(MIN_WORDS-n)+' คำ';warn.className='word-warn';}
+    else warn.textContent='';
+  }
+  if(btn)btn.disabled=(n<MIN_WORDS);
+}
+function selectAllWords(){if(!G.wordSelTemp)return;getWordsForGrade(G.config.gradeId).forEach(w=>G.wordSelTemp.add(w.en.toLowerCase()));renderWordSelector()}
+function deselectAllWords(){if(!G.wordSelTemp)return;G.wordSelTemp.clear();renderWordSelector()}
+function randomSelectWords(){
+  if(!G.wordSelTemp)return;
+  G.wordSelTemp.clear();
+  const all=getWordsForGrade(G.config.gradeId).slice();
+  const n=Math.min(DEFAULT_RANDOM_N,all.length);
+  const sh=shuffle(all);
+  for(let i=0;i<n;i++)G.wordSelTemp.add(sh[i].en.toLowerCase());
+  renderWordSelector();
+}
+function resetWordsDefault(){if(!G.wordSelTemp)return;G.wordSelTemp.clear();getWordsForGrade(G.config.gradeId).forEach(w=>G.wordSelTemp.add(w.en.toLowerCase()));renderWordSelector()}
+function filterWordGrid(){const s=$('wordSearch');G.wordSelFilter=s?s.value:'';renderWordSelector()}
+function confirmWordSelection(){
+  if(!G.wordSelTemp)return;
+  if(G.wordSelTemp.size<MIN_WORDS){toast('⚠️ ต้องเลือกอย่างน้อย '+MIN_WORDS+' คำ',1800);return;}
+  G.config.selectedWords=Array.from(G.wordSelTemp);
+  saveSelectedWords(G.config.gradeId,G.config.selectedWords);
+  updateWordCountBadge();
+  closeWordSelectModal();
+  toast('✅ บันทึกคำศัพท์แล้ว ('+G.config.selectedWords.length+' คำ)',1800);
+}
+
 /* ═══ SKILLS ═══ */
 function ensureSkills(id){if(!G.skills[id])G.skills[id]=[];return G.skills[id]}
 function grantSkill(playerId,type){
@@ -1242,11 +1434,7 @@ function grantSkill(playerId,type){
   const existing=slots.find(s=>s.type===type);
   if(existing)existing.count++;
   else slots.push({type,count:1});
-  if(playerId===G.myId){
-    const sk=SKILLS[type];
-    toast(`🎁 ได้สกิล: ${sk.icon} ${sk.name}`,2000);
-    sSkill();
-  }
+  if(playerId===G.myId){const sk=SKILLS[type];toast(`🎁 ได้สกิล: ${sk.icon} ${sk.name}`,2000);sSkill();}
   updateSkillUI();
   if(G.isHost)hostBroadcastState();
 }
@@ -1268,15 +1456,12 @@ function useSkill(playerId,type,targetId){
     const slots=ensureSkills(playerId);
     if(!slots.find(s=>s.type===type))return;
   }else if(!G.isHost)return;
-
-  /* ═══ v3.3: Revive opens picker ═══ */
   if(type==='revive'&&playerId===G.myId&&!targetId){
     const dead=getDeadPlayers(p.team);
     if(!dead.length){toast('⚠️ ไม่มีเพื่อนที่ตาย',1800);return;}
     openReviveModal();
     return;
   }
-
   if(G.isHost){
     if(!consumeSkill(playerId,type))return;
     applySkillEffect(p.team,type,playerId,targetId);
@@ -1319,18 +1504,12 @@ function applySkillEffect(team,type,casterId,targetId){
       if(team==='blue')G.effects.blueSnipe=1;else G.effects.redSnipe=1;
       if(!G.boss.active)showAnnouncer(`🎯 ${team==='blue'?'BLUE':'RED'} SNIPE!`);
       break;
-    /* ═══ v3.3: Revive with specific target ═══ */
     case 'revive':{
       const dead=getDeadPlayers(team);
       if(!dead.length){showAnnouncer('⚠️ ไม่มีเพื่อนที่ตาย');return;}
       let tgt=null;
-      if(targetId){
-        tgt=dead.find(p=>p.id===targetId);
-      }
-      if(!tgt){
-        // fallback: pick player with most deaths
-        tgt=dead.slice().sort((a,b)=>(b.deaths||0)-(a.deaths||0))[0];
-      }
+      if(targetId)tgt=dead.find(p=>p.id===targetId);
+      if(!tgt)tgt=dead.slice().sort((a,b)=>(b.deaths||0)-(a.deaths||0))[0];
       doRevive(tgt.id,50);
       sRevive();
       showAnnouncer(`🕊️ ${tgt.name} REVIVED!`);
@@ -1353,7 +1532,6 @@ function updateSkillUI(){
   }
   wrap.innerHTML=html;
 }
-/* ═══ v3.3: REVIVE MODAL ═══ */
 function openReviveModal(){
   const me=G.players[G.myId];if(!me)return;
   const dead=getDeadPlayers(me.team);
@@ -1368,13 +1546,9 @@ function openReviveModal(){
       const isWaiting=(p.reviveAt&&p.reviveAt>Date.now());
       const remain=isWaiting?Math.ceil((p.reviveAt-Date.now())/1000):0;
       let sub='';
-      if(!canAuto){
-        sub=`<b>❌ ตายสนิท</b> — ต้องรอเพื่อนชุบ`;
-      }else if(isWaiting){
-        sub=`⏱️ Auto-revive ในอีก <b>${remain} วิ</b>`;
-      }else{
-        sub=`✅ พร้อมชุบ`;
-      }
+      if(!canAuto)sub=`<b>❌ ตายสนิท</b> — ต้องรอเพื่อนชุบ`;
+      else if(isWaiting)sub=`⏱️ Auto-revive ในอีก <b>${remain} วิ</b>`;
+      else sub=`✅ พร้อมชุบ`;
       return `<button class="revive-item" onclick="selectReviveTarget('${p.id}')">
         <span class="ri-av">${p.avatar||DEFAULT_AVATAR}</span>
         <div class="ri-info">
@@ -1387,15 +1561,8 @@ function openReviveModal(){
   }
   $('reviveModal').classList.add('on');
 }
-function closeReviveModal(){
-  $('reviveModal').classList.remove('on');
-}
-function selectReviveTarget(targetId){
-  closeReviveModal();
-  if(!targetId)return;
-  // consume the revive skill and apply to the selected target
-  useSkill(G.myId,'revive',targetId);
-}
+function closeReviveModal(){$('reviveModal').classList.remove('on')}
+function selectReviveTarget(targetId){closeReviveModal();if(!targetId)return;useSkill(G.myId,'revive',targetId)}
 
 /* ═══ SETUP ═══ */
 function renderGradeChips(){
@@ -1404,7 +1571,13 @@ function renderGradeChips(){
     const b=document.createElement('button');
     b.className='chip'+(g.id===G.config.gradeId?' active':'');
     b.dataset.v=g.id;b.textContent=g.name;
-    b.onclick=()=>{iA();G.config.gradeId=g.id;w.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c.dataset.v===g.id))};
+    b.onclick=()=>{
+      iA();
+      G.config.gradeId=g.id;
+      G.config.selectedWords=loadSelectedWords(g.id);
+      w.querySelectorAll('.chip').forEach(c=>c.classList.toggle('active',c.dataset.v===g.id));
+      updateWordCountBadge();
+    };
     w.appendChild(b);
   });
 }
@@ -1419,6 +1592,8 @@ function goSetup(mode){
   G.myAvatar=saved||randomAvatar(new Set());
   saveAvatar(key,G.myAvatar);
   refreshSetupAvatar();
+  G.config.selectedWords=loadSelectedWords(G.config.gradeId);
+  updateWordCountBadge();
   document.querySelectorAll('#teamChips .chip').forEach(c=>c.classList.toggle('active',+c.dataset.v===G.config.teamSize));
   document.querySelectorAll('#diffChips .chip').forEach(c=>c.classList.toggle('active',c.dataset.v===G.config.botDiff));
   go('scSetup');
@@ -1468,7 +1643,6 @@ function sub(t,h){mqttHandlers[t]=h;if(!mqttClient||!mqttOK)return;try{mqttClien
 function hostBc(d){if(G.roomCode)pub(`vba/${G.roomCode}/bc`,d)}
 function hostSend(pid,tp,d){if(G.roomCode)pub(`vba/${G.roomCode}/p/${pid}/${tp}`,d)}
 
-/* ═══ LOBBY ═══ */
 function openLobby(){
   G.roomCode=genCode();G.isHost=true;
   $('roomCodeDisplay').textContent=G.roomCode;
@@ -1508,7 +1682,7 @@ function assignTeam(){
   return null;
 }
 function makePlayer(id,name,team,avatar,isBot,isHost){
-  return {id,name,team,avatar,isBot:!!isBot,isHost:!!isHost,hp:100,maxHp:100,alive:true,deaths:0,reviveAt:0};
+  return {id,name,team,avatar,isBot:!!isBot,isHost:!!isHost,hp:100,maxHp:100,alive:true,deaths:0,reviveAt:0,correctCount:0};
 }
 function onJoinMsg(d){
   if(!d||!d.playerId)return;
@@ -1573,7 +1747,6 @@ function copyJoinLink(){
 }
 function fbCopy(t){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('✅ คัดลอกแล้ว',1500)}catch(e){}document.body.removeChild(ta)}
 
-/* ═══ JOIN ═══ */
 function goJoin(){iA();G.role='player';const p=new URLSearchParams(location.search);const c=p.get('code');if(c&&c.length===4)$('joinCode').value=c.toUpperCase();go('scJoin')}
 function playerJoin(){
   iA();
@@ -1602,7 +1775,6 @@ function playerJoin(){
   },()=>{msg.textContent='❌ เชื่อมต่อไม่สำเร็จ';msg.style.color='#f87171';$('joinBtn').disabled=false;});
 }
 
-/* ═══ BOT GAME ═══ */
 function startBotGame(){
   G.isHost=true;G.myTeam='blue';
   G.players={};G.usedAvatars=new Set([G.myAvatar]);
@@ -1620,6 +1792,7 @@ function startBotGame(){
     G.players[id]=makePlayer(id,enemyNames[i],'red',av,true,false);
   }
   buildTeamOrder();updateHpAvatarsUI();
+  prewarmEmojiCache();
   startBattle();
   showCountdown('ระวัง! ระเบิดมาแล้ว',()=>{
     G.battle.running=true;G.battle.time=0;
@@ -1635,7 +1808,6 @@ function buildTeamOrder(){
   }
 }
 
-/* ═══ HOST START ═══ */
 function hostStartGame(){
   iA();
   const players=[];
@@ -1648,12 +1820,13 @@ function hostStartGame(){
   if(!blue.length||!red.length){toast('⚠️ ต้องมีทั้งสองทีม');return}
   hostBc({
     type:'start',
-    config:{gradeId:G.config.gradeId,teamSize:G.config.teamSize},
+    config:{gradeId:G.config.gradeId,teamSize:G.config.teamSize,selectedWords:G.config.selectedWords},
     players
   });
   G.players={};
   players.forEach(p=>{G.players[p.id]=makePlayer(p.id,p.name,p.team,p.avatar,false,false)});
   buildTeamOrder();updateHpAvatarsUI();
+  prewarmEmojiCache();
   startBattle();
   showCountdown('เริ่มเกม!',()=>{
     G.battle.running=true;G.battle.time=0;
@@ -1684,10 +1857,16 @@ function onClientBC(d){
   if(d.type==='start'){
     G.config.gradeId=d.config.gradeId;
     G.config.teamSize=d.config.teamSize;
+    if(d.config.selectedWords&&Array.isArray(d.config.selectedWords)){
+      G.config.selectedWords=d.config.selectedWords.slice();
+    }else{
+      G.config.selectedWords=loadSelectedWords(G.config.gradeId);
+    }
     G.players={};
     d.players.forEach(p=>{G.players[p.id]=makePlayer(p.id,p.name,p.team,p.avatar||DEFAULT_AVATAR,false,false)});
     const me=G.players[G.myId];if(me)G.myAvatar=me.avatar;
     buildTeamOrder();updateHpAvatarsUI();
+    prewarmEmojiCache();
     startBattle();
     showCountdown('เริ่มเกม!',()=>{
       G.battle.running=true;G.battle.time=0;nextQuestion();
@@ -1715,9 +1894,8 @@ function onClientBC(d){
         }
       }
     }
-    // v3.3: winner/loser teams
-    if(d.winnerTeam){G.match.winnerTeam=d.winnerTeam;}
-    if(d.loserTeam){G.match.loserTeam=d.loserTeam;}
+    if(d.winnerTeam)G.match.winnerTeam=d.winnerTeam;
+    if(d.loserTeam)G.match.loserTeam=d.loserTeam;
     if(d.boss){
       const wasActive=G.boss.active;
       G.boss.active=d.boss.active;
@@ -1728,7 +1906,6 @@ function onClientBC(d){
         const rt=$('bossTag');if(rt)rt.style.display='inline';
       }
     }
-    // v3.3: if my team is the loser, enter spectator
     updateSpectatorState();
     updateHpAvatarsUI();
     if(d.ended&&!G.battle.ended)G.battle.ended=true;
@@ -1750,12 +1927,17 @@ function onClientBC(d){
     if(p){p.alive=true;p.hp=d.hp||50;p.reviveAt=0;showAnnouncer(`🕊️ ${p.name} REVIVED!`);}
     updateHPUI();updateHpAvatarsUI();
   }else if(d.type==='bossSpawn'){
-    // explicit boss spawn signal — sync winner/loser
     if(d.winnerTeam)G.match.winnerTeam=d.winnerTeam;
     if(d.loserTeam)G.match.loserTeam=d.loserTeam;
     sBossSpawn();
     const rt=$('bossTag');if(rt)rt.style.display='inline';
     updateSpectatorState();
+  }else if(d.type==='bossHit'){
+    if(G.boss){G.boss.hp=d.hp;G.boss.hitFlash=1;}
+    if(d.fromTeam){
+      G.boss.dmg[d.fromTeam]=(G.boss.dmg[d.fromTeam]||0)+(d.amount||0);
+    }
+    if(d.x!=null&&d.y!=null)showFloatText(d.x,d.y,'-'+d.amount,'#fbbf24');
   }else if(d.type==='notify'){
     if(d.playerId===G.myId)toast(d.msg,2500);
   }else if(d.type==='end'){
@@ -1763,12 +1945,10 @@ function onClientBC(d){
   }
 }
 
-/* ═══ v3.3: SPECTATOR ═══ */
 function updateSpectatorState(){
   const me=G.players[G.myId];
   const isLoser=(G.match.loserTeam&&me&&me.team===G.match.loserTeam)||
                 (G.match.winnerTeam&&me&&me.team!==G.match.winnerTeam);
-  // Only treat as spectator when boss phase is active AND my team is loser
   const shouldSpectate=G.boss.active&&isLoser;
   if(shouldSpectate!==G.match.isSpectator){
     G.match.isSpectator=shouldSpectate;
@@ -1779,7 +1959,6 @@ function updateSpectatorState(){
 function enterSpectatorMode(){
   document.body.classList.add('spectating');
   const b=$('spectatorBanner');if(b)b.classList.add('on');
-  // clear question UI
   G.currentQ=null;
   const q=$('qText');if(q)q.textContent='👁️ กำลังรับชม...';
   const qa=$('qAnswers');if(qa)qa.innerHTML='';
@@ -1790,12 +1969,11 @@ function exitSpectatorMode(){
   const b=$('spectatorBanner');if(b)b.classList.remove('on');
 }
 
-/* ═══ BATTLE CORE ═══ */
 function startBattle(){
   G.battle={blueShield:0,redShield:0,time:0,running:false,ended:false};
   for(const id in G.players){
     const p=G.players[id];
-    p.hp=100;p.maxHp=100;p.alive=true;p.deaths=0;p.reviveAt=0;
+    p.hp=100;p.maxHp=100;p.alive=true;p.deaths=0;p.reviveAt=0;p.correctCount=0;
   }
   G.myCombo=0;G.myBestCombo=0;G.myCorrect=0;G.myWrong=0;G.myUlt=0;G.myUltsUsed=0;G.mySelfBombs=0;
   G.bombs=[];G.explosions=[];G.particles=[];G.charAnim={};G.hitFlash={blue:0,red:0};
@@ -1803,14 +1981,16 @@ function startBattle(){
   G.skills={};G.skills[G.myId]=[];
   G.effects={blueFreeze:0,redFreeze:0,blueDouble:0,redDouble:0,blueSnipe:0,redSnipe:0};
   G.shotCount={blue:0,red:0};
-  G.boss={active:false,hp:0,maxHp:0,nextAttackAt:0,attackInterval:2500,dmg:{blue:0,red:0},cx:0,cy:0,radius:0,hitFlash:0,spawnAt:0};
+  G.boss={active:false,hp:0,maxHp:0,nextAttackAt:0,attackInterval:3200,dmg:{blue:0,red:0},cx:0,cy:0,radius:0,hitFlash:0,spawnAt:0};
   G.bossKilled=false;
   G.endedReason=null;
   G.match={winnerTeam:null,loserTeam:null,isSpectator:false};
+  G.botLastTarget={};
   exitSpectatorMode();
   const rt=$('bossTag');if(rt)rt.style.display='none';
   updateHPUI();updateSkillUI();updatePowerUI();updateRoundHudAlive();
   go('scBattle');
+  prewarmEmojiCache();
   requestAnimationFrame(()=>{resizeCanvas();startLoop()});
 }
 function startLoop(){if(G.loopId)cancelAnimationFrame(G.loopId);G.lastTs=0;G.loopId=requestAnimationFrame(loop)}
@@ -1822,7 +2002,6 @@ function loop(ts){
     if(G.effects.blueFreeze>0)G.effects.blueFreeze=Math.max(0,G.effects.blueFreeze-dt);
     if(G.effects.redFreeze>0)G.effects.redFreeze=Math.max(0,G.effects.redFreeze-dt);
     if(G.boss.active&&G.boss.hitFlash>0)G.boss.hitFlash=Math.max(0,G.boss.hitFlash-dt*3);
-    // boss attack tick (host only)
     if(G.boss.active&&G.isHost){
       const now=performance.now();
       if(!G.boss.nextAttackAt)G.boss.nextAttackAt=now+G.boss.attackInterval;
@@ -1843,12 +2022,7 @@ function loop(ts){
   G.loopId=requestAnimationFrame(loop);
 }
 
-/* ═══ TEAM HELPERS ═══ */
-function getTeamHp(team){
-  let s=0;
-  for(const id in G.players){const p=G.players[id];if(p.team===team&&p.alive)s+=Math.max(0,p.hp);}
-  return s;
-}
+function getTeamHp(team){let s=0;for(const id in G.players){const p=G.players[id];if(p.team===team&&p.alive)s+=Math.max(0,p.hp)}return s}
 function getTeamMax(team){let s=0;for(const id in G.players)if(G.players[id].team===team)s+=100;return s}
 function getAliveCount(team){let n=0;for(const id in G.players){const p=G.players[id];if(p.team===team&&p.alive)n++}return n}
 function getTotalCount(team){let n=0;for(const id in G.players)if(G.players[id].team===team)n++;return n}
@@ -1862,18 +2036,13 @@ function checkTeamWipe(){
   return null;
 }
 
-/* ═══ DEATH / AUTO-REVIVE ═══ */
 function killPlayer(id){
   const p=G.players[id];if(!p||!p.alive)return;
   p.alive=false;p.hp=0;
   p.deaths=(p.deaths||0)+1;
   const dN=p.deaths;
-  if(dN<=3){
-    const delay=AUTO_REVIVE_DELAYS[dN-1];
-    p.reviveAt=Date.now()+delay*1000;
-  }else{
-    p.reviveAt=0;
-  }
+  if(dN<=3)p.reviveAt=Date.now()+AUTO_REVIVE_DELAYS[dN-1]*1000;
+  else p.reviveAt=0;
   showAnnouncer(`💀 ${p.name} DOWN!`);
   if(id===G.myId)G.shake=1;
   if(G.isHost){
@@ -1887,7 +2056,6 @@ function killPlayer(id){
     hostBc({type:'death',playerId:id,deaths:dN,reviveAt:p.reviveAt});
   }
   updateHPUI();updateHpAvatarsUI();updateRoundHudAlive();
-  // team wipe → boss phase
   if(G.isHost&&!G.boss.active&&!G.battle.ended){
     const wipe=checkTeamWipe();
     if(wipe==='blue'||wipe==='red')triggerBossPhase(wipe);
@@ -1904,7 +2072,6 @@ function checkAutoRevives(){
   for(const id in G.players){
     const p=G.players[id];
     if(!p.alive&&p.reviveAt>0&&now>=p.reviveAt){
-      // v3.3: don't auto-revive if boss active and this player is on loser team
       if(G.boss.active&&G.match.loserTeam&&p.team===G.match.loserTeam)continue;
       doRevive(id,50);
       hostBc({type:'revive',playerId:id,hp:50});
@@ -1913,33 +2080,22 @@ function checkAutoRevives(){
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   v3.3: BOSS PHASE — ONLY WINNER TEAM FIGHTS
-   ═══════════════════════════════════════════════════════════════ */
 function triggerBossPhase(wipedTeam){
   const winnerTeam=wipedTeam==='blue'?'red':'blue';
   G.match.winnerTeam=winnerTeam;
   G.match.loserTeam=wipedTeam;
   G.endedReason='boss';
-
-  // Revive ONLY winner team to full HP
   for(const id in G.players){
     const p=G.players[id];
-    if(p.team===winnerTeam){
-      p.alive=true;p.hp=p.maxHp;p.reviveAt=0;
-    } else {
-      // loser stays dead — will be spectator
-      p.alive=false;p.hp=0;p.reviveAt=0;
-    }
+    if(p.team===winnerTeam){p.alive=true;p.hp=p.maxHp;p.reviveAt=0;}
+    else{p.alive=false;p.hp=0;p.reviveAt=0;}
   }
-
-  // spawn boss
   const teamSize=G.config.teamSize||1;
-  const hp=400+150*teamSize;
+  const hp=250+60*teamSize;
   G.boss={
     active:true,hp:hp,maxHp:hp,
-    nextAttackAt:performance.now()+2000,
-    attackInterval:2500,
+    nextAttackAt:performance.now()+3500,
+    attackInterval:3200,
     dmg:{blue:0,red:0},
     cx:0,cy:0,radius:0,
     hitFlash:0,spawnAt:performance.now()
@@ -1947,24 +2103,21 @@ function triggerBossPhase(wipedTeam){
   sBossSpawn();
   showAnnouncer('🐉 BOSS APPEARS!');
   const rt=$('bossTag');if(rt)rt.style.display='inline';
-
   if(G.isHost){
     hostBc({type:'bossSpawn',hp,teamSize,winnerTeam,loserTeam:wipedTeam});
     hostBc({type:'notify',playerId:'all',msg:`🐉 BOSS ปรากฏ! ทีม ${winnerTeam==='blue'?'น้ำเงิน':'แดง'} ต่อสู้`});
   }
-  // Local spectator state
   updateSpectatorState();
   updateHPUI();updateHpAvatarsUI();updateRoundHudAlive();
 }
 function bossAttack(){
   if(!G.boss.active||G.battle.ended)return;
-  // target only WINNER team
   const targetTeam=G.match.winnerTeam;
   if(!targetTeam)return;
   const alive=getAlivePlayers(targetTeam);
-  if(!alive.length){bossDefeated();return;} // boss killed all winners — treat as boss win
+  if(!alive.length){bossDefeated();return;}
   const tgt=pick(alive);
-  const dmg=12;
+  const dmg=6;
   spawnBomb('boss','boss',dmg,false,false,tgt.id,'boss');
   if(G.isHost){
     hostBc({type:'bomb',from:'boss',byId:'boss',damage:dmg,isUlt:false,blocked:false,targetId:tgt.id,kind:'boss'});
@@ -1975,13 +2128,15 @@ function bossAttack(){
 }
 function damageBoss(fromTeam,amount,casterId){
   if(!G.boss.active||G.boss.hp<=0)return;
-  // Only winner team can damage boss
   if(G.match.winnerTeam&&fromTeam!==G.match.winnerTeam)return;
+  const alive=getAliveCount(G.match.winnerTeam||fromTeam);
+  if(alive===1)amount=Math.round(amount*1.5);
   G.boss.hp=Math.max(0,G.boss.hp-amount);
   G.boss.hitFlash=1;
   G.boss.dmg[fromTeam]=(G.boss.dmg[fromTeam]||0)+amount;
-  showFloatText(cvW/2,cvH*0.45,'-'+amount,'#fbbf24');
-  if(G.isHost)hostBc({type:'bossHit',hp:G.boss.hp,fromTeam,amount});
+  const bx=cvW/2,by=cvH*0.55-40;
+  showFloatText(bx,by,'-'+amount,'#fbbf24');
+  if(G.isHost)hostBc({type:'bossHit',hp:G.boss.hp,fromTeam,amount,x:bx,y:by});
   if(G.boss.hp<=0)bossDefeated();
 }
 function bossDefeated(){
@@ -1992,17 +2147,20 @@ function bossDefeated(){
   sWin();
   showAnnouncer('🏆 BOSS DEFEATED!');
   if(G.isHost){
-    // winner = the survivor team (they fought boss)
     const winner=G.match.winnerTeam||'blue';
     setTimeout(()=>endBattle(winner,true),1200);
   }
 }
 
-/* ═══ QUESTIONS ═══ */
-function getPool(){return POOLS[G.config.gradeId]||POOLS.all}
+function getPool(){
+  const base=POOLS[G.config.gradeId]||POOLS.all;
+  if(!G.config.selectedWords||!G.config.selectedWords.length)return base;
+  const sel=new Set(G.config.selectedWords.map(w=>w.toLowerCase()));
+  const filtered=base.filter(w=>sel.has(w.en.toLowerCase()));
+  return filtered.length>=MIN_WORDS?filtered:base;
+}
 function nextQuestion(){
   if(!G.battle.running||G.battle.ended)return;
-  // v3.3: skip if spectator
   if(G.match.isSpectator){
     G.currentQ=null;
     const q=$('qText');if(q)q.textContent='👁️ กำลังรับชม...';
@@ -2078,18 +2236,20 @@ function onCorrectAnswer(speed){
   G.myUlt=Math.min(10,G.myUlt+1);
   G.wrongStreak[G.myId]=0;
   showComboPop(G.myCombo);
-  const tgt=pickEnemyTarget(G.myTeam);
   if(G.boss.active){
-    const dmg=3+Math.round(speed*2);
+    const dmg=20+Math.round(speed*15);
     if(G.isHost){
+      spawnBomb(G.myTeam,G.myId,dmg,false,false,'boss','bossfire');
+      hostBc({type:'bomb',from:G.myTeam,byId:G.myId,damage:dmg,isUlt:false,blocked:false,targetId:'boss',kind:'bossfire'});
       damageBoss(G.myTeam,dmg,G.myId);
       if(G.myCombo%3===0)grantShield(G.myTeam);
       if(G.myCombo%5===0)grantSkill(G.myId,pick(SKILL_KEYS.filter(k=>k!=='revive')));
     }else{
-      fireProjectile(G.myId,{speed,targetId:'boss',toBoss:true});
-      pub(`vba/${G.roomCode}/p/${G.myId}/answer`,{correct:true,speed,toBoss:true});
+      fireProjectile(G.myId,{speed,targetId:'boss',toBoss:true,dmg:dmg});
+      pub(`vba/${G.roomCode}/p/${G.myId}/answer`,{correct:true,speed,toBoss:true,dmg:dmg});
     }
   }else{
+    const tgt=pickEnemyTarget(G.myTeam);
     if(G.isHost){
       applyBomb(G.myId,speed,tgt,'bomb');
       if(G.myCombo%3===0)grantShield(G.myTeam);
@@ -2126,8 +2286,15 @@ function useUlt(){
   if(isMyTeamFrozen())return;
   G.myUlt=0;G.myUltsUsed++;updatePowerUI();sUlt();
   if(G.boss.active){
-    if(G.isHost)damageBoss(G.myTeam,20,G.myId);
-    else pub(`vba/${G.roomCode}/p/${G.myId}/ult`,{toBoss:true});
+    const dmg=60;
+    if(G.isHost){
+      spawnBomb(G.myTeam,G.myId,dmg,true,false,'boss','bossfire');
+      hostBc({type:'bomb',from:G.myTeam,byId:G.myId,damage:dmg,isUlt:true,blocked:false,targetId:'boss',kind:'bossfire'});
+      damageBoss(G.myTeam,dmg,G.myId);
+    }else{
+      fireProjectile(G.myId,{toBoss:true,dmg:dmg,kind:'bossfire'});
+      pub(`vba/${G.roomCode}/p/${G.myId}/ult`,{toBoss:true,dmg:dmg});
+    }
     return;
   }
   const tgt=pickEnemyTarget(G.myTeam);
@@ -2142,7 +2309,7 @@ function fireProjectile(byId,opts){
   if(!opts.toBoss&&!targetId)return;
   G.shotCount[from]=(G.shotCount[from]||0)+1;
   G.charAnim[byId]=0.4;
-  spawnBomb(from,byId,0,false,false,targetId||'boss',opts.kind||(opts.toBoss?'bossfire':'bomb'));
+  spawnBomb(from,byId,opts.dmg||0,false,false,targetId||'boss',opts.kind||(opts.toBoss?'bossfire':'bomb'));
 }
 function doSelfDestruct(byId){
   const p=G.players[byId];if(!p)return;
@@ -2216,7 +2383,9 @@ function onRemoteAnswer(pid,d){
   const p=G.players[pid];if(!p||!p.alive)return;
   if(d.correct){
     if(d.toBoss||G.boss.active){
-      const dmg=3+Math.round((d.speed||0.5)*2);
+      const dmg=d.dmg||(20+Math.round((d.speed||0.5)*15));
+      spawnBomb(p.team,pid,dmg,false,false,'boss','bossfire');
+      hostBc({type:'bomb',from:p.team,byId:pid,damage:dmg,isUlt:false,blocked:false,targetId:'boss',kind:'bossfire'});
       damageBoss(p.team,dmg,pid);
     }else{
       applyBomb(pid,d.speed||0.5,d.targetId,'bomb');
@@ -2224,6 +2393,7 @@ function onRemoteAnswer(pid,d){
     G.botCombo[pid]=(G.botCombo[pid]||0)+1;
     if(G.botCombo[pid]%3===0)grantShield(p.team);
     G.wrongStreak[pid]=0;
+    p.correctCount=(p.correctCount||0)+1;
   }else{
     G.botCombo[pid]=0;
     G.wrongStreak[pid]=(G.wrongStreak[pid]||0)+1;
@@ -2233,7 +2403,13 @@ function onRemoteAnswer(pid,d){
 function onRemoteUlt(pid,d){
   if(!G.isHost)return;
   const p=G.players[pid];if(!p||!p.alive)return;
-  if(d&&(d.toBoss||G.boss.active)){damageBoss(p.team,20,pid);return;}
+  if(d&&(d.toBoss||G.boss.active)){
+    const dmg=d.dmg||60;
+    spawnBomb(p.team,pid,dmg,true,false,'boss','bossfire');
+    hostBc({type:'bomb',from:p.team,byId:pid,damage:dmg,isUlt:true,blocked:false,targetId:'boss',kind:'bossfire'});
+    damageBoss(p.team,dmg,pid);
+    return;
+  }
   applyUlt(pid,d&&d.targetId);
 }
 function onRemoteSkill(pid,d){
@@ -2272,9 +2448,138 @@ function startSkillDrops(){
     });
   },20000);
 }
+
 function startBots(){
-  const conf={easy:{min:6200,max:9200,acc:0.50},medium:{min:4400,max:6800,acc:0.70},hard:{min:3200,max:5000,acc:0.88}}[G.config.botDiff];
-  for(const id in G.players){if(G.players[id].isBot)scheduleBot(id,conf);}
+  const conf=BOT_CONF[G.config.botDiff]||BOT_CONF.medium;
+  for(const id in G.players){
+    if(G.players[id].isBot)scheduleBot(id,conf);
+  }
+}
+function pickEnemyTargetForBot(myTeam,botId){
+  const enemyTeam=myTeam==='blue'?'red':'blue';
+  const list=getAlivePlayers(enemyTeam);
+  if(!list.length)return null;
+  const isHard=G.config.botDiff==='hard';
+  if(!isHard)return pick(list).id;
+  const now=Date.now();
+  const myCoordTarget=G.botLastTarget[botId];
+  if(myCoordTarget&&myCoordTarget.expiresAt>now){
+    const still=G.players[myCoordTarget.targetId];
+    if(still&&still.alive&&still.team===enemyTeam)return myCoordTarget.targetId;
+  }
+  let sharedTargetId=null,sharedTs=0;
+  for(const otherId in G.botLastTarget){
+    if(otherId===botId)continue;
+    const rec=G.botLastTarget[otherId];
+    if(!rec||rec.expiresAt<=now)continue;
+    const oP=G.players[otherId];
+    if(!oP||oP.team!==myTeam)continue;
+    if(rec.ts>sharedTs){
+      const t=G.players[rec.targetId];
+      if(t&&t.alive&&t.team===enemyTeam){sharedTargetId=rec.targetId;sharedTs=rec.ts;}
+    }
+  }
+  let bestId=null,bestScore=-999;
+  for(const t of list){
+    let score=0;
+    if(t.hp<30)score+=100;else if(t.hp<50)score+=40;
+    const combo=G.botCombo[t.id]||0;score+=combo*8;
+    score+=(100-t.hp)*0.5;
+    if(sharedTargetId===t.id)score+=50;
+    if(score>bestScore){bestScore=score;bestId=t.id;}
+  }
+  G.botLastTarget[botId]={targetId:bestId,ts:now,expiresAt:now+3000};
+  return bestId;
+}
+function botReviveChoice(team,botId){
+  const dead=getDeadPlayers(team);
+  if(!dead.length)return null;
+  const isHard=G.config.botDiff==='hard';
+  if(!isHard){
+    const sorted=dead.slice().sort((a,b)=>(b.deaths||0)-(a.deaths||0));
+    return sorted[0].id;
+  }
+  const scored=dead.map(p=>({id:p.id,score:(p.deaths||0)*10+(p.correctCount||0)}));
+  scored.sort((a,b)=>b.score-a.score);
+  return scored[0].id;
+}
+function botUseSkills(id,p){
+  const slots=ensureSkills(id);
+  if(!slots.length)return;
+  const isHard=G.config.botDiff==='hard';
+  if(!isHard){
+    const s=pick(slots);
+    let tid=null;
+    if(s.type==='revive')tid=botReviveChoice(p.team,id);
+    if(consumeSkill(id,s.type)){
+      applySkillEffect(p.team,s.type,id,tid);
+      hostBc({type:'skillfx',playerId:id,skillType:s.type,team:p.team,targetId:tid});
+    }
+    return;
+  }
+  const enemyTeam=p.team==='blue'?'red':'blue';
+  const enemies=getAlivePlayers(enemyTeam);
+  const myAlive=getAlivePlayers(p.team);
+  const teamDead=getDeadPlayers(p.team);
+  const hasRevive=slots.find(s=>s.type==='revive');
+  if(hasRevive&&teamDead.length>=2){
+    const tid=botReviveChoice(p.team,id);
+    if(tid&&consumeSkill(id,'revive')){
+      applySkillEffect(p.team,'revive',id,tid);
+      hostBc({type:'skillfx',playerId:id,skillType:'revive',team:p.team,targetId:tid});
+      return;
+    }
+  }
+  if(p.hp<40){
+    const hasHeal=slots.find(s=>s.type==='heal');
+    if(hasHeal&&consumeSkill(id,'heal')){
+      applySkillEffect(p.team,'heal',id,null);
+      hostBc({type:'skillfx',playerId:id,skillType:'heal',team:p.team,targetId:null});
+      return;
+    }
+  }
+  const anyStreak=enemies.some(e=>(G.botCombo[e.id]||0)>=3);
+  const hasFreeze=slots.find(s=>s.type==='freeze');
+  if(anyStreak&&hasFreeze&&!G.boss.active){
+    if(consumeSkill(id,'freeze')){
+      applySkillEffect(p.team,'freeze',id,null);
+      hostBc({type:'skillfx',playerId:id,skillType:'freeze',team:p.team,targetId:null});
+      return;
+    }
+  }
+  const hasSnipe=slots.find(s=>s.type==='snipe');
+  if(hasSnipe&&G.effects[p.team==='blue'?'blueSnipe':'redSnipe']===0&&!G.boss.active){
+    if(consumeSkill(id,'snipe')){
+      applySkillEffect(p.team,'snipe',id,null);
+      hostBc({type:'skillfx',playerId:id,skillType:'snipe',team:p.team,targetId:null});
+      return;
+    }
+  }
+  const hasPower=slots.find(s=>s.type==='power');
+  if(hasPower&&G.effects[p.team==='blue'?'blueDouble':'redDouble']===0){
+    if(consumeSkill(id,'power')){
+      applySkillEffect(p.team,'power',id,null);
+      hostBc({type:'skillfx',playerId:id,skillType:'power',team:p.team,targetId:null});
+      return;
+    }
+  }
+  const hasShield=slots.find(s=>s.type==='shield');
+  const teamLowHp=myAlive.some(a=>a.hp<50);
+  if(hasShield&&teamLowHp&&!G.boss.active){
+    if(consumeSkill(id,'shield')){
+      applySkillEffect(p.team,'shield',id,null);
+      hostBc({type:'skillfx',playerId:id,skillType:'shield',team:p.team,targetId:null});
+      return;
+    }
+  }
+  if(hasRevive&&teamDead.length>=1){
+    const tid=botReviveChoice(p.team,id);
+    if(tid&&consumeSkill(id,'revive')){
+      applySkillEffect(p.team,'revive',id,tid);
+      hostBc({type:'skillfx',playerId:id,skillType:'revive',team:p.team,targetId:tid});
+      return;
+    }
+  }
 }
 function scheduleBot(id,conf){
   const delay=rnd(conf.min,conf.max);
@@ -2282,65 +2587,71 @@ function scheduleBot(id,conf){
     if(!G.battle.running||G.battle.ended)return;
     const p=G.players[id];if(!p)return;
     if(!p.alive){scheduleBot(id,conf);return;}
-    // v3.3: bots on loser team can't act during boss phase
     if(G.boss.active&&G.match.loserTeam&&p.team===G.match.loserTeam){scheduleBot(id,conf);return;}
     const frozen=(p.team==='blue'?G.effects.blueFreeze:G.effects.redFreeze)>0;
     if(frozen){scheduleBot(id,conf);return;}
+    const isHard=G.config.botDiff==='hard';
     const correct=Math.random()<conf.acc;
     if(correct){
-      const speed=Math.random()*0.9+0.05;
+      const speed=rnd(conf.speedMin||0,conf.speedMax||0.9);
       if(G.boss.active){
-        const dmg=3+Math.round(speed*2);
+        const dmg=20+Math.round(speed*15);
+        spawnBomb(p.team,id,dmg,false,false,'boss','bossfire');
+        hostBc({type:'bomb',from:p.team,byId:id,damage:dmg,isUlt:false,blocked:false,targetId:'boss',kind:'bossfire'});
         damageBoss(p.team,dmg,id);
         G.botCombo[id]=(G.botCombo[id]||0)+1;
         G.wrongStreak[id]=0;
       }else{
-        const tgt=pickEnemyTarget(p.team);
-        if(tgt){
-          fireProjectile(id,{speed,targetId:tgt});
-          applyBomb(id,speed,tgt,'bomb');
-        }
+        const tgt=isHard?pickEnemyTargetForBot(p.team,id):pickEnemyTarget(p.team);
+        if(tgt){fireProjectile(id,{speed,targetId:tgt});applyBomb(id,speed,tgt,'bomb');}
         G.botCombo[id]=(G.botCombo[id]||0)+1;
         G.wrongStreak[id]=0;
         if(G.botCombo[id]%3===0)grantShield(p.team);
         if(G.botCombo[id]%5===0)grantSkill(id,pick(SKILL_KEYS.filter(k=>k!=='revive')));
       }
+      p.correctCount=(p.correctCount||0)+1;
       G.botUlt[id]=(G.botUlt[id]||0)+1;
-      if(G.botUlt[id]>=10){
+      const shouldUlt=isHard?ultDecisionHard(id,p):(G.botUlt[id]>=10);
+      if(shouldUlt&&G.botUlt[id]>=10){
         G.botUlt[id]=0;
         setTimeout(()=>{
           if(!G.battle.running||G.battle.ended)return;
-          if(G.boss.active)damageBoss(p.team,20,id);
-          else applyUlt(id,pickEnemyTarget(p.team));
-        },rnd(600,1600));
+          const pp=G.players[id];if(!pp||!pp.alive)return;
+          if(G.boss.active){
+            const dmg=60;
+            spawnBomb(pp.team,id,dmg,true,false,'boss','bossfire');
+            hostBc({type:'bomb',from:pp.team,byId:id,damage:dmg,isUlt:true,blocked:false,targetId:'boss',kind:'bossfire'});
+            damageBoss(pp.team,dmg,id);
+          }else{
+            const enemyTeam=pp.team==='blue'?'red':'blue';
+            const list=getAlivePlayers(enemyTeam);
+            if(!list.length)return;
+            let tgt;
+            if(isHard)tgt=list.slice().sort((a,b)=>a.hp-b.hp)[0].id;
+            else tgt=pick(list).id;
+            applyUlt(id,tgt);
+          }
+        },isHard?rnd(200,600):rnd(600,1600));
       }
     }else{
       G.botCombo[id]=0;
       G.wrongStreak[id]=(G.wrongStreak[id]||0)+1;
       if(G.wrongStreak[id]>=3)doSelfDestruct(id);
     }
-    // bots use revive to pick lowest-HP-dead teammate
-    const slots=ensureSkills(id);
-    if(slots.length&&Math.random()<0.4){
-      const s=pick(slots);
-      let tid=null;
-      if(s.type==='revive'){
-        const dead=getDeadPlayers(p.team);
-        if(dead.length){
-          dead.sort((a,b)=>(b.deaths||0)-(a.deaths||0));
-          tid=dead[0].id;
-        }
-      }
-      if(consumeSkill(id,s.type)){
-        applySkillEffect(p.team,s.type,id,tid);
-        hostBc({type:'skillfx',playerId:id,skillType:s.type,team:p.team,targetId:tid});
-      }
-    }
+    botUseSkills(id,p);
     scheduleBot(id,conf);
   },delay);
 }
+function ultDecisionHard(id,p){
+  if(G.boss.active)return true;
+  const enemyTeam=p.team==='blue'?'red':'blue';
+  const enemies=getAlivePlayers(enemyTeam);
+  if(!enemies.length)return true;
+  const minHp=Math.min(...enemies.map(e=>e.hp));
+  if(minHp<25)return true;
+  return false;
+}
 
-/* ═══ BOMB ANIMATION ═══ */
 function spawnBomb(from,byId,damage,isUlt,blocked,targetId,kind){
   let srcIdx=0,dstIdx=0;
   if(from==='boss'){srcIdx=-1;dstIdx=-1;}
@@ -2353,8 +2664,8 @@ function spawnBomb(from,byId,damage,isUlt,blocked,targetId,kind){
     else dstIdx=dstList.length?Math.floor(Math.random()*dstList.length):0;
   }
   G.bombs.push({from,byId,damage,isUlt,blocked,kind:kind||'bomb',srcIdx,dstIdx,targetId,t:0,
-    dur:isUlt?1.15:(kind==='self'?0.95:(kind==='boss'?0.9:0.8)),
-    arcH:isUlt?0.55:(kind==='self'?0.62:(kind==='boss'?0.5:0.38)),spin:0});
+    dur:isUlt?1.15:(kind==='self'?0.95:(kind==='boss'||kind==='bossfire'?0.9:0.8)),
+    arcH:isUlt?0.55:(kind==='self'?0.62:(kind==='boss'||kind==='bossfire'?0.5:0.38)),spin:0});
   if(byId&&byId!=='boss')G.charAnim[byId]=0.4;
   sThrow();
 }
@@ -2382,10 +2693,11 @@ function updateBombs(dt){
         dst=list[b.dstIdx]||{x:0,y:0};
       }
       addExplosion(dst.x,dst.y,b.isUlt,b.kind);
-      if(b.isUlt||b.kind==='self'||b.kind==='boss'){G.shake=1;sExplode(true);}
+      if(b.isUlt||b.kind==='self'||b.kind==='boss'||b.kind==='bossfire'){G.shake=1;sExplode(true);}
       else{G.shake=Math.max(G.shake,0.4);sExplode(false);}
       if(b.blocked)showFloatText(dst.x,dst.y-30,'BLOCKED','#60a5fa');
-      else if(b.damage>0)showFloatText(dst.x,dst.y-30,'-'+b.damage,b.kind==='self'?'#a855f7':(b.isUlt?'#fbbf24':'#f87171'));
+      else if(b.damage>0&&b.kind!=='bossfire')showFloatText(dst.x,dst.y-30,'-'+b.damage,b.kind==='self'?'#a855f7':(b.isUlt?'#fbbf24':'#f87171'));
+      else if(b.damage>0&&b.kind==='bossfire')showFloatText(dst.x,dst.y-30,'-'+b.damage,'#fbbf24');
       G.bombs.splice(i,1);
     }
   }
@@ -2394,7 +2706,7 @@ function addExplosion(x,y,big,kind){
   G.explosions.push({x,y,t:0,dur:big?0.7:0.45,big,kind});
   const n=big?26:14;
   const colors=kind==='self'?['#a855f7','#7c3aed','#dc2626','#1a0b2e']
-              :kind==='boss'?['#fbbf24','#dc2626','#a855f7','#fde047']
+              :(kind==='boss'||kind==='bossfire')?['#fbbf24','#dc2626','#a855f7','#fde047']
               :big?['#fbbf24','#f97316','#dc2626','#fde047']
               :['#fb923c','#f97316','#fbbf24'];
   for(let i=0;i<n;i++){
@@ -2405,7 +2717,6 @@ function addExplosion(x,y,big,kind){
 function updateExplosions(dt){for(let i=G.explosions.length-1;i>=0;i--){const e=G.explosions[i];e.t+=dt;if(e.t>=e.dur)G.explosions.splice(i,1)}}
 function updateParticles(dt){for(let i=G.particles.length-1;i>=0;i--){const p=G.particles[i];p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=380*dt;if(p.t>=p.dur)G.particles.splice(i,1)}}
 
-/* ═══ CANVAS ═══ */
 let cvW=0,cvH=0,cvDpr=1;
 function resizeCanvas(){
   const c=$('battleCanvas');if(!c)return;
@@ -2486,7 +2797,6 @@ function draw(){
   pos.blue.forEach((p,i)=>{const id=G.teamOrder.blue[i];drawCharacter(ctx,p.x,p.y,p.r,'#3b82f6',id===G.myId,1,G.charAnim[id]||0,id)});
   pos.red.forEach((p,i)=>{const id=G.teamOrder.red[i];drawCharacter(ctx,p.x,p.y,p.r,'#ef4444',false,-1,G.charAnim[id]||0,id)});
 
-  // BOSS
   if(G.boss.active){
     const bx=W/2,by=H*0.55,br=Math.min(60,W*0.13);
     G.boss.cx=bx;G.boss.cy=by;G.boss.radius=br;
@@ -2504,10 +2814,9 @@ function draw(){
       ctx.beginPath();ctx.arc(bx,by,br*1.15,0,Math.PI*2);ctx.fill();
       ctx.restore();
     }
+    // v3.6: draw boss emoji via cache
     ctx.save();
-    ctx.font=`${Math.round(br*1.7)}px sans-serif`;
-    ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('🐉',bx,by+Math.sin(t*2)*4);
+    drawEmoji(ctx,'🐉',bx,by+Math.sin(t*2)*4,Math.round(br*1.7));
     ctx.restore();
     const barW=Math.min(W*0.62,300),barH=14;
     const barX=bx-barW/2,barY=by-br-38;
@@ -2531,7 +2840,6 @@ function draw(){
     ctx.restore();
   }
 
-  // Bombs
   G.bombs.forEach(b=>{
     let sx,sy,dx,dy;
     if(b.from==='boss'){
@@ -2544,8 +2852,8 @@ function draw(){
         dx=dp.x;dy=dp.y;
       }else{dx=W/2;dy=groundY;}
     }else if(b.kind==='bossfire'){
-      const srcList=pos[b.from]||[];
-      const src=srcList[b.srcIdx]||srcList[0]||{x:60,y:groundY};
+      const srcList=pos[b.from==='blue'?'blue':'red'];
+      const src=srcList[b.srcIdx]||srcList[0]||{x:b.from==='blue'?60:W-60,y:groundY-24};
       sx=src.x;sy=src.y;
       dx=W/2;dy=H*0.55;
     }else{
@@ -2560,22 +2868,29 @@ function draw(){
     const y=sy+(dy-sy)*tt-Math.sin(tt*Math.PI)*b.arcH*H;
     const isSelf=b.kind==='self';
     const isBoss=b.kind==='boss'||b.kind==='bossfire';
+    const isBossFire=b.kind==='bossfire';
     ctx.save();
     const trailR=b.isUlt?14:(isBoss?13:(isSelf?11:9));
     const tg=ctx.createRadialGradient(x,y,1,x,y,trailR);
     tg.addColorStop(0,'rgba(255,255,255,.9)');
-    tg.addColorStop(0.4,isSelf?'rgba(168,85,247,.85)':(isBoss?'rgba(220,38,38,.85)':(b.isUlt?'rgba(251,191,36,.75)':'rgba(249,115,22,.65)')));
+    tg.addColorStop(0.4,isSelf?'rgba(168,85,247,.85)':(isBossFire?'rgba(251,191,36,.85)':(b.isUlt?'rgba(251,191,36,.75)':'rgba(249,115,22,.65)')));
     tg.addColorStop(1,'rgba(0,0,0,0)');
     ctx.fillStyle=tg;ctx.beginPath();ctx.arc(x,y,trailR,0,Math.PI*2);ctx.fill();
     ctx.restore();
-    ctx.save();ctx.translate(x,y);ctx.rotate(b.spin);
-    ctx.font=(b.isUlt?26:(isBoss?24:(isSelf?23:20)))+'px sans-serif';
-    ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(isSelf?'💀':(isBoss?'🔥':(b.isUlt?'☄️':'💣')),0,0);
+    // v3.6: use drawEmoji for bomb icons too
+    let ico='💣';
+    if(isSelf)ico='💀';
+    else if(isBossFire)ico=b.isUlt?'☄️':'✨';
+    else if(b.kind==='boss')ico='🔥';
+    else if(b.isUlt)ico='☄️';
+    const bombSize=(b.isUlt?26:(isBoss?24:(isSelf?23:20)));
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(b.spin);
+    drawEmoji(ctx,ico,0,0,bombSize);
     ctx.restore();
   });
 
-  // Explosions
   G.explosions.forEach(e=>{
     const tt=e.t/e.dur;const maxR=e.big?90:55;const r=maxR*(0.3+tt*0.9);
     ctx.save();
@@ -2585,7 +2900,7 @@ function draw(){
       eg.addColorStop(0.35,'rgba(168,85,247,'+(0.85*(1-tt))+')');
       eg.addColorStop(0.7,'rgba(88,28,135,'+(0.7*(1-tt))+')');
       eg.addColorStop(1,'rgba(30,0,50,0)');
-    }else if(e.big||e.kind==='boss'){
+    }else if(e.big||e.kind==='boss'||e.kind==='bossfire'){
       eg.addColorStop(0,'rgba(255,255,220,'+(1-tt)+')');
       eg.addColorStop(0.35,'rgba(251,191,36,'+(0.85*(1-tt))+')');
       eg.addColorStop(0.7,'rgba(249,115,22,'+(0.6*(1-tt))+')');
@@ -2639,7 +2954,6 @@ function drawCharacter(ctx,x,y,r,color,isMe,facing,anim,id){
 
   const cx=x+lean,cy=by;
   ctx.save();
-  // dim more if loser during boss phase
   if(!alive)ctx.globalAlpha=isLoser?0.3:0.45;
   const grad=ctx.createRadialGradient(cx-r*0.35,cy-r*0.4,r*0.1,cx,cy,r*1.15);
   grad.addColorStop(0,'rgba(255,255,255,.55)');
@@ -2653,13 +2967,12 @@ function drawCharacter(ctx,x,y,r,color,isMe,facing,anim,id){
   ctx.lineWidth=2;ctx.stroke();
   ctx.restore();
 
+  // v3.6: Safari-safe emoji avatar
   const emoji=getAvatarFor(id);
   const emojiSize=Math.round(r*1.6);
   ctx.save();
   if(!alive)ctx.globalAlpha=isLoser?0.35:0.55;
-  ctx.font=`${emojiSize}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
-  ctx.textAlign='center';ctx.textBaseline='middle';
-  ctx.fillText(emoji,cx,cy+1);
+  drawEmoji(ctx, emoji, cx, cy+1, emojiSize);
   ctx.restore();
 
   if(!alive){
@@ -2671,10 +2984,9 @@ function drawCharacter(ctx,x,y,r,color,isMe,facing,anim,id){
     ctx.moveTo(cx+r*0.55,cy-r*0.55);ctx.lineTo(cx-r*0.55,cy+r*0.55);
     ctx.stroke();
     ctx.restore();
+    // ghost
     ctx.save();
-    ctx.font=`${Math.round(r*0.85)}px sans-serif`;
-    ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('👻',cx,cy-r*1.2);
+    drawEmoji(ctx,'👻',cx,cy-r*1.2,Math.round(r*0.85));
     ctx.restore();
   }
 
@@ -2694,22 +3006,17 @@ function drawCharacter(ctx,x,y,r,color,isMe,facing,anim,id){
   const ws=G.wrongStreak[id]||0;
   if(ws>0&&alive){
     ctx.save();
-    ctx.font=`${Math.round(r*0.7)}px sans-serif`;
-    ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText(ws>=2?'💀💀':'💀',cx,cy-r*1.35);
+    drawEmoji(ctx,ws>=2?'💀':'💀',cx,cy-r*1.35,Math.round(r*0.7));
     ctx.restore();
   }
 
   if(isMe&&alive){
     ctx.save();
-    ctx.font=`${Math.round(r*0.95)}px sans-serif`;
-    ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('👑',cx,cy-r*1.35);
+    drawEmoji(ctx,'👑',cx,cy-r*1.35,Math.round(r*0.95));
     ctx.restore();
   }
 }
 
-/* ═══ UI UPDATES ═══ */
 function updateRoundHudAlive(){
   const bA=getAliveCount('blue'),bT=getTotalCount('blue');
   const rA=getAliveCount('red'),rT=getTotalCount('red');
@@ -2802,13 +3109,12 @@ function showFloatText(x,y,text,color){
   setTimeout(()=>el.remove(),1000);
 }
 
-/* ═══ END BATTLE ═══ */
 function endBattle(winner,isBoss){
   if(G.battle.ended)return;
   G.battle.ended=true;G.battle.running=false;
   if(!winner){
     if(isBoss){
-      winner=G.match.winnerTeam||G.boss.dmg.blue>G.boss.dmg.red?'blue':(G.boss.dmg.red>G.boss.dmg.blue?'red':'draw');
+      winner=G.match.winnerTeam||(G.boss.dmg.blue>G.boss.dmg.red?'blue':(G.boss.dmg.red>G.boss.dmg.blue?'red':'draw'));
     }else{
       const bA=getAliveCount('blue'),rA=getAliveCount('red');
       if(bA>rA)winner='blue';else if(rA>bA)winner='red';else winner='draw';
@@ -2900,7 +3206,6 @@ function showResult(result){
   go('scResult');
 }
 
-/* ═══ COUNTDOWN ═══ */
 function showCountdown(subText,cb){
   const ov=$('countdownOverlay');ov.classList.add('on');
   $('cdTxt').textContent=subText;$('cdExtra').innerHTML='';
@@ -2924,6 +3229,19 @@ setInterval(()=>{
 },120);
 
 renderGradeChips();
+
+/* ═══ v3.6: Boot sequence — wait for fonts, then prewarm emojis ═══ */
+(async function boot(){
+  try{
+    if(document.fonts && document.fonts.ready){
+      await document.fonts.ready;
+    }
+  }catch(e){}
+  if(G.myAvatar) getEmojiCanvas(G.myAvatar);
+  getEmojiCanvas('😀'); getEmojiCanvas('😎'); getEmojiCanvas('🐶');
+  console.log('🍎 Emoji cache warmed (Safari-safe)');
+})();
+
 {
   const p=new URLSearchParams(location.search);const c=p.get('code');
   if(c&&c.length===4){
@@ -2938,7 +3256,7 @@ document.addEventListener('keydown',e=>{
   if(e.key===' '||e.key==='Enter'){e.preventDefault();if(!$('ultBtn').disabled)useUlt();}
 });
 
-console.log('💣 Vocab Bomb Arena v3.3 · '+POOLS.all.length+' words · '+AVATAR_EMOJIS.length+' avatars · Ready');
+console.log('💣 Vocab Bomb Arena v3.6 · '+POOLS.all.length+' words · '+AVATAR_EMOJIS.length+' avatars · Safari-ready');
 </script>
 </body>
 </html>
