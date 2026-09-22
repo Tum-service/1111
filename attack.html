@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>💣 Vocab Bomb Arena v2.1</title>
+<title>💣 Vocab Bomb Arena v2.2</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;700;800;900&family=Creepster&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -197,7 +197,7 @@ label{display:block;color:#c4b5fd;font-size:.85rem;margin-bottom:4px;font-weight
 <div class="screen active" id="scMenu">
   <div class="wrap menu-wrap">
     <h1>💣 VOCAB BOMB 💣</h1>
-    <p class="tagline">ระเบิดคำศัพท์ · Quiz Battle Arena v2.1</p>
+    <p class="tagline">ระเบิดคำศัพท์ · Quiz Battle Arena v2.2</p>
     <div class="menu-btns">
       <button class="btn btn-b" onclick="goSetup('bot')">
         <span class="big-ico">🤖</span>
@@ -223,16 +223,10 @@ label{display:block;color:#c4b5fd;font-size:.85rem;margin-bottom:4px;font-weight
       <h3>🎭 อวตารของคุณ</h3>
       <div class="avatar-preview">
         <div class="av-big" id="setupAvatar">😀</div>
-        <div class="av-info">
-          <span>ระบบสุ่มอัตโนมัติ</span>
-          <b>ไม่ซ้ำกับคนอื่นในห้อง</b>
-        </div>
+        <div class="av-info"><span>ระบบสุ่มอัตโนมัติ</span><b>ไม่ซ้ำกับคนอื่นในห้อง</b></div>
       </div>
     </div>
-    <div class="card">
-      <h3>📚 ระดับคำศัพท์</h3>
-      <div class="chips" id="gradeChips"></div>
-    </div>
+    <div class="card"><h3>📚 ระดับคำศัพท์</h3><div class="chips" id="gradeChips"></div></div>
     <div class="card">
       <h3>⏱️ ระยะเวลาเล่น</h3>
       <div class="chips" id="durChips">
@@ -1040,7 +1034,6 @@ const GRADES=[
   {id:'extra',name:'Extra'},{id:'all',name:'All'}
 ];
 
-/* ═══ FEATURE 4: AVATARS (100) ═══ */
 const AVATAR_EMOJIS=[
 '🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯',
 '🦁','🐮','🐷','🐸','🐵','🐔','🐧','🐦','🐤','🦆',
@@ -1055,7 +1048,6 @@ const AVATAR_EMOJIS=[
 ];
 const DEFAULT_AVATAR='😀';
 
-/* ═══ FEATURE 3: SKILLS ═══ */
 const SKILLS={
   shield:{icon:'🛡️',name:'Shield',desc:'กันดาเมจ 1 ครั้ง'},
   freeze:{icon:'❄️',name:'Freeze',desc:'แช่แข็งศัตรู 4 วินาที'},
@@ -1066,7 +1058,6 @@ const SKILLS={
 const SKILL_KEYS=Object.keys(SKILLS);
 const MAX_SKILL_SLOTS=2;
 
-/* ═══ UTILITIES ═══ */
 const $=id=>document.getElementById(id);
 const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -1079,7 +1070,6 @@ function shade(hex,amt){let c=hex.replace('#','');if(c.length===3)c=c.split('').
 function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo(0,0)}
 function toast(m,ms){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),ms||1800)}
 
-/* ═══ SOUND ═══ */
 let ac=null;
 function iA(){try{if(!ac)ac=new (window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();}catch(e){}}
 function tone(f,st,dur,vol,type){if(!ac)return;const t0=ac.currentTime+(st||0);const o=ac.createOscillator(),g=ac.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime(vol||0.12,t0+0.03);g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);o.connect(g);g.connect(ac.destination);o.start(t0);o.stop(t0+dur+0.05)}
@@ -1094,7 +1084,6 @@ function sCd(){iA();tone(880,0,0.2,0.1,'square')}
 function sSkill(){iA();[659.25,880,1174.66].forEach((f,i)=>tone(f,i*0.05,0.28,0.11))}
 function sSelfBomb(){iA();if(!ac)return;const t0=ac.currentTime;const o=ac.createOscillator(),g=ac.createGain();o.type='sawtooth';o.frequency.setValueAtTime(80,t0);o.frequency.exponentialRampToValueAtTime(22,t0+1.2);g.gain.setValueAtTime(0.24,t0);g.gain.exponentialRampToValueAtTime(0.0001,t0+1.3);o.connect(g);g.connect(ac.destination);o.start(t0);o.stop(t0+1.4);[0,0.18,0.34,0.5].forEach((st,i)=>tone(180-i*20,st,0.15,0.09,'square'))}
 
-/* ═══ GAME STATE ═══ */
 const G={
   role:null,isHost:false,roomCode:'',
   config:{gradeId:'p1',duration:360,teamSize:3,botDiff:'medium'},
@@ -1116,7 +1105,6 @@ const G={
   skillDropTimer:null,questionCount:0
 };
 
-/* ═══ FEATURE 4: AVATAR LOGIC ═══ */
 function randomAvatar(excludeSet){
   const ex=excludeSet||new Set();
   const pool=AVATAR_EMOJIS.filter(e=>!ex.has(e));
@@ -1128,7 +1116,6 @@ function loadAvatarFromStorage(key){try{const v=localStorage.getItem(key);if(v&&
 function saveAvatar(key,v){try{localStorage.setItem(key,v)}catch(e){}}
 function refreshSetupAvatar(){const el=$('setupAvatar');if(el)el.textContent=G.myAvatar}
 
-/* ═══ FEATURE 3: SKILLS LOGIC ═══ */
 function ensureSkills(id){if(!G.skills[id])G.skills[id]=[];return G.skills[id]}
 function grantSkill(playerId,type){
   const slots=ensureSkills(playerId);
@@ -1163,7 +1150,6 @@ function useSkill(playerId,type){
     applySkillEffect(p.team,type);
     hostBc({type:'skillfx',playerId,skillType:type,team:p.team});
   }else{
-    // ✅ FIX: client optimistic — consume + apply locally + notify host
     consumeSkill(playerId,type);
     applySkillEffect(p.team,type);
     pub(`vba/${G.roomCode}/p/${G.myId}/skill`,{type});
@@ -1214,7 +1200,6 @@ function updateSkillUI(){
   wrap.innerHTML=html;
 }
 
-/* ═══ SETUP SCREEN ═══ */
 function renderGradeChips(){
   const w=$('gradeChips');w.innerHTML='';
   GRADES.forEach(g=>{
@@ -1246,7 +1231,9 @@ function setTeam(v){iA();G.config.teamSize=v;document.querySelectorAll('#teamChi
 function setDiff(v){iA();G.config.botDiff=v;document.querySelectorAll('#diffChips .chip').forEach(c=>c.classList.toggle('active',c.dataset.v===v))}
 function proceedSetup(){iA();if(G.role==='bot')startBotGame();else if(G.role==='host')openLobby();}
 
-/* ═══ MQTT ═══ */
+/* ═══════════════════════════════════════════════════════════════
+   MQTT
+   ═══════════════════════════════════════════════════════════════ */
 const BROKERS=['wss://broker.hivemq.com:8884/mqtt','wss://broker.emqx.io:8084/mqtt'];
 let bIdx=0,mqttClient=null,mqttHandlers={},mqttOK=false;
 function connectMQTT(onOK,onFail){
@@ -1272,7 +1259,20 @@ function connectMQTT(onOK,onFail){
   setTimeout(()=>{if(!resolved){try{mqttClient.end(true)}catch(e){}nextBroker(onOK,onFail)}},15000);
 }
 function nextBroker(o,f){bIdx++;if(bIdx>=BROKERS.length*2){if(f)f();return}connectMQTT(o,f)}
-function topicMatch(p,t){if(p===t)return true;if(p.endsWith('/#'))return t.startsWith(p.slice(0,-1));return false}
+
+/* ✅ FIX: topicMatch now supports MQTT '+' wildcard */
+function topicMatch(pattern, topic){
+  if(pattern === topic) return true;
+  const pParts = pattern.split('/');
+  const tParts = topic.split('/');
+  for(let i=0;i<pParts.length;i++){
+    if(pParts[i]==='#') return true;               // multi-level
+    if(i>=tParts.length) return false;
+    if(pParts[i]!=='+' && pParts[i]!==tParts[i]) return false;   // '+' = single level
+  }
+  return pParts.length === tParts.length;
+}
+
 function pub(t,d){if(!mqttClient||!mqttOK){setTimeout(()=>{if(mqttOK)pub(t,d)},350);return}try{mqttClient.publish(t,JSON.stringify(d),{qos:0})}catch(e){}}
 function sub(t,h){mqttHandlers[t]=h;if(!mqttClient||!mqttOK)return;try{mqttClient.subscribe(t,{qos:0},()=>{})}catch(e){}}
 function hostBc(d){if(G.roomCode)pub(`vba/${G.roomCode}/bc`,d)}
@@ -1290,10 +1290,9 @@ function openLobby(){
   qi.onerror=()=>{qr.style.display='none'};
   qr.appendChild(qi);
 
-  // ✅ FIX: Host enters as player with balanced team assignment
   G.players={};
   G.myName='Host';
-  G.myTeam='blue'; // host starts blue, will be balanced when others join
+  G.myTeam='blue';
   G.players[G.myId]={id:G.myId,name:'Host',team:'blue',isHost:true,avatar:G.myAvatar};
   G.usedAvatars=new Set([G.myAvatar]);
   renderPlayerList();updateStartBtn();
@@ -1310,7 +1309,6 @@ function openLobby(){
 }
 function setConn(t,c){const e=$('connStatus');if(e){e.textContent=t;e.className='conn-status'+(c?' '+c:'')}}
 
-// ✅ FIX: balanced team assignment
 function assignTeam(){
   const max=G.config.teamSize;
   let blue=0,red=0;
@@ -1319,7 +1317,6 @@ function assignTeam(){
     else if(G.players[id].team==='red')red++;
   }
   if(blue>=max&&red>=max)return null;
-  // prefer smaller team; if tied, prefer blue
   if(blue<=red&&blue<max)return 'blue';
   if(red<max)return 'red';
   if(blue<max)return 'blue';
@@ -1463,7 +1460,6 @@ function buildTeamOrder(){
   }
 }
 
-/* ═══ HOST START GAME ═══ */
 function hostStartGame(){
   iA();
   const players=[];
@@ -1539,7 +1535,6 @@ function onClientBC(d){
     if(d.ended&&!G.battle.ended)G.battle.ended=true;
     updateHPUI();updateSkillUI();updatePowerUI();
   }else if(d.type==='bomb'){
-    // ✅ FIX: skip own bomb (already spawned optimistically)
     if(d.byId!==G.myId){
       spawnBomb(d.from,d.byId,d.damage,d.isUlt,d.blocked,d.targetId,d.kind);
     }
@@ -1548,7 +1543,6 @@ function onClientBC(d){
       G.hitFlash[t]=0.3;
     }
   }else if(d.type==='skillfx'){
-    // ✅ FIX: skip own skillfx (already applied optimistically)
     if(d.playerId!==G.myId)applySkillEffect(d.team,d.skillType);
   }else if(d.type==='end'){
     if(!G.resultShown)showResult(d.result);
@@ -1590,7 +1584,6 @@ function loop(ts){
   G.loopId=requestAnimationFrame(loop);
 }
 
-/* ═══ QUESTIONS ═══ */
 function getPool(){return POOLS[G.config.gradeId]||POOLS.all}
 
 function nextQuestion(){
@@ -1659,7 +1652,6 @@ function answerQuestion(idx){
   setTimeout(()=>{if(G.battle.running&&!G.battle.ended)nextQuestion()},isCorrect?900:1400);
 }
 
-/* ═══ ✅ FIXED: HOST & CLIENT symmetric power ═══ */
 function onCorrectAnswer(speed){
   G.myCombo++;
   if(G.myCombo>G.myBestCombo)G.myBestCombo=G.myCombo;
@@ -1671,14 +1663,10 @@ function onCorrectAnswer(speed){
   const tgt=pickEnemyTarget(G.myTeam);
 
   if(G.isHost){
-    // Host: single authority path — applyBomb does damage + spawn visual + broadcast
-    // (no separate fireProjectile to avoid double-spawn)
     applyBomb(G.myId,speed,tgt,'bomb');
-    // ✅ FIX: host gets combo shield/skill same as remote players
     if(G.myCombo%3===0)grantShield(G.myTeam);
     if(G.myCombo%5===0)grantSkill(G.myId,pick(SKILL_KEYS));
   }else{
-    // Client: optimistic visual, ask host for damage
     fireProjectile(G.myId,{speed,targetId:tgt});
     pub(`vba/${G.roomCode}/p/${G.myId}/answer`,{correct:true,speed,targetId:tgt});
   }
@@ -1720,7 +1708,6 @@ function useUlt(){
   else pub(`vba/${G.roomCode}/p/${G.myId}/ult`,{targetId:tgt});
 }
 
-/* ═══ FEATURE 1: PROJECTILES ═══ */
 function fireProjectile(byId,opts){
   const p=G.players[byId];if(!p)return;
   const from=p.team;
@@ -1732,8 +1719,6 @@ function fireProjectile(byId,opts){
   spawnBomb(from,byId,0,false,false,targetId,opts.kind||'bomb');
 }
 
-/* ═══ FEATURE 2: SELF DESTRUCT ═══ */
-function checkSelfDestruct(byId){return (G.wrongStreak[byId]||0)>=3}
 function doSelfDestruct(byId){
   const p=G.players[byId];if(!p)return;
   G.wrongStreak[byId]=0;
@@ -1759,7 +1744,6 @@ function flashSDLocal(){
   setTimeout(()=>el.classList.remove('on'),650);
 }
 
-/* ═══ DAMAGE LOGIC (host authoritative) ═══ */
 function applyBomb(byId,speed,targetId,kind){
   const p=G.players[byId];
   if(!p||!G.battle.running||G.battle.ended)return;
@@ -1774,7 +1758,6 @@ function applyBomb(byId,speed,targetId,kind){
   if(G.effects[snipeKey]>0){dmg*=3;G.effects[snipeKey]=0;snipeUsed=true;}
   else if(G.effects[dblKey]>0){dmg*=2;G.effects[dblKey]=Math.max(0,G.effects[dblKey]-1);}
 
-  // shield check (snipe bypasses)
   if(!snipeUsed){
     if(target==='red'&&G.battle.redShield>0){G.battle.redShield--;blocked=true;}
     else if(target==='blue'&&G.battle.blueShield>0){G.battle.blueShield--;blocked=true;}
@@ -1816,7 +1799,6 @@ function onRemoteAnswer(pid,d){
   if(d.correct){
     applyBomb(pid,d.speed||0.5,d.targetId,'bomb');
     G.botCombo[pid]=(G.botCombo[pid]||0)+1;
-    // ✅ FIX: only grant shield on combo 3 (skill comes via client's own skill request)
     if(G.botCombo[pid]%3===0)grantShield(p.team);
     G.wrongStreak[pid]=0;
   }else{
@@ -1846,7 +1828,6 @@ function grantShield(team){
   sShield();showAnnouncer('🛡️ SHIELD UP!');updateHPUI();
 }
 
-/* ═══ SKILL DROPS ═══ */
 function startSkillDrops(){
   if(G.skillDropTimer)clearInterval(G.skillDropTimer);
   G.skillDropTimer=setInterval(()=>{
@@ -1861,7 +1842,6 @@ function startSkillDrops(){
   },20000);
 }
 
-/* ═══ BOTS ═══ */
 function startBots(){
   const conf={easy:{min:6200,max:9200,acc:0.50},medium:{min:4400,max:6800,acc:0.70},hard:{min:3200,max:5000,acc:0.88}}[G.config.botDiff];
   for(const id in G.players){if(G.players[id].isBot)scheduleBot(id,conf);}
@@ -1903,7 +1883,6 @@ function scheduleBot(id,conf){
   },delay);
 }
 
-/* ═══ BOMB ANIMATION ═══ */
 function spawnBomb(from,byId,damage,isUlt,blocked,targetId,kind){
   const isBlue=from==='blue';
   const srcList=G.teamOrder[from]||[];
@@ -1950,7 +1929,6 @@ function addExplosion(x,y,big,kind){
 function updateExplosions(dt){for(let i=G.explosions.length-1;i>=0;i--){const e=G.explosions[i];e.t+=dt;if(e.t>=e.dur)G.explosions.splice(i,1)}}
 function updateParticles(dt){for(let i=G.particles.length-1;i>=0;i--){const p=G.particles[i];p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=380*dt;if(p.t>=p.dur)G.particles.splice(i,1)}}
 
-/* ═══ CANVAS ═══ */
 let cvW=0,cvH=0,cvDpr=1;
 function resizeCanvas(){
   const c=$('battleCanvas');if(!c)return;
@@ -2157,7 +2135,6 @@ function drawCharacter(ctx,x,y,r,color,isMe,facing,anim,id){
   }
 }
 
-/* ═══ UI ═══ */
 function updateHPUI(){
   const b=G.battle;
   $('blueHpFill').style.width=clamp(b.blueHp/b.blueMax,0,1)*100+'%';
@@ -2219,7 +2196,6 @@ function showFloatText(x,y,text,color){
   setTimeout(()=>el.remove(),1000);
 }
 
-/* ═══ END BATTLE ═══ */
 function endBattle(winner){
   if(G.battle.ended)return;
   G.battle.ended=true;G.battle.running=false;
@@ -2288,7 +2264,6 @@ function showResult(result){
   go('scResult');
 }
 
-/* ═══ COUNTDOWN ═══ */
 function showCountdown(subText,cb){
   const ov=$('countdownOverlay');ov.classList.add('on');
   $('cdTxt').textContent=subText;
@@ -2311,7 +2286,6 @@ setInterval(()=>{
   updateHPUI();updateTimerUI();updatePowerUI();
 },120);
 
-/* ═══ INIT ═══ */
 renderGradeChips();
 {
   const p=new URLSearchParams(location.search);const c=p.get('code');
@@ -2327,7 +2301,7 @@ document.addEventListener('keydown',e=>{
   if(e.key===' '||e.key==='Enter'){e.preventDefault();if(!$('ultBtn').disabled)useUlt();}
 });
 
-console.log('💣 Vocab Bomb Arena v2.1 · '+POOLS.all.length+' words · '+AVATAR_EMOJIS.length+' avatars · Ready');
+console.log('💣 Vocab Bomb Arena v2.2 · '+POOLS.all.length+' words · '+AVATAR_EMOJIS.length+' avatars · Ready');
 </script>
 </body>
 </html>
