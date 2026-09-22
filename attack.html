@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>💣 Vocab Bomb Arena v3.2</title>
+<title>💣 Vocab Bomb Arena v3.3</title>
 <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;700;800;900&family=Creepster&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -168,6 +168,32 @@ label{display:block;color:#c4b5fd;font-size:.85rem;margin-bottom:4px;font-weight
 .dead-sub b{color:#fbbf24;font-size:1.05rem}
 .dead-count{font-family:monospace;font-size:1.8rem;font-weight:900;color:#fbbf24;margin:8px 0;text-shadow:0 0 14px rgba(251,191,36,.7)}
 .dead-note{font-size:.72rem;color:#7c6fa8;margin-top:8px;font-weight:800}
+/* ═══ v3.3: SPECTATOR MODE ═══ */
+body.spectating .battle-bottom{display:none!important}
+body.spectating .dead-overlay{display:none!important}
+body.spectating .freeze-overlay{display:none!important}
+.spectator-banner{position:absolute;top:0;left:0;right:0;background:linear-gradient(90deg,rgba(168,85,247,.92),rgba(220,38,38,.92));color:#fff;font-weight:900;font-size:.82rem;padding:9px 12px;text-align:center;z-index:60;letter-spacing:1px;box-shadow:0 4px 20px rgba(0,0,0,.55);display:none}
+.spectator-banner.on{display:block;animation:specPulse 2s infinite}
+@keyframes specPulse{0%,100%{opacity:1}50%{opacity:.72}}
+.spectator-info{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(10,6,18,.85);border:1.5px solid rgba(168,85,247,.5);border-radius:10px;padding:8px 14px;font-size:.78rem;font-weight:800;color:#c4b5fd;text-align:center;z-index:55;display:none;max-width:88vw}
+.spectator-banner.on ~ .spectator-info{display:block}
+/* ═══ v3.3: REVIVE MODAL ═══ */
+.revive-modal{position:fixed;inset:0;background:rgba(10,6,18,.92);z-index:9996;display:none;align-items:center;justify-content:center;padding:20px}
+.revive-modal.on{display:flex}
+.revive-box{background:linear-gradient(180deg,rgba(45,27,78,.95),rgba(20,10,40,.98));border:2px solid rgba(34,197,94,.6);border-radius:16px;padding:18px;max-width:400px;width:100%;box-shadow:0 0 50px rgba(34,197,94,.35);max-height:88vh;overflow-y:auto}
+.revive-title{font-family:'Creepster',cursive;font-size:1.5rem;color:#86efac;text-align:center;letter-spacing:1px;margin-bottom:4px;text-shadow:0 0 18px rgba(34,197,94,.75)}
+.revive-sub{text-align:center;color:#c4b5fd;font-size:.78rem;font-weight:800;margin-bottom:14px}
+.revive-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.revive-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(10,6,18,.7);border:1.5px solid rgba(168,85,247,.4);border-radius:10px;cursor:pointer;transition:.15s;font-family:inherit;text-align:left;color:#f5e6d3;width:100%}
+.revive-item:hover,.revive-item:active{background:rgba(34,197,94,.15);border-color:#86efac;transform:scale(1.02)}
+.revive-item .ri-av{font-size:1.8rem;flex-shrink:0;line-height:1;filter:grayscale(.4)}
+.revive-item .ri-info{flex:1;min-width:0}
+.revive-item .ri-name{font-size:.95rem;font-weight:900;color:#fb923c;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.revive-item .ri-deaths{font-size:.72rem;color:#c4b5fd;font-weight:800;margin-top:3px;line-height:1.2}
+.revive-item .ri-deaths b{color:#f87171}
+.revive-item .ri-badge{font-size:1.1rem;flex-shrink:0}
+.revive-empty{text-align:center;color:#7c6fa8;font-weight:800;padding:20px;font-size:.9rem}
+/* RESULT */
 .result-hero{text-align:center;padding:20px 10px}
 .result-title{font-family:'Creepster',cursive;font-size:clamp(2rem,7vw,3.4rem);letter-spacing:3px;line-height:1;margin-bottom:6px}
 .result-title.win{color:#fbbf24;text-shadow:0 0 50px rgba(251,191,36,.9)}
@@ -207,6 +233,8 @@ label{display:block;color:#c4b5fd;font-size:.85rem;margin-bottom:4px;font-weight
 .round-hud{font-size:.62rem;padding:2px 8px}
 .round-hud .rh-score{font-size:.82rem}
 .alive-tag{font-size:.58rem}
+.spectator-banner{font-size:.72rem;padding:8px 10px}
+.revive-title{font-size:1.3rem}
 }
 @media(max-height:600px){
 .battle-canvas-wrap{min-height:100px}
@@ -222,7 +250,7 @@ label{display:block;color:#c4b5fd;font-size:.85rem;margin-bottom:4px;font-weight
 <div class="screen active" id="scMenu">
   <div class="wrap menu-wrap">
     <h1>💣 VOCAB BOMB 💣</h1>
-    <p class="tagline">Squad Survival · Quiz Battle Arena v3.2</p>
+    <p class="tagline">Squad Survival · Boss Raid · v3.3</p>
     <div class="menu-btns">
       <button class="btn btn-b" onclick="goSetup('bot')">
         <span class="big-ico">🤖</span>
@@ -254,12 +282,13 @@ label{display:block;color:#c4b5fd;font-size:.85rem;margin-bottom:4px;font-weight
     </div>
     <div class="card"><h3>📚 ระดับคำศัพท์</h3><div class="chips" id="gradeChips"></div></div>
     <div class="card" style="background:linear-gradient(180deg,rgba(220,38,38,.12),rgba(10,6,18,.9));border-color:rgba(220,38,38,.4)">
-      <h3 style="color:#f87171">⚔️ กติกา Squad Survival + Boss</h3>
-      <p style="font-size:.78rem;color:#c4b5fd;font-weight:800;line-height:1.5">
+      <h3 style="color:#f87171">⚔️ กติกา Squad Survival + Boss Raid</h3>
+      <p style="font-size:.78rem;color:#c4b5fd;font-weight:800;line-height:1.55">
         ⏱️ ไม่จำกัดเวลา — แข่งจนทีมใดทีมหนึ่ง<b style="color:#f87171">ตายพร้อมกันทั้งทีม</b><br>
         💀 ตอบผิด 3 ครั้งติด → ระเบิดตัวเอง 15 dmg<br>
         🕊️ ตายครั้ง 1/2/3 → ฟื้นอัตโนมัติ 10/30/60 วิ · ครั้งที่ 4+ ต้องรอเพื่อนชุบ<br>
-        🐉 เมื่อทีมใดตายหมดพร้อมกัน → <b style="color:#a855f7">BOSS ปรากฏ</b> ทั้ง 2 ทีมร่วมมือปราบ!
+        🎯 กดสกิล Revive → <b style="color:#86efac">เลือกเพื่อนที่จะชุบ</b> ได้เอง<br>
+        🐉 ทีมที่แพ้ PvP = Spectator · ทีมชนะต่อสู้บอสคนเดียว!
       </p>
     </div>
     <div class="card" id="teamSizeCard">
@@ -387,6 +416,9 @@ label{display:block;color:#c4b5fd;font-size:.85rem;margin-bottom:4px;font-weight
         <div class="dead-note" id="deadNote"></div>
       </div>
     </div>
+    <!-- v3.3: Spectator -->
+    <div class="spectator-banner" id="spectatorBanner">👁️ SPECTATOR MODE — ดูเพื่อนร่วมทีมกำลังต่อสู้</div>
+    <div class="spectator-info" id="spectatorInfo">ทีมของคุณแพ้ PvP · ไม่สามารถเล่นได้ · กำลังรับชมทีมที่ชนะสู้บอส 🐉</div>
   </div>
 
   <div class="battle-bottom">
@@ -425,6 +457,16 @@ label{display:block;color:#c4b5fd;font-size:.85rem;margin-bottom:4px;font-weight
     <div style="display:flex;gap:6px;justify-content:center;margin-top:16px;flex-wrap:wrap">
       <button class="btn-sm btn-p" onclick="location.reload()">🔄 เล่นอีก</button>
     </div>
+  </div>
+</div>
+
+<!-- ══ v3.3: REVIVE MODAL ══ -->
+<div class="revive-modal" id="reviveModal">
+  <div class="revive-box">
+    <div class="revive-title">🕊️ เลือกเพื่อนที่จะชุบ</div>
+    <div class="revive-sub">เลือก 1 คนจากรายชื่อด้านล่าง</div>
+    <div class="revive-list" id="reviveList"></div>
+    <button class="btn-sm btn-s" onclick="closeReviveModal()" style="width:100%;justify-content:center">❌ ยกเลิก</button>
   </div>
 </div>
 
@@ -1103,10 +1145,11 @@ const SKILLS={
   power:{icon:'⚡',name:'Power Shot',desc:'กระสุน 3 นัด ดาเมจ x2'},
   heal:{icon:'💚',name:'Heal',desc:'ฟื้น HP ทีมที่ยังรอด +15/คน'},
   snipe:{icon:'🎯',name:'Snipe',desc:'กระสุนนัดถัดไป x3 ทะลุ shield'},
-  revive:{icon:'🕊️',name:'Revive',desc:'ชุบเพื่อนที่ตาย กลับมา 50 HP'}
+  revive:{icon:'🕊️',name:'Revive',desc:'เลือกเพื่อนที่ตาย 1 คน ชุบ 50 HP'}
 };
 const SKILL_KEYS=Object.keys(SKILLS);
 const MAX_SKILL_SLOTS=2;
+const AUTO_REVIVE_DELAYS=[10,30,60];
 
 const $=id=>document.getElementById(id);
 const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -1151,7 +1194,13 @@ const G={
   myName:'Player',myTeam:'blue',myAvatar:DEFAULT_AVATAR,
   players:{},teamOrder:{blue:[],red:[]},
   usedAvatars:new Set(),
-  battle:{blueHp:0,redHp:0,blueMax:1,redMax:1,blueShield:0,redShield:0,time:0,running:false,ended:false},
+  battle:{blueShield:0,redShield:0,time:0,running:false,ended:false},
+  /* v3.3: match state */
+  match:{
+    winnerTeam:null,      // team that survived PvP → fights boss
+    loserTeam:null,       // team that was wiped → spectator
+    isSpectator:false     // local player's flag
+  },
   myCombo:0,myBestCombo:0,myCorrect:0,myWrong:0,myUlt:0,myUltsUsed:0,mySelfBombs:0,
   currentQ:null,qStartTs:0,
   bombs:[],explosions:[],particles:[],
@@ -1163,8 +1212,6 @@ const G={
   effects:{blueFreeze:0,redFreeze:0,blueDouble:0,redDouble:0,blueSnipe:0,redSnipe:0},
   shotCount:{blue:0,red:0},
   skillDropTimer:null,
-  bossTimer:null,
-  /* ═══ v3.2: BOSS STATE ═══ */
   boss:{
     active:false,hp:0,maxHp:0,
     nextAttackAt:0,attackInterval:2500,
@@ -1173,10 +1220,8 @@ const G={
     hitFlash:0,spawnAt:0
   },
   bossKilled:false,
-  endedReason:null // 'wipe' | 'boss' | 'draw'
+  endedReason:null
 };
-
-const AUTO_REVIVE_DELAYS=[10,30,60]; // seconds per death number (1-indexed → deaths[1]=10, deaths[2]=30, deaths[3]=60)
 
 function randomAvatar(excludeSet){
   const ex=excludeSet||new Set();
@@ -1214,25 +1259,35 @@ function consumeSkill(playerId,type){
   updateSkillUI();
   return true;
 }
-function useSkill(playerId,type){
+function useSkill(playerId,type,targetId){
   if(!G.battle.running||G.battle.ended)return;
   if(playerId===G.myId&&!isMyAlive())return;
+  if(playerId===G.myId&&G.match.isSpectator)return;
   const p=G.players[playerId];if(!p)return;
   if(playerId===G.myId){
     const slots=ensureSkills(playerId);
     if(!slots.find(s=>s.type===type))return;
   }else if(!G.isHost)return;
+
+  /* ═══ v3.3: Revive opens picker ═══ */
+  if(type==='revive'&&playerId===G.myId&&!targetId){
+    const dead=getDeadPlayers(p.team);
+    if(!dead.length){toast('⚠️ ไม่มีเพื่อนที่ตาย',1800);return;}
+    openReviveModal();
+    return;
+  }
+
   if(G.isHost){
     if(!consumeSkill(playerId,type))return;
-    applySkillEffect(p.team,type,playerId);
-    hostBc({type:'skillfx',playerId,skillType:type,team:p.team});
+    applySkillEffect(p.team,type,playerId,targetId);
+    hostBc({type:'skillfx',playerId,skillType:type,team:p.team,targetId:targetId||null});
   }else{
     consumeSkill(playerId,type);
-    applySkillEffect(p.team,type,playerId);
-    pub(`vba/${G.roomCode}/p/${G.myId}/skill`,{type});
+    applySkillEffect(p.team,type,playerId,targetId);
+    pub(`vba/${G.roomCode}/p/${G.myId}/skill`,{type,targetId:targetId||null});
   }
 }
-function applySkillEffect(team,type,casterId){
+function applySkillEffect(team,type,casterId,targetId){
   const enemy=team==='blue'?'red':'blue';
   switch(type){
     case 'shield':
@@ -1254,8 +1309,8 @@ function applySkillEffect(team,type,casterId){
     case 'heal':{
       const add=15;let cnt=0;
       for(const id in G.players){
-        const p=G.players[id];
-        if(p.team===team&&p.alive){p.hp=Math.min(p.maxHp,p.hp+add);cnt++;}
+        const pp=G.players[id];
+        if(pp.team===team&&pp.alive){pp.hp=Math.min(pp.maxHp,pp.hp+add);cnt++;}
       }
       showAnnouncer(`💚 ${team==='blue'?'BLUE':'RED'} +${add} HP x${cnt}`);
       break;}
@@ -1264,14 +1319,21 @@ function applySkillEffect(team,type,casterId){
       if(team==='blue')G.effects.blueSnipe=1;else G.effects.redSnipe=1;
       if(!G.boss.active)showAnnouncer(`🎯 ${team==='blue'?'BLUE':'RED'} SNIPE!`);
       break;
+    /* ═══ v3.3: Revive with specific target ═══ */
     case 'revive':{
       const dead=getDeadPlayers(team);
       if(!dead.length){showAnnouncer('⚠️ ไม่มีเพื่อนที่ตาย');return;}
-      // prefer player who died more times (harder to revive)
-      dead.sort((a,b)=>(b.deaths||0)-(a.deaths||0));
-      const tgt=dead[0];
+      let tgt=null;
+      if(targetId){
+        tgt=dead.find(p=>p.id===targetId);
+      }
+      if(!tgt){
+        // fallback: pick player with most deaths
+        tgt=dead.slice().sort((a,b)=>(b.deaths||0)-(a.deaths||0))[0];
+      }
       doRevive(tgt.id,50);
       sRevive();
+      showAnnouncer(`🕊️ ${tgt.name} REVIVED!`);
       if(G.isHost)hostBc({type:'revive',playerId:tgt.id,hp:50});
       break;}
   }
@@ -1290,6 +1352,49 @@ function updateSkillUI(){
     }else html+=`<button class="skill-slot empty" disabled>·</button>`;
   }
   wrap.innerHTML=html;
+}
+/* ═══ v3.3: REVIVE MODAL ═══ */
+function openReviveModal(){
+  const me=G.players[G.myId];if(!me)return;
+  const dead=getDeadPlayers(me.team);
+  const wrap=$('reviveList');
+  if(!dead.length){
+    wrap.innerHTML='<div class="revive-empty">⚠️ ไม่มีเพื่อนที่ตาย</div>';
+  }else{
+    dead.sort((a,b)=>(b.deaths||0)-(a.deaths||0));
+    wrap.innerHTML=dead.map(p=>{
+      const dN=p.deaths||0;
+      const canAuto=(dN<=3);
+      const isWaiting=(p.reviveAt&&p.reviveAt>Date.now());
+      const remain=isWaiting?Math.ceil((p.reviveAt-Date.now())/1000):0;
+      let sub='';
+      if(!canAuto){
+        sub=`<b>❌ ตายสนิท</b> — ต้องรอเพื่อนชุบ`;
+      }else if(isWaiting){
+        sub=`⏱️ Auto-revive ในอีก <b>${remain} วิ</b>`;
+      }else{
+        sub=`✅ พร้อมชุบ`;
+      }
+      return `<button class="revive-item" onclick="selectReviveTarget('${p.id}')">
+        <span class="ri-av">${p.avatar||DEFAULT_AVATAR}</span>
+        <div class="ri-info">
+          <div class="ri-name">${esc(p.name)}</div>
+          <div class="ri-deaths">ตายครั้งที่ ${dN} · ${sub}</div>
+        </div>
+        <span class="ri-badge">🕊️</span>
+      </button>`;
+    }).join('');
+  }
+  $('reviveModal').classList.add('on');
+}
+function closeReviveModal(){
+  $('reviveModal').classList.remove('on');
+}
+function selectReviveTarget(targetId){
+  closeReviveModal();
+  if(!targetId)return;
+  // consume the revive skill and apply to the selected target
+  useSkill(G.myId,'revive',targetId);
 }
 
 /* ═══ SETUP ═══ */
@@ -1375,7 +1480,7 @@ function openLobby(){
   qi.onerror=()=>{qr.style.display='none'};
   qr.appendChild(qi);
   G.players={};G.myName='Host';G.myTeam='blue';
-  G.players[G.myId]={id:G.myId,name:'Host',team:'blue',isHost:true,avatar:G.myAvatar,hp:100,maxHp:100,alive:true,deaths:0,reviveAt:0};
+  G.players[G.myId]=makePlayer(G.myId,'Host','blue',G.myAvatar,false,true);
   G.usedAvatars=new Set([G.myAvatar]);
   renderPlayerList();updateStartBtn();
   go('scLobby');
@@ -1569,6 +1674,8 @@ function hostBroadcastState(){
     running:G.battle.running,ended:G.battle.ended,
     effects:G.effects,skills:G.skills,avatars,playerHp,
     wrongStreak:G.wrongStreak,
+    winnerTeam:G.match.winnerTeam,
+    loserTeam:G.match.loserTeam,
     boss:{active:G.boss.active,hp:G.boss.hp,maxHp:G.boss.maxHp,dmg:G.boss.dmg}
   });
 }
@@ -1608,6 +1715,9 @@ function onClientBC(d){
         }
       }
     }
+    // v3.3: winner/loser teams
+    if(d.winnerTeam){G.match.winnerTeam=d.winnerTeam;}
+    if(d.loserTeam){G.match.loserTeam=d.loserTeam;}
     if(d.boss){
       const wasActive=G.boss.active;
       G.boss.active=d.boss.active;
@@ -1618,6 +1728,8 @@ function onClientBC(d){
         const rt=$('bossTag');if(rt)rt.style.display='inline';
       }
     }
+    // v3.3: if my team is the loser, enter spectator
+    updateSpectatorState();
     updateHpAvatarsUI();
     if(d.ended&&!G.battle.ended)G.battle.ended=true;
     updateHPUI();updateSkillUI();updatePowerUI();updateRoundHudAlive();
@@ -1628,7 +1740,7 @@ function onClientBC(d){
       if(t)G.hitFlash[t]=0.3;
     }
   }else if(d.type==='skillfx'){
-    if(d.playerId!==G.myId)applySkillEffect(d.team,d.skillType,d.playerId);
+    if(d.playerId!==G.myId)applySkillEffect(d.team,d.skillType,d.playerId,d.targetId);
   }else if(d.type==='death'){
     const p=G.players[d.playerId];
     if(p){p.alive=false;p.hp=0;p.deaths=(p.deaths||0)+1;showAnnouncer(`💀 ${p.name} DOWN!`);}
@@ -1637,6 +1749,13 @@ function onClientBC(d){
     const p=G.players[d.playerId];
     if(p){p.alive=true;p.hp=d.hp||50;p.reviveAt=0;showAnnouncer(`🕊️ ${p.name} REVIVED!`);}
     updateHPUI();updateHpAvatarsUI();
+  }else if(d.type==='bossSpawn'){
+    // explicit boss spawn signal — sync winner/loser
+    if(d.winnerTeam)G.match.winnerTeam=d.winnerTeam;
+    if(d.loserTeam)G.match.loserTeam=d.loserTeam;
+    sBossSpawn();
+    const rt=$('bossTag');if(rt)rt.style.display='inline';
+    updateSpectatorState();
   }else if(d.type==='notify'){
     if(d.playerId===G.myId)toast(d.msg,2500);
   }else if(d.type==='end'){
@@ -1644,10 +1763,36 @@ function onClientBC(d){
   }
 }
 
+/* ═══ v3.3: SPECTATOR ═══ */
+function updateSpectatorState(){
+  const me=G.players[G.myId];
+  const isLoser=(G.match.loserTeam&&me&&me.team===G.match.loserTeam)||
+                (G.match.winnerTeam&&me&&me.team!==G.match.winnerTeam);
+  // Only treat as spectator when boss phase is active AND my team is loser
+  const shouldSpectate=G.boss.active&&isLoser;
+  if(shouldSpectate!==G.match.isSpectator){
+    G.match.isSpectator=shouldSpectate;
+    if(shouldSpectate)enterSpectatorMode();
+    else exitSpectatorMode();
+  }
+}
+function enterSpectatorMode(){
+  document.body.classList.add('spectating');
+  const b=$('spectatorBanner');if(b)b.classList.add('on');
+  // clear question UI
+  G.currentQ=null;
+  const q=$('qText');if(q)q.textContent='👁️ กำลังรับชม...';
+  const qa=$('qAnswers');if(qa)qa.innerHTML='';
+  toast('👁️ ทีมคุณแพ้ — เข้าโหมดดูการต่อสู้',2800);
+}
+function exitSpectatorMode(){
+  document.body.classList.remove('spectating');
+  const b=$('spectatorBanner');if(b)b.classList.remove('on');
+}
+
 /* ═══ BATTLE CORE ═══ */
 function startBattle(){
-  // v3.2: individual HP, not team-HP sum
-  G.battle={blueHp:0,redHp:0,blueMax:1,redMax:1,blueShield:0,redShield:0,time:0,running:false,ended:false};
+  G.battle={blueShield:0,redShield:0,time:0,running:false,ended:false};
   for(const id in G.players){
     const p=G.players[id];
     p.hp=100;p.maxHp=100;p.alive=true;p.deaths=0;p.reviveAt=0;
@@ -1661,6 +1806,8 @@ function startBattle(){
   G.boss={active:false,hp:0,maxHp:0,nextAttackAt:0,attackInterval:2500,dmg:{blue:0,red:0},cx:0,cy:0,radius:0,hitFlash:0,spawnAt:0};
   G.bossKilled=false;
   G.endedReason=null;
+  G.match={winnerTeam:null,loserTeam:null,isSpectator:false};
+  exitSpectatorMode();
   const rt=$('bossTag');if(rt)rt.style.display='none';
   updateHPUI();updateSkillUI();updatePowerUI();updateRoundHudAlive();
   go('scBattle');
@@ -1684,7 +1831,6 @@ function loop(ts){
         bossAttack();
       }
     }
-    // auto-revive check (host only)
     if(G.isHost)checkAutoRevives();
   }
   updateQuestionTimer(dt);updateBombs(dt);updateExplosions(dt);updateParticles(dt);
@@ -1703,52 +1849,34 @@ function getTeamHp(team){
   for(const id in G.players){const p=G.players[id];if(p.team===team&&p.alive)s+=Math.max(0,p.hp);}
   return s;
 }
-function getTeamMax(team){
-  let s=0;for(const id in G.players)if(G.players[id].team===team)s+=100;return s;
-}
-function getAliveCount(team){
-  let n=0;for(const id in G.players){const p=G.players[id];if(p.team===team&&p.alive)n++;}
-  return n;
-}
-function getTotalCount(team){
-  let n=0;for(const id in G.players)if(G.players[id].team===team)n++;return n;
-}
-function getAlivePlayers(team){
-  const out=[];for(const id in G.players){const p=G.players[id];if(p.team===team&&p.alive)out.push(p);}return out;
-}
-function getDeadPlayers(team){
-  const out=[];for(const id in G.players){const p=G.players[id];if(p.team===team&&!p.alive)out.push(p);}return out;
-}
-function isMyAlive(){const p=G.players[G.myId];return !!(p&&p.alive);}
+function getTeamMax(team){let s=0;for(const id in G.players)if(G.players[id].team===team)s+=100;return s}
+function getAliveCount(team){let n=0;for(const id in G.players){const p=G.players[id];if(p.team===team&&p.alive)n++}return n}
+function getTotalCount(team){let n=0;for(const id in G.players)if(G.players[id].team===team)n++;return n}
+function getAlivePlayers(team){const out=[];for(const id in G.players){const p=G.players[id];if(p.team===team&&p.alive)out.push(p)}return out}
+function getDeadPlayers(team){const out=[];for(const id in G.players){const p=G.players[id];if(p.team===team&&!p.alive)out.push(p)}return out}
+function isMyAlive(){const p=G.players[G.myId];return !!(p&&p.alive)}
 function checkTeamWipe(){
   const b=getAliveCount('blue'),r=getAliveCount('red');
   if(b===0&&r>0)return 'blue';
   if(r===0&&b>0)return 'red';
-  if(b===0&&r===0)return 'both';
   return null;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   v3.2: DEATH / AUTO-REVIVE / BOSS
-   ═══════════════════════════════════════════════════════════════ */
+/* ═══ DEATH / AUTO-REVIVE ═══ */
 function killPlayer(id){
   const p=G.players[id];if(!p||!p.alive)return;
   p.alive=false;p.hp=0;
   p.deaths=(p.deaths||0)+1;
   const dN=p.deaths;
-  // auto-revive timer
   if(dN<=3){
     const delay=AUTO_REVIVE_DELAYS[dN-1];
     p.reviveAt=Date.now()+delay*1000;
   }else{
-    p.reviveAt=0; // no auto-revive — must wait for teammate
+    p.reviveAt=0;
   }
   showAnnouncer(`💀 ${p.name} DOWN!`);
-  if(id===G.myId){
-    G.shake=1;
-  }
+  if(id===G.myId)G.shake=1;
   if(G.isHost){
-    // grant revive skill to random living teammate
     const alive=getAlivePlayers(p.team);
     if(alive.length){
       const helper=pick(alive);
@@ -1759,20 +1887,15 @@ function killPlayer(id){
     hostBc({type:'death',playerId:id,deaths:dN,reviveAt:p.reviveAt});
   }
   updateHPUI();updateHpAvatarsUI();updateRoundHudAlive();
-  // check team wipe → trigger boss
+  // team wipe → boss phase
   if(G.isHost&&!G.boss.active&&!G.battle.ended){
     const wipe=checkTeamWipe();
-    if(wipe==='blue'||wipe==='red')spawnBoss();
-    else if(wipe==='both'){
-      // both wiped at same time — boss appears too
-      spawnBoss();
-    }
+    if(wipe==='blue'||wipe==='red')triggerBossPhase(wipe);
   }
 }
 function doRevive(id,hp){
   const p=G.players[id];if(!p||p.alive)return false;
   p.alive=true;p.hp=Math.min(p.maxHp,hp||50);p.reviveAt=0;
-  showAnnouncer(`🕊️ ${p.name} REVIVED!`);
   updateHPUI();updateHpAvatarsUI();updateRoundHudAlive();
   return true;
 }
@@ -1781,6 +1904,8 @@ function checkAutoRevives(){
   for(const id in G.players){
     const p=G.players[id];
     if(!p.alive&&p.reviveAt>0&&now>=p.reviveAt){
+      // v3.3: don't auto-revive if boss active and this player is on loser team
+      if(G.boss.active&&G.match.loserTeam&&p.team===G.match.loserTeam)continue;
       doRevive(id,50);
       hostBc({type:'revive',playerId:id,hp:50});
       sRevive();
@@ -1788,9 +1913,27 @@ function checkAutoRevives(){
   }
 }
 
-/* ═══ v3.2: BOSS ═══ */
-function spawnBoss(){
-  if(G.boss.active)return;
+/* ═══════════════════════════════════════════════════════════════
+   v3.3: BOSS PHASE — ONLY WINNER TEAM FIGHTS
+   ═══════════════════════════════════════════════════════════════ */
+function triggerBossPhase(wipedTeam){
+  const winnerTeam=wipedTeam==='blue'?'red':'blue';
+  G.match.winnerTeam=winnerTeam;
+  G.match.loserTeam=wipedTeam;
+  G.endedReason='boss';
+
+  // Revive ONLY winner team to full HP
+  for(const id in G.players){
+    const p=G.players[id];
+    if(p.team===winnerTeam){
+      p.alive=true;p.hp=p.maxHp;p.reviveAt=0;
+    } else {
+      // loser stays dead — will be spectator
+      p.alive=false;p.hp=0;p.reviveAt=0;
+    }
+  }
+
+  // spawn boss
   const teamSize=G.config.teamSize||1;
   const hp=400+150*teamSize;
   G.boss={
@@ -1801,36 +1944,30 @@ function spawnBoss(){
     cx:0,cy:0,radius:0,
     hitFlash:0,spawnAt:performance.now()
   };
-  G.endedReason='boss';
-  // revive ALL players to full HP — fresh start for boss fight
-  for(const id in G.players){
-    const p=G.players[id];
-    p.alive=true;p.hp=p.maxHp;p.reviveAt=0;
-  }
   sBossSpawn();
   showAnnouncer('🐉 BOSS APPEARS!');
   const rt=$('bossTag');if(rt)rt.style.display='inline';
+
   if(G.isHost){
-    hostBc({type:'bossSpawn',hp,teamSize});
-    hostBc({type:'notify',playerId:'all',msg:'🐉 BOSS ปรากฏตัว! ร่วมมือกันปราบ!'});
+    hostBc({type:'bossSpawn',hp,teamSize,winnerTeam,loserTeam:wipedTeam});
+    hostBc({type:'notify',playerId:'all',msg:`🐉 BOSS ปรากฏ! ทีม ${winnerTeam==='blue'?'น้ำเงิน':'แดง'} ต่อสู้`});
   }
+  // Local spectator state
+  updateSpectatorState();
   updateHPUI();updateHpAvatarsUI();updateRoundHudAlive();
 }
 function bossAttack(){
   if(!G.boss.active||G.battle.ended)return;
-  const allAlive=[];
-  for(const id in G.players){
-    const p=G.players[id];
-    if(p.alive)allAlive.push(p);
-  }
-  if(!allAlive.length)return;
-  const tgt=pick(allAlive);
+  // target only WINNER team
+  const targetTeam=G.match.winnerTeam;
+  if(!targetTeam)return;
+  const alive=getAlivePlayers(targetTeam);
+  if(!alive.length){bossDefeated();return;} // boss killed all winners — treat as boss win
+  const tgt=pick(alive);
   const dmg=12;
-  // spawn bomb from boss position
   spawnBomb('boss','boss',dmg,false,false,tgt.id,'boss');
   if(G.isHost){
     hostBc({type:'bomb',from:'boss',byId:'boss',damage:dmg,isUlt:false,blocked:false,targetId:tgt.id,kind:'boss'});
-    // apply damage immediately
     tgt.hp=Math.max(0,tgt.hp-dmg);
     if(tgt.hp<=0)killPlayer(tgt.id);
     updateHPUI();
@@ -1838,6 +1975,8 @@ function bossAttack(){
 }
 function damageBoss(fromTeam,amount,casterId){
   if(!G.boss.active||G.boss.hp<=0)return;
+  // Only winner team can damage boss
+  if(G.match.winnerTeam&&fromTeam!==G.match.winnerTeam)return;
   G.boss.hp=Math.max(0,G.boss.hp-amount);
   G.boss.hitFlash=1;
   G.boss.dmg[fromTeam]=(G.boss.dmg[fromTeam]||0)+amount;
@@ -1853,8 +1992,8 @@ function bossDefeated(){
   sWin();
   showAnnouncer('🏆 BOSS DEFEATED!');
   if(G.isHost){
-    const winner=G.boss.dmg.blue>G.boss.dmg.red?'blue':
-                 (G.boss.dmg.red>G.boss.dmg.blue?'red':'draw');
+    // winner = the survivor team (they fought boss)
+    const winner=G.match.winnerTeam||'blue';
     setTimeout(()=>endBattle(winner,true),1200);
   }
 }
@@ -1863,6 +2002,13 @@ function bossDefeated(){
 function getPool(){return POOLS[G.config.gradeId]||POOLS.all}
 function nextQuestion(){
   if(!G.battle.running||G.battle.ended)return;
+  // v3.3: skip if spectator
+  if(G.match.isSpectator){
+    G.currentQ=null;
+    const q=$('qText');if(q)q.textContent='👁️ กำลังรับชม...';
+    const qa=$('qAnswers');if(qa)qa.innerHTML='';
+    return;
+  }
   const pool=getPool();
   if(pool.length<4){toast('⚠️ คำศัพท์ไม่พอ');return}
   const correct=pool[Math.floor(Math.random()*pool.length)];
@@ -1894,6 +2040,7 @@ function renderQuestion(){
 }
 function isMyTeamFrozen(){return (G.myTeam==='blue'?G.effects.blueFreeze:G.effects.redFreeze)>0}
 function updateQuestionTimer(dt){
+  if(G.match.isSpectator)return;
   const frozen=isMyTeamFrozen()||!isMyAlive();
   const fo=$('freezeOverlay');if(fo)fo.classList.toggle('on',isMyTeamFrozen()&&isMyAlive());
   const ansWrap=$('qAnswers');
@@ -1907,6 +2054,7 @@ function updateQuestionTimer(dt){
   if(G.currentQ.timeLeft<=0)answerQuestion(-1);
 }
 function answerQuestion(idx){
+  if(G.match.isSpectator)return;
   if(!isMyAlive())return;
   const q=G.currentQ;if(!q)return;
   if(isMyTeamFrozen())return;
@@ -1932,7 +2080,6 @@ function onCorrectAnswer(speed){
   showComboPop(G.myCombo);
   const tgt=pickEnemyTarget(G.myTeam);
   if(G.boss.active){
-    // damage boss
     const dmg=3+Math.round(speed*2);
     if(G.isHost){
       damageBoss(G.myTeam,dmg,G.myId);
@@ -1974,6 +2121,7 @@ function useUlt(){
   iA();
   if(!G.battle.running||G.battle.ended)return;
   if(!isMyAlive())return;
+  if(G.match.isSpectator)return;
   if(G.myUlt<10)return;
   if(isMyTeamFrozen())return;
   G.myUlt=0;G.myUltsUsed++;updatePowerUI();sUlt();
@@ -2095,8 +2243,8 @@ function onRemoteSkill(pid,d){
   if(d.request){grantSkill(pid,d.type||pick(SKILL_KEYS));return;}
   if(d.type){
     if(consumeSkill(pid,d.type)){
-      applySkillEffect(p.team,d.type,pid);
-      hostBc({type:'skillfx',playerId:pid,skillType:d.type,team:p.team});
+      applySkillEffect(p.team,d.type,pid,d.targetId);
+      hostBc({type:'skillfx',playerId:pid,skillType:d.type,team:p.team,targetId:d.targetId||null});
     }
   }
 }
@@ -2111,7 +2259,8 @@ function startSkillDrops(){
   G.skillDropTimer=setInterval(()=>{
     if(!G.battle.running||G.battle.ended)return;
     if(!G.isHost)return;
-    ['blue','red'].forEach(team=>{
+    const teamsToDrop=G.boss.active&&G.match.winnerTeam?[G.match.winnerTeam]:['blue','red'];
+    teamsToDrop.forEach(team=>{
       const list=getAlivePlayers(team);
       if(!list.length)return;
       const tgt=pick(list);
@@ -2133,6 +2282,8 @@ function scheduleBot(id,conf){
     if(!G.battle.running||G.battle.ended)return;
     const p=G.players[id];if(!p)return;
     if(!p.alive){scheduleBot(id,conf);return;}
+    // v3.3: bots on loser team can't act during boss phase
+    if(G.boss.active&&G.match.loserTeam&&p.team===G.match.loserTeam){scheduleBot(id,conf);return;}
     const frozen=(p.team==='blue'?G.effects.blueFreeze:G.effects.redFreeze)>0;
     if(frozen){scheduleBot(id,conf);return;}
     const correct=Math.random()<conf.acc;
@@ -2168,12 +2319,21 @@ function scheduleBot(id,conf){
       G.wrongStreak[id]=(G.wrongStreak[id]||0)+1;
       if(G.wrongStreak[id]>=3)doSelfDestruct(id);
     }
+    // bots use revive to pick lowest-HP-dead teammate
     const slots=ensureSkills(id);
-    if(slots.length&&Math.random()<0.35){
+    if(slots.length&&Math.random()<0.4){
       const s=pick(slots);
+      let tid=null;
+      if(s.type==='revive'){
+        const dead=getDeadPlayers(p.team);
+        if(dead.length){
+          dead.sort((a,b)=>(b.deaths||0)-(a.deaths||0));
+          tid=dead[0].id;
+        }
+      }
       if(consumeSkill(id,s.type)){
-        applySkillEffect(p.team,s.type,id);
-        hostBc({type:'skillfx',playerId:id,skillType:s.type,team:p.team});
+        applySkillEffect(p.team,s.type,id,tid);
+        hostBc({type:'skillfx',playerId:id,skillType:s.type,team:p.team,targetId:tid});
       }
     }
     scheduleBot(id,conf);
@@ -2183,10 +2343,8 @@ function scheduleBot(id,conf){
 /* ═══ BOMB ANIMATION ═══ */
 function spawnBomb(from,byId,damage,isUlt,blocked,targetId,kind){
   let srcIdx=0,dstIdx=0;
-  if(from==='boss'){
-    // boss at center
-    srcIdx=-1;dstIdx=-1;
-  }else{
+  if(from==='boss'){srcIdx=-1;dstIdx=-1;}
+  else{
     const isBlue=from==='blue';
     const srcList=G.teamOrder[from]||[];
     const dstList=G.teamOrder[isBlue?'red':'blue']||[];
@@ -2207,7 +2365,6 @@ function updateBombs(dt){
       const pos=getCharPositions();
       let dst={x:0,y:0};
       if(b.from==='boss'){
-        // find target player
         const tgt=G.players[b.targetId];
         if(tgt){
           const list=tgt.team==='blue'?pos.blue:pos.red;
@@ -2215,7 +2372,6 @@ function updateBombs(dt){
           dst=list[idx]||list[0]||{x:cvW/2,y:cvH*0.5};
         }else dst={x:cvW/2,y:cvH*0.5};
       }else if(b.kind==='bossfire'){
-        // boss fight: player's bomb hits boss
         dst={x:cvW/2,y:cvH*0.55};
       }else if(b.kind==='self'){
         const list=pos[b.from]||[];
@@ -2330,35 +2486,29 @@ function draw(){
   pos.blue.forEach((p,i)=>{const id=G.teamOrder.blue[i];drawCharacter(ctx,p.x,p.y,p.r,'#3b82f6',id===G.myId,1,G.charAnim[id]||0,id)});
   pos.red.forEach((p,i)=>{const id=G.teamOrder.red[i];drawCharacter(ctx,p.x,p.y,p.r,'#ef4444',false,-1,G.charAnim[id]||0,id)});
 
-  // ═══ BOSS ═══
+  // BOSS
   if(G.boss.active){
     const bx=W/2,by=H*0.55,br=Math.min(60,W*0.13);
     G.boss.cx=bx;G.boss.cy=by;G.boss.radius=br;
-    // aura
     ctx.save();
     const pulse=1+Math.sin(t*3)*0.15;
     const ag=ctx.createRadialGradient(bx,by,br*0.5,bx,by,br*2.5*pulse);
     ag.addColorStop(0,'rgba(168,85,247,.55)');
     ag.addColorStop(0.4,'rgba(220,38,38,.35)');
     ag.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=ag;
-    ctx.beginPath();ctx.arc(bx,by,br*2.5*pulse,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=ag;ctx.beginPath();ctx.arc(bx,by,br*2.5*pulse,0,Math.PI*2);ctx.fill();
     ctx.restore();
-    // hit flash
     if(G.boss.hitFlash>0){
-      ctx.save();
-      ctx.globalAlpha=G.boss.hitFlash*0.55;
+      ctx.save();ctx.globalAlpha=G.boss.hitFlash*0.55;
       ctx.fillStyle='#fff';
       ctx.beginPath();ctx.arc(bx,by,br*1.15,0,Math.PI*2);ctx.fill();
       ctx.restore();
     }
-    // boss emoji
     ctx.save();
     ctx.font=`${Math.round(br*1.7)}px sans-serif`;
     ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText('🐉',bx,by+Math.sin(t*2)*4);
     ctx.restore();
-    // HP bar
     const barW=Math.min(W*0.62,300),barH=14;
     const barX=bx-barW/2,barY=by-br-38;
     ctx.save();
@@ -2366,23 +2516,14 @@ function draw(){
     ctx.fillRect(barX-2,barY-2,barW+4,barH+4);
     const bPct=clamp(G.boss.hp/G.boss.maxHp,0,1);
     const bg2=ctx.createLinearGradient(barX,0,barX+barW,0);
-    bg2.addColorStop(0,'#7c3aed');
-    bg2.addColorStop(0.5,'#dc2626');
-    bg2.addColorStop(1,'#fbbf24');
-    ctx.fillStyle=bg2;
-    ctx.fillRect(barX,barY,barW*bPct,barH);
-    ctx.strokeStyle='rgba(255,255,255,.7)';
-    ctx.lineWidth=1.5;
-    ctx.strokeRect(barX,barY,barW,barH);
-    // HP text
-    ctx.font='bold 11px monospace';
-    ctx.fillStyle='#fff';
+    bg2.addColorStop(0,'#7c3aed');bg2.addColorStop(0.5,'#dc2626');bg2.addColorStop(1,'#fbbf24');
+    ctx.fillStyle=bg2;ctx.fillRect(barX,barY,barW*bPct,barH);
+    ctx.strokeStyle='rgba(255,255,255,.7)';ctx.lineWidth=1.5;ctx.strokeRect(barX,barY,barW,barH);
+    ctx.font='bold 11px monospace';ctx.fillStyle='#fff';
     ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.shadowColor='#000';ctx.shadowBlur=4;
     ctx.fillText(`${Math.ceil(G.boss.hp)} / ${G.boss.maxHp}`,bx,barY+barH/2);
-    // Boss name
-    ctx.font='bold 13px sans-serif';
-    ctx.fillStyle='#fbbf24';
+    ctx.font='bold 13px sans-serif';ctx.fillStyle='#fbbf24';
     ctx.shadowColor='#dc2626';ctx.shadowBlur=10;
     ctx.textBaseline='bottom';
     ctx.fillText('🐉 ANCIENT DRAGON',bx,barY-6);
@@ -2404,8 +2545,8 @@ function draw(){
       }else{dx=W/2;dy=groundY;}
     }else if(b.kind==='bossfire'){
       const srcList=pos[b.from]||[];
-      sx=(srcList[b.srcIdx]||srcList[0]||{x:60,y:groundY}).x;
-      sy=(srcList[b.srcIdx]||srcList[0]||{x:60,y:groundY}).y;
+      const src=srcList[b.srcIdx]||srcList[0]||{x:60,y:groundY};
+      sx=src.x;sy=src.y;
       dx=W/2;dy=H*0.55;
     }else{
       const srcList=pos[b.from==='blue'?'blue':'red'];
@@ -2487,6 +2628,7 @@ function drawMountains(ctx,W,H,alpha,color,baseY,peakH,t){
 function drawCharacter(ctx,x,y,r,color,isMe,facing,anim,id){
   const p=G.players[id];
   const alive=p?p.alive:true;
+  const isLoser=p&&G.boss.active&&G.match.loserTeam&&p.team===G.match.loserTeam;
   const bounce=anim>0?Math.sin((0.4-anim)/0.4*Math.PI)*7:0;
   const by=y-bounce;const lean=anim>0?facing*8*(anim/0.4):0;
 
@@ -2497,7 +2639,8 @@ function drawCharacter(ctx,x,y,r,color,isMe,facing,anim,id){
 
   const cx=x+lean,cy=by;
   ctx.save();
-  if(!alive)ctx.globalAlpha=0.45;
+  // dim more if loser during boss phase
+  if(!alive)ctx.globalAlpha=isLoser?0.3:0.45;
   const grad=ctx.createRadialGradient(cx-r*0.35,cy-r*0.4,r*0.1,cx,cy,r*1.15);
   grad.addColorStop(0,'rgba(255,255,255,.55)');
   grad.addColorStop(0.35,color);
@@ -2513,14 +2656,13 @@ function drawCharacter(ctx,x,y,r,color,isMe,facing,anim,id){
   const emoji=getAvatarFor(id);
   const emojiSize=Math.round(r*1.6);
   ctx.save();
-  if(!alive)ctx.globalAlpha=0.55;
+  if(!alive)ctx.globalAlpha=isLoser?0.35:0.55;
   ctx.font=`${emojiSize}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
   ctx.textAlign='center';ctx.textBaseline='middle';
   ctx.fillText(emoji,cx,cy+1);
   ctx.restore();
 
   if(!alive){
-    // red X
     ctx.save();
     ctx.strokeStyle='rgba(220,38,38,.85)';
     ctx.lineWidth=3;
@@ -2529,7 +2671,6 @@ function drawCharacter(ctx,x,y,r,color,isMe,facing,anim,id){
     ctx.moveTo(cx+r*0.55,cy-r*0.55);ctx.lineTo(cx-r*0.55,cy+r*0.55);
     ctx.stroke();
     ctx.restore();
-    // ghost
     ctx.save();
     ctx.font=`${Math.round(r*0.85)}px sans-serif`;
     ctx.textAlign='center';ctx.textBaseline='middle';
@@ -2537,7 +2678,6 @@ function drawCharacter(ctx,x,y,r,color,isMe,facing,anim,id){
     ctx.restore();
   }
 
-  // HP bar (only alive)
   if(p&&alive&&p.hp<p.maxHp){
     const barW=r*1.9,barH=4;
     const bx=cx-barW/2,by2=cy+r+4;
@@ -2607,8 +2747,8 @@ function updatePowerUI(){
   const ready=G.myUlt>=10;
   $('ultGaugeOuter').classList.toggle('full',ready);
   const btn=$('ultBtn');
-  btn.disabled=!ready||!G.battle.running||!isMyAlive();
-  btn.classList.toggle('ready',ready&&isMyAlive());
+  btn.disabled=!ready||!G.battle.running||!isMyAlive()||G.match.isSpectator;
+  btn.classList.toggle('ready',ready&&isMyAlive()&&!G.match.isSpectator);
 }
 function updateTimerUI(){
   const el=$('battleTimer');if(!el)return;
@@ -2618,10 +2758,10 @@ function updateTimerUI(){
   const m=Math.floor(elapsed/60),s=String(elapsed%60).padStart(2,'0');
   el.textContent=`∞ ${m}:${s}`;
 }
-let _lastDeadTxt='';
 function updateDeadOverlay(dt){
   const ov=$('deadOverlay');
   if(!ov)return;
+  if(G.match.isSpectator){ov.classList.remove('on');return;}
   const me=G.players[G.myId];
   const dead=me&&!me.alive;
   ov.classList.toggle('on',!!dead);
@@ -2629,7 +2769,7 @@ function updateDeadOverlay(dt){
   const cntEl=$('deadCount'),subEl=$('deadSub'),titleEl=$('deadTitle'),noteEl=$('deadNote');
   const dN=me.deaths||0;
   titleEl.textContent=`คุณตายแล้ว (ครั้งที่ ${dN})`;
-  if(me.reviveAt>0){
+  if(dN<=3&&me.reviveAt>0){
     const remain=Math.max(0,Math.ceil((me.reviveAt-Date.now())/1000));
     if(cntEl)cntEl.textContent=remain+' วิ';
     subEl.innerHTML='ฟื้นอัตโนมัติ...';
@@ -2668,7 +2808,7 @@ function endBattle(winner,isBoss){
   G.battle.ended=true;G.battle.running=false;
   if(!winner){
     if(isBoss){
-      winner=G.boss.dmg.blue>G.boss.dmg.red?'blue':(G.boss.dmg.red>G.boss.dmg.blue?'red':'draw');
+      winner=G.match.winnerTeam||G.boss.dmg.blue>G.boss.dmg.red?'blue':(G.boss.dmg.red>G.boss.dmg.blue?'red':'draw');
     }else{
       const bA=getAliveCount('blue'),rA=getAliveCount('red');
       if(bA>rA)winner='blue';else if(rA>bA)winner='red';else winner='draw';
@@ -2702,16 +2842,15 @@ function showResult(result){
   const win=result.winner===myTeam,draw=result.winner==='draw';
   const title=$('resultTitle'),sub=$('resultSub');
   if(result.isBoss){
-    // Boss phase result
-    if(draw){title.textContent='🐉 BOSS END';title.className='result-title draw';sub.textContent='เสมอกัน — ดาเมจเท่ากัน';}
-    else if(win){title.textContent='🏆 BOSS SLAYER!';title.className='result-title boss';sub.textContent='ทีมคุณทำดาเมจบอสสูงสุด!';}
-    else{title.textContent='💥 DEFEAT';title.className='result-title lose';sub.textContent='ทีมศัตรูทำดาเมจบอสสูงกว่า';}
+    if(draw){title.textContent='💀 BOSS VICTORY';title.className='result-title draw';sub.textContent='บอสชนะ! ทุกทีมแพ้';}
+    else if(win){title.textContent='🏆 BOSS SLAYER!';title.className='result-title boss';sub.textContent='ทีมคุณปราบบอสสำเร็จ!';}
+    else{title.textContent='💥 DEFEAT';title.className='result-title lose';sub.textContent='ทีมอื่นปราบบอสได้';}
   }else{
     if(draw){title.textContent='🤝 DRAW';title.className='result-title draw';sub.textContent='เสมอกัน!';}
     else if(win){title.textContent='🏆 VICTORY!';title.className='result-title win';sub.textContent='ทีมของคุณชนะ!';}
     else{title.textContent='💥 DEFEAT';title.className='result-title lose';sub.textContent='ทีมของคุณแพ้...';}
   }
-  if(win||(result.isBoss&&win))sWin();else if(!draw)sLose();
+  if(win)sWin();else if(!draw)sLose();
 
   const avWrap=$('resultAvatars');
   if(avWrap){
@@ -2733,7 +2872,7 @@ function showResult(result){
   if(result.isBoss){
     statsHtml=`
       <div class="stat-box" style="grid-column:1/-1;background:linear-gradient(180deg,rgba(168,85,247,.15),rgba(20,10,40,.85));border-color:rgba(168,85,247,.7)">
-        <div class="sv" style="font-size:1.1rem">🐉 BOSS ถูกปราบ!</div>
+        <div class="sv" style="font-size:1.05rem">🐉 ${result.winner==='draw'?'BOSS WINS':'BOSS SLAIN'}</div>
         <div class="sl">ดาเมจบอส: 🔵 ${result.bossDmgBlue||0} · 🔴 ${result.bossDmgRed||0}</div>
       </div>
       <div class="stat-box"><div class="sv">${result.myCorrect}</div><div class="sl">✅ ตอบถูก</div></div>
@@ -2799,7 +2938,7 @@ document.addEventListener('keydown',e=>{
   if(e.key===' '||e.key==='Enter'){e.preventDefault();if(!$('ultBtn').disabled)useUlt();}
 });
 
-console.log('💣 Vocab Bomb Arena v3.2 · '+POOLS.all.length+' words · '+AVATAR_EMOJIS.length+' avatars · Ready');
+console.log('💣 Vocab Bomb Arena v3.3 · '+POOLS.all.length+' words · '+AVATAR_EMOJIS.length+' avatars · Ready');
 </script>
 </body>
 </html>
