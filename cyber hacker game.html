@@ -1,1 +1,2767 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+<title>💻 Cyber Hack · Vocab Arena</title>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;700;800;900&family=Creepster&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden;position:fixed;inset:0;width:100%}
+body{font-family:'Kanit','Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;font-weight:600;background:#0a0612;color:#e0f2fe;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.screen{display:none;position:fixed;inset:0;overflow-y:auto;padding:14px;
+  background:radial-gradient(circle at 20% 20%,rgba(34,211,238,.12),transparent 55%),
+    radial-gradient(circle at 80% 80%,rgba(168,85,247,.18),transparent 55%),
+    linear-gradient(180deg,#0a0612,#1a0b2e 50%,#0a0612);z-index:1}
+.screen.active{display:block}
+#scGame.active{display:flex;flex-direction:column;padding:0;overflow:hidden}
+.wrap{max-width:720px;margin:0 auto;padding:4px}
+h1{font-family:'Creepster',cursive;font-size:clamp(1.7rem,6vw,2.6rem);text-align:center;
+  background:linear-gradient(135deg,#ffedd5,#22d3ee,#a855f7);-webkit-background-clip:text;
+  background-clip:text;color:transparent;filter:drop-shadow(0 4px 20px rgba(34,211,238,.6));
+  letter-spacing:2px;margin-bottom:6px}
+h2{font-size:clamp(1rem,2.5vw,1.25rem);color:#22d3ee;margin:10px 0 8px;text-align:center}
+h3{font-size:.95rem;color:#c4b5fd;margin:8px 0 6px}
+p.tagline{text-align:center;color:#7dd3fc;font-size:.85rem;margin-bottom:20px;font-weight:700}
+.btn{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;margin:8px 0;
+  border:none;border-radius:14px;font-family:inherit;font-size:1rem;font-weight:900;cursor:pointer;
+  color:#fff;transition:transform .12s,filter .12s;
+  box-shadow:0 5px 14px -4px rgba(0,0,0,.5),inset 0 -3px 0 rgba(0,0,0,.25);
+  min-height:62px;text-align:left}
+.btn:active{transform:translateY(1px) scale(.985)}
+.btn:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.6)}
+.btn .big-ico{font-size:1.9rem;flex-shrink:0;line-height:1}
+.btn .btn-title{font-size:1.05rem;font-weight:900;line-height:1.15}
+.btn .btn-sub{font-size:.72rem;font-weight:700;opacity:.85;margin-top:1px;line-height:1.2}
+.btn-cy{background:linear-gradient(135deg,#06b6d4,#0e7490)}
+.btn-gr{background:linear-gradient(135deg,#22c55e,#15803d)}
+.btn-pu{background:linear-gradient(135deg,#a855f7,#7c3aed)}
+.btn-or{background:linear-gradient(135deg,#f97316,#ea580c)}
+.btn-rd{background:linear-gradient(135deg,#dc2626,#7f1d1d)}
+.btn-sm{display:inline-flex;align-items:center;justify-content:center;width:auto;padding:8px 14px;
+  font-size:.85rem;margin:3px;border-radius:9px;min-height:auto;gap:6px}
+.card{background:linear-gradient(180deg,rgba(30,15,55,.9),rgba(15,7,30,.95));
+  border-radius:15px;padding:14px;border:1px solid rgba(168,85,247,.35);margin-bottom:10px}
+input{width:100%;padding:12px;border-radius:10px;border:2px solid rgba(34,211,238,.4);
+  background:rgba(10,6,18,.85);color:#e0f2fe;font-family:inherit;font-size:1rem;
+  outline:none;margin-bottom:8px;font-weight:700}
+input:focus{border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.2)}
+input.code{text-align:center;letter-spacing:10px;font-size:1.7rem;font-weight:900;color:#22d3ee;
+  text-transform:uppercase;font-family:'JetBrains Mono',monospace}
+label{display:block;color:#7dd3fc;font-size:.85rem;margin-bottom:4px;font-weight:800}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:6px}
+.chip{flex:1;min-width:60px;padding:10px 6px;border:2px solid rgba(34,211,238,.4);
+  border-radius:10px;background:rgba(10,30,45,.6);color:#7dd3fc;cursor:pointer;text-align:center;
+  font-weight:800;transition:.15s;font-family:inherit;font-size:.85rem}
+.chip.active{background:linear-gradient(135deg,#06b6d4,#0e7490);color:#fff;border-color:#22d3ee;
+  box-shadow:0 0 14px rgba(34,211,238,.5)}
+.chip:active{transform:scale(.96)}
+.room-box{text-align:center;padding:14px;background:linear-gradient(180deg,#0f2c38,#061418);
+  border-radius:15px;margin-bottom:10px;border:1px solid rgba(34,211,238,.4)}
+.room-code{font-family:'JetBrains Mono',monospace;font-size:clamp(2.2rem,8vw,3rem);font-weight:900;
+  color:#22d3ee;letter-spacing:clamp(8px,3vw,16px);line-height:1;text-shadow:0 0 22px rgba(34,211,238,.8);
+  margin:10px 0}
+.room-url{font-size:.72rem;color:#7dd3fc;word-break:break-all;background:rgba(0,0,0,.4);
+  padding:6px;border-radius:6px;margin-top:6px}
+#qrcode{display:inline-block;padding:6px;background:#fff;border-radius:8px;margin:6px 0}
+#qrcode img{display:block;width:120px;height:120px}
+.conn-status{text-align:center;font-weight:800;padding:6px;border-radius:8px;
+  background:rgba(234,179,8,.15);color:#fbbf24;margin:5px 0;font-size:.8rem}
+.conn-status.ok{background:rgba(34,197,94,.15);color:#4ade80}
+.conn-status.err{background:rgba(220,38,38,.15);color:#f87171}
+.players-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:5px}
+.player-card{background:rgba(10,30,45,.7);padding:7px 9px;border-radius:9px;
+  border:2px solid rgba(34,211,238,.35);display:flex;align-items:center;gap:6px;
+  font-size:.85rem;font-weight:800;overflow:hidden}
+.player-card.you{border-color:#22d3ee;box-shadow:0 0 10px rgba(34,211,238,.4)}
+.player-card .av{font-size:1.3rem;flex-shrink:0;line-height:1}
+.player-card .name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pwd-grid{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.pwd-btn{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;
+  border:2px solid rgba(34,211,238,.4);border-radius:12px;background:rgba(10,30,45,.6);
+  color:#e0f2fe;font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:800;
+  cursor:pointer;transition:.15s;letter-spacing:1px}
+.pwd-btn:hover{border-color:#22d3ee;background:rgba(34,211,238,.15);transform:scale(1.02)}
+.pwd-btn.selected{background:linear-gradient(135deg,rgba(34,197,94,.35),rgba(22,163,74,.5));
+  border-color:#4ade80;box-shadow:0 0 20px rgba(34,197,94,.5)}
+.pwd-btn .pwd-check{font-size:1.2rem;opacity:0}
+.pwd-btn.selected .pwd-check{opacity:1}
+#scGame{background:#050810}
+.game-hud{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:8px 12px;
+  background:rgba(5,10,20,.97);border-bottom:2px solid rgba(34,211,238,.45);z-index:10;
+  padding-top:calc(8px + env(safe-area-inset-top,0px))}
+.hud-pill{display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.6);
+  border:1.5px solid rgba(34,211,238,.5);border-radius:9px;padding:6px 10px;
+  font-family:'JetBrains Mono',monospace;font-weight:800;font-size:.8rem;color:#22d3ee}
+.hud-pill.credits{color:#fbbf24;border-color:rgba(251,191,36,.6);
+  background:linear-gradient(180deg,rgba(251,191,36,.15),rgba(0,0,0,.6));
+  text-shadow:0 0 8px rgba(251,191,36,.6)}
+.hud-pill.timer{color:#f87171;border-color:rgba(248,113,113,.6);font-variant-numeric:tabular-nums}
+.hud-pill.timer.warn{animation:pulseWarn 1s infinite}
+@keyframes pulseWarn{0%,100%{background:rgba(220,38,38,.15)}50%{background:rgba(220,38,38,.4)}}
+.hud-pill.mult{color:#4ade80;border-color:rgba(74,222,128,.6)}
+.hud-pill.mult.x2{background:linear-gradient(180deg,rgba(251,191,36,.2),rgba(0,0,0,.6));color:#fbbf24}
+.hud-pill.mult.x3{background:linear-gradient(180deg,rgba(236,72,153,.25),rgba(0,0,0,.6));color:#f9a8d4}
+.hud-avatar{width:34px;height:34px;border-radius:50%;background:rgba(34,211,238,.15);
+  border:2px solid #22d3ee;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;flex-shrink:0}
+.hud-spacer{flex:1}
+.terminal-wrap{flex:1;display:flex;flex-direction:column;padding:10px 12px;gap:8px;
+  overflow:hidden;min-height:0;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+.terminal{flex:1;background:linear-gradient(180deg,rgba(0,20,15,.95),rgba(0,10,8,.98));
+  border:2px solid rgba(74,222,128,.5);border-radius:14px;padding:14px;
+  font-family:'JetBrains Mono',monospace;font-size:.9rem;color:#4ade80;
+  box-shadow:0 0 30px rgba(34,197,94,.2),inset 0 0 40px rgba(34,197,94,.08);
+  display:flex;flex-direction:column;gap:8px;overflow-y:auto;min-height:0;position:relative}
+.terminal::before{content:"";position:absolute;inset:0;pointer-events:none;border-radius:12px;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0px,rgba(0,0,0,0) 2px,
+    rgba(74,222,128,.03) 3px,rgba(74,222,128,.03) 4px);z-index:1}
+.terminal>*{position:relative;z-index:2}
+.term-line{line-height:1.45;word-break:break-word;font-size:.82rem}
+.term-line .prompt{color:#22d3ee;font-weight:800}
+.term-line .info{color:#22d3ee}
+.term-line .warn{color:#fbbf24}
+.term-line .err{color:#f87171}
+.term-line .ok{color:#4ade80}
+.cursor{display:inline-block;width:9px;height:14px;background:#4ade80;
+  vertical-align:middle;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.term-question{font-size:1.05rem;font-weight:900;color:#fbbf24;padding:8px 0;
+  border-top:1px dashed rgba(74,222,128,.4);border-bottom:1px dashed rgba(74,222,128,.4);
+  margin:6px 0;letter-spacing:.5px;text-align:center}
+.ans-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;flex-shrink:0}
+.ans-btn{padding:12px 10px;border-radius:10px;border:2px solid rgba(34,211,238,.4);
+  background:linear-gradient(180deg,rgba(10,30,45,.9),rgba(5,15,25,.95));
+  color:#e0f2fe;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:.85rem;
+  cursor:pointer;min-height:52px;transition:.15s;text-align:center;word-break:break-word;
+  display:flex;align-items:center;justify-content:center;padding:8px}
+.ans-btn:hover:not(:disabled){border-color:#22d3ee;background:linear-gradient(180deg,rgba(34,211,238,.2),rgba(10,30,45,.9))}
+.ans-btn:active:not(:disabled){transform:scale(.97)}
+.ans-btn:disabled{cursor:default}
+.ans-btn.correct{background:linear-gradient(180deg,#15803d,#14532d)!important;
+  border-color:#4ade80!important;color:#bbf7d0!important;animation:ansOk .4s}
+.ans-btn.wrong{background:linear-gradient(180deg,#7f1d1d,#450a0a)!important;
+  border-color:#f87171!important;color:#fecaca!important;animation:ansBad .4s}
+.ans-btn.dim{opacity:.4}
+@keyframes ansOk{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+@keyframes ansBad{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.lb-panel{background:linear-gradient(180deg,rgba(0,20,15,.95),rgba(0,10,8,.98));
+  border:2px solid rgba(251,191,36,.45);border-radius:14px;padding:10px 12px;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#fbbf24;flex-shrink:0;
+  box-shadow:0 0 20px rgba(251,191,36,.15);max-height:30vh;overflow-y:auto}
+.lb-title{font-weight:900;letter-spacing:2px;color:#fbbf24;margin-bottom:6px;
+  font-size:.75rem;display:flex;justify-content:space-between;position:sticky;top:0;
+  background:linear-gradient(180deg,rgba(0,20,15,1),rgba(0,20,15,.85));padding:2px 0}
+.lb-row{display:flex;align-items:center;gap:6px;padding:3px 0;
+  border-bottom:1px dashed rgba(251,191,36,.15)}
+.lb-row:last-child{border:none}
+.lb-row.me{color:#22d3ee;background:rgba(34,211,238,.08);padding:3px 6px;margin:0 -6px;border-radius:5px}
+.lb-rank{width:22px;text-align:right;font-weight:900;color:#94a3b8}
+.lb-rank.gold{color:#fbbf24}.lb-rank.silver{color:#cbd5e1}.lb-rank.bronze{color:#d97706}
+.lb-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-credits{font-weight:900;color:#fbbf24;font-variant-numeric:tabular-nums}
+.lb-row.me .lb-credits{color:#22d3ee}
+.modal{position:fixed;inset:0;background:rgba(5,10,20,.92);backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);z-index:1000;display:none;align-items:center;
+  justify-content:center;padding:16px}
+.modal.on{display:flex}
+.modal-box{background:linear-gradient(180deg,rgba(10,25,40,.98),rgba(5,10,20,.98));
+  border:2px solid rgba(34,211,238,.5);border-radius:18px;padding:20px;
+  max-width:520px;width:100%;box-shadow:0 0 60px rgba(34,211,238,.3);
+  animation:popIn .35s cubic-bezier(.34,1.56,.64,1);max-height:92vh;overflow-y:auto}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-title{font-family:'JetBrains Mono',monospace;font-size:1.15rem;font-weight:900;
+  color:#22d3ee;text-align:center;margin-bottom:6px;letter-spacing:1px;
+  text-shadow:0 0 12px rgba(34,211,238,.6)}
+.modal-sub{text-align:center;color:#94a3b8;font-size:.82rem;font-weight:800;margin-bottom:14px}
+.reward-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.reward-card{aspect-ratio:3/4;border-radius:14px;border:2px solid rgba(168,85,247,.5);
+  background:linear-gradient(135deg,rgba(60,20,100,.9),rgba(20,5,40,.95));
+  cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;padding:10px;transition:.2s;position:relative;overflow:hidden;
+  animation:rewardFloat 2s ease-in-out infinite}
+.reward-card:nth-child(2){animation-delay:.3s}
+.reward-card:nth-child(3){animation-delay:.6s}
+@keyframes rewardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.reward-card:hover{border-color:#fbbf24;background:linear-gradient(135deg,rgba(120,50,180,.95),rgba(40,10,70,.98));
+  transform:translateY(-6px) scale(1.03);box-shadow:0 12px 30px rgba(251,191,36,.4)}
+.reward-card::before{content:"?";position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:center;font-family:'Creepster',cursive;font-size:4rem;
+  color:rgba(168,85,247,.15);font-weight:900;z-index:0}
+.reward-card .rc-ico{font-size:2.4rem;line-height:1;position:relative;z-index:1;
+  filter:drop-shadow(0 4px 8px rgba(0,0,0,.6))}
+.reward-card .rc-name{font-size:.72rem;font-weight:900;color:#fbbf24;text-align:center;
+  position:relative;z-index:1;line-height:1.15;text-shadow:0 2px 4px rgba(0,0,0,.8)}
+.reward-card.revealed{cursor:default;animation:none;transform:none!important}
+.reward-card.revealed:hover{transform:none!important;border-color:rgba(168,85,247,.5)}
+.reward-card.revealed::before{display:none}
+.reward-card.revealed.reward-hack{background:linear-gradient(135deg,#7f1d1d,#450a0a);
+  border-color:#f87171;animation:hackPulse 1s infinite}
+@keyframes hackPulse{0%,100%{box-shadow:0 0 20px rgba(248,113,113,.6)}50%{box-shadow:0 0 40px rgba(248,113,113,1)}}
+.reward-card.revealed.reward-mult{background:linear-gradient(135deg,#1e3a8a,#1e40af);border-color:#60a5fa}
+.reward-card.revealed.reward-good{background:linear-gradient(135deg,#166534,#14532d);border-color:#4ade80}
+.reward-card.revealed.reward-none{background:linear-gradient(135deg,#374151,#1f2937);border-color:#6b7280}
+.hack-targets{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.hack-target{display:flex;align-items:center;gap:10px;padding:10px 12px;
+  background:rgba(10,30,45,.6);border:1.5px solid rgba(34,211,238,.4);border-radius:10px;
+  cursor:pointer;transition:.15s}
+.hack-target:hover{border-color:#fbbf24;background:rgba(251,191,36,.15)}
+.hack-target.selected{border-color:#f87171;background:rgba(220,38,38,.2);
+  box-shadow:0 0 14px rgba(220,38,38,.4)}
+.hack-target .ht-av{font-size:1.6rem;flex-shrink:0}
+.hack-target .ht-info{flex:1;min-width:0}
+.hack-target .ht-name{font-weight:900;color:#e0f2fe;font-size:.9rem;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hack-target .ht-cred{font-family:'JetBrains Mono',monospace;font-size:.72rem;
+  color:#fbbf24;font-weight:900}
+.hack-target .ht-check{font-size:1.1rem;color:#f87171;opacity:0}
+.hack-target.selected .ht-check{opacity:1}
+.pwd-guess{display:flex;flex-direction:column;gap:7px;margin:12px 0}
+.pwd-guess-btn{padding:12px;border-radius:9px;border:2px solid rgba(248,113,113,.5);
+  background:rgba(80,10,10,.4);color:#fecaca;font-family:'JetBrains Mono',monospace;
+  font-weight:800;cursor:pointer;letter-spacing:1px;font-size:.9rem;
+  display:flex;align-items:center;justify-content:space-between;transition:.15s}
+.pwd-guess-btn:hover:not(:disabled){border-color:#f87171;background:rgba(220,38,38,.3)}
+.pwd-guess-btn:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through;
+  background:rgba(30,30,30,.4);border-color:rgba(120,120,120,.4);color:#94a3b8}
+.mini-wrap{padding:14px;background:rgba(0,0,0,.4);border-radius:12px;margin:12px 0;
+  border:1.5px dashed rgba(251,191,36,.5);text-align:center}
+.mini-title{color:#fbbf24;font-weight:900;font-size:.9rem;margin-bottom:10px;letter-spacing:1px}
+.mini-temp-bar{height:28px;background:linear-gradient(90deg,#3b82f6,#22c55e,#fbbf24,#ef4444);
+  border-radius:14px;position:relative;margin:20px 0;border:2px solid rgba(34,211,238,.5)}
+.mini-temp-marker{position:absolute;top:-8px;width:8px;height:44px;background:#fff;border-radius:3px;
+  box-shadow:0 0 10px rgba(255,255,255,.9);transition:left .08s linear}
+.mini-temp-target{position:absolute;top:0;height:100%;background:rgba(255,255,255,.4);
+  border-radius:14px;pointer-events:none;border:1.5px dashed rgba(255,255,255,.9)}
+.mini-temp-controls{display:flex;justify-content:center;gap:14px;margin-top:8px}
+.mini-btn{width:60px;height:60px;border-radius:50%;border:2px solid rgba(34,211,238,.6);
+  background:linear-gradient(180deg,rgba(10,30,45,.9),rgba(5,15,25,.95));color:#22d3ee;
+  font-size:1.6rem;font-weight:900;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;transition:.15s;user-select:none}
+.mini-btn:hover{border-color:#22d3ee;background:rgba(34,211,238,.2);transform:scale(1.08)}
+.mini-btn:active{transform:scale(.94)}
+.mini-progress{height:34px;background:rgba(0,0,0,.6);border-radius:17px;overflow:hidden;
+  margin:14px 0;border:2px solid rgba(34,211,238,.5);position:relative}
+.mini-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#22d3ee,#a855f7);
+  transition:width .1s linear;box-shadow:0 0 20px rgba(34,211,238,.6)}
+.mini-progress-text{position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:900;
+  color:#fff;text-shadow:0 2px 4px rgba(0,0,0,.8);font-size:.85rem}
+.mini-num-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:12px 0}
+.mini-num{aspect-ratio:1;border-radius:10px;border:2px solid rgba(34,211,238,.5);
+  background:linear-gradient(180deg,rgba(10,30,45,.9),rgba(5,15,25,.95));
+  color:#e0f2fe;font-family:'JetBrains Mono',monospace;font-weight:900;font-size:1.1rem;
+  cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;padding:0}
+.mini-num:hover:not(:disabled){transform:scale(1.08);border-color:#22d3ee}
+.mini-num.done{background:linear-gradient(180deg,#166534,#14532d);border-color:#4ade80;
+  color:#bbf7d0;opacity:.5}
+.mini-hold-btn{padding:18px 36px;border-radius:16px;border:2px solid #22d3ee;
+  background:linear-gradient(180deg,rgba(10,30,45,.9),rgba(5,15,25,.95));color:#22d3ee;
+  font-weight:900;font-size:1.1rem;cursor:pointer;font-family:inherit;transition:.15s;
+  letter-spacing:2px}
+.mini-hold-btn.active{background:linear-gradient(180deg,#22d3ee,#0e7490);color:#001018;
+  box-shadow:0 0 30px rgba(34,211,238,.8);transform:scale(1.05)}
+.mini-hold-btn:active{transform:scale(.96)}
+.mini-card-pair{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.mini-mcard{aspect-ratio:1;border-radius:10px;border:2px solid rgba(34,211,238,.5);
+  background:linear-gradient(180deg,rgba(10,30,45,.9),rgba(5,15,25,.95));
+  color:#e0f2fe;font-size:1.6rem;cursor:pointer;transition:.2s;
+  display:flex;align-items:center;justify-content:center;padding:0}
+.mini-mcard:hover:not(:disabled){transform:scale(1.04);border-color:#22d3ee}
+.mini-mcard.flipped{background:linear-gradient(180deg,#1e40af,#1e3a8a);
+  border-color:#60a5fa;color:#e0f2fe}
+.mini-mcard.matched{background:linear-gradient(180deg,#166534,#14532d);
+  border-color:#4ade80;opacity:.5;cursor:default}
+.q-head{display:flex;align-items:center;font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;color:#4ade80;font-weight:800}
+.q-timebar-outer{height:6px;background:rgba(0,0,0,.6);border-radius:3px;overflow:hidden;
+  flex:1;margin:0 8px}
+.q-timebar{height:100%;width:100%;background:linear-gradient(90deg,#4ade80,#fbbf24,#f87171);
+  border-radius:3px;transition:width .15s linear}
+.q-time-num{min-width:26px;text-align:right;font-weight:900;color:#fbbf24}
+.result-hero{text-align:center;padding:20px 10px}
+.result-title{font-family:'Creepster',cursive;font-size:clamp(2rem,7vw,3.4rem);
+  letter-spacing:3px;line-height:1;margin-bottom:6px}
+.result-title.win{color:#fbbf24;text-shadow:0 0 50px rgba(251,191,36,.9)}
+.result-title.lose{color:#f87171;text-shadow:0 0 50px rgba(220,38,38,.7)}
+.result-sub{color:#7dd3fc;font-size:1rem;font-weight:800}
+.result-podium{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.podium-row{display:flex;align-items:center;gap:10px;padding:12px 14px;
+  background:linear-gradient(180deg,rgba(10,30,45,.7),rgba(5,15,25,.9));
+  border-radius:12px;border:1.5px solid rgba(34,211,238,.35)}
+.podium-row.gold{background:linear-gradient(180deg,rgba(251,191,36,.25),rgba(120,53,15,.6));
+  border-color:#fbbf24;box-shadow:0 0 20px rgba(251,191,36,.4)}
+.podium-row.silver{background:linear-gradient(180deg,rgba(203,213,225,.2),rgba(71,85,105,.5));
+  border-color:#cbd5e1}
+.podium-row.bronze{background:linear-gradient(180deg,rgba(217,119,6,.2),rgba(120,53,15,.5));
+  border-color:#d97706}
+.podium-row .pr-rank{font-family:'Creepster',cursive;font-size:1.5rem;
+  color:#fbbf24;width:36px;text-align:center;flex-shrink:0}
+.podium-row .pr-av{font-size:1.8rem;flex-shrink:0}
+.podium-row .pr-name{flex:1;font-weight:900;color:#e0f2fe;overflow:hidden;
+  text-overflow:ellipsis;white-space:nowrap}
+.podium-row .pr-cred{font-family:'JetBrains Mono',monospace;font-weight:900;
+  color:#fbbf24;font-size:.95rem}
+.word-modal{position:fixed;inset:0;background:rgba(5,10,20,.96);z-index:9995;display:none;
+  flex-direction:column;padding:12px;max-width:100vw}
+.word-modal.on{display:flex}
+.word-modal-head{display:flex;align-items:center;gap:8px;padding:8px 4px;flex-shrink:0}
+.word-modal-head .wm-title{font-family:'JetBrains Mono',monospace;font-size:1.2rem;
+  color:#22d3ee;letter-spacing:1px;text-shadow:0 0 16px rgba(34,211,238,.6);flex:1}
+.word-modal-head .wm-count{font-family:'JetBrains Mono',monospace;font-size:.85rem;
+  font-weight:900;color:#fbbf24;background:rgba(251,191,36,.15);padding:4px 10px;
+  border-radius:8px;border:1.5px solid rgba(251,191,36,.5)}
+.word-toolbar{display:flex;flex-wrap:wrap;gap:5px;padding:4px;flex-shrink:0}
+.word-toolbar .chip{flex:0 0 auto;min-width:auto;padding:8px 12px;font-size:.78rem}
+.word-search{width:100%;padding:10px;border-radius:10px;border:2px solid rgba(34,211,238,.4);
+  background:rgba(5,15,25,.85);color:#e0f2fe;font-family:inherit;font-size:.95rem;
+  outline:none;margin:6px 0;font-weight:700;flex-shrink:0}
+.word-search:focus{border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.2)}
+.word-hint{font-size:.72rem;color:#7dd3fc;text-align:center;padding:4px;
+  flex-shrink:0;font-weight:800}
+.word-grid{flex:1;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:6px;
+  padding:4px;align-content:start;position:relative;touch-action:pan-y}
+.word-grid.dragging{touch-action:none}
+.word-item{display:flex;align-items:center;gap:8px;padding:9px 10px;
+  background:rgba(10,30,45,.5);border:2px solid rgba(34,211,238,.3);border-radius:10px;
+  cursor:pointer;transition:.12s;font-family:inherit;text-align:left;color:#e0f2fe;
+  min-height:48px;font-size:.78rem;user-select:none}
+.word-item.sel{background:linear-gradient(135deg,rgba(34,197,94,.35),rgba(22,163,74,.5));
+  border-color:#4ade80;box-shadow:0 0 12px rgba(34,197,94,.4)}
+.word-item.presel{background:rgba(34,211,238,.25);border-color:#22d3ee;border-style:dashed}
+.word-item .wi-chk{width:22px;height:22px;flex-shrink:0;border-radius:6px;
+  border:2px solid rgba(34,211,238,.5);background:rgba(5,15,25,.7);
+  display:flex;align-items:center;justify-content:center;font-size:.85rem;
+  font-weight:900;color:transparent;transition:.12s}
+.word-item.sel .wi-chk{background:#22c55e;border-color:#4ade80;color:#fff}
+.word-item .wi-txt{flex:1;min-width:0;line-height:1.15}
+.word-item .wi-en{font-weight:900;color:#ffedd5;font-size:.88rem;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.word-item .wi-th{color:#7dd3fc;font-size:.72rem;font-weight:800;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.word-modal-foot{display:flex;gap:6px;padding:8px 4px;flex-shrink:0}
+.word-modal-foot .btn-sm{flex:1;margin:0;padding:12px;font-size:.9rem}
+.word-warn{color:#fbbf24;font-size:.75rem;font-weight:900;text-align:center;
+  padding:4px;flex-shrink:0;min-height:18px}
+.word-warn.err{color:#f87171}
+.sel-box{position:fixed;border:2px dashed #22d3ee;background:rgba(34,211,238,.15);
+  pointer-events:none;z-index:9997;display:none;border-radius:4px;
+  box-shadow:0 0 20px rgba(34,211,238,.5) inset}
+.sel-box.on{display:block}
+.toast{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:50%;
+  transform:translate(-50%,-90px);background:rgba(5,10,20,.97);color:#e0f2fe;
+  padding:10px 18px;border-radius:10px;font-weight:800;font-size:.85rem;z-index:9999;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);border:2px solid rgba(34,211,238,.6);
+  max-width:90vw;text-align:center;pointer-events:none;box-shadow:0 8px 26px rgba(0,0,0,.7);
+  font-family:'JetBrains Mono',monospace}
+.toast.show{transform:translate(-50%,0)}
+.spinner{display:inline-block;width:38px;height:38px;border:5px solid rgba(34,211,238,.3);
+  border-top-color:#22d3ee;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:430px){
+  .ans-grid{gap:6px}
+  .ans-btn{font-size:.78rem;min-height:46px;padding:8px 6px}
+  .terminal{font-size:.8rem;padding:10px}
+  .term-question{font-size:.95rem}
+  .word-grid{grid-template-columns:1fr}
+  .hud-pill{font-size:.72rem;padding:5px 8px}
+  .hud-avatar{width:30px;height:30px;font-size:1.1rem}
+  .reward-card .rc-ico{font-size:1.9rem}
+  .reward-card .rc-name{font-size:.62rem}
+  .mini-btn{width:52px;height:52px;font-size:1.4rem}
+}
+</style>
+</head>
+<body>
 
+<!-- ═══ MENU ═══ -->
+<div class="screen active" id="scMenu">
+  <div class="wrap" style="padding-top:24px">
+    <h1>💻 CYBER HACK 💻</h1>
+    <p class="tagline">Vocab Arena</p>
+    <button class="btn btn-cy" onclick="goBotSetup()" style="margin-bottom:12px">
+      <span class="big-ico">🤖</span>
+      <div>
+        <div class="btn-title">เล่นกับบอท</div>
+        <div class="btn-sub">Solo · 5 AI Bots · เล่นคนเดียวได้</div>
+      </div>
+    </button>
+    <button class="btn btn-pu" onclick="goHostSetup()" style="margin-bottom:12px">
+      <span class="big-ico">🎤</span>
+      <div>
+        <div class="btn-title">สร้างห้อง · เล่นกับเพื่อน</div>
+        <div class="btn-sub">แชร์โค้ด · 2-10 คน</div>
+      </div>
+    </button>
+    <button class="btn btn-gr" onclick="goJoin()">
+      <span class="big-ico">🎮</span>
+      <div>
+        <div class="btn-title">เข้าร่วมห้อง</div>
+        <div class="btn-sub">ใส่โค้ด 4 ตัวจากเพื่อน</div>
+      </div>
+    </button>
+    <div class="card" style="margin-top:20px;text-align:center">
+      <div style="font-size:.78rem;color:#7dd3fc;font-weight:800;line-height:1.65">
+        🔐 ตอนเริ่ม ทุกคนเลือกรหัสผ่าน 1/5<br>
+        💰 ตอบคำถามถูก → เลือกรางวัล 1 ใน 3<br>
+        💻 บางรางวัลคือ Hack → ทายรหัสเป้าหมาย<br>
+        🎯 ทายถูก → ขโมย Credits 50% ของเขา<br>
+        🔧 คนถูกแฮกต้องเล่น Recovery ก่อนกลับมาเล่น<br>
+        🏆 Credits สูงสุดเมื่อหมดเวลา = ชนะ!
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SETUP (Host / Bot) ═══ -->
+<div class="screen" id="scSetup">
+  <div class="wrap">
+    <button class="btn-sm btn-pu" onclick="go('scMenu')">← กลับ</button>
+    <h1 id="setupTitle">⚙️ ตั้งค่า</h1>
+    <div class="card">
+      <h3>🎭 อวตารของคุณ</h3>
+      <div style="display:flex;align-items:center;gap:12px;padding:10px;
+        background:rgba(10,30,45,.5);border-radius:12px;border:1.5px dashed rgba(34,211,238,.5)">
+        <div style="font-size:2.4rem;line-height:1" id="setupAvatar">😎</div>
+        <div style="flex:1;font-size:.78rem;color:#7dd3fc;font-weight:800;line-height:1.35">
+          ระบบสุ่มอัตโนมัติ<br><b style="color:#22d3ee">ไม่ซ้ำกับคนอื่นในห้อง</b>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>📚 ระดับคำศัพท์</h3>
+      <div class="chips" id="gradeChips"></div>
+    </div>
+    <div class="card">
+      <h3>📝 เลือกคำศัพท์
+        <span id="wordCountBadge" style="font-family:'JetBrains Mono',monospace;
+          font-size:.72rem;color:#4ade80;background:rgba(34,197,94,.18);padding:2px 8px;
+          border-radius:6px;margin-left:6px">-/-</span>
+      </h3>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px;
+        background:rgba(10,30,45,.4);border-radius:11px">
+        <div style="flex:1;font-size:.82rem;color:#7dd3fc;font-weight:800;line-height:1.35"
+          id="wordCountText">โหลด...</div>
+        <button class="btn-sm btn-cy" onclick="openWordSelectModal()" style="flex-shrink:0">ดู/แก้ไข</button>
+      </div>
+    </div>
+    <div class="card" id="diffCard" style="display:none">
+      <h3>🤖 ความยากบอท</h3>
+      <div class="chips" id="diffChips">
+        <button class="chip diff-chip" data-v="easy" onclick="setDiff('easy')">😊 ง่าย</button>
+        <button class="chip diff-chip active" data-v="medium" onclick="setDiff('medium')">😐 ปานกลาง</button>
+        <button class="chip diff-chip" data-v="hard" onclick="setDiff('hard')">😈 ยาก</button>
+      </div>
+    </div>
+    <div class="card" id="timeCard">
+      <h3>⏱️ เวลาเล่น</h3>
+      <div class="chips" id="timeChips">
+        <button class="chip time-chip" data-v="180" onclick="setTime(180)">3 นาที</button>
+        <button class="chip time-chip" data-v="300" onclick="setTime(300)">5 นาที</button>
+        <button class="chip time-chip active" data-v="420" onclick="setTime(420)">7 นาที</button>
+        <button class="chip time-chip" data-v="600" onclick="setTime(600)">10 นาที</button>
+      </div>
+    </div>
+    <button class="btn btn-gr" id="setupNextBtn" onclick="proceedSetup()" style="justify-content:center">
+      <div class="btn-title" style="text-align:center;width:100%">▶ ถัดไป</div>
+    </button>
+  </div>
+</div>
+
+<!-- ═══ LOBBY ═══ -->
+<div class="screen" id="scLobby">
+  <div class="wrap">
+    <h1>🎤 ห้องรอ</h1>
+    <div class="room-box">
+      <div style="color:#7dd3fc;font-size:.85rem">🔑 รหัสห้อง</div>
+      <div class="room-code" id="roomCodeDisplay">----</div>
+      <div id="connStatus" class="conn-status">⏳ กำลังเชื่อมต่อ...</div>
+      <div id="qrcode"></div>
+      <div class="room-url" id="roomUrlDisplay"></div>
+      <div style="margin-top:10px">
+        <button class="btn-sm btn-cy" onclick="copyJoinLink()">📋 คัดลอกลิงก์</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>👥 ผู้เล่น (<span id="playerCount">0</span>/10)</h3>
+      <div id="playersList"></div>
+    </div>
+    <button class="btn btn-gr" id="startGameBtn" onclick="hostStartGame()" disabled
+      style="justify-content:center">
+      <div class="btn-title" style="text-align:center;width:100%">⏳ รอผู้เล่น</div>
+    </button>
+    <button class="btn btn-pu" onclick="if(confirm('ออกจากห้อง?'))location.reload()"
+      style="justify-content:center">
+      <div class="btn-title" style="text-align:center;width:100%">🔄 ยกเลิก</div>
+    </button>
+  </div>
+</div>
+
+<!-- ═══ JOIN ═══ -->
+<div class="screen" id="scJoin">
+  <div class="wrap">
+    <button class="btn-sm btn-pu" onclick="go('scMenu')">← กลับ</button>
+    <h1>🎮 เข้าร่วมเกม</h1>
+    <div class="card">
+      <label>🔑 รหัสห้อง</label>
+      <input type="text" class="code" id="joinCode" maxlength="4" placeholder="XXXX" autocomplete="off">
+      <label>📝 ชื่อของคุณ</label>
+      <input type="text" id="joinName" maxlength="14" placeholder="เช่น Somchai" autocomplete="off">
+    </div>
+    <button class="btn btn-gr" id="joinBtn" onclick="playerJoin()" style="justify-content:center">
+      <div class="btn-title" style="text-align:center;width:100%">🚀 เข้าร่วม</div>
+    </button>
+    <div id="joinMsg" style="text-align:center;color:#f87171;font-weight:800;
+      min-height:20px;font-size:.85rem;margin-top:8px"></div>
+  </div>
+</div>
+
+<!-- ═══ WAIT ═══ -->
+<div class="screen" id="scWait">
+  <div style="text-align:center;padding:60px 20px">
+    <div class="spinner"></div>
+    <h2 style="margin-top:16px">⏳ รอ Host เริ่มเกม...</h2>
+    <div style="font-size:3.4rem;margin:14px 0" id="waitAvatar">😎</div>
+    <p>คุณ: <span id="waitName" style="color:#22d3ee;font-weight:900">-</span></p>
+    <p style="margin-top:10px;color:#7dd3fc;font-weight:800;font-size:.85rem">
+      🔐 เตรียมเลือกรหัสผ่านเพื่อป้องกัน Credits!
+    </p>
+  </div>
+</div>
+
+<!-- ═══ PASSWORD SELECT ═══ -->
+<div class="screen" id="scPassword">
+  <div class="wrap">
+    <h1>🔐 เลือกรหัสผ่าน</h1>
+    <p class="tagline">รหัสนี้ป้องกัน Credits ของคุณ · จดจำไว้ให้ดี!</p>
+    <div class="card">
+      <h3 style="text-align:center">เลือก 1 จาก 5 รหัส</h3>
+      <div class="pwd-grid" id="pwdGrid"></div>
+    </div>
+    <button class="btn btn-cy" id="pwdConfirmBtn" onclick="confirmPassword()" disabled
+      style="justify-content:center">
+      <div class="btn-title" style="text-align:center;width:100%">✅ ยืนยันรหัสผ่าน</div>
+    </button>
+    <div id="waitingPwd" style="text-align:center;color:#7dd3fc;font-weight:800;
+      font-size:.85rem;margin-top:10px;display:none">
+      ⏳ รอผู้เล่นคนอื่นเลือกรหัส...
+    </div>
+  </div>
+</div>
+
+<!-- ═══ GAME ═══ -->
+<div class="screen" id="scGame">
+  <div class="game-hud">
+    <div class="hud-avatar" id="hudAvatar">😎</div>
+    <div class="hud-pill credits">💰 <span id="hudCredits">0</span></div>
+    <div class="hud-pill mult" id="hudMult" style="display:none">x<span id="hudMultVal">1</span></div>
+    <div class="hud-spacer"></div>
+    <div class="hud-pill timer" id="hudTimer">⏱️ 7:00</div>
+    <button class="btn-sm btn-pu" onclick="if(confirm('ออกจากเกม?'))location.reload()"
+      style="margin:0">✕</button>
+  </div>
+  <div class="terminal-wrap">
+    <div class="terminal" id="terminal" style="max-height:22vh">
+      <div class="term-line"><span class="prompt">&gt;</span>
+        <span class="info">system.init</span> — Cyber Hack v2.0</div>
+      <div class="term-line"><span class="prompt">&gt;</span>
+        <span class="ok">authentication.OK</span> — ยินดีต้อนรับ <span id="termName">Hacker</span></div>
+      <div class="term-line"><span class="prompt">&gt;</span>
+        <span class="info">mission:</span> ตอบคำถามเพื่อรับ Credits</div>
+      <div class="term-line" style="margin-top:6px"><span class="prompt">&gt;</span>
+        <span class="info">cmd:</span> <span id="termStatus">READY</span><span class="cursor"></span></div>
+    </div>
+    <div class="q-head" id="qHead" style="display:none">
+      <span style="color:#4ade80;font-weight:900;font-size:.75rem" id="qLabel">Q1</span>
+      <div class="q-timebar-outer"><div class="q-timebar" id="qTimeBar"></div></div>
+      <span class="q-time-num" id="qTimeNum">15</span>
+    </div>
+    <div class="terminal" id="questionTerm" style="display:none;max-height:22vh;flex:0 0 auto">
+      <div class="term-line"><span class="prompt">&gt;</span>
+        <span class="info">decrypt.challenge —</span></div>
+      <div class="term-question" id="qText">...</div>
+    </div>
+    <div class="ans-grid" id="ansGrid" style="display:none"></div>
+    <div class="lb-panel">
+      <div class="lb-title"><span>🏆 LEADERBOARD</span><span id="lbCount">0</span></div>
+      <div id="lbList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RESULT ═══ -->
+<div class="screen" id="scResult">
+  <div class="wrap">
+    <div class="result-hero">
+      <div class="result-title" id="resultTitle">🏆</div>
+      <div class="result-sub" id="resultSub"></div>
+    </div>
+    <div class="result-podium" id="resultPodium"></div>
+    <div style="display:flex;gap:6px;justify-content:center;margin-top:20px;flex-wrap:wrap">
+      <button class="btn-sm btn-cy" onclick="location.reload()">🔄 เล่นอีก</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ REWARD MODAL ═══ -->
+<div class="modal" id="rewardModal">
+  <div class="modal-box">
+    <div class="modal-title">🎁 เลือกรางวัล 1 ใน 3</div>
+    <div class="modal-sub">รางวัลสุ่ม · บางรางวัลคือ 💻 HACK</div>
+    <div class="reward-cards" id="rewardCards"></div>
+  </div>
+</div>
+
+<!-- ═══ HACK MODAL ═══ -->
+<div class="modal" id="hackModal">
+  <div class="modal-box">
+    <div class="modal-title">💻 HACKING MODE</div>
+    <div class="modal-sub" id="hackSub">เลือกเป้าหมาย · ทายรหัสผ่านของเขา</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#f87171;
+      padding:8px;background:rgba(220,38,38,.15);border-radius:8px;
+      border:1px solid rgba(220,38,38,.4);margin-bottom:10px">
+      <span style="color:#22d3ee">&gt; target.list</span> — เลือกเป้าหมาย:
+    </div>
+    <div class="hack-targets" id="hackTargets"></div>
+    <div id="pwdGuessWrap" style="display:none">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.78rem;color:#f87171;
+        padding:8px;background:rgba(220,38,38,.15);border-radius:8px;
+        border:1px solid rgba(220,38,38,.4);margin-bottom:10px">
+        <span style="color:#22d3ee">&gt; guess.pwd</span> — ทายรหัสของ
+        <span id="guessTargetName" style="color:#fbbf24"></span>:
+      </div>
+      <div class="pwd-guess" id="pwdGuessList"></div>
+    </div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn-sm btn-pu" onclick="closeHackModal(true)">✕ ยกเลิก (เสียโอกาส)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RECOVERY MODAL ═══ -->
+<div class="modal" id="recoveryModal">
+  <div class="modal-box">
+    <div class="modal-title" style="color:#f87171">🔧 SYSTEM COMPROMISED!</div>
+    <div class="modal-sub" id="recoverySub">คุณถูกแฮก! กู้คืนระบบเพื่อกลับมาเล่นต่อ</div>
+    <div class="mini-wrap" id="miniWrap"></div>
+  </div>
+</div>
+
+<!-- ═══ WORD SELECT MODAL ═══ -->
+<div class="word-modal" id="wordSelectModal">
+  <div class="word-modal-head">
+    <div class="wm-title">📝 เลือกคำศัพท์</div>
+    <div class="wm-count" id="wmCount">0/0</div>
+  </div>
+  <div class="word-toolbar">
+    <button class="chip" onclick="selectAllWords()">✅ ทั้งหมด</button>
+    <button class="chip" onclick="deselectAllWords()">❌ ไม่เลือก</button>
+    <button class="chip" onclick="randomSelectWords()">🎲 สุ่ม 10</button>
+    <button class="chip" onclick="resetWordsDefault()">🔄 ค่าเริ่มต้น</button>
+  </div>
+  <input type="text" class="word-search" id="wordSearch" placeholder="🔍 ค้นหาคำ..."
+    oninput="filterWordGrid()" autocomplete="off">
+  <div class="word-hint">💡 ลากเมาส์/นิ้วเลือกหลายคำ · ลากจากคำที่เลือก = ยกเลิก</div>
+  <div class="word-warn" id="wordWarn"></div>
+  <div class="word-grid" id="wordGrid"></div>
+  <div class="word-modal-foot">
+    <button class="btn-sm btn-pu" onclick="closeWordSelectModal()">❌ ยกเลิก</button>
+    <button class="btn-sm btn-gr" id="wordConfirmBtn" onclick="confirmWordSelection()">✅ ยืนยัน</button>
+  </div>
+</div>
+
+<div class="sel-box" id="selBox"></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/mqtt@4.3.7/dist/mqtt.min.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   VOCAB POOLS
+   ═══════════════════════════════════════════════════════════════ */
+const VOCAB = {
+p1:`ant|มด
+apple|แอ๊ปเปิ้ล
+bag|กระเป๋า
+ball|ลูกบอล
+banana|กล้วย
+bat|ค้างคาว
+bear|หมี
+bee|ผึ้ง
+big|ใหญ่
+bird|นก
+book|หนังสือ
+box|กล่อง
+boy|เด็กผู้ชาย
+bread|ขนมปัง
+brother|พี่ชาย/น้องชาย
+bus|รถประจำทาง
+cake|ขนมเค้ก
+candle|เทียนไข
+car|รถยนต์
+cat|แมว
+chair|เก้าอี้
+close|ปิด
+count|นับ
+cup|ถ้วย
+cut|ตัด
+dad|พ่อ
+dance|เต้นรำ
+dog|สุนัข
+door|ประตู
+egg|ไข่
+eye|ตา
+face|หน้า
+fish|ปลา
+flower|ดอกไม้
+food|อาหาร
+fox|สุนัขจิ้งจอก
+fruit|ผลไม้
+giraffe|ยีราฟ
+girl|เด็กผู้หญิง
+good|ดี
+happy|มีความสุข
+head|ศีรษะ
+house|บ้าน
+key|ลูกกุญแจ
+king|พระราชา
+leg|ขา
+lion|สิงโต
+long|ยาว
+man|ผู้ชาย
+map|แผนที่
+milk|นม
+mom|แม่
+monkey|ลิง
+moon|ดวงจันทร์
+mother|มารดา
+mouth|ปาก
+orange|ส้ม
+owl|นกฮูก
+panda|หมีแพนด้า
+park|สวนสาธารณะ
+pen|ปากกา
+pencil|ดินสอ
+play|เล่น
+pool|สระน้ำ
+queen|ราชินี
+rabbit|กระต่าย
+ring|แหวน
+room|ห้อง
+sad|เศร้า
+school|โรงเรียน
+see|เห็น
+sheep|แกะ
+ship|เรือ
+sing|ร้องเพลง
+sister|พี่สาว/น้องสาว
+sit|นั่ง
+small|เล็ก
+snake|งู
+song|เพลง
+star|ดวงดาว
+stop|หยุด
+student|นักเรียน
+sun|ดวงอาทิตย์
+tree|ต้นไม้
+walk|เดิน
+water|น้ำ
+woman|ผู้หญิง
+zebra|ม้าลาย
+zoo|สวนสัตว์`,
+p2:`again|อีกครั้ง
+animal|สัตว์
+answer|คำตอบ
+arm|แขน
+artist|ศิลปิน
+ask|ถาม
+aunt|ป้า
+balloon|ลูกโป่ง
+bank|ธนาคาร
+bed|เตียงนอน
+boat|เรือ
+bottle|ขวด
+bowl|ชาม
+butterfly|ผีเสื้อ
+candy|ลูกอม
+cap|หมวกแก้ป
+card|บัตรอวยพร
+cheese|เนยแข็ง
+cherry|ผลเชอร์รี่
+chicken|ไก่
+circle|วงกลม
+clean|สะอาด
+clock|นาฬิกา
+cook|ทำอาหาร
+cow|วัว
+dish|จาน
+elephant|ช้าง
+family|ครอบครัว
+finish|เสร็จ
+floor|พื้น
+fly|บิน
+friend|เพื่อน
+frog|กบ
+grape|องุ่น
+hand|มือ
+hat|หมวก
+help|ช่วยเหลือ
+hot|ร้อน
+hungry|หิว
+jam|แยม
+job|งาน
+kite|ว่าว
+knee|เข่า
+knife|มีด
+letter|จดหมาย
+magic|มายากล
+mango|มะม่วง
+music|ดนตรี
+new|ใหม่
+number|จำนวน
+old|แก่
+paper|กระดาษ
+pea|ถั่ว
+peach|ลูกพีช
+people|คน
+picture|รูปภาพ
+pig|หมู
+pillow|หมอน
+pineapple|สัปปะรด
+puppy|ลูกสุนัข
+quiet|เงียบ
+rain|ฝน
+rice|ข้าว
+right|ขวา
+robot|หุ่นยนต์
+rock|หิน
+rope|เชือก
+run|วิ่ง
+sandwich|แซนด์วิช
+shark|ฉลาม
+shirt|เสื้อ
+shoes|รองเท้า
+skirt|กระโปรง
+socks|ถุงเท้า
+story|เรื่องราว
+strawberry|สตรอเบอร์รี่
+tennis|เทนนิส
+today|วันนี้
+umbrella|ร่ม
+uncle|ลุง
+watermelon|แตงโม
+week|สัปดาห์
+whale|วาฬ
+window|หน้าต่าง
+young|อายุน้อย`,
+p3:`act|แสดง
+air|อากาศ
+airplane|เครื่องบิน
+art|ศิลปะ
+basket|ตะกร้า
+beautiful|สวย
+bedroom|ห้องนอน
+bell|กระดิ่ง
+bicycle|จักรยาน
+bike|จักรยาน
+body|ร่างกาย
+borrow|ขอยืม
+breakfast|อาหารเช้า
+bug|แมลง
+buy|ซื้อ
+carrot|แครอท
+castle|ปราสาท
+chance|โอกาส
+change|เปลี่ยน
+classroom|ห้องเรียน
+coffee|กาแฟ
+computer|คอมพิวเตอร์
+correct|ถูกต้อง
+daughter|ลูกสาว
+dinner|อาหารเย็น
+dirty|สกปรก
+doctor|แพทย์
+drink|ดื่ม
+drum|กลอง
+duck|เป็ด
+eat|กิน
+finger|นิ้วมือ
+flag|ธง
+garden|สวน
+give|ให้
+grass|หญ้า
+guitar|กีตาร์
+hippo|ฮิปโป
+hit|ตี
+homework|การบ้าน
+honey|น้ำผึ้ง
+horse|ม้า
+jacket|เสื้อ
+jeans|กางเกงยีนส์
+juice|น้ำผลไม้
+kitten|ลูกแมว
+lunch|อาหารกลางวัน
+math|คณิตศาสตร์
+meat|เนื้อ
+mirror|กระจก
+month|เดือน
+musician|นักดนตรี
+neck|คอ
+noodle|ก๋วยเตี๋ยว
+nurse|พยาบาล
+parrot|นกแก้ว
+penguin|เพนกวิน
+photo|รูปถ่าย
+piano|เปียโน
+pizza|พิซซ่า
+potato|มันฝรั่ง
+question|คำถาม
+read|อ่าน
+river|แม่น้ำ
+salt|เกลือ
+sand|ทราย
+seal|แมวน้ำ
+shoulder|ไหล่
+sleep|นอน
+smile|ยิ้ม
+soap|สบู่
+soldier|ทหาร
+son|ลูกชาย
+soup|ซุป
+speak|พูด
+study|เรียน
+sweet|หวาน
+tiger|เสือ
+truck|รถบรรทุก
+turtle|เต่าทะเล
+violin|ไวโอลิน
+wash|ล้าง
+watch|นาฬิกา
+wolf|หมาป่า
+write|เขียน
+wrong|ผิด`,
+p4:`airport|สนามบิน
+autumn|ฤดูใบไม้ร่วง
+bamboo|ไผ่
+blanket|ผ้าห่ม
+bone|กระดูก
+branch|กิ่งไม้
+buffalo|ควาย
+butter|เนย
+camel|อูฐ
+cheap|ถูก
+chocolate|ช็อคโกแลต
+choose|เลือก
+cinema|โรงหนัง
+clever|ฉลาด
+climb|ปีน
+cloudy|เมฆมาก
+coat|เสื้อโค้ท
+coconut|มะพร้าว
+coin|เหรียญ
+cold|หวัด
+cousin|ลูกพี่ลูกน้อง
+deep|ลึก
+dentist|หมอฟัน
+desert|ทะเลทราย
+dictionary|พจนานุกรม
+dolphin|โลมา
+drive|ขับรถ
+dry|แห้ง
+dust|ฝุ่น
+earth|โลก
+easy|ง่าย
+evening|ตอนเย็น
+exercise|ออกกำลังกาย
+expensive|แพง
+fence|รั้ว
+film|หนัง
+fork|ส้อม
+funny|ตลก
+game|เกม
+ghost|ผี
+gift|ของขวัญ
+glasses|แว่นตา
+grow|เติบโต
+gym|ยิม
+health|สุขภาพ
+heart|หัวใจ
+hill|เนินเขา
+holiday|วันหยุด
+hospital|โรงพยาบาล
+hotel|โรงแรม
+insect|แมลง
+jungle|ป่า
+kangaroo|จิงโจ้
+kitchen|ครัว
+know|รู้
+leaf|ใบไม้
+library|ห้องสมุด
+market|ตลาด
+medicine|ยา
+midnight|เที่ยงคืน
+morning|ตอนเช้า
+mountain|ภูเขา
+movie|หนัง
+night|กลางคืน
+octopus|ปลาหมึก
+office|สำนักงาน
+onion|หัวหอม
+parents|พ่อแม่
+pepper|พริกไทย
+planet|ดาวเคราะห์
+playground|สนามเด็กเล่น
+present|ของขวัญ
+pretty|สวย
+price|ราคา
+pull|ดึง
+push|ผลัก
+rainbow|รุ้ง
+restaurant|ร้านอาหาร
+road|ถนน
+rocket|จรวด
+rose|ดอกกุหลาบ
+science|วิทยาศาสตร์
+sea|ทะเล
+sell|ขาย
+slow|ช้า
+smoke|ควัน
+snack|ขนม
+sour|เปรี้ยว
+space|อวกาศ
+spicy|เผ็ด
+spoon|ช้อน
+spring|ฤดูใบไม้ผลิ
+station|สถานี
+summer|ฤดูร้อน
+sunny|แดดออก
+tail|หาง
+teach|สอน
+ticket|ตั๋ว
+tomorrow|พรุ่งนี้
+vegetable|ผัก
+weather|อากาศ
+winter|ฤดูหนาว
+yesterday|เมื่อวาน
+yummy|อร่อย`,
+p5:`actor|นักแสดงชาย
+actress|นักแสดงหญิง
+adventure|ผจญภัย
+author|ผู้แต่ง
+bridge|สะพาน
+buddy|เพื่อน
+build|สร้าง
+busy|ยุ่ง
+button|ปุ่ม
+calendar|ปฏิทิน
+camera|กล้อง
+careful|ระวัง
+career|อาชีพ
+carry|ถือ
+cereal|ซีเรียล
+company|บริษัท
+country|ประเทศ
+crocodile|จระเข้
+curry|แกง
+curtain|ม่าน
+dangerous|อันตราย
+delicious|อร่อย
+different|ต่าง
+dinosaur|ไดโนเสาร์
+dream|ฝัน
+driver|คนขับ
+famous|มีชื่อเสียง
+forest|ป่า
+guava|ฝรั่ง
+habit|นิสัย
+haircut|ตัดผม
+hero|ฮีโร่
+hobby|งานอดิเรก
+kind|ใจดี
+knock|เคาะ
+koala|โคอาล่า
+lake|ทะเลสาบ
+laugh|หัวเราะ
+learn|เรียนรู้
+light|ไฟ
+magazine|นิตยสาร
+marry|แต่งงาน
+menu|เมนู
+money|เงิน
+mosquito|ยุง
+museum|พิพิธภัณฑ์
+newspaper|หนังสือพิมพ์
+ocean|มหาสมุทร
+oven|เตาอบ
+parade|ขบวนแห่
+pilot|นักบิน
+plan|แผน
+plate|จาน
+popular|นิยม
+poster|โปสเตอร์
+purse|กระเป๋า
+reporter|ผู้สื่อข่าว
+rhino|แรด
+rich|รวย
+sailor|กะลาสี
+season|ฤดู
+sharp|คม
+shout|ตะโกน
+shrimp|กุ้ง
+smart|ฉลาด
+sound|เสียง
+steal|ขโมย
+storm|พายุ
+strong|แข็งแรง
+sunflower|ทานตะวัน
+sweep|กวาด
+tent|เต็นท์
+thick|หนา
+think|คิด
+towel|ผ้าเช็ดตัว
+trash|ขยะ
+trip|เดินทาง
+vacation|วันหยุด
+vet|สัตวแพทย์
+voice|เสียง
+wait|รอ
+waiter|บริกร
+win|ชนะ
+world|โลก
+yawn|หาว`,
+p6:`adventure|ผจญภัย
+ancient|โบราณ
+aquarium|พิพิธภัณฑ์สัตว์น้ำ
+astronaut|นักบินอวกาศ
+backpack|เป้
+brain|สมอง
+brave|กล้าหาญ
+breath|ลมหายใจ
+bride|เจ้าสาว
+cafeteria|โรงอาหาร
+capital|เมืองหลวง
+celebrate|ฉลอง
+ceremony|พิธี
+character|ตัวละคร
+charity|กุศล
+classmate|เพื่อนร่วมชั้น
+community|ชุมชน
+competition|แข่งขัน
+concert|คอนเสิร์ต
+confident|มั่นใจ
+cough|ไอ
+creative|สร้างสรรค์
+culture|วัฒนธรรม
+debate|โต้วาที
+decide|ตัดสินใจ
+democracy|ประชาธิปไตย
+detective|นักสืบ
+diamond|เพชร
+difficult|ยาก
+direction|ทิศทาง
+discuss|อภิปราย
+donate|บริจาค
+education|การศึกษา
+electricity|ไฟฟ้า
+energy|พลังงาน
+engineer|วิศวกร
+environment|สิ่งแวดล้อม
+escape|หนี
+excellent|เยี่ยม
+exciting|ตื่นเต้น
+exhibition|นิทรรศการ
+expect|คาดหวัง
+explore|สำรวจ
+fashion|แฟชั่น
+fever|ไข้
+flood|น้ำท่วม
+fluent|คล่องแคล่ว
+fresh|สด
+friendship|มิตรภาพ
+garbage|ขยะ
+gentleman|สุภาพบุรุษ
+geography|ภูมิศาสตร์
+handsome|หล่อ
+helmet|หมวกกันน็อค
+honor|เกียรติ
+immediately|ทันที
+important|สำคัญ
+information|ข้อมูล
+intelligent|ฉลาด
+interview|สัมภาษณ์
+introduce|แนะนำ
+invent|ประดิษฐ์
+invite|เชิญ
+journey|เดินทาง
+knowledge|ความรู้
+language|ภาษา
+leather|หนัง
+liquid|ของเหลว
+message|ข้อความ
+mistake|ผิดพลาด
+modern|ทันสมัย
+neighbor|เพื่อนบ้าน
+opinion|ความเห็น
+palace|พระราชวัง
+passport|หนังสือเดินทาง
+peace|สันติภาพ
+personality|บุคลิกภาพ
+photographer|ช่างภาพ
+polite|สุภาพ
+pollution|มลพิษ
+president|ประธานาธิบดี
+prince|เจ้าชาย
+princess|เจ้าหญิง
+prize|รางวัล
+problem|ปัญหา
+professional|มืออาชีพ
+publish|ตีพิมพ์
+reason|เหตุผล
+recipe|สูตรอาหาร
+refrigerator|ตู้เย็น
+remember|จำ
+respect|นับถือ
+review|ทบทวน
+route|เส้นทาง
+rule|กฎ
+save|ประหยัด
+search|ค้นหา
+situation|สถานการณ์
+smooth|เรียบ
+solve|แก้
+souvenir|ของที่ระลึก
+survey|สำรวจ
+thief|ขโมย
+tongue|ลิ้น
+tourist|นักท่องเที่ยว
+traffic|จราจร
+transport|ขนส่ง
+useful|มีประโยชน์
+valuable|มีค่า
+vehicle|ยานพาหนะ
+volcano|ภูเขาไฟ
+whisper|กระซิบ
+wonderful|วิเศษ
+worry|กังวล`,
+extra:`white|ขาว
+green|เขียว
+pink|ชมพู
+black|ดำ
+red|แดง
+grey|เทา
+blue|น้ำเงิน
+brown|น้ำตาล
+yellow|เหลือง
+orange|ส้ม
+square|สี่เหลี่ยมจัตุรัส
+triangle|สามเหลี่ยม
+rectangle|สี่เหลี่ยมผืนผ้า
+oval|วงรี
+cube|ลูกบาศก์
+Sunday|วันอาทิตย์
+Monday|วันจันทร์
+Tuesday|วันอังคาร
+Wednesday|วันพุธ
+Thursday|วันพฤหัสบดี
+Friday|วันศุกร์
+Saturday|วันเสาร์
+January|มกราคม
+February|กุมภาพันธ์
+March|มีนาคม
+April|เมษายน
+May|พฤษภาคม
+June|มิถุนายน
+July|กรกฎาคม
+August|สิงหาคม
+September|กันยายน
+October|ตุลาคม
+November|พฤศจิกายน
+December|ธันวาคม
+one|หนึ่ง
+two|สอง
+three|สาม
+four|สี่
+five|ห้า
+six|หก
+seven|เจ็ด
+eight|แปด
+nine|เก้า
+ten|สิบ
+first|ที่หนึ่ง
+second|ที่สอง
+third|ที่สาม
+fourth|ที่สี่
+fifth|ที่ห้า
+tenth|ที่สิบ`
+};
+
+const POOLS = {};
+for (const k in VOCAB) {
+  const seen = new Set();
+  POOLS[k] = VOCAB[k].trim().split('\n').map(l => {
+    const p = l.split('|');
+    const en = (p[0] || '').trim();
+    const th = (p[1] || '').trim();
+    if (!en || !th) return null;
+    const lk = en.toLowerCase();
+    if (seen.has(lk)) return null;
+    seen.add(lk);
+    return { en, th };
+  }).filter(Boolean);
+}
+POOLS.all = [];
+{
+  const s = new Set();
+  for (const k in POOLS) {
+    if (k === 'all') continue;
+    POOLS[k].forEach(w => {
+      const lk = w.en.toLowerCase();
+      if (!s.has(lk)) { s.add(lk); POOLS.all.push(w); }
+    });
+  }
+}
+
+const GRADES = [
+  { id: 'p1', name: 'ป.1' }, { id: 'p2', name: 'ป.2' }, { id: 'p3', name: 'ป.3' },
+  { id: 'p4', name: 'ป.4' }, { id: 'p5', name: 'ป.5' }, { id: 'p6', name: 'ป.6' },
+  { id: 'extra', name: 'พิเศษ' }, { id: 'all', name: 'ทั้งหมด' }
+];
+
+const AVATARS = ['🦊','🐱','🐼','🐸','🦉','🐯','🐧','🐨','🦁','🐵','🐺','🦄','🐙','🦈','🐊','🦖','😎','🤖','👻','👽','🐉','🦇','🐢','🐝','🦋','🎃','💀','🤡'];
+const DEFAULT_AVATAR = '😎';
+
+const BOT_CONF = {
+  easy:   { min: 5800, max: 8800, acc: 0.45, hackAcc: 0.30 },
+  medium: { min: 3800, max: 6200, acc: 0.68, hackAcc: 0.50 },
+  hard:   { min: 1500, max: 2800, acc: 0.92, hackAcc: 0.75 }
+};
+
+const PASSWORDS = [
+  'WHODAG00SE','Bluebird61','RedPanda42','CyberFox19','N1njaH4ck',
+  'AlphaWolf7','Zer0C00l','Ghost2024','R0b0tKing','DataStream',
+  'Pr0t0c0l','XyZ_W1zard','C0d3_Monk','PixelMage','N3tRunn3r',
+  'V1rtual_V','Silent0wl','D4rkP0ny','Sn0wB1rd','St0rmC4t',
+  'R4inB0w42','Sunsh1ne7','M00nL1ght','Thund3rX','BlazeF1re',
+  'Cryp70K1ng','H4shM4st3r','Qu4ntumX','Byt3M3','N30nD3m0n'
+];
+
+const REWARDS = [
+  { type: 'credits', val: 10, name: 'Lil Bot', ico: '🤖' },
+  { type: 'credits', val: 20, name: 'Angry Bot', ico: '😡' },
+  { type: 'credits', val: 30, name: 'Happy Bot', ico: '😊' },
+  { type: 'credits', val: 50, name: 'Lovely Bot', ico: '🥰' },
+  { type: 'mult', val: 2, name: 'Buddy Bot', ico: '💪' },
+  { type: 'mult', val: 3, name: 'Brainy Bot', ico: '🧠' },
+  { type: 'nothing', val: 0, name: 'Watson', ico: '😐' },
+  { type: 'hack', val: 0, name: 'Mega Bot', ico: '💻' }
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   UTILS
+   ═══════════════════════════════════════════════════════════════ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const rnd = (a,b) => a + Math.random()*(b-a);
+const pick = a => a[Math.floor(Math.random()*a.length)];
+function shuffle(a){const r=a.slice();for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+function fmtTime(s){s=Math.max(0,Math.floor(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function genCode(){const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let r='';for(let i=0;i<4;i++)r+=c[Math.floor(Math.random()*c.length)];return r;}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo(0,0);}
+function toast(m, ms){const t=$('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),ms||1800);}
+function randomAvatar(exclude){const ex=exclude||new Set();const pool=AVATARS.filter(a=>!ex.has(a));return pool.length?pick(pool):pick(AVATARS);}
+
+/* Audio */
+let ac=null;
+function iA(){try{if(!ac)ac=new (window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();}catch(e){}}
+function tone(f,st,dur,vol,type){if(!ac)return;const t0=ac.currentTime+(st||0);const o=ac.createOscillator(),g=ac.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(0.0001,t0);g.gain.exponentialRampToValueAtTime(vol||0.1,t0+0.03);g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);o.connect(g);g.connect(ac.destination);o.start(t0);o.stop(t0+dur+0.05);}
+function sCorrect(){iA();[523.25,659.25,783.99].forEach((f,i)=>tone(f,i*0.06,0.22,0.1));}
+function sWrong(){iA();tone(196,0,0.22,0.12,'sawtooth');tone(146.83,0.14,0.3,0.12,'sawtooth');}
+function sClick(){iA();tone(880,0,0.05,0.08,'square');}
+function sCash(){iA();[880,1174.66,1567.98].forEach((f,i)=>tone(f,i*0.06,0.25,0.1));}
+function sHack(){iA();[220,277.18,329.63,440].forEach((f,i)=>tone(f,i*0.08,0.3,0.11,'square'));}
+function sSteal(){iA();[392,523.25,659.25,880,1046.5].forEach((f,i)=>tone(f,i*0.07,0.32,0.12));}
+function sFail(){iA();tone(200,0,0.35,0.13,'sawtooth');tone(160,0.2,0.4,0.13,'sawtooth');}
+function sRecover(){iA();[523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(f,i*0.09,0.4,0.12));}
+function sWin(){iA();[523.25,659.25,783.99,1046.5,1318.5].forEach((f,i)=>tone(f,i*0.11,0.5,0.14));}
+function sLose(){iA();[392,349.23,293.66,220].forEach((f,i)=>tone(f,i*0.14,0.42,0.12));}
+function sAlarm(){iA();for(let i=0;i<3;i++){tone(880,i*0.2,0.14,0.12,'square');tone(660,i*0.2+0.08,0.12,0.1,'square');}}
+function sTick(){iA();tone(1500,0,0.02,0.04,'square');}
+function sPwd(){iA();tone(1200,0,0.08,0.1,'square');tone(1500,0.06,0.1,0.09,'square');}
+
+/* ═══════════════════════════════════════════════════════════════
+   STATE
+   ═══════════════════════════════════════════════════════════════ */
+const G = {
+  mode: null, // 'bot' | 'host' | 'client'
+  isHost: false, roomCode: '',
+  myId: 'p_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+  myName: 'Hacker', myAvatar: DEFAULT_AVATAR, myPassword: '',
+  players: {},  // for host/client: { id: {name, avatar, credits, mult, isBot} }
+  passwordMap: {}, // host only
+  config: { gradeId: 'p1', selectedWords: [], gameTime: 420, botDiff: 'medium' },
+  phase: 'lobby',
+  timeLeft: 0, timerId: null, timeSyncAt: 0,
+  currentQ: null, qStartTs: 0, qTimerId: null, qCount: 0,
+  passwordOptions: [], myPasswordChosen: false,
+  hackState: null, hackInProgress: false,
+  recoveryActive: false,
+  wordSelTemp: null, wordSelFilter: '',
+  stateTimer: null,
+  botTimers: {},
+  _rewardTokens: {},
+  _currentRewards: null,
+  _currentRewardToken: null,
+  _pendingHack: null
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   WORD SELECTOR
+   ═══════════════════════════════════════════════════════════════ */
+const MIN_WORDS = 4;
+function getWordsForGrade(gid){ return POOLS[gid] || POOLS.all || []; }
+function wordsKey(gid){ return 'cyberhack_words_' + gid; }
+function loadSelectedWords(gid){
+  const all = getWordsForGrade(gid).map(w => w.en.toLowerCase());
+  try {
+    const raw = localStorage.getItem(wordsKey(gid));
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length >= MIN_WORDS) {
+        const valid = arr.filter(w => all.includes(w));
+        if (valid.length >= MIN_WORDS) return valid;
+      }
+    }
+  } catch(e){}
+  return all.slice();
+}
+function saveSelectedWords(gid, arr){ try{ localStorage.setItem(wordsKey(gid), JSON.stringify(arr)); }catch(e){} }
+function updateWordCountBadge(){
+  const all = getWordsForGrade(G.config.gradeId);
+  const sel = G.config.selectedWords || [];
+  const badge = $('wordCountBadge');
+  const txt = $('wordCountText');
+  if (badge) badge.textContent = `${sel.length}/${all.length}`;
+  if (txt) {
+    const g = GRADES.find(x => x.id === G.config.gradeId);
+    txt.innerHTML = `<b style="color:#22d3ee">${g ? g.name : ''}</b> · เลือก ${sel.length} จาก ${all.length} คำ`;
+  }
+}
+function openWordSelectModal(){
+  G.wordSelTemp = new Set(G.config.selectedWords || []);
+  G.wordSelFilter = '';
+  const s = $('wordSearch'); if (s) s.value = '';
+  renderWordSelector();
+  $('wordSelectModal').classList.add('on');
+}
+function closeWordSelectModal(){ $('wordSelectModal').classList.remove('on'); G.wordSelTemp = null; }
+function renderWordSelector(){
+  const grid = $('wordGrid'); if (!grid) return;
+  const all = getWordsForGrade(G.config.gradeId);
+  const filter = (G.wordSelFilter || '').toLowerCase().trim();
+  const list = filter ? all.filter(w => w.en.toLowerCase().includes(filter) || w.th.includes(filter)) : all;
+  if (!list.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#7dd3fc;padding:20px;font-weight:800">🔍 ไม่พบคำ</div>';
+  } else {
+    grid.innerHTML = list.map(w => {
+      const en = w.en.toLowerCase();
+      const sel = G.wordSelTemp.has(en);
+      return `<div class="word-item ${sel?'sel':''}" data-en="${esc(en)}">
+        <span class="wi-chk">${sel?'✓':''}</span>
+        <span class="wi-txt">
+          <span class="wi-en">${esc(w.en)}</span>
+          <span class="wi-th">${esc(w.th)}</span>
+        </span>
+      </div>`;
+    }).join('');
+  }
+  updateWordModalCount();
+}
+function updateWordModalCount(){
+  const c = $('wmCount'), warn = $('wordWarn'), btn = $('wordConfirmBtn');
+  const n = G.wordSelTemp ? G.wordSelTemp.size : 0;
+  const total = getWordsForGrade(G.config.gradeId).length;
+  if (c) c.textContent = `${n}/${total}`;
+  if (warn) {
+    if (n === 0) { warn.textContent = '⚠️ ต้องเลือกอย่างน้อย ' + MIN_WORDS + ' คำ'; warn.className = 'word-warn err'; }
+    else if (n < MIN_WORDS) { warn.textContent = '⚠️ เลือกอีก ' + (MIN_WORDS - n) + ' คำ'; warn.className = 'word-warn'; }
+    else warn.textContent = '';
+  }
+  if (btn) btn.disabled = (n < MIN_WORDS);
+}
+function selectAllWords(){ if(!G.wordSelTemp)return; getWordsForGrade(G.config.gradeId).forEach(w=>G.wordSelTemp.add(w.en.toLowerCase())); renderWordSelector(); }
+function deselectAllWords(){ if(!G.wordSelTemp)return; G.wordSelTemp.clear(); renderWordSelector(); }
+function randomSelectWords(){
+  if (!G.wordSelTemp) return;
+  G.wordSelTemp.clear();
+  const all = getWordsForGrade(G.config.gradeId).slice();
+  shuffle(all).slice(0, Math.min(10, all.length)).forEach(w => G.wordSelTemp.add(w.en.toLowerCase()));
+  renderWordSelector();
+}
+function resetWordsDefault(){ if(!G.wordSelTemp)return; G.wordSelTemp.clear(); getWordsForGrade(G.config.gradeId).forEach(w=>G.wordSelTemp.add(w.en.toLowerCase())); renderWordSelector(); }
+function filterWordGrid(){ const s = $('wordSearch'); G.wordSelFilter = s ? s.value : ''; renderWordSelector(); }
+function confirmWordSelection(){
+  if (!G.wordSelTemp) return;
+  if (G.wordSelTemp.size < MIN_WORDS) { toast('⚠️ ต้องเลือกอย่างน้อย ' + MIN_WORDS + ' คำ'); return; }
+  G.config.selectedWords = Array.from(G.wordSelTemp);
+  saveSelectedWords(G.config.gradeId, G.config.selectedWords);
+  updateWordCountBadge();
+  closeWordSelectModal();
+  toast('✅ บันทึกแล้ว (' + G.config.selectedWords.length + ' คำ)');
+}
+
+let dragAttached = false;
+function attachWordDrag(){
+  if (dragAttached) return;
+  dragAttached = true;
+  const grid = $('wordGrid'), box = $('selBox');
+  let dragging = false, startX = 0, startY = 0, mode = 'add';
+  let lastTargets = new Set();
+  const clearHL = () => grid.querySelectorAll('.word-item.presel').forEach(el => el.classList.remove('presel'));
+  const applyHL = (targets) => {
+    grid.querySelectorAll('.word-item.presel').forEach(el => { if (!targets.has(el.dataset.en)) el.classList.remove('presel'); });
+    targets.forEach(en => {
+      const el = grid.querySelector(`.word-item[data-en="${CSS.escape(en)}"]`);
+      if (el && !el.classList.contains('presel') && !el.classList.contains('sel')) el.classList.add('presel');
+    });
+  };
+  grid.addEventListener('pointerdown', (e) => {
+    const onCard = e.target.closest('.word-item');
+    dragging = true;
+    startX = e.clientX; startY = e.clientY;
+    lastTargets.clear();
+    if (onCard && onCard.classList.contains('sel')) { mode = 'remove'; }
+    else if (onCard) { mode = 'add'; lastTargets.add(onCard.dataset.en); applyHL(lastTargets); grid.classList.add('dragging'); }
+    else { mode = 'add'; box.classList.add('on'); box.style.left = e.clientX + 'px'; box.style.top = e.clientY + 'px'; box.style.width = '0px'; box.style.height = '0px'; grid.classList.add('dragging'); }
+    e.preventDefault();
+  });
+  document.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    if (mode === 'remove') {
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const card = el && el.closest('.word-item');
+      if (card && card.classList.contains('sel')) { card.style.opacity = '0.4'; lastTargets.add(card.dataset.en); }
+      return;
+    }
+    if (box.classList.contains('on')) {
+      const x = Math.min(startX, e.clientX), y = Math.min(startY, e.clientY);
+      const w = Math.abs(e.clientX - startX), h = Math.abs(e.clientY - startY);
+      box.style.left = x + 'px'; box.style.top = y + 'px';
+      box.style.width = w + 'px'; box.style.height = h + 'px';
+      const br = { left: x, top: y, right: x + w, bottom: y + h };
+      const newT = new Set();
+      grid.querySelectorAll('.word-item').forEach(c => {
+        const r = c.getBoundingClientRect();
+        if (r.right > br.left && r.left < br.right && r.bottom > br.top && r.top < br.bottom) newT.add(c.dataset.en);
+      });
+      applyHL(newT);
+      lastTargets = newT;
+    } else {
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const card = el && el.closest('.word-item');
+      if (card && !card.classList.contains('sel')) { lastTargets.add(card.dataset.en); applyHL(lastTargets); }
+    }
+  }, { passive: true });
+  document.addEventListener('pointerup', (e) => {
+    if (!dragging) return;
+    dragging = false;
+    grid.classList.remove('dragging');
+    box.classList.remove('on');
+    clearHL();
+    grid.querySelectorAll('.word-item').forEach(el => el.style.opacity = '');
+    const moved = Math.hypot(e.clientX - startX, e.clientY - startY) > 6;
+    const onCard = e.target.closest && e.target.closest('.word-item');
+    if (!moved && onCard) {
+      const en = onCard.dataset.en;
+      if (G.wordSelTemp.has(en)) G.wordSelTemp.delete(en);
+      else G.wordSelTemp.add(en);
+      renderWordSelector();
+      return;
+    }
+    if (mode === 'remove') lastTargets.forEach(en => { if (G.wordSelTemp.has(en)) G.wordSelTemp.delete(en); });
+    else lastTargets.forEach(en => G.wordSelTemp.add(en));
+    renderWordSelector();
+  }, { passive: true });
+  document.addEventListener('pointercancel', () => {
+    if (!dragging) return;
+    dragging = false;
+    grid.classList.remove('dragging');
+    box.classList.remove('on');
+    clearHL();
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SETUP MENU
+   ═══════════════════════════════════════════════════════════════ */
+function renderGradeChips(){
+  const w = $('gradeChips'); w.innerHTML = '';
+  GRADES.forEach(g => {
+    const b = document.createElement('button');
+    b.className = 'chip' + (g.id === G.config.gradeId ? ' active' : '');
+    b.dataset.v = g.id;
+    b.textContent = g.name;
+    b.onclick = () => {
+      iA(); sClick();
+      G.config.gradeId = g.id;
+      G.config.selectedWords = loadSelectedWords(g.id);
+      w.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.v === g.id));
+      updateWordCountBadge();
+    };
+    w.appendChild(b);
+  });
+}
+function goBotSetup(){
+  iA(); sClick();
+  G.mode = 'bot';
+  G.isHost = true;
+  $('setupTitle').textContent = '🤖 เล่นกับบอท';
+  $('diffCard').style.display = 'block';
+  G.myAvatar = randomAvatar(new Set());
+  $('setupAvatar').textContent = G.myAvatar;
+  G.config.selectedWords = loadSelectedWords(G.config.gradeId);
+  updateWordCountBadge();
+  renderGradeChips();
+  document.querySelectorAll('#diffChips .chip').forEach(c => c.classList.toggle('active', c.dataset.v === G.config.botDiff));
+  document.querySelectorAll('#timeChips .chip').forEach(c => c.classList.toggle('active', +c.dataset.v === G.config.gameTime));
+  go('scSetup');
+}
+function goHostSetup(){
+  iA(); sClick();
+  G.mode = 'host';
+  G.isHost = true;
+  $('setupTitle').textContent = '🎤 สร้างห้อง';
+  $('diffCard').style.display = 'none';
+  G.myAvatar = randomAvatar(new Set());
+  $('setupAvatar').textContent = G.myAvatar;
+  G.config.selectedWords = loadSelectedWords(G.config.gradeId);
+  updateWordCountBadge();
+  renderGradeChips();
+  document.querySelectorAll('#timeChips .chip').forEach(c => c.classList.toggle('active', +c.dataset.v === G.config.gameTime));
+  go('scSetup');
+}
+function setDiff(v){ iA(); sClick(); G.config.botDiff = v; document.querySelectorAll('#diffChips .chip').forEach(c => c.classList.toggle('active', c.dataset.v === v)); }
+function setTime(v){ iA(); sClick(); G.config.gameTime = v; document.querySelectorAll('#timeChips .chip').forEach(c => c.classList.toggle('active', +c.dataset.v === v)); }
+function proceedSetup(){
+  iA(); sClick();
+  if (G.mode === 'bot') startBotGame();
+  else if (G.mode === 'host') createRoom();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MQTT
+   ═══════════════════════════════════════════════════════════════ */
+const BROKERS = ['wss://broker.hivemq.com:8884/mqtt', 'wss://broker.emqx.io:8084/mqtt'];
+let bIdx = 0, mqttClient = null, mqttHandlers = {}, mqttOK = false;
+function connectMQTT(onOK, onFail){
+  if (mqttClient) { try { mqttClient.end(true); } catch(e){} }
+  mqttHandlers = {}; mqttOK = false;
+  const broker = BROKERS[bIdx % BROKERS.length];
+  const cid = 'cyb_' + Date.now() + '_' + Math.random().toString(36).slice(2,7);
+  try { mqttClient = mqtt.connect(broker, { clientId: cid, clean: true, connectTimeout: 15000, reconnectPeriod: 2000, keepalive: 30 }); }
+  catch(e){ nextBroker(onOK, onFail); return; }
+  let resolved = false;
+  mqttClient.on('connect', () => {
+    resolved = true; mqttOK = true;
+    Object.keys(mqttHandlers).forEach(tp => { try { mqttClient.subscribe(tp, { qos: 0 }, () => {}); } catch(e){} });
+    if (onOK) onOK();
+  });
+  mqttClient.on('message', (topic, payload) => {
+    Object.keys(mqttHandlers).forEach(pat => {
+      if (topicMatch(pat, topic)) {
+        try { const d = JSON.parse(payload.toString()); mqttHandlers[pat](topic, d); } catch(e){}
+      }
+    });
+  });
+  mqttClient.on('error', () => {});
+  mqttClient.on('close', () => { mqttOK = false; });
+  setTimeout(() => { if (!resolved) { try { mqttClient.end(true); } catch(e){} nextBroker(onOK, onFail); } }, 15000);
+}
+function nextBroker(o, f){ bIdx++; if (bIdx >= BROKERS.length * 2) { if (f) f(); return; } connectMQTT(o, f); }
+function topicMatch(pattern, topic){
+  if (pattern === topic) return true;
+  const pParts = pattern.split('/'), tParts = topic.split('/');
+  for (let i = 0; i < pParts.length; i++) {
+    if (pParts[i] === '#') return true;
+    if (i >= tParts.length) return false;
+    if (pParts[i] !== '+' && pParts[i] !== tParts[i]) return false;
+  }
+  return pParts.length === tParts.length;
+}
+function pub(t, d){ if (!mqttClient || !mqttOK) { setTimeout(() => { if (mqttOK) pub(t, d); }, 350); return; } try { mqttClient.publish(t, JSON.stringify(d), { qos: 0 }); } catch(e){} }
+function sub(t, h){ mqttHandlers[t] = h; if (!mqttClient || !mqttOK) return; try { mqttClient.subscribe(t, { qos: 0 }, () => {}); } catch(e){} }
+function hostBc(d){ if (G.roomCode) pub(`cyb/${G.roomCode}/host`, d); }
+function hostSendTo(pid, d){ hostBc({ ...d, to: pid }); }
+function clientSend(d){ if (G.roomCode) pub(`cyb/${G.roomCode}/to`, { from: G.myId, ...d }); }
+
+/* ═══════════════════════════════════════════════════════════════
+   HOST: CREATE ROOM
+   ═══════════════════════════════════════════════════════════════ */
+function setConn(t, c){ const e = $('connStatus'); if (e) { e.textContent = t; e.className = 'conn-status' + (c ? ' ' + c : ''); } }
+function createRoom(){
+  G.roomCode = genCode();
+  $('roomCodeDisplay').textContent = G.roomCode;
+  const url = new URL(location.href); url.searchParams.set('code', G.roomCode);
+  $('roomUrlDisplay').innerHTML = '📱 ' + esc(url.toString());
+  const qr = $('qrcode'); qr.innerHTML = '';
+  const qi = document.createElement('img');
+  qi.src = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=' + encodeURIComponent(url.toString());
+  qi.onerror = () => { qr.style.display = 'none'; };
+  qr.appendChild(qi);
+  G.players = {};
+  G.players[G.myId] = { id: G.myId, name: 'Host', avatar: G.myAvatar, credits: 0, mult: 1, isBot: false };
+  G.passwordMap = {};
+  renderPlayerList(); updateStartBtn();
+  go('scLobby');
+  setConn('⏳ กำลังเชื่อมต่อ...', '');
+  connectMQTT(() => {
+    setConn('✅ พร้อม · รอผู้เล่น', 'ok');
+    sub(`cyb/${G.roomCode}/join`, (t, d) => hostOnJoin(d));
+    sub(`cyb/${G.roomCode}/to`, (t, d) => hostOnClientMsg(d));
+    toast('✅ สร้างห้อง ' + G.roomCode + ' · แชร์ให้เพื่อน', 3000);
+    if (G.stateTimer) clearInterval(G.stateTimer);
+    G.stateTimer = setInterval(() => {
+      if (G.phase === 'playing' || G.phase === 'password') hostBcState();
+    }, 600);
+  }, () => setConn('❌ เชื่อมต่อไม่สำเร็จ', 'err'));
+}
+function hostOnJoin(d){
+  if (!d || !d.playerId || d.playerId === G.myId) return;
+  if (G.players[d.playerId]) {
+    hostSendTo(d.playerId, { type: 'assigned', avatar: G.players[d.playerId].avatar, room: G.roomCode });
+    return;
+  }
+  if (Object.keys(G.players).length >= 10) {
+    hostSendTo(d.playerId, { type: 'reject', reason: 'ห้องเต็ม (สูงสุด 10 คน)' });
+    return;
+  }
+  const avatar = randomAvatar(new Set(Object.values(G.players).map(p => p.avatar)));
+  G.players[d.playerId] = { id: d.playerId, name: d.name || 'Player', avatar, credits: 0, mult: 1, isBot: false };
+  hostSendTo(d.playerId, { type: 'assigned', avatar, room: G.roomCode });
+  toast(`✅ ${avatar} ${d.name} เข้าห้อง`, 1800);
+  renderPlayerList(); updateStartBtn();
+  hostBcState();
+}
+function renderPlayerList(){
+  const w = $('playersList'); const arr = Object.values(G.players);
+  $('playerCount').textContent = arr.length;
+  w.innerHTML = '<div class="players-grid">' + arr.map(p => `
+    <div class="player-card ${p.id === G.myId ? 'you' : ''}">
+      <span class="av">${p.avatar || DEFAULT_AVATAR}</span>
+      <div class="name">${esc(p.name)}${p.id === G.myId ? ' ⭐' : ''}</div>
+    </div>`).join('') + '</div>';
+}
+function updateStartBtn(){
+  const n = Object.keys(G.players).length;
+  const ok = n >= 2;
+  const btn = $('startGameBtn');
+  btn.disabled = !ok;
+  btn.querySelector('.btn-title').textContent = ok ? `▶ เริ่มเกม (${n} คน)` : `⏳ รอผู้เล่น (${n}/2)`;
+}
+function copyJoinLink(){
+  const u = new URL(location.href); u.searchParams.set('code', G.roomCode);
+  const j = u.toString();
+  if (navigator.clipboard) navigator.clipboard.writeText(j).then(() => toast('✅ คัดลอกแล้ว')).catch(() => fbCopy(j));
+  else fbCopy(j);
+}
+function fbCopy(t){
+  const ta = document.createElement('textarea'); ta.value = t;
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); toast('✅ คัดลอกแล้ว'); } catch(e){}
+  document.body.removeChild(ta);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CLIENT: JOIN
+   ═══════════════════════════════════════════════════════════════ */
+function goJoin(){
+  iA(); sClick();
+  G.mode = 'client';
+  G.isHost = false;
+  const p = new URLSearchParams(location.search);
+  const c = p.get('code');
+  if (c && c.length === 4) $('joinCode').value = c.toUpperCase();
+  go('scJoin');
+}
+function playerJoin(){
+  iA(); sClick();
+  const code = $('joinCode').value.trim().toUpperCase();
+  const name = $('joinName').value.trim();
+  const msg = $('joinMsg');
+  if (code.length !== 4) { msg.textContent = '⚠️ รหัสห้องต้องมี 4 ตัว'; msg.style.color = '#f87171'; return; }
+  if (!name) { msg.textContent = '⚠️ กรุณาใส่ชื่อ'; msg.style.color = '#f87171'; return; }
+  G.roomCode = code; G.myName = name;
+  G.myAvatar = randomAvatar(new Set());
+  $('joinBtn').disabled = true;
+  msg.textContent = '⏳ กำลังเชื่อมต่อ...'; msg.style.color = '#7dd3fc';
+  connectMQTT(() => {
+    sub(`cyb/${code}/host`, (t, d) => {
+      if (d && d.to && d.to !== G.myId) return;
+      clientOnHostMsg(d);
+    });
+    const send = () => {
+      if (G.phase !== 'lobby') return;
+      pub(`cyb/${code}/join`, { playerId: G.myId, name: G.myName });
+      setTimeout(send, 2200);
+    };
+    send();
+    $('waitName').textContent = name;
+    $('waitAvatar').textContent = G.myAvatar;
+    go('scWait');
+  }, () => { msg.textContent = '❌ เชื่อมต่อไม่สำเร็จ'; msg.style.color = '#f87171'; $('joinBtn').disabled = false; });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MESSAGE HANDLERS
+   ═══════════════════════════════════════════════════════════════ */
+function clientOnHostMsg(d){
+  if (!d || !d.type) return;
+  switch (d.type) {
+    case 'assigned':
+      G.myAvatar = d.avatar || G.myAvatar;
+      $('waitAvatar').textContent = G.myAvatar;
+      break;
+    case 'reject':
+      toast('❌ ' + (d.reason || 'ถูกปฏิเสธ'), 3000);
+      setTimeout(() => location.reload(), 2000);
+      break;
+    case 'passwordPhase':
+      G.phase = 'password';
+      G.passwordOptions = d.options || [];
+      renderPasswordOptions();
+      $('pwdConfirmBtn').disabled = true;
+      $('pwdConfirmBtn').querySelector('.btn-title').textContent = '✅ ยืนยันรหัสผ่าน';
+      $('waitingPwd').style.display = 'none';
+      go('scPassword');
+      toast('🔐 เลือกรหัสผ่านของคุณ', 2500);
+      break;
+    case 'startGame':
+      G.config = { ...G.config, ...d.config };
+      G.players = {};
+      (d.players || []).forEach(p => {
+        G.players[p.id] = { id: p.id, name: p.name, avatar: p.avatar || DEFAULT_AVATAR, credits: p.credits || 0, mult: p.mult || 1, isBot: false };
+      });
+      G.phase = 'playing';
+      G.timeLeft = G.config.gameTime;
+      G.timeSyncAt = Date.now();
+      startPlayingPhase();
+      break;
+    case 'state':
+      applyState(d);
+      break;
+    case 'timeSync':
+      G.timeLeft = d.timeLeft;
+      G.timeSyncAt = Date.now();
+      break;
+    case 'rewardOptions':
+      showRewardModal(d.options, d.token);
+      break;
+    case 'hackTargets':
+      showHackModal(d.targets);
+      break;
+    case 'hackResult':
+      handleHackResult(d);
+      break;
+    case 'getHacked':
+      G.recoveryActive = true;
+      G.currentQ = null;
+      if (G.qTimerId) clearInterval(G.qTimerId);
+      $('questionTerm').style.display = 'none';
+      $('ansGrid').style.display = 'none';
+      $('qHead').style.display = 'none';
+      sAlarm();
+      toast(`💀 ${d.hackerName} แฮกคุณสำเร็จ! เสีย ${d.stolen} Credits`, 3200);
+      setTimeout(() => pickRecoveryGame(), 900);
+      break;
+    case 'end':
+      G.phase = 'ended';
+      if (G.stateTimer) clearInterval(G.stateTimer);
+      if (G.timerId) clearInterval(G.timerId);
+      if (G.qTimerId) clearInterval(G.qTimerId);
+      showResult(d.result);
+      break;
+  }
+}
+function applyState(d){
+  if (d.players) {
+    G.players = {};
+    d.players.forEach(p => {
+      G.players[p.id] = {
+        id: p.id, name: p.name, avatar: p.avatar || DEFAULT_AVATAR,
+        credits: p.credits || 0, mult: p.mult || 1, isBot: false
+      };
+    });
+    const me = G.players[G.myId];
+    if (me) G.myAvatar = me.avatar;
+  }
+  renderLeaderboard();
+  updateGameHUD();
+}
+function hostBcState(){
+  if (!G.isHost) return;
+  const arr = Object.values(G.players);
+  hostBc({
+    type: 'state',
+    phase: G.phase,
+    players: arr.map(p => ({
+      id: p.id, name: p.name, avatar: p.avatar,
+      credits: p.credits || 0, mult: p.mult || 1
+    }))
+  });
+  hostBc({ type: 'timeSync', timeLeft: G.timeLeft });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PASSWORD PHASE
+   ═══════════════════════════════════════════════════════════════ */
+function hostStartGame(){
+  iA(); sClick();
+  const players = Object.values(G.players).map(p => ({ id: p.id, name: p.name, avatar: p.avatar }));
+  if (players.length < 2) { toast('⚠️ ต้องมีอย่างน้อย 2 คน'); return; }
+  G.phase = 'password';
+  const optionsMap = {};
+  players.forEach(p => { optionsMap[p.id] = shuffle(PASSWORDS).slice(0, 5); });
+  G.passwordOptions = optionsMap[G.myId];
+  renderPasswordOptions();
+  $('pwdConfirmBtn').disabled = true;
+  $('pwdConfirmBtn').querySelector('.btn-title').textContent = '✅ ยืนยันรหัสผ่าน';
+  $('waitingPwd').style.display = 'none';
+  hostBc({ type: 'passwordPhase', options: optionsMap[G.myId] }); // host's own options
+  // Send each player their own options
+  players.forEach(p => {
+    if (p.id === G.myId) return;
+    hostSendTo(p.id, { type: 'passwordPhase', options: optionsMap[p.id] });
+  });
+  go('scPassword');
+  toast('🔐 ทุกคนเลือกรหัสผ่าน', 2500);
+}
+function renderPasswordOptions(){
+  const grid = $('pwdGrid');
+  grid.innerHTML = G.passwordOptions.map(pwd => `
+    <button class="pwd-btn" data-pwd="${esc(pwd)}" onclick="selectPassword('${esc(pwd)}')">
+      <span>${esc(pwd)}</span>
+      <span class="pwd-check">✓</span>
+    </button>`).join('');
+}
+function selectPassword(pwd){
+  iA(); sPwd();
+  G.myPassword = pwd;
+  document.querySelectorAll('.pwd-btn').forEach(b => b.classList.toggle('selected', b.dataset.pwd === pwd));
+  $('pwdConfirmBtn').disabled = false;
+}
+function confirmPassword(){
+  if (!G.myPassword) return;
+  iA(); sClick();
+  G.myPasswordChosen = true;
+  G.passwordMap[G.myId] = G.myPassword;
+  $('pwdConfirmBtn').disabled = true;
+  $('pwdConfirmBtn').querySelector('.btn-title').textContent = '⏳ รอผู้เล่นอื่น...';
+  $('waitingPwd').style.display = 'block';
+  if (G.isHost) {
+    checkAllPasswordsSet();
+  } else {
+    clientSend({ type: 'passwordChosen', password: G.myPassword });
+  }
+}
+function checkAllPasswordsSet(){
+  if (!G.isHost) return;
+  const allSet = Object.values(G.players).every(p => G.passwordMap[p.id]);
+  if (allSet && G.phase === 'password') {
+    G.phase = 'playing';
+    G.timeLeft = G.config.gameTime;
+    Object.values(G.players).forEach(p => { p.credits = 0; p.mult = 1; });
+    hostBc({
+      type: 'startGame',
+      config: { gradeId: G.config.gradeId, selectedWords: G.config.selectedWords, gameTime: G.config.gameTime },
+      players: Object.values(G.players).map(p => ({ id: p.id, name: p.name, avatar: p.avatar, credits: 0, mult: 1 }))
+    });
+    startPlayingPhase();
+  }
+}
+function hostOnClientMsg(msg){
+  if (!G.isHost || !msg || !msg.from) return;
+  const pid = msg.from;
+  switch (msg.type) {
+    case 'passwordChosen':
+      G.passwordMap[pid] = msg.password;
+      checkAllPasswordsSet();
+      break;
+    case 'correct':
+      hostOnCorrect(pid);
+      break;
+    case 'rewardPick':
+      hostOnRewardPick(pid, msg);
+      break;
+    case 'hackRequest':
+      hostOnHackRequest(pid);
+      break;
+    case 'hackGuess':
+      hostOnHackGuess(pid, msg);
+      break;
+    case 'recoveryDone':
+      // Nothing needed
+      break;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOT SETUP
+   ═══════════════════════════════════════════════════════════════ */
+function startBotGame(){
+  G.mode = 'bot';
+  G.isHost = true;
+  G.players = {};
+  G.players[G.myId] = { id: G.myId, name: 'You', avatar: G.myAvatar, credits: 0, mult: 1, isBot: false };
+  const botNames = ['BOT_Alpha','BOT_Beta','BOT_Gamma','BOT_Delta','BOT_Epsilon'];
+  for (let i = 0; i < 5; i++) {
+    const id = 'bot_' + i;
+    const avatar = randomAvatar(new Set(Object.values(G.players).map(p => p.avatar)));
+    const botPassword = pick(PASSWORDS);
+    G.players[id] = { id, name: botNames[i], avatar, credits: 0, mult: 1, isBot: true };
+    G.passwordMap[id] = botPassword;
+  }
+  G.phase = 'password';
+  G.passwordOptions = shuffle(PASSWORDS).slice(0, 5);
+  renderPasswordOptions();
+  $('pwdConfirmBtn').disabled = true;
+  $('pwdConfirmBtn').querySelector('.btn-title').textContent = '✅ ยืนยันรหัสผ่าน';
+  $('waitingPwd').style.display = 'none';
+  go('scPassword');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PLAYING PHASE
+   ═══════════════════════════════════════════════════════════════ */
+function startPlayingPhase(){
+  go('scGame');
+  $('termName').textContent = G.players[G.myId] ? G.players[G.myId].name : G.myName;
+  $('hudAvatar').textContent = G.myAvatar;
+  updateGameHUD();
+  renderLeaderboard();
+  if (G.timerId) clearInterval(G.timerId);
+  G.timerId = setInterval(() => {
+    if (G.phase !== 'playing') return;
+    // In client mode, don't decrement — time comes from host sync
+    if (G.isHost) {
+      G.timeLeft--;
+      if (G.timeLeft <= 0) {
+        clearInterval(G.timerId);
+        endGame();
+      }
+    } else {
+      // Estimate using timeSyncAt
+      const elapsed = Math.floor((Date.now() - G.timeSyncAt) / 1000);
+      G.timeLeft = Math.max(0, G.timeLeft - 0); // doesn't decrement locally, waits for sync
+    }
+    updateGameHUD();
+  }, 1000);
+  nextQuestion();
+  if (G.isHost && G.mode === 'bot') startBots();
+}
+function updateGameHUD(){
+  const me = G.players[G.myId];
+  if (!me) return;
+  $('hudCredits').textContent = me.credits || 0;
+  const multEl = $('hudMult');
+  if ((me.mult || 1) > 1) {
+    multEl.style.display = 'flex';
+    multEl.className = 'hud-pill mult x' + me.mult;
+    $('hudMultVal').textContent = me.mult;
+  } else multEl.style.display = 'none';
+  const t = $('hudTimer');
+  t.textContent = '⏱️ ' + fmtTime(G.timeLeft);
+  t.classList.toggle('warn', G.timeLeft <= 30);
+}
+function renderLeaderboard(){
+  const arr = Object.values(G.players).sort((a,b) => (b.credits||0) - (a.credits||0));
+  $('lbCount').textContent = arr.length;
+  $('lbList').innerHTML = arr.map((p, i) => {
+    const rank = i + 1;
+    const cls = rank === 1 ? 'gold' : rank === 2 ? 'silver' : rank === 3 ? 'bronze' : '';
+    const isMe = p.id === G.myId;
+    return `<div class="lb-row ${isMe?'me':''}" data-id="${p.id}">
+      <span class="lb-rank ${cls}">#${rank}</span>
+      <span style="font-size:1rem">${p.avatar || DEFAULT_AVATAR}</span>
+      <span class="lb-name">${esc(p.name)}${isMe?' (you)':''}</span>
+      <span class="lb-credits">💰 ${p.credits || 0}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   QUESTIONS
+   ═══════════════════════════════════════════════════════════════ */
+function getPool(){
+  const base = POOLS[G.config.gradeId] || POOLS.all;
+  if (!G.config.selectedWords || !G.config.selectedWords.length) return base;
+  const sel = new Set(G.config.selectedWords.map(w => w.toLowerCase()));
+  const filtered = base.filter(w => sel.has(w.en.toLowerCase()));
+  return filtered.length >= MIN_WORDS ? filtered : base;
+}
+function nextQuestion(){
+  if (G.phase !== 'playing') return;
+  if (G.recoveryActive) { $('termStatus').textContent = 'SYSTEM_RECOVERY...'; return; }
+  const pool = getPool();
+  if (pool.length < 4) { toast('⚠️ คำศัพท์ไม่พอ'); return; }
+  const correct = pick(pool);
+  const isEn = Math.random() < 0.5;
+  const used = new Set([correct.en.toLowerCase()]);
+  const wrongs = [];
+  let guard = 0;
+  while (wrongs.length < 3 && guard++ < 200) {
+    const w = pick(pool);
+    if (used.has(w.en.toLowerCase())) continue;
+    used.add(w.en.toLowerCase()); wrongs.push(w);
+  }
+  const opts = [correct, ...wrongs];
+  for (let i = opts.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [opts[i], opts[j]] = [opts[j], opts[i]]; }
+  G.qCount++;
+  G.currentQ = {
+    text: isEn ? correct.en : correct.th,
+    sub: isEn ? 'EN → TH' : 'TH → EN',
+    options: opts.map(o => isEn ? o.th : o.en),
+    correct: opts.indexOf(correct),
+    timeLeft: 15, max: 15
+  };
+  G.qStartTs = performance.now();
+  renderQuestion();
+  startQTimer();
+}
+function renderQuestion(){
+  const q = G.currentQ;
+  if (!q) return;
+  $('qText').textContent = q.text;
+  $('qLabel').textContent = 'Q' + G.qCount + ' · ' + q.sub;
+  $('questionTerm').style.display = 'block';
+  $('qHead').style.display = 'flex';
+  $('ansGrid').style.display = 'grid';
+  const letters = ['A','B','C','D'];
+  $('ansGrid').innerHTML = q.options.map((opt, i) =>
+    `<button class="ans-btn" data-i="${i}" onclick="answerQuestion(${i})">
+      <span style="font-weight:900;color:#22d3ee;margin-right:6px">${letters[i]}</span>${esc(opt)}
+    </button>`
+  ).join('');
+  $('qTimeBar').style.width = '100%';
+  $('qTimeNum').textContent = '15';
+}
+function startQTimer(){
+  if (G.qTimerId) clearInterval(G.qTimerId);
+  G.qTimerId = setInterval(() => {
+    if (!G.currentQ || G.phase !== 'playing') { clearInterval(G.qTimerId); return; }
+    if (G.recoveryActive) return;
+    G.currentQ.timeLeft -= 0.1;
+    if (G.currentQ.timeLeft <= 0) {
+      clearInterval(G.qTimerId);
+      answerQuestion(-1);
+      return;
+    }
+    const pct = clamp(G.currentQ.timeLeft / G.currentQ.max, 0, 1);
+    $('qTimeBar').style.width = (pct * 100) + '%';
+    $('qTimeNum').textContent = Math.ceil(G.currentQ.timeLeft);
+  }, 100);
+}
+function answerQuestion(idx){
+  if (!G.currentQ) return;
+  if (G.qTimerId) clearInterval(G.qTimerId);
+  const q = G.currentQ;
+  G.currentQ = null;
+  const isCorrect = idx === q.correct;
+  document.querySelectorAll('.ans-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.correct) b.classList.add('correct');
+    else if (i === idx) b.classList.add('wrong');
+    else b.classList.add('dim');
+  });
+  if (isCorrect) {
+    sCorrect();
+    $('termStatus').textContent = 'DECRYPT_OK';
+    $('termStatus').style.color = '#4ade80';
+    if (G.isHost) {
+      hostOnCorrect(G.myId);
+    } else {
+      clientSend({ type: 'correct' });
+    }
+  } else {
+    sWrong();
+    $('termStatus').textContent = 'DECRYPT_FAIL';
+    $('termStatus').style.color = '#f87171';
+    setTimeout(() => {
+      if (G.phase !== 'playing') return;
+      $('termStatus').textContent = 'READY';
+      $('termStatus').style.color = '#22d3ee';
+      if (!G.recoveryActive) nextQuestion();
+    }, 1200);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REWARDS (Host-controlled)
+   ═══════════════════════════════════════════════════════════════ */
+function hostOnCorrect(pid){
+  const p = G.players[pid];
+  if (!p) return;
+  const choices = shuffle(REWARDS).slice(0, 3);
+  const token = 'rw_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+  G._rewardTokens[token] = { pid, choices };
+  const hidden = choices.map(() => ({ ico: '?', name: '???' }));
+  if (pid === G.myId) {
+    showRewardModal(hidden, token);
+  } else {
+    hostSendTo(pid, { type: 'rewardOptions', options: hidden, token });
+  }
+}
+function hostOnRewardPick(pid, msg){
+  const token = msg.token;
+  const idx = msg.idx;
+  const rec = G._rewardTokens[token];
+  if (!rec || rec.pid !== pid) return;
+  const reward = rec.choices[idx];
+  delete G._rewardTokens[token];
+  const p = G.players[pid];
+  if (!p) return;
+  if (reward.type === 'credits') {
+    const gain = reward.val * (p.mult || 1);
+    p.credits = (p.credits || 0) + gain;
+    p.mult = 1;
+    if (pid !== G.myId) {
+      hostSendTo(pid, { type: 'creditsToast', msg: `💰 +${gain} Credits!` });
+    }
+    continueAfterReward();
+  } else if (reward.type === 'mult') {
+    p.mult = reward.val;
+    if (pid !== G.myId) {
+      hostSendTo(pid, { type: 'creditsToast', msg: `⚡ Multiplier x${reward.val}!` });
+    }
+    continueAfterReward();
+  } else if (reward.type === 'nothing') {
+    if (pid !== G.myId) {
+      hostSendTo(pid, { type: 'creditsToast', msg: '😐 ไม่ได้อะไรเลย!' });
+    }
+    continueAfterReward();
+  } else if (reward.type === 'hack') {
+    if (pid !== G.myId) {
+      hostSendTo(pid, { type: 'creditsToast', msg: '💻 HACK MODE!' });
+      // Tell them to open hack modal
+      const targets = Object.values(G.players).filter(t => t.id !== pid);
+      hostSendTo(pid, { type: 'hackTargets', targets: targets.map(t => ({ id: t.id, name: t.name, avatar: t.avatar, credits: t.credits || 0 })) });
+    } else {
+      const targets = Object.values(G.players).filter(t => t.id !== G.myId);
+      showHackModal(targets.map(t => ({ id: t.id, name: t.name, avatar: t.avatar, credits: t.credits || 0 })));
+    }
+  }
+  hostBcState();
+}
+function continueAfterReward(){
+  if (G.isHost) {
+    // Host's own turn — go to next question
+    setTimeout(() => {
+      if (G.phase === 'playing' && !G.recoveryActive && !G.hackInProgress) nextQuestion();
+    }, 900);
+  }
+  // Clients wait — they don't call nextQuestion themselves
+}
+
+/* For local player (host or client): show reward modal */
+function showRewardModal(options, token){
+  G._currentRewards = options;
+  G._currentRewardToken = token;
+  const wrap = $('rewardCards');
+  wrap.innerHTML = options.map((r, i) =>
+    `<div class="reward-card" data-i="${i}" onclick="pickReward(${i})">
+      <div class="rc-ico">${r.ico}</div>
+      <div class="rc-name">${r.name}</div>
+    </div>`).join('');
+  $('rewardModal').classList.add('on');
+}
+function pickReward(i){
+  if (!G._currentRewards) return;
+  const card = document.querySelectorAll('.reward-card')[i];
+  if (!card || card.classList.contains('revealed')) return;
+  iA();
+  // Reveal animation (we don't know actual type on client — but on host we do)
+  card.classList.add('revealed');
+  $('rewardModal').classList.remove('on');
+  if (G.isHost) {
+    hostOnRewardPick(G.myId, { token: G._currentRewardToken, idx: i });
+  } else {
+    clientSend({ type: 'rewardPick', token: G._currentRewardToken, idx: i });
+    // Wait for host's broadcast state — next question will come from... actually client should just proceed
+    setTimeout(() => {
+      if (G.phase === 'playing' && !G.recoveryActive && !G.hackInProgress) nextQuestion();
+    }, 900);
+  }
+  G._currentRewards = null;
+  G._currentRewardToken = null;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HACKING (Host-controlled)
+   ═══════════════════════════════════════════════════════════════ */
+function showHackModal(targets){
+  G.hackInProgress = true;
+  G.hackState = { targets, targetId: null, guessesLeft: 3, eliminated: new Set() };
+  renderHackTargets();
+  $('pwdGuessWrap').style.display = 'none';
+  $('hackModal').classList.add('on');
+  sHack();
+}
+function renderHackTargets(){
+  const wrap = $('hackTargets');
+  wrap.innerHTML = G.hackState.targets.map(t => `
+    <div class="hack-target ${G.hackState.targetId===t.id?'selected':''}"
+      onclick="pickHackTarget('${t.id}')">
+      <span class="ht-av">${t.avatar || DEFAULT_AVATAR}</span>
+      <div class="ht-info">
+        <div class="ht-name">${esc(t.name)}</div>
+        <div class="ht-cred">💰 ${t.credits || 0} Credits</div>
+      </div>
+      <span class="ht-check">💻</span>
+    </div>`).join('');
+}
+function pickHackTarget(id){
+  iA(); sClick();
+  G.hackState.targetId = id;
+  G.hackState.eliminated = new Set();
+  G.hackState.guessesLeft = 3;
+  renderHackTargets();
+  // Get password options from host
+  if (G.isHost) {
+    const realPwd = G.passwordMap[id];
+    const others = PASSWORDS.filter(p => p !== realPwd);
+    const wrongs = shuffle(others).slice(0, 2);
+    const choices = shuffle([realPwd, ...wrongs]);
+    G.hackState.choices = choices;
+    renderPasswordGuess();
+    $('pwdGuessWrap').style.display = 'block';
+  } else {
+    // Client asks host for hack options
+    clientSend({ type: 'hackRequest', targetId: id });
+  }
+}
+function renderPasswordGuess(){
+  const choices = G.hackState.choices || [];
+  const target = G.players[G.hackState.targetId];
+  if (!target) return;
+  $('guessTargetName').textContent = target.name;
+  $('pwdGuessList').innerHTML = choices.map(pwd => {
+    const elim = G.hackState.eliminated.has(pwd);
+    return `<button class="pwd-guess-btn" ${elim?'disabled':''}
+      onclick="guessPassword('${esc(pwd)}')">
+      <span>${esc(pwd)}</span>
+      <span>${elim?'❌':'💻'}</span>
+    </button>`;
+  }).join('');
+  $('pwdGuessWrap').style.display = 'block';
+}
+function hostOnHackRequest(pid){
+  const targetId = G._pendingHack && G._pendingHack.targetId;
+  // This is called from client — need to know which target they picked
+  // The client sends targetId via 'hackRequest' msg with targetId
+}
+function hostOnClientHackRequest(pid, targetId){
+  const realPwd = G.passwordMap[targetId];
+  if (!realPwd) { hostSendTo(pid, { type: 'hackResult', success: false, targetName: '?' }); return; }
+  const others = PASSWORDS.filter(p => p !== realPwd);
+  const wrongs = shuffle(others).slice(0, 2);
+  const choices = shuffle([realPwd, ...wrongs]);
+  G._pendingHack = G._pendingHack || {};
+  G._pendingHack[pid] = { targetId, realPwd, choices, eliminated: new Set(), guessesLeft: 3 };
+  hostSendTo(pid, { type: 'hackChoices', targetId, choices, targetName: G.players[targetId].name });
+}
+function guessPassword(pwd){
+  if (!G.hackState.targetId) return;
+  if (G.hackState.eliminated.has(pwd)) return;
+  iA();
+  if (G.isHost) {
+    hostCheckHackGuess(G.myId, G.hackState.targetId, pwd);
+  } else {
+    clientSend({ type: 'hackGuess', targetId: G.hackState.targetId, guess: pwd });
+  }
+}
+function hostCheckHackGuess(pid, targetId, guess){
+  const realPwd = G.passwordMap[targetId];
+  const target = G.players[targetId];
+  const hacker = G.players[pid];
+  if (!realPwd || !target || !hacker) return;
+  if (guess === realPwd) {
+    // SUCCESS
+    const stolen = Math.floor((target.credits || 0) * 0.5);
+    target.credits = Math.max(0, (target.credits || 0) - stolen);
+    hacker.credits = (hacker.credits || 0) + stolen;
+    hostSendTo(pid, { type: 'hackResult', success: true, targetName: target.name, stolen });
+    hostSendTo(targetId, { type: 'getHacked', hackerName: hacker.name, stolen });
+    // If host was the target, trigger locally too
+    if (targetId === G.myId) {
+      G.recoveryActive = true;
+      G.currentQ = null;
+      if (G.qTimerId) clearInterval(G.qTimerId);
+      $('questionTerm').style.display = 'none';
+      $('ansGrid').style.display = 'none';
+      $('qHead').style.display = 'none';
+      sAlarm();
+      toast(`💀 ${hacker.name} แฮกคุณสำเร็จ! เสีย ${stolen} Credits`, 3200);
+      setTimeout(() => pickRecoveryGame(), 900);
+    }
+    if (pid === G.myId) {
+      closeHackModal(false);
+      sSteal();
+      toast(`💻 แฮก ${target.name} สำเร็จ! +${stolen} Credits`, 2800);
+      setTimeout(() => {
+        if (G.phase === 'playing' && !G.recoveryActive) nextQuestion();
+      }, 1500);
+    }
+    hostBcState();
+  } else {
+    // FAIL
+    const rec = G._pendingHack && G._pendingHack[pid];
+    if (!rec) return;
+    rec.eliminated.add(guess);
+    rec.guessesLeft--;
+    if (rec.guessesLeft <= 0) {
+      hostSendTo(pid, { type: 'hackResult', success: false, targetName: target.name });
+      if (pid === G.myId) {
+        closeHackModal(false);
+        toast(`❌ แฮก ${target.name} ไม่สำเร็จ`, 2200);
+        setTimeout(() => {
+          if (G.phase === 'playing' && !G.recoveryActive) nextQuestion();
+        }, 1500);
+      }
+    } else {
+      hostSendTo(pid, { type: 'hackChoices', targetId, choices: rec.choices, targetName: target.name, eliminated: [...rec.eliminated], guessesLeft: rec.guessesLeft });
+    }
+  }
+}
+function handleHackResult(d){
+  if (d.success) {
+    sSteal();
+    toast(`💻 แฮก ${d.targetName} สำเร็จ! +${d.stolen} Credits`, 2800);
+  } else {
+    sFail();
+    toast(`❌ แฮก ${d.targetName} ไม่สำเร็จ`, 2200);
+  }
+  closeHackModal(false);
+  setTimeout(() => {
+    if (G.phase === 'playing' && !G.recoveryActive) nextQuestion();
+  }, 1500);
+}
+function closeHackModal(skipped){
+  $('hackModal').classList.remove('on');
+  G.hackInProgress = false;
+  G.hackState = null;
+  if (skipped) {
+    toast('⚠️ ยกเลิกการแฮก', 1800);
+    if (G.phase === 'playing' && !G.recoveryActive) nextQuestion();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RECOVERY MINI-GAMES
+   ═══════════════════════════════════════════════════════════════ */
+function pickRecoveryGame(){
+  const games = ['temperature', 'upload', 'numbers', 'cards'];
+  const type = pick(games);
+  $('recoveryModal').classList.add('on');
+  const wrap = $('miniWrap');
+  wrap.innerHTML = '';
+  if (type === 'temperature') renderMiniTemperature(wrap);
+  else if (type === 'upload') renderMiniUpload(wrap);
+  else if (type === 'numbers') renderMiniNumbers(wrap);
+  else if (type === 'cards') renderMiniCards(wrap);
+}
+function completeRecovery(){
+  G.recoveryActive = false;
+  $('recoveryModal').classList.remove('on');
+  sRecover();
+  toast('✅ ระบบกู้คืนสำเร็จ!', 2000);
+  if (!G.isHost) clientSend({ type: 'recoveryDone' });
+  setTimeout(() => {
+    if (G.phase === 'playing') nextQuestion();
+  }, 800);
+}
+function renderMiniTemperature(wrap){
+  const target = rnd(20, 80);
+  let current = 50;
+  let completed = false;
+  const done = (v) => Math.abs(v - target) < 3;
+  const render = () => {
+    const pct = (current / 100) * 100;
+    const tPct = (target / 100) * 100;
+    const hit = done(current);
+    wrap.innerHTML = `
+      <div class="mini-title">🌡️ SET TEMPERATURE</div>
+      <p style="color:#7dd3fc;font-size:.8rem;font-weight:800;margin-bottom:6px">
+        ตั้งอุณหภูมิให้ตรงเป้า (${target.toFixed(0)}°) · ปัจจุบัน ${current.toFixed(0)}°
+      </p>
+      <div class="mini-temp-bar">
+        <div class="mini-temp-target" style="left:${tPct-3}%;width:6%"></div>
+        <div class="mini-temp-marker" style="left:${pct}%"></div>
+      </div>
+      <div class="mini-temp-controls">
+        <button class="mini-btn" id="tempDec">−</button>
+        <button class="mini-btn" id="tempInc">+</button>
+      </div>
+      <p style="color:${hit?'#4ade80':'#94a3b8'};font-weight:900;margin-top:8px;font-size:.8rem">
+        ${hit?'✅ ตรงเป้าแล้ว!':'⚠️ ปรับให้ตรงกรอบเป้า'}
+      </p>
+      ${hit?'<button class="mini-hold-btn" id="tempConfirm" style="margin-top:10px">✅ ยืนยัน</button>':''}
+    `;
+    const dec = $('tempDec'), inc = $('tempInc');
+    if (dec) dec.onclick = () => { current = Math.max(0, current - 4); if (!completed) render(); };
+    if (inc) inc.onclick = () => { current = Math.min(100, current + 4); if (!completed) render(); };
+    const cf = $('tempConfirm');
+    if (cf) cf.onclick = () => { if (done(current)) { completed = true; completeRecovery(); } };
+  };
+  render();
+}
+function renderMiniUpload(wrap){
+  let pct = 0, timer = null, holding = false;
+  wrap.innerHTML = `
+    <div class="mini-title">📤 UPLOADING SYSTEM FILES</div>
+    <div class="mini-progress">
+      <div class="mini-progress-fill" id="progFill"></div>
+      <div class="mini-progress-text" id="progText">0%</div>
+    </div>
+    <button class="mini-hold-btn" id="uploadBtn">📤 กดค้างเพื่ออัปโหลด</button>
+  `;
+  const btn = $('uploadBtn');
+  const fill = $('progFill'), text = $('progText');
+  const startHold = (e) => {
+    e.preventDefault();
+    if (holding) return;
+    holding = true;
+    btn.classList.add('active');
+    if (timer) clearInterval(timer);
+    timer = setInterval(() => {
+      pct = Math.min(100, pct + 1.6);
+      fill.style.width = pct + '%';
+      text.textContent = Math.floor(pct) + '%';
+      if (pct >= 100) {
+        clearInterval(timer);
+        btn.textContent = '✅ เสร็จสิ้น';
+        setTimeout(completeRecovery, 600);
+      }
+    }, 50);
+  };
+  const stopHold = () => {
+    holding = false;
+    btn.classList.remove('active');
+    if (timer) { clearInterval(timer); timer = null; }
+  };
+  btn.addEventListener('mousedown', startHold);
+  btn.addEventListener('touchstart', startHold, { passive: false });
+  btn.addEventListener('mouseup', stopHold);
+  btn.addEventListener('mouseleave', stopHold);
+  btn.addEventListener('touchend', stopHold);
+  btn.addEventListener('touchcancel', stopHold);
+}
+function renderMiniNumbers(wrap){
+  let next = 1;
+  const nums = shuffle([1,2,3,4,5,6,7,8,9,10]);
+  const render = () => {
+    wrap.innerHTML = `
+      <div class="mini-title">🔢 TAPPING NUMBERS 1-10</div>
+      <p style="color:#7dd3fc;font-size:.8rem;font-weight:800;margin-bottom:6px">
+        แตะตัวเลขตามลำดับ · ถัดไป: <b style="color:#fbbf24">${next}</b>
+      </p>
+      <div class="mini-num-grid">
+        ${nums.map(n => `<button class="mini-num ${n<next?'done':''}" data-n="${n}" ${n<next?'disabled':''}>${n}</button>`).join('')}
+      </div>
+    `;
+    wrap.querySelectorAll('.mini-num').forEach(b => {
+      b.onclick = () => {
+        const n = parseInt(b.dataset.n);
+        if (n === next) {
+          iA(); sTick(); next++;
+          if (next > 10) { setTimeout(completeRecovery, 500); return; }
+          render();
+        } else {
+          sFail();
+          b.style.background = '#7f1d1d';
+          setTimeout(render, 300);
+        }
+      };
+    });
+  };
+  render();
+}
+function renderMiniCards(wrap){
+  const icons = ['🦊','🐼','🐸','🐯','🦉','🐧'];
+  const deck = shuffle([...icons, ...icons]);
+  let flipped = [], matched = new Set(), lock = false;
+  const render = () => {
+    wrap.innerHTML = `
+      <div class="mini-title">🎴 MATCHING CARDS</div>
+      <p style="color:#7dd3fc;font-size:.8rem;font-weight:800;margin-bottom:6px">
+        จับคู่การ์ดให้ครบ · เหลือ ${icons.length - matched.size} คู่
+      </p>
+      <div class="mini-card-pair">
+        ${deck.map((ic, i) => {
+          const isFlipped = flipped.includes(i) || matched.has(i);
+          const cls = matched.has(i) ? 'matched' : (isFlipped ? 'flipped' : '');
+          return `<button class="mini-mcard ${cls}" data-i="${i}">${isFlipped ? ic : '?'}</button>`;
+        }).join('')}
+      </div>
+    `;
+    wrap.querySelectorAll('.mini-mcard').forEach(b => {
+      b.onclick = () => {
+        const i = parseInt(b.dataset.i);
+        if (lock || flipped.includes(i) || matched.has(i)) return;
+        iA(); sTick();
+        flipped.push(i);
+        render();
+        if (flipped.length === 2) {
+          lock = true;
+          const [a, b2] = flipped;
+          if (deck[a] === deck[b2]) {
+            setTimeout(() => {
+              matched.add(a); matched.add(b2);
+              flipped = []; lock = false;
+              if (matched.size >= deck.length) { setTimeout(completeRecovery, 600); return; }
+              render();
+            }, 400);
+          } else {
+            setTimeout(() => { flipped = []; lock = false; render(); }, 700);
+          }
+        }
+      };
+    });
+  };
+  render();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOTS (only in bot mode)
+   ═══════════════════════════════════════════════════════════════ */
+function startBots(){
+  const conf = BOT_CONF[G.config.botDiff] || BOT_CONF.medium;
+  Object.values(G.players).forEach(p => {
+    if (p.isBot) scheduleBot(p.id, conf);
+  });
+}
+function scheduleBot(id, conf){
+  const delay = rnd(conf.min, conf.max);
+  G.botTimers[id] = setTimeout(() => {
+    if (G.phase !== 'playing') return;
+    const p = G.players[id];
+    if (!p) return;
+    const correct = Math.random() < conf.acc;
+    if (correct) {
+      const baseCredits = 10;
+      const gain = baseCredits * (p.mult || 1);
+      p.credits = (p.credits || 0) + gain;
+      p.mult = 1;
+      const roll = Math.random();
+      if (roll < 0.08) {
+        setTimeout(() => botHack(p, conf), rnd(1500, 3500));
+      } else if (roll < 0.20) {
+        p.mult = 2 + Math.floor(Math.random() * 2);
+      }
+      // Check if bot wins (credits > 500)
+      if ((p.credits || 0) >= 500 && !G._botWon) {
+        G._botWon = true;
+      }
+    }
+    renderLeaderboard();
+    scheduleBot(id, conf);
+  }, delay);
+}
+function botHack(bot, conf){
+  const targets = Object.values(G.players).filter(p => p.id !== bot.id && !p.isBot);
+  if (!targets.length) return;
+  const target = pick(targets);
+  const actualPwd = G.passwordMap[target.id];
+  if (!actualPwd) return;
+  const guessCorrect = Math.random() < (conf.hackAcc || 0.5);
+  let guess;
+  if (guessCorrect) guess = actualPwd;
+  else { const wrongs = PASSWORDS.filter(p => p !== actualPwd); guess = pick(wrongs); }
+  if (guess === actualPwd) {
+    const stolen = Math.floor((target.credits || 0) * 0.5);
+    target.credits = Math.max(0, (target.credits || 0) - stolen);
+    bot.credits = (bot.credits || 0) + stolen;
+    if (target.id === G.myId) {
+      toast(`💀 ${bot.name} แฮกคุณสำเร็จ! เสีย ${stolen} Credits`, 3000);
+      updateGameHUD();
+      // Trigger recovery for the player
+      G.recoveryActive = true;
+      G.currentQ = null;
+      if (G.qTimerId) clearInterval(G.qTimerId);
+      $('questionTerm').style.display = 'none';
+      $('ansGrid').style.display = 'none';
+      $('qHead').style.display = 'none';
+      sAlarm();
+      setTimeout(() => pickRecoveryGame(), 900);
+    }
+    renderLeaderboard();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   END GAME
+   ═══════════════════════════════════════════════════════════════ */
+function endGame(){
+  if (G.phase === 'ended') return;
+  G.phase = 'ended';
+  if (G.timerId) clearInterval(G.timerId);
+  if (G.qTimerId) clearInterval(G.qTimerId);
+  if (G.stateTimer) clearInterval(G.stateTimer);
+  Object.values(G.botTimers).forEach(t => clearTimeout(t));
+  const arr = Object.values(G.players).sort((a,b) => (b.credits||0) - (a.credits||0));
+  const winner = arr[0];
+  const result = {
+    winnerId: winner ? winner.id : null,
+    winnerName: winner ? winner.name : '-',
+    winnerCredits: winner ? winner.credits : 0,
+    players: arr.map(p => ({ id: p.id, name: p.name, avatar: p.avatar, credits: p.credits || 0 }))
+  };
+  if (G.isHost) hostBc({ type: 'end', result });
+  showResult(result);
+}
+function showResult(result){
+  G.phase = 'ended';
+  const me = G.players[G.myId];
+  const isWinner = result.winnerId === G.myId;
+  const title = $('resultTitle');
+  if (isWinner) {
+    title.textContent = '🏆 VICTORY!';
+    title.className = 'result-title win';
+    sWin();
+  } else {
+    title.textContent = '💥 DEFEAT';
+    title.className = 'result-title lose';
+    sLose();
+  }
+  $('resultSub').textContent = `ผู้ชนะ: ${result.winnerName} · ${result.winnerCredits} Credits`;
+  const podium = $('resultPodium');
+  podium.innerHTML = result.players.map((p, i) => {
+    const rank = i + 1;
+    const cls = rank === 1 ? 'gold' : rank === 2 ? 'silver' : rank === 3 ? 'bronze' : '';
+    const medal = rank === 1 ? '👑' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '#' + rank;
+    return `<div class="podium-row ${cls}">
+      <div class="pr-rank">${medal}</div>
+      <div class="pr-av">${p.avatar || DEFAULT_AVATAR}</div>
+      <div class="pr-name">${esc(p.name)}${p.id === G.myId ? ' (you)' : ''}</div>
+      <div class="pr-cred">💰 ${p.credits}</div>
+    </div>`;
+  }).join('');
+  go('scResult');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BOOT
+   ═══════════════════════════════════════════════════════════════ */
+document.addEventListener('input', e => { if (e.target.id === 'joinCode') e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
+document.addEventListener('touchstart', () => iA(), { once: true, passive: true });
+document.addEventListener('click', () => iA(), { once: true });
+
+{
+  const p = new URLSearchParams(location.search);
+  const c = p.get('code');
+  if (c && c.length === 4) {
+    setTimeout(() => { G.mode = 'client'; $('joinCode').value = c.toUpperCase(); go('scJoin'); }, 80);
+  }
+}
+
+console.log('💻 Cyber Hack v2.0 · ' + POOLS.all.length + ' words · ' + AVATARS.length + ' avatars');
+</script>
+</body>
+</html>
